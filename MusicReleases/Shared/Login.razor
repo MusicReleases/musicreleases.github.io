@@ -1,0 +1,13 @@
+﻿@using MusicReleases;
+
+<button class="@Type.ToString().ToLower()" @onclick="LoginUser"><i class="fab fa-spotify" aria-hidden="true"></i>Login via @Type.ToString()</button>
+
+@code {
+    [Parameter]
+    public Enums.Login Type { get; set; }
+
+    private void LoginUser()
+    {
+        // TODO spotify login
+    }
+}
