@@ -1,12 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using MusicReleases.Components.LoggedIn
 
-<div class="classic">
+<div class="body classic">
 	<Header></Header>
-	<div class="main">
-		<div class="playlists">
-			<Playlists Type=@Enums.Login.Spotify></Playlists>
-		</div>
-		@Body
-	</div>
+	<Main></Main>
+	@Body
 </div>

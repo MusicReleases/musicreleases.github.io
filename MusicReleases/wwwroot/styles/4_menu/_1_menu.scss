@@ -1,0 +1,63 @@
+// menu buttons
+.main .menu {
+    button {
+        margin-top: 0px;
+        display: block;
+        text-align: left;
+        width: calc(100% - 2 * #{$padding_button});
+    }
+}
+
+// hoverable menu
+.menu.hover {
+    &.items {
+        display: none;
+        position: absolute;
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        right: 0;
+
+        &.active {
+            display: block;
+        }
+    }
+}
+
+// secondary menu buttons to display menus
+.header.secondary .menu {
+    display: flex;
+
+    /*button.search {
+        display: none;
+    }*/
+
+    input.search {
+        display: none;
+    }
+
+    button.close {
+        display: none;
+    }
+
+    input.search {
+        padding: 10px;
+
+        &:focus+button.search {
+            display: block;
+        }
+    }
+
+    // show / hide button
+    .show-hide,
+    input.search {
+        //width: calc(100% - 24px);
+        width: 100%;
+        text-align: left;
+    }
+
+    // search button
+    button.search {
+        width: 24px;
+    }
+}

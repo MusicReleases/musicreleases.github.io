@@ -1,0 +1,129 @@
+/** MAIN
+ *  Main styles - fonts, margin, ...
+ */
+
+
+* {
+    margin: 0;
+    text-decoration: none;
+    font-family: "DM Sans", "Pontano Sans", sans-serif;
+    word-wrap: everywhere;
+    overflow-wrap: anywhere;
+}
+
+// text
+p {
+    font-size: 18px;
+}
+
+// buttons
+button {
+    cursor: pointer;
+    border: none;
+    //background-color: transparent;
+    box-sizing: content-box;
+    font-size: 18px;
+    padding: $padding_button;
+    display: inline-block;
+
+    // add to library button
+    &.active {
+        .fa-heart {
+            font-weight: 900;
+        }
+
+        &:hover .fa-heart {
+            font-weight: 400;
+        }
+    }
+
+    &:hover .fa-heart {
+        font-weight: 900;
+    }
+}
+
+input {
+    border: none;
+    padding: 0;
+}
+
+.left {
+    padding-left: $padding_left_right;
+    //padding-left: 0;
+}
+
+.right {
+    padding-right: $padding_left_right;
+    //padding-right: 0;
+}
+
+
+// icon left and right margin
+.icon-text {
+    i {
+        margin-right: $margin_right_icon;
+    }
+
+    &-right {
+        i {
+            margin-left: $margin_right_icon;
+        }
+    }
+}
+
+// explicit
+.explicit {
+    span {
+        font-size: 13px;
+        padding-left: 2.5px;
+        font-style: italic;
+    }
+}
+
+// scrollbars
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 5px;
+}
+
+.scroll {
+    scrollbar-width: thin;
+}
+
+.main .content {
+
+    &::-webkit-scrollbar {
+        width: initial;
+    }
+
+    &::-webkit-scrollbar:horizontal {
+        height: initial;
+    }
+
+    &.scroll {
+        scrollbar-width: auto;
+    }
+}
+
+// responsive styles (hide / show content on pc / mobile)
+@include respond(pc) {
+    .hide-pc {
+        display: none !important;
+    }
+}
+
+@include respond(tablet) {
+    .hide-tablet {
+        display: none !important;
+    }
+}
+
+@include respond(mobile) {
+    .hide-mobile {
+        display: none !important;
+    }
+}

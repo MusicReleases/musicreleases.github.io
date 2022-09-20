@@ -1,27 +1,10 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager navManager
+@using MusicReleases.Components.LoggedOut
 
-<div class="page">
-	<p>Loggin in user</p>
+<div class="login">
+	<Login Type=@Enums.Login.Spotify></Login>
 </div>
 
 @code {
-	
-    protected override async Task OnInitializedAsync()
-    {
-        if (Api.Spotify.Main.User == null)
-        {
-            string currentUrl = navManager.Uri;
-            await Api.Spotify.Main.SetUser(new Uri(currentUrl));
-        }
 
-        if (Api.Spotify.Main.User == null)
-        {
-            navManager.NavigateTo("");
-        }
-        else
-        {
-            navManager.NavigateTo("releases");            
-        }
-    }
 }

@@ -1,0 +1,162 @@
+//RELEASES MENU (PRIMARY MENU)
+
+// primary menu (releases, setting sections)
+.header.primary .menu.primary {
+
+    button {
+        border-radius: 300px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+}
+
+// mobile menu (footer)
+.footer.menu.releases {
+    z-index: 2;
+
+    .primary {
+        display: grid;
+        grid-template-rows: 1fr;
+        gap: 0px 0px;
+        align-items: center;
+        justify-items: center;
+
+        // 5 icons
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+        button {
+            text-align: center;
+            padding: 10px 0;
+            margin: 0;
+            width: 100%;
+            display: grid;
+            gap: 4px;
+            font-size: 13px;
+
+            i {
+                font-size: 18px;
+            }
+        }
+
+        .more {
+            display: none;
+        }
+    }
+
+    // 4 icons
+    @media screen and (max-width: 80px * 5 - 1) {
+        .primary {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+
+            .appears,
+            .compilations {
+                display: none;
+            }
+
+            .more {
+                display: grid;
+            }
+        }
+
+        .hover {
+
+            .appears,
+            .compilations {
+                display: flex;
+            }
+        }
+    }
+
+    // 3 icons
+    @media screen and (max-width: 58px * 4 - 1) {
+        .primary {
+            grid-template-columns: 1fr 1fr 1fr;
+
+            .podcasts {
+                display: none;
+            }
+        }
+
+        .hover {
+            .podcasts {
+                display: flex;
+            }
+        }
+    }
+
+    // 2 icons
+    @media screen and (max-width: 50px * 3 - 1) {
+        .primary {
+            grid-template-columns: 1fr 1fr;
+
+            .tracks {
+                display: none;
+            }
+        }
+
+        .hover {
+            .tracks {
+                display: flex;
+            }
+        }
+    }
+
+    // 1 icon
+    @media screen and (max-width: 50px * 2- 1) {
+        .primary {
+            grid-template-columns: 1fr;
+
+            .albums {
+                display: none;
+            }
+        }
+
+        .hover {
+            .albums {
+                display: flex;
+            }
+        }
+    }
+
+
+    // more (hover) menu
+    //TODO proměnné změnit
+    .hover {
+        $width: 160px;
+        min-width: $width;
+        width: $width;
+
+        bottom: $height_footer_menu;
+        max-height: calc(100vh - #{$height_footer_menu});
+
+        position: fixed;
+
+        word-wrap: anywhere;
+        display: grid;
+
+        button {
+            display: none;
+        }
+
+        i {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        @media screen and (max-width: $width) {
+            width: 100%;
+            min-width: 100%;
+            word-wrap: anywhere;
+        }
+
+        @include respond(watches) {
+            span {
+                display: none;
+            }
+
+            i {
+                margin: auto;
+            }
+        }
+    }
+}

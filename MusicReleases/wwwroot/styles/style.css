@@ -1,0 +1,2917 @@
+﻿/* latin-ext */
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Fp2ywxg089UriCZa4ET-DNl0.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Fp2ywxg089UriCZa4Hz-D.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Ap2ywxg089UriCZaw7ByWB3wTyCg.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Ap2ywxg089UriCZaw7ByWCXwT.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Ap2ywxg089UriCZawpBqWB3wTyCg.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Ap2ywxg089UriCZawpBqWCXwT.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Hp2ywxg089UriCZ2IHSeH.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Hp2ywxg089UriCZOIHQ.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Cp2ywxg089UriAWCrCBamC2QX.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Cp2ywxg089UriAWCrCBimCw.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Cp2ywxg089UriASitCBamC2QX.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dmsans/v6/rP2Cp2ywxg089UriASitCBimCw.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizYRExUiTo99u79D0e0ysmIEDQ.woff2) format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizYRExUiTo99u79D0e0w8mIEDQ.woff2) format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizYRExUiTo99u79D0e0ycmIEDQ.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizYRExUiTo99u79D0e0x8mI.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizdRExUiTo99u79D0e8fOydIhUdwzM.woff2) format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizdRExUiTo99u79D0e8fOydKxUdwzM.woff2) format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizdRExUiTo99u79D0e8fOydIRUdwzM.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizdRExUiTo99u79D0e8fOydLxUd.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizaRExUiTo99u79D0-ExdGM.woff2) format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizaRExUiTo99u79D0aExdGM.woff2) format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizaRExUiTo99u79D0yExdGM.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizaRExUiTo99u79D0KExQ.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizfRExUiTo99u79B_mh0OOtLQ0Z.woff2) format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizfRExUiTo99u79B_mh0OqtLQ0Z.woff2) format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizfRExUiTo99u79B_mh0OCtLQ0Z.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizfRExUiTo99u79B_mh0O6tLQ.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/** MIXINS */
+@media only screen and (max-width: 1309px) {
+  .hide-text.icon-text i {
+    margin-right: 0;
+  }
+  .hide-text span {
+    display: none;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/** COLORS
+ *  Colors for themes (light, dark, color).
+ */
+@media (prefers-color-scheme: dark) {
+  .body {
+    color: white;
+    background-color: #060606;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (max-width: 859px) {
+  .body {
+    background-color: #101010;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body h2 {
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body button {
+    color: white;
+  }
+  .body button.active {
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body a {
+    color: white;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .scroll {
+    scrollbar-color: #383838 transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body ::-webkit-scrollbar-track,
+.body ::-webkit-scrollbar-track:horizontal {
+    background-color: transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body ::-webkit-scrollbar-thumb,
+.body ::-webkit-scrollbar-thumb:horizontal {
+    background-color: #383838;
+  }
+  .body ::-webkit-scrollbar-thumb:hover,
+.body ::-webkit-scrollbar-thumb:horizontal:hover {
+    background-color: #6a6a6a;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body input {
+    background-color: #060606;
+    color: white;
+  }
+  .body input:focus {
+    outline: none !important;
+    background-color: #101010;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .header.primary {
+    background-color: #060606;
+  }
+  .body .header.primary .page-name {
+    color: #1ab26b;
+  }
+  .body .header.primary button {
+    background-color: #060606;
+  }
+  .body .header.primary button.active {
+    background-color: #1a1a1a;
+  }
+  .body .header.primary button:hover {
+    background-color: #1a1a1a;
+  }
+  .body .header.primary .user:hover button {
+    background-color: #1a1a1a;
+  }
+  .body .header.primary .user:hover .menu.hover.items button:hover {
+    background-color: #2e2e2e;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .header.secondary .menu.filter,
+.body .footer.secondary.menu.filter {
+    background-color: #101010;
+  }
+  .body .header.secondary .menu.filter button,
+.body .footer.secondary.menu.filter button {
+    background-color: #060606;
+  }
+  .body .header.secondary .menu.filter button:hover, .body .header.secondary .menu.filter button.active,
+.body .footer.secondary.menu.filter button:hover,
+.body .footer.secondary.menu.filter button.active {
+    background-color: #1ab26b;
+    color: #060606;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .header.secondary .menu button.active, .body .header.secondary .menu button:hover,
+.body .main .menu button.active,
+.body .main .menu button:hover {
+    background-color: #1a1a1a;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .header.secondary,
+.body .main {
+    background-color: #101010;
+  }
+  .body .header.secondary button,
+.body .main button {
+    background-color: transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .main .box {
+    background-color: #060606;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .main .releases .release .info button:hover,
+.body .main .releases .release .info a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .list.tracklist .list.playlists button.active, .body .list.tracklist .list.playlists button:hover,
+.body .list button.active,
+.body .list button:hover,
+.body .list a.active,
+.body .list a:hover {
+    background-color: #101010;
+  }
+  .body .list.tracklist button.active, .body .list.tracklist button:hover {
+    background-color: transparent;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (min-width: 860px) {
+  .body .footer.player {
+    background-color: #060606;
+  }
+  .body .footer.player button,
+.body .footer.player a {
+    background-color: #060606;
+  }
+  .body .footer.player button:hover,
+.body .footer.player a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (max-width: 859px) {
+  .body .footer.player {
+    background-color: #101010;
+  }
+  .body .footer.player button,
+.body .footer.player a {
+    background-color: #101010;
+  }
+  .body .footer.player button:hover,
+.body .footer.player a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .footer.player .timeline {
+    background-color: #1ab26b;
+  }
+  .body .footer.player .timeline.width-0 {
+    background: linear-gradient(to right, #1ab26b 0%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-1 {
+    background: linear-gradient(to right, #1ab26b 1%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-2 {
+    background: linear-gradient(to right, #1ab26b 2%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-3 {
+    background: linear-gradient(to right, #1ab26b 3%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-4 {
+    background: linear-gradient(to right, #1ab26b 4%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-5 {
+    background: linear-gradient(to right, #1ab26b 5%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-6 {
+    background: linear-gradient(to right, #1ab26b 6%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-7 {
+    background: linear-gradient(to right, #1ab26b 7%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-8 {
+    background: linear-gradient(to right, #1ab26b 8%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-9 {
+    background: linear-gradient(to right, #1ab26b 9%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-10 {
+    background: linear-gradient(to right, #1ab26b 10%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-11 {
+    background: linear-gradient(to right, #1ab26b 11%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-12 {
+    background: linear-gradient(to right, #1ab26b 12%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-13 {
+    background: linear-gradient(to right, #1ab26b 13%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-14 {
+    background: linear-gradient(to right, #1ab26b 14%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-15 {
+    background: linear-gradient(to right, #1ab26b 15%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-16 {
+    background: linear-gradient(to right, #1ab26b 16%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-17 {
+    background: linear-gradient(to right, #1ab26b 17%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-18 {
+    background: linear-gradient(to right, #1ab26b 18%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-19 {
+    background: linear-gradient(to right, #1ab26b 19%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-20 {
+    background: linear-gradient(to right, #1ab26b 20%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-21 {
+    background: linear-gradient(to right, #1ab26b 21%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-22 {
+    background: linear-gradient(to right, #1ab26b 22%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-23 {
+    background: linear-gradient(to right, #1ab26b 23%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-24 {
+    background: linear-gradient(to right, #1ab26b 24%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-25 {
+    background: linear-gradient(to right, #1ab26b 25%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-26 {
+    background: linear-gradient(to right, #1ab26b 26%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-27 {
+    background: linear-gradient(to right, #1ab26b 27%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-28 {
+    background: linear-gradient(to right, #1ab26b 28%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-29 {
+    background: linear-gradient(to right, #1ab26b 29%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-30 {
+    background: linear-gradient(to right, #1ab26b 30%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-31 {
+    background: linear-gradient(to right, #1ab26b 31%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-32 {
+    background: linear-gradient(to right, #1ab26b 32%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-33 {
+    background: linear-gradient(to right, #1ab26b 33%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-34 {
+    background: linear-gradient(to right, #1ab26b 34%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-35 {
+    background: linear-gradient(to right, #1ab26b 35%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-36 {
+    background: linear-gradient(to right, #1ab26b 36%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-37 {
+    background: linear-gradient(to right, #1ab26b 37%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-38 {
+    background: linear-gradient(to right, #1ab26b 38%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-39 {
+    background: linear-gradient(to right, #1ab26b 39%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-40 {
+    background: linear-gradient(to right, #1ab26b 40%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-41 {
+    background: linear-gradient(to right, #1ab26b 41%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-42 {
+    background: linear-gradient(to right, #1ab26b 42%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-43 {
+    background: linear-gradient(to right, #1ab26b 43%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-44 {
+    background: linear-gradient(to right, #1ab26b 44%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-45 {
+    background: linear-gradient(to right, #1ab26b 45%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-46 {
+    background: linear-gradient(to right, #1ab26b 46%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-47 {
+    background: linear-gradient(to right, #1ab26b 47%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-48 {
+    background: linear-gradient(to right, #1ab26b 48%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-49 {
+    background: linear-gradient(to right, #1ab26b 49%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-50 {
+    background: linear-gradient(to right, #1ab26b 50%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-51 {
+    background: linear-gradient(to right, #1ab26b 51%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-52 {
+    background: linear-gradient(to right, #1ab26b 52%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-53 {
+    background: linear-gradient(to right, #1ab26b 53%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-54 {
+    background: linear-gradient(to right, #1ab26b 54%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-55 {
+    background: linear-gradient(to right, #1ab26b 55%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-56 {
+    background: linear-gradient(to right, #1ab26b 56%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-57 {
+    background: linear-gradient(to right, #1ab26b 57%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-58 {
+    background: linear-gradient(to right, #1ab26b 58%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-59 {
+    background: linear-gradient(to right, #1ab26b 59%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-60 {
+    background: linear-gradient(to right, #1ab26b 60%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-61 {
+    background: linear-gradient(to right, #1ab26b 61%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-62 {
+    background: linear-gradient(to right, #1ab26b 62%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-63 {
+    background: linear-gradient(to right, #1ab26b 63%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-64 {
+    background: linear-gradient(to right, #1ab26b 64%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-65 {
+    background: linear-gradient(to right, #1ab26b 65%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-66 {
+    background: linear-gradient(to right, #1ab26b 66%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-67 {
+    background: linear-gradient(to right, #1ab26b 67%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-68 {
+    background: linear-gradient(to right, #1ab26b 68%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-69 {
+    background: linear-gradient(to right, #1ab26b 69%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-70 {
+    background: linear-gradient(to right, #1ab26b 70%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-71 {
+    background: linear-gradient(to right, #1ab26b 71%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-72 {
+    background: linear-gradient(to right, #1ab26b 72%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-73 {
+    background: linear-gradient(to right, #1ab26b 73%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-74 {
+    background: linear-gradient(to right, #1ab26b 74%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-75 {
+    background: linear-gradient(to right, #1ab26b 75%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-76 {
+    background: linear-gradient(to right, #1ab26b 76%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-77 {
+    background: linear-gradient(to right, #1ab26b 77%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-78 {
+    background: linear-gradient(to right, #1ab26b 78%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-79 {
+    background: linear-gradient(to right, #1ab26b 79%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-80 {
+    background: linear-gradient(to right, #1ab26b 80%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-81 {
+    background: linear-gradient(to right, #1ab26b 81%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-82 {
+    background: linear-gradient(to right, #1ab26b 82%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-83 {
+    background: linear-gradient(to right, #1ab26b 83%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-84 {
+    background: linear-gradient(to right, #1ab26b 84%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-85 {
+    background: linear-gradient(to right, #1ab26b 85%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-86 {
+    background: linear-gradient(to right, #1ab26b 86%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-87 {
+    background: linear-gradient(to right, #1ab26b 87%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-88 {
+    background: linear-gradient(to right, #1ab26b 88%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-89 {
+    background: linear-gradient(to right, #1ab26b 89%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-90 {
+    background: linear-gradient(to right, #1ab26b 90%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-91 {
+    background: linear-gradient(to right, #1ab26b 91%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-92 {
+    background: linear-gradient(to right, #1ab26b 92%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-93 {
+    background: linear-gradient(to right, #1ab26b 93%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-94 {
+    background: linear-gradient(to right, #1ab26b 94%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-95 {
+    background: linear-gradient(to right, #1ab26b 95%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-96 {
+    background: linear-gradient(to right, #1ab26b 96%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-97 {
+    background: linear-gradient(to right, #1ab26b 97%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-98 {
+    background: linear-gradient(to right, #1ab26b 98%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-99 {
+    background: linear-gradient(to right, #1ab26b 99%, #383838 0%);
+  }
+  .body .footer.player .timeline.width-100 {
+    background: linear-gradient(to right, #1ab26b 100%, #383838 0%);
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .footer.menu.releases {
+    background-color: #060606;
+  }
+  .body .footer.menu.releases button {
+    background-color: transparent;
+  }
+  .body .footer.menu.releases button.active, .body .footer.menu.releases button:hover {
+    background-color: #101010;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .footer.menu.mobile button {
+    background-color: #242424;
+  }
+  .body .footer.menu.mobile button:hover {
+    background-color: #1a1a1a;
+  }
+  .body .footer.menu.mobile .hover.items {
+    background-color: #060606;
+  }
+  .body .footer.menu.mobile .hover.items p,
+.body .footer.menu.mobile .hover.items button {
+    background-color: transparent;
+  }
+  .body .footer.menu.mobile .hover.items p {
+    color: #1ab26b;
+  }
+  .body .footer.menu.mobile .hover.items button:hover {
+    background-color: #101010;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .footer.menu.releases .menu.hover.items {
+    background-color: #060606;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body .main .content .login button {
+    background-color: #060606;
+  }
+  .body .main .content .login button:hover {
+    background-color: #1a1a1a;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light {
+    color: black;
+    background-color: white;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (max-width: 859px) {
+  .body.light {
+    background-color: whitesmoke;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light h2 {
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light button {
+    color: black;
+  }
+  .body.light button.active {
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light a {
+    color: black;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .scroll {
+    scrollbar-color: #cdcdcd transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light ::-webkit-scrollbar-track,
+.body.light ::-webkit-scrollbar-track:horizontal {
+    background-color: transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light ::-webkit-scrollbar-thumb,
+.body.light ::-webkit-scrollbar-thumb:horizontal {
+    background-color: #cdcdcd;
+  }
+  .body.light ::-webkit-scrollbar-thumb:hover,
+.body.light ::-webkit-scrollbar-thumb:horizontal:hover {
+    background-color: #6a6a6a;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light input {
+    background-color: white;
+    color: black;
+  }
+  .body.light input:focus {
+    outline: none !important;
+    background-color: whitesmoke;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .header.primary {
+    background-color: white;
+  }
+  .body.light .header.primary .page-name {
+    color: #1ab26b;
+  }
+  .body.light .header.primary button {
+    background-color: white;
+  }
+  .body.light .header.primary button.active {
+    background-color: #ebebeb;
+  }
+  .body.light .header.primary button:hover {
+    background-color: #ebebeb;
+  }
+  .body.light .header.primary .user:hover button {
+    background-color: #ebebeb;
+  }
+  .body.light .header.primary .user:hover .menu.hover.items button:hover {
+    background-color: #d7d7d7;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .header.secondary .menu.filter,
+.body.light .footer.secondary.menu.filter {
+    background-color: whitesmoke;
+  }
+  .body.light .header.secondary .menu.filter button,
+.body.light .footer.secondary.menu.filter button {
+    background-color: white;
+  }
+  .body.light .header.secondary .menu.filter button:hover, .body.light .header.secondary .menu.filter button.active,
+.body.light .footer.secondary.menu.filter button:hover,
+.body.light .footer.secondary.menu.filter button.active {
+    background-color: #1ab26b;
+    color: white;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .header.secondary .menu button.active, .body.light .header.secondary .menu button:hover,
+.body.light .main .menu button.active,
+.body.light .main .menu button:hover {
+    background-color: #ebebeb;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .header.secondary,
+.body.light .main {
+    background-color: whitesmoke;
+  }
+  .body.light .header.secondary button,
+.body.light .main button {
+    background-color: transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .main .box {
+    background-color: white;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .main .releases .release .info button:hover,
+.body.light .main .releases .release .info a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .list.tracklist .list.playlists button.active, .body.light .list.tracklist .list.playlists button:hover,
+.body.light .list button.active,
+.body.light .list button:hover,
+.body.light .list a.active,
+.body.light .list a:hover {
+    background-color: whitesmoke;
+  }
+  .body.light .list.tracklist button.active, .body.light .list.tracklist button:hover {
+    background-color: transparent;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (min-width: 860px) {
+  .body.light .footer.player {
+    background-color: white;
+  }
+  .body.light .footer.player button,
+.body.light .footer.player a {
+    background-color: white;
+  }
+  .body.light .footer.player button:hover,
+.body.light .footer.player a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (max-width: 859px) {
+  .body.light .footer.player {
+    background-color: whitesmoke;
+  }
+  .body.light .footer.player button,
+.body.light .footer.player a {
+    background-color: whitesmoke;
+  }
+  .body.light .footer.player button:hover,
+.body.light .footer.player a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .footer.player .timeline {
+    background-color: #1ab26b;
+  }
+  .body.light .footer.player .timeline.width-0 {
+    background: linear-gradient(to right, #1ab26b 0%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-1 {
+    background: linear-gradient(to right, #1ab26b 1%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-2 {
+    background: linear-gradient(to right, #1ab26b 2%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-3 {
+    background: linear-gradient(to right, #1ab26b 3%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-4 {
+    background: linear-gradient(to right, #1ab26b 4%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-5 {
+    background: linear-gradient(to right, #1ab26b 5%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-6 {
+    background: linear-gradient(to right, #1ab26b 6%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-7 {
+    background: linear-gradient(to right, #1ab26b 7%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-8 {
+    background: linear-gradient(to right, #1ab26b 8%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-9 {
+    background: linear-gradient(to right, #1ab26b 9%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-10 {
+    background: linear-gradient(to right, #1ab26b 10%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-11 {
+    background: linear-gradient(to right, #1ab26b 11%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-12 {
+    background: linear-gradient(to right, #1ab26b 12%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-13 {
+    background: linear-gradient(to right, #1ab26b 13%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-14 {
+    background: linear-gradient(to right, #1ab26b 14%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-15 {
+    background: linear-gradient(to right, #1ab26b 15%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-16 {
+    background: linear-gradient(to right, #1ab26b 16%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-17 {
+    background: linear-gradient(to right, #1ab26b 17%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-18 {
+    background: linear-gradient(to right, #1ab26b 18%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-19 {
+    background: linear-gradient(to right, #1ab26b 19%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-20 {
+    background: linear-gradient(to right, #1ab26b 20%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-21 {
+    background: linear-gradient(to right, #1ab26b 21%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-22 {
+    background: linear-gradient(to right, #1ab26b 22%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-23 {
+    background: linear-gradient(to right, #1ab26b 23%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-24 {
+    background: linear-gradient(to right, #1ab26b 24%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-25 {
+    background: linear-gradient(to right, #1ab26b 25%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-26 {
+    background: linear-gradient(to right, #1ab26b 26%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-27 {
+    background: linear-gradient(to right, #1ab26b 27%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-28 {
+    background: linear-gradient(to right, #1ab26b 28%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-29 {
+    background: linear-gradient(to right, #1ab26b 29%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-30 {
+    background: linear-gradient(to right, #1ab26b 30%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-31 {
+    background: linear-gradient(to right, #1ab26b 31%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-32 {
+    background: linear-gradient(to right, #1ab26b 32%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-33 {
+    background: linear-gradient(to right, #1ab26b 33%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-34 {
+    background: linear-gradient(to right, #1ab26b 34%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-35 {
+    background: linear-gradient(to right, #1ab26b 35%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-36 {
+    background: linear-gradient(to right, #1ab26b 36%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-37 {
+    background: linear-gradient(to right, #1ab26b 37%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-38 {
+    background: linear-gradient(to right, #1ab26b 38%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-39 {
+    background: linear-gradient(to right, #1ab26b 39%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-40 {
+    background: linear-gradient(to right, #1ab26b 40%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-41 {
+    background: linear-gradient(to right, #1ab26b 41%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-42 {
+    background: linear-gradient(to right, #1ab26b 42%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-43 {
+    background: linear-gradient(to right, #1ab26b 43%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-44 {
+    background: linear-gradient(to right, #1ab26b 44%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-45 {
+    background: linear-gradient(to right, #1ab26b 45%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-46 {
+    background: linear-gradient(to right, #1ab26b 46%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-47 {
+    background: linear-gradient(to right, #1ab26b 47%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-48 {
+    background: linear-gradient(to right, #1ab26b 48%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-49 {
+    background: linear-gradient(to right, #1ab26b 49%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-50 {
+    background: linear-gradient(to right, #1ab26b 50%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-51 {
+    background: linear-gradient(to right, #1ab26b 51%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-52 {
+    background: linear-gradient(to right, #1ab26b 52%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-53 {
+    background: linear-gradient(to right, #1ab26b 53%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-54 {
+    background: linear-gradient(to right, #1ab26b 54%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-55 {
+    background: linear-gradient(to right, #1ab26b 55%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-56 {
+    background: linear-gradient(to right, #1ab26b 56%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-57 {
+    background: linear-gradient(to right, #1ab26b 57%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-58 {
+    background: linear-gradient(to right, #1ab26b 58%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-59 {
+    background: linear-gradient(to right, #1ab26b 59%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-60 {
+    background: linear-gradient(to right, #1ab26b 60%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-61 {
+    background: linear-gradient(to right, #1ab26b 61%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-62 {
+    background: linear-gradient(to right, #1ab26b 62%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-63 {
+    background: linear-gradient(to right, #1ab26b 63%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-64 {
+    background: linear-gradient(to right, #1ab26b 64%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-65 {
+    background: linear-gradient(to right, #1ab26b 65%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-66 {
+    background: linear-gradient(to right, #1ab26b 66%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-67 {
+    background: linear-gradient(to right, #1ab26b 67%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-68 {
+    background: linear-gradient(to right, #1ab26b 68%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-69 {
+    background: linear-gradient(to right, #1ab26b 69%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-70 {
+    background: linear-gradient(to right, #1ab26b 70%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-71 {
+    background: linear-gradient(to right, #1ab26b 71%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-72 {
+    background: linear-gradient(to right, #1ab26b 72%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-73 {
+    background: linear-gradient(to right, #1ab26b 73%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-74 {
+    background: linear-gradient(to right, #1ab26b 74%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-75 {
+    background: linear-gradient(to right, #1ab26b 75%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-76 {
+    background: linear-gradient(to right, #1ab26b 76%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-77 {
+    background: linear-gradient(to right, #1ab26b 77%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-78 {
+    background: linear-gradient(to right, #1ab26b 78%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-79 {
+    background: linear-gradient(to right, #1ab26b 79%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-80 {
+    background: linear-gradient(to right, #1ab26b 80%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-81 {
+    background: linear-gradient(to right, #1ab26b 81%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-82 {
+    background: linear-gradient(to right, #1ab26b 82%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-83 {
+    background: linear-gradient(to right, #1ab26b 83%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-84 {
+    background: linear-gradient(to right, #1ab26b 84%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-85 {
+    background: linear-gradient(to right, #1ab26b 85%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-86 {
+    background: linear-gradient(to right, #1ab26b 86%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-87 {
+    background: linear-gradient(to right, #1ab26b 87%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-88 {
+    background: linear-gradient(to right, #1ab26b 88%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-89 {
+    background: linear-gradient(to right, #1ab26b 89%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-90 {
+    background: linear-gradient(to right, #1ab26b 90%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-91 {
+    background: linear-gradient(to right, #1ab26b 91%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-92 {
+    background: linear-gradient(to right, #1ab26b 92%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-93 {
+    background: linear-gradient(to right, #1ab26b 93%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-94 {
+    background: linear-gradient(to right, #1ab26b 94%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-95 {
+    background: linear-gradient(to right, #1ab26b 95%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-96 {
+    background: linear-gradient(to right, #1ab26b 96%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-97 {
+    background: linear-gradient(to right, #1ab26b 97%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-98 {
+    background: linear-gradient(to right, #1ab26b 98%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-99 {
+    background: linear-gradient(to right, #1ab26b 99%, #cdcdcd 0%);
+  }
+  .body.light .footer.player .timeline.width-100 {
+    background: linear-gradient(to right, #1ab26b 100%, #cdcdcd 0%);
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .footer.menu.releases {
+    background-color: white;
+  }
+  .body.light .footer.menu.releases button {
+    background-color: transparent;
+  }
+  .body.light .footer.menu.releases button.active, .body.light .footer.menu.releases button:hover {
+    background-color: whitesmoke;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .footer.menu.mobile button {
+    background-color: #e1e1e1;
+  }
+  .body.light .footer.menu.mobile button:hover {
+    background-color: #ebebeb;
+  }
+  .body.light .footer.menu.mobile .hover.items {
+    background-color: white;
+  }
+  .body.light .footer.menu.mobile .hover.items p,
+.body.light .footer.menu.mobile .hover.items button {
+    background-color: transparent;
+  }
+  .body.light .footer.menu.mobile .hover.items p {
+    color: #1ab26b;
+  }
+  .body.light .footer.menu.mobile .hover.items button:hover {
+    background-color: whitesmoke;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .footer.menu.releases .menu.hover.items {
+    background-color: white;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.light .main .content .login button {
+    background-color: white;
+  }
+  .body.light .main .content .login button:hover {
+    background-color: #ebebeb;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color {
+    color: white;
+    background-color: #293f14;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (max-width: 859px) {
+  .body.color {
+    background-color: #388a06;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color h2 {
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color button {
+    color: white;
+  }
+  .body.color button.active {
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color a {
+    color: white;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .scroll {
+    scrollbar-color: #3eff8b transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color ::-webkit-scrollbar-track,
+.body.color ::-webkit-scrollbar-track:horizontal {
+    background-color: transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color ::-webkit-scrollbar-thumb,
+.body.color ::-webkit-scrollbar-thumb:horizontal {
+    background-color: #3eff8b;
+  }
+  .body.color ::-webkit-scrollbar-thumb:hover,
+.body.color ::-webkit-scrollbar-thumb:horizontal:hover {
+    background-color: #6a6a6a;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color input {
+    background-color: #293f14;
+    color: white;
+  }
+  .body.color input:focus {
+    outline: none !important;
+    background-color: #388a06;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .header.primary {
+    background-color: #293f14;
+  }
+  .body.color .header.primary .page-name {
+    color: #1ab26b;
+  }
+  .body.color .header.primary button {
+    background-color: #293f14;
+  }
+  .body.color .header.primary button.active {
+    background-color: #386c0b;
+  }
+  .body.color .header.primary button:hover {
+    background-color: #386c0b;
+  }
+  .body.color .header.primary .user:hover button {
+    background-color: #386c0b;
+  }
+  .body.color .header.primary .user:hover .menu.hover.items button:hover {
+    background-color: #31d843;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .header.secondary .menu.filter,
+.body.color .footer.secondary.menu.filter {
+    background-color: #388a06;
+  }
+  .body.color .header.secondary .menu.filter button,
+.body.color .footer.secondary.menu.filter button {
+    background-color: #293f14;
+  }
+  .body.color .header.secondary .menu.filter button:hover, .body.color .header.secondary .menu.filter button.active,
+.body.color .footer.secondary.menu.filter button:hover,
+.body.color .footer.secondary.menu.filter button.active {
+    background-color: #1ab26b;
+    color: #293f14;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .header.secondary .menu button.active, .body.color .header.secondary .menu button:hover,
+.body.color .main .menu button.active,
+.body.color .main .menu button:hover {
+    background-color: #386c0b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .header.secondary,
+.body.color .main {
+    background-color: #388a06;
+  }
+  .body.color .header.secondary button,
+.body.color .main button {
+    background-color: transparent;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .main .box {
+    background-color: #293f14;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .main .releases .release .info button:hover,
+.body.color .main .releases .release .info a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .list.tracklist .list.playlists button.active, .body.color .list.tracklist .list.playlists button:hover,
+.body.color .list button.active,
+.body.color .list button:hover,
+.body.color .list a.active,
+.body.color .list a:hover {
+    background-color: #388a06;
+  }
+  .body.color .list.tracklist button.active, .body.color .list.tracklist button:hover {
+    background-color: transparent;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (min-width: 860px) {
+  .body.color .footer.player {
+    background-color: #293f14;
+  }
+  .body.color .footer.player button,
+.body.color .footer.player a {
+    background-color: #293f14;
+  }
+  .body.color .footer.player button:hover,
+.body.color .footer.player a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media only screen and (prefers-color-scheme: dark) and (max-width: 859px) {
+  .body.color .footer.player {
+    background-color: #388a06;
+  }
+  .body.color .footer.player button,
+.body.color .footer.player a {
+    background-color: #388a06;
+  }
+  .body.color .footer.player button:hover,
+.body.color .footer.player a:hover {
+    background-color: transparent;
+    color: #1ab26b;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .footer.player .timeline {
+    background-color: #1ab26b;
+  }
+  .body.color .footer.player .timeline.width-0 {
+    background: linear-gradient(to right, #1ab26b 0%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-1 {
+    background: linear-gradient(to right, #1ab26b 1%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-2 {
+    background: linear-gradient(to right, #1ab26b 2%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-3 {
+    background: linear-gradient(to right, #1ab26b 3%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-4 {
+    background: linear-gradient(to right, #1ab26b 4%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-5 {
+    background: linear-gradient(to right, #1ab26b 5%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-6 {
+    background: linear-gradient(to right, #1ab26b 6%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-7 {
+    background: linear-gradient(to right, #1ab26b 7%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-8 {
+    background: linear-gradient(to right, #1ab26b 8%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-9 {
+    background: linear-gradient(to right, #1ab26b 9%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-10 {
+    background: linear-gradient(to right, #1ab26b 10%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-11 {
+    background: linear-gradient(to right, #1ab26b 11%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-12 {
+    background: linear-gradient(to right, #1ab26b 12%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-13 {
+    background: linear-gradient(to right, #1ab26b 13%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-14 {
+    background: linear-gradient(to right, #1ab26b 14%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-15 {
+    background: linear-gradient(to right, #1ab26b 15%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-16 {
+    background: linear-gradient(to right, #1ab26b 16%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-17 {
+    background: linear-gradient(to right, #1ab26b 17%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-18 {
+    background: linear-gradient(to right, #1ab26b 18%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-19 {
+    background: linear-gradient(to right, #1ab26b 19%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-20 {
+    background: linear-gradient(to right, #1ab26b 20%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-21 {
+    background: linear-gradient(to right, #1ab26b 21%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-22 {
+    background: linear-gradient(to right, #1ab26b 22%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-23 {
+    background: linear-gradient(to right, #1ab26b 23%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-24 {
+    background: linear-gradient(to right, #1ab26b 24%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-25 {
+    background: linear-gradient(to right, #1ab26b 25%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-26 {
+    background: linear-gradient(to right, #1ab26b 26%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-27 {
+    background: linear-gradient(to right, #1ab26b 27%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-28 {
+    background: linear-gradient(to right, #1ab26b 28%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-29 {
+    background: linear-gradient(to right, #1ab26b 29%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-30 {
+    background: linear-gradient(to right, #1ab26b 30%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-31 {
+    background: linear-gradient(to right, #1ab26b 31%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-32 {
+    background: linear-gradient(to right, #1ab26b 32%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-33 {
+    background: linear-gradient(to right, #1ab26b 33%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-34 {
+    background: linear-gradient(to right, #1ab26b 34%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-35 {
+    background: linear-gradient(to right, #1ab26b 35%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-36 {
+    background: linear-gradient(to right, #1ab26b 36%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-37 {
+    background: linear-gradient(to right, #1ab26b 37%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-38 {
+    background: linear-gradient(to right, #1ab26b 38%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-39 {
+    background: linear-gradient(to right, #1ab26b 39%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-40 {
+    background: linear-gradient(to right, #1ab26b 40%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-41 {
+    background: linear-gradient(to right, #1ab26b 41%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-42 {
+    background: linear-gradient(to right, #1ab26b 42%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-43 {
+    background: linear-gradient(to right, #1ab26b 43%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-44 {
+    background: linear-gradient(to right, #1ab26b 44%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-45 {
+    background: linear-gradient(to right, #1ab26b 45%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-46 {
+    background: linear-gradient(to right, #1ab26b 46%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-47 {
+    background: linear-gradient(to right, #1ab26b 47%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-48 {
+    background: linear-gradient(to right, #1ab26b 48%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-49 {
+    background: linear-gradient(to right, #1ab26b 49%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-50 {
+    background: linear-gradient(to right, #1ab26b 50%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-51 {
+    background: linear-gradient(to right, #1ab26b 51%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-52 {
+    background: linear-gradient(to right, #1ab26b 52%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-53 {
+    background: linear-gradient(to right, #1ab26b 53%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-54 {
+    background: linear-gradient(to right, #1ab26b 54%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-55 {
+    background: linear-gradient(to right, #1ab26b 55%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-56 {
+    background: linear-gradient(to right, #1ab26b 56%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-57 {
+    background: linear-gradient(to right, #1ab26b 57%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-58 {
+    background: linear-gradient(to right, #1ab26b 58%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-59 {
+    background: linear-gradient(to right, #1ab26b 59%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-60 {
+    background: linear-gradient(to right, #1ab26b 60%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-61 {
+    background: linear-gradient(to right, #1ab26b 61%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-62 {
+    background: linear-gradient(to right, #1ab26b 62%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-63 {
+    background: linear-gradient(to right, #1ab26b 63%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-64 {
+    background: linear-gradient(to right, #1ab26b 64%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-65 {
+    background: linear-gradient(to right, #1ab26b 65%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-66 {
+    background: linear-gradient(to right, #1ab26b 66%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-67 {
+    background: linear-gradient(to right, #1ab26b 67%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-68 {
+    background: linear-gradient(to right, #1ab26b 68%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-69 {
+    background: linear-gradient(to right, #1ab26b 69%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-70 {
+    background: linear-gradient(to right, #1ab26b 70%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-71 {
+    background: linear-gradient(to right, #1ab26b 71%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-72 {
+    background: linear-gradient(to right, #1ab26b 72%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-73 {
+    background: linear-gradient(to right, #1ab26b 73%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-74 {
+    background: linear-gradient(to right, #1ab26b 74%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-75 {
+    background: linear-gradient(to right, #1ab26b 75%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-76 {
+    background: linear-gradient(to right, #1ab26b 76%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-77 {
+    background: linear-gradient(to right, #1ab26b 77%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-78 {
+    background: linear-gradient(to right, #1ab26b 78%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-79 {
+    background: linear-gradient(to right, #1ab26b 79%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-80 {
+    background: linear-gradient(to right, #1ab26b 80%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-81 {
+    background: linear-gradient(to right, #1ab26b 81%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-82 {
+    background: linear-gradient(to right, #1ab26b 82%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-83 {
+    background: linear-gradient(to right, #1ab26b 83%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-84 {
+    background: linear-gradient(to right, #1ab26b 84%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-85 {
+    background: linear-gradient(to right, #1ab26b 85%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-86 {
+    background: linear-gradient(to right, #1ab26b 86%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-87 {
+    background: linear-gradient(to right, #1ab26b 87%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-88 {
+    background: linear-gradient(to right, #1ab26b 88%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-89 {
+    background: linear-gradient(to right, #1ab26b 89%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-90 {
+    background: linear-gradient(to right, #1ab26b 90%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-91 {
+    background: linear-gradient(to right, #1ab26b 91%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-92 {
+    background: linear-gradient(to right, #1ab26b 92%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-93 {
+    background: linear-gradient(to right, #1ab26b 93%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-94 {
+    background: linear-gradient(to right, #1ab26b 94%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-95 {
+    background: linear-gradient(to right, #1ab26b 95%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-96 {
+    background: linear-gradient(to right, #1ab26b 96%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-97 {
+    background: linear-gradient(to right, #1ab26b 97%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-98 {
+    background: linear-gradient(to right, #1ab26b 98%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-99 {
+    background: linear-gradient(to right, #1ab26b 99%, #3eff8b 0%);
+  }
+  .body.color .footer.player .timeline.width-100 {
+    background: linear-gradient(to right, #1ab26b 100%, #3eff8b 0%);
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .footer.menu.releases {
+    background-color: #293f14;
+  }
+  .body.color .footer.menu.releases button {
+    background-color: transparent;
+  }
+  .body.color .footer.menu.releases button.active, .body.color .footer.menu.releases button:hover {
+    background-color: #388a06;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .footer.menu.mobile button {
+    background-color: #38a700;
+  }
+  .body.color .footer.menu.mobile button:hover {
+    background-color: #386c0b;
+  }
+  .body.color .footer.menu.mobile .hover.items {
+    background-color: #293f14;
+  }
+  .body.color .footer.menu.mobile .hover.items p,
+.body.color .footer.menu.mobile .hover.items button {
+    background-color: transparent;
+  }
+  .body.color .footer.menu.mobile .hover.items p {
+    color: #1ab26b;
+  }
+  .body.color .footer.menu.mobile .hover.items button:hover {
+    background-color: #388a06;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .footer.menu.releases .menu.hover.items {
+    background-color: #293f14;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .body.color .main .content .login button {
+    background-color: #293f14;
+  }
+  .body.color .main .content .login button:hover {
+    background-color: #386c0b;
+  }
+}
+.loader {
+  background-color: transparent;
+  background: linear-gradient(to right, #1ab26b, #1ab26b);
+}
+
+.body.classic {
+  display: grid;
+  grid-auto-columns: 1fr;
+  gap: 0px 0px;
+}
+@media only screen and (min-width: 860px) {
+  .body.classic {
+    height: 100vh;
+    overflow: hidden;
+    grid-template-columns: auto;
+    grid-template-rows: 4px 48px 48px calc(100vh - 4px - 48px - 48px - 100px) 100px;
+  }
+  .body.classic.hide-player .main {
+    grid-area: 4/1/6/1;
+  }
+  .body.classic.hide-player .footer.player {
+    display: none;
+  }
+  .body.classic.hide-menu-playlists .main .menu.items.playlists {
+    display: none;
+  }
+  .body.classic.hide-menu-playlists .main .content.page {
+    width: auto;
+    min-width: auto;
+  }
+  .body.classic.hide-menu-date .main .menu.items.date {
+    display: none;
+  }
+  .body.classic.hide-menu-date .main .content.page {
+    width: auto;
+    min-width: auto;
+  }
+  .body.classic.hide-menu-artists .header.secondary .menu.date {
+    order: 4;
+  }
+  .body.classic.hide-menu-artists .header.secondary .menu.date button.search {
+    padding-right: 20px;
+  }
+  .body.classic.hide-menu-artists .header.secondary .menu.artists {
+    order: 3;
+  }
+  .body.classic.hide-menu-artists .main .content.page {
+    width: auto;
+    min-width: auto;
+  }
+  .body.classic.hide-menu-artists .main .menu.items.date button {
+    padding-right: 20px;
+    width: calc(100% - 10px - 20px);
+  }
+  .body.classic.hide-menu-artists .main .menu.items.artists {
+    display: none;
+  }
+  .body.classic .header.loader {
+    grid-area: 1/1/2/1;
+  }
+  .body.classic .header.primary {
+    grid-area: 2/1/3/1;
+  }
+  .body.classic .header.secondary {
+    grid-area: 2/1/3/1;
+  }
+  .body.classic .main {
+    grid-area: 3/1/5/1;
+  }
+  .body.classic .main .menu.releases button:last-child {
+    margin-bottom: 60px;
+  }
+  .body.classic .header.secondary,
+.body.classic .main {
+    display: inline-flex;
+  }
+  .body.classic .header.secondary .menu.releases,
+.body.classic .main .menu.releases {
+    width: 160px;
+    min-width: 160px;
+    order: 0;
+  }
+  .body.classic .header.secondary .menu.playlists,
+.body.classic .main .menu.playlists {
+    width: 250px;
+    min-width: 250px;
+    order: 4;
+  }
+  .body.classic .header.secondary .menu.date,
+.body.classic .main .menu.date {
+    width: 160px;
+    min-width: 160px;
+    order: 2;
+  }
+  .body.classic .header.secondary .menu.artists,
+.body.classic .main .menu.artists {
+    width: 200px;
+    min-width: 200px;
+    order: 1;
+  }
+  .body.classic .header.secondary .menu.artists button.search,
+.body.classic .main .menu.artists button.search {
+    padding-right: 20px;
+  }
+  .body.classic .header.secondary .menu.filter,
+.body.classic .header.secondary .content.page,
+.body.classic .main .menu.filter,
+.body.classic .main .content.page {
+    width: calc(100vw - 160px - 250px - 160px - 200px);
+    min-width: calc(100vw - 160px - 250px - 160px - 200px);
+    order: 3;
+  }
+  .body.classic .header.secondary .content,
+.body.classic .header.secondary .menu.items,
+.body.classic .main .content,
+.body.classic .main .menu.items {
+    overflow: auto;
+  }
+  .body.classic .header.secondary .content.menu,
+.body.classic .header.secondary .menu.items.menu,
+.body.classic .main .content.menu,
+.body.classic .main .menu.items.menu {
+    /*&:hover {
+        overflow: auto;
+    }*/
+  }
+  .body.classic .header.secondary .content.menu.artists button,
+.body.classic .header.secondary .menu.items.menu.artists button,
+.body.classic .main .content.menu.artists button,
+.body.classic .main .menu.items.menu.artists button {
+    padding-right: 20px;
+    width: calc(100% - 10px - 20px);
+  }
+  .body.classic .header.secondary .content.menu.playlists button,
+.body.classic .header.secondary .menu.items.menu.playlists button,
+.body.classic .main .content.menu.playlists button,
+.body.classic .main .menu.items.menu.playlists button {
+    padding-left: 20px;
+    width: calc(100% - 10px - 20px);
+  }
+  .body.classic .header.secondary .content > div,
+.body.classic .main .content > div {
+    margin-top: 20px;
+    margin-bottom: 60px;
+  }
+  .body.classic .footer.player {
+    grid-area: 5/1/6/1;
+    display: grid;
+    grid-auto-columns: 1fr;
+    gap: 0px 0px;
+    grid-template-rows: 4px auto;
+    grid-template-columns: calc(calc(100px + 40px) + 2 * 20px) 220px auto 220px;
+  }
+  .body.classic .footer.player .timeline {
+    grid-area: 1/1/2/5;
+    margin-left: calc(calc(100px + 40px) + 2 * 20px);
+    margin-right: 20px;
+    width: calc(100% - calc(100px + 40px) - 3 * 20px);
+  }
+  .body.classic .footer.player .cover {
+    grid-area: 2/1/3/2;
+  }
+  .body.classic .footer.player .actions.primary {
+    grid-area: 2/2/3/3;
+  }
+  .body.classic .footer.player .actions.secondary {
+    grid-area: 2/4/3/5;
+  }
+  .body.classic .footer.player .info {
+    grid-area: 2/3/3/4;
+  }
+}
+@media only screen and (max-width: 859px) {
+  .body.classic {
+    grid-template-columns: auto;
+    grid-template-rows: 4px 100% 40px 50px 60px;
+    height: auto;
+    overflow: auto;
+  }
+  .body.classic.hide-player .main {
+    grid-area: 2/1/4/1;
+  }
+  .body.classic.hide-player .footer.player {
+    display: none;
+  }
+  .body.classic .header.loader {
+    grid-area: 1/1/2/1;
+    position: fixed;
+    top: 0;
+  }
+  .body.classic .header.primary {
+    display: none;
+  }
+  .body.classic .header.secondary {
+    display: none;
+  }
+  .body.classic .main {
+    grid-area: 2/1/3/1;
+    display: inline-flex;
+  }
+  .body.classic .main .content > div {
+    margin-top: 20px;
+    margin-bottom: 160px;
+  }
+  .body.classic .main .menu {
+    display: none;
+    width: 100%;
+    min-width: 100%;
+    /*&.playlists {
+        display: block;
+    }*/
+    /*&.date {
+        display: block;
+    }*/
+    /*&.artists {
+        display: block;
+    }*/
+  }
+  .body.classic .main .page.content {
+    order: 2;
+  }
+  .body.classic .footer.player {
+    position: fixed;
+    bottom: calc(60px + 50px);
+    height: 40px;
+    display: flex;
+    white-space: nowrap;
+    overflow: auto;
+    margin: auto 0;
+    width: 100%;
+    /*grid-area: 3 / 1 / 4 / 1;
+    display: grid;
+    position: fixed;
+    bottom: $filter_menu_mobile_height + $releases_menu_mobile_height;
+    height: $player_height;
+    width: 100%;*/
+  }
+  .body.classic .footer.player .cover,
+.body.classic .footer.player .timeline,
+.body.classic .footer.player .actions.secondary,
+.body.classic .footer.player .time {
+    display: none;
+  }
+  .body.classic .footer.player .actions.primary .prev {
+    padding-left: 20px;
+  }
+  .body.classic .footer.menu.filter {
+    grid-area: 4/1/5/1;
+    position: fixed;
+    bottom: 60px;
+    height: 50px;
+  }
+  .body.classic .footer.menu.releases {
+    grid-area: 5/1/6/1;
+    display: grid;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+  }
+}
+
+/** MAIN
+ *  Main styles - fonts, margin, ...
+ */
+* {
+  margin: 0;
+  text-decoration: none;
+  font-family: "DM Sans", "Pontano Sans", sans-serif;
+  word-wrap: everywhere;
+  overflow-wrap: anywhere;
+}
+
+p {
+  font-size: 18px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  box-sizing: content-box;
+  font-size: 18px;
+  padding: 10px;
+  display: inline-block;
+}
+button.active .fa-heart {
+  font-weight: 900;
+}
+button.active:hover .fa-heart {
+  font-weight: 400;
+}
+button:hover .fa-heart {
+  font-weight: 900;
+}
+
+input {
+  border: none;
+  padding: 0;
+}
+
+.left {
+  padding-left: 20px;
+}
+
+.right {
+  padding-right: 20px;
+}
+
+.icon-text i {
+  margin-right: 5px;
+}
+.icon-text-right i {
+  margin-left: 5px;
+}
+
+.explicit span {
+  font-size: 13px;
+  padding-left: 2.5px;
+  font-style: italic;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 5px;
+}
+
+.scroll {
+  scrollbar-width: thin;
+}
+
+.main .content::-webkit-scrollbar {
+  width: initial;
+}
+.main .content::-webkit-scrollbar:horizontal {
+  height: initial;
+}
+.main .content.scroll {
+  scrollbar-width: auto;
+}
+
+@media only screen and (min-width: 1050px) {
+  .hide-pc {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 1049px) and (min-width: 860px) {
+  .hide-tablet {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 859px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+/** HEADER
+ *  Header menu
+ *  Page name
+ */
+/*.header {
+    .left {
+        margin-left: $padding;
+        padding-left: 0;
+    }
+
+    .right {
+        margin-right: $padding;
+        padding-right: 0;
+    }
+}*/
+.header.secondary .menu.releases .favicon {
+  height: 100%;
+  margin-left: 10px;
+}
+.header.secondary .menu.releases:hover > .favicon {
+  animation: spin 2s linear infinite;
+}
+
+.main .menu.releases {
+  display: flex;
+  flex-direction: column;
+}
+.main .menu.releases .user {
+  margin-top: auto;
+}
+
+.header.primary {
+  display: inline-flex;
+}
+.header.primary .page-name {
+  cursor: context-menu;
+  padding: 4px 10px 16px 0;
+  display: inline-flex;
+  font-weight: 800;
+}
+.header.primary .page-name span,
+.header.primary .page-name .favicon {
+  font-size: 28px;
+}
+.header.primary .page-name .favicon {
+  height: 38px;
+  margin-left: 5px;
+}
+.header.primary .page-name:hover > .favicon {
+  animation: spin 2s linear infinite;
+}
+.header.primary .menu.actions {
+  margin-left: auto;
+}
+.header.primary .menu.actions button,
+.header.primary .menu.show-hide button,
+.header.primary .user button {
+  height: calc(100% - 2 * 10px);
+}
+.header.primary .user {
+  position: relative;
+}
+.header.primary .user button i,
+.header.primary .user button span {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.header.primary .user button.menu.hover {
+  display: inline-flex;
+}
+.header.primary .user.menu.items button {
+  display: block;
+  text-align: left;
+}
+.header.primary .user:hover .menu.hover.items {
+  display: grid;
+}
+.header.primary .user:hover .menu.hover.items.hidden {
+  display: none;
+}
+@media only screen and (max-width: 1309px) {
+  .header.primary .user .menu.hover.items {
+    width: 150px;
+  }
+}
+
+.main .content.page {
+  width: 100%;
+}
+.main .content.page .box {
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.main .content h2 {
+  margin: 20px;
+  text-transform: uppercase;
+}
+.main .content h4 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.main .content p {
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 69px) {
+  .main .content.page .releases.boxes .release {
+    padding: 0;
+  }
+}
+.main .content.page .releases.boxes .release > div {
+  width: 100%;
+  padding: 0;
+}
+.main .content.page .releases.boxes .release > .info .cover {
+  margin-right: 30px;
+  max-width: 150px;
+  max-height: 150px;
+  float: left;
+}
+@media only screen and (max-width: 1099px) {
+  .main .content.page .releases.boxes .release > .info .cover {
+    max-width: 100px;
+    max-height: 100px;
+  }
+}
+@media only screen and (max-width: 159px) {
+  .main .content.page .releases.boxes .release > .info .cover {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+.main .content.page .releases.boxes .release > .info .name {
+  font-size: 24px;
+}
+.main .content.page .releases.boxes .release > .info .artists .artist {
+  font-size: 20px;
+}
+.main .content.page .releases.boxes .release > .info .artists .artist:first-child {
+  padding-left: 0;
+}
+.main .content.page .releases.boxes .release > .info .date {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.main .content.page .releases.boxes .release > .info .date button {
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+}
+.main .content.page .releases.boxes .release > .buttons .tracklist {
+  padding-left: 0;
+}
+.main .content.page .releases.boxes .release > .buttons .tracklist span {
+  font-size: 70%;
+}
+.main .content.page .releases.boxes .release > .buttons button {
+  font-size: 25px;
+  margin: 0;
+  padding: 6px;
+}
+.main .content.page .releases.texts .release {
+  padding: 15px 30px;
+  margin: 0px;
+}
+.main .content.page .releases.texts .release > div {
+  padding: 0;
+}
+.main .content.page .releases.texts .release > .info .cover {
+  display: none;
+}
+.main .content.page .releases.texts .release > .info .duration,
+.main .content.page .releases.texts .release > .info .date {
+  display: none;
+}
+.main .content.page .releases.texts .release > .info .name {
+  float: left;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.main .content.page .releases.texts .release > .info .artists .artist {
+  font-size: 15px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.main .content.page .releases.texts .release > .info .artists .artist:first-child {
+  padding-left: 0;
+}
+.main .content.page .releases.lists .release {
+  padding: 15px 30px;
+  margin-bottom: 10px;
+}
+.main .content.page .releases.lists .release > div {
+  width: 100%;
+  padding: 0;
+}
+.main .content.page .releases.lists .release > .info .cover {
+  margin-right: 20px;
+  max-width: 70px;
+  max-height: 70px;
+  float: left;
+}
+@media only screen and (max-width: 1099px) {
+  .main .content.page .releases.lists .release > .info .cover {
+    max-width: 100px;
+    max-height: 100px;
+  }
+}
+@media only screen and (max-width: 159px) {
+  .main .content.page .releases.lists .release > .info .cover {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+.main .content.page .releases.lists .release > .info .name {
+  font-size: 18px;
+}
+.main .content.page .releases.lists .release > .info .artists .artist {
+  font-size: 15px;
+}
+.main .content.page .releases.lists .release > .info .artists .artist:first-child {
+  padding-left: 0;
+}
+.main .content.page .releases.lists .release > .info .date {
+  font-size: 14px;
+  margin-bottom: 8px;
+  float: left;
+  margin-right: 20px;
+}
+.main .content.page .releases.lists .release > .info .date button {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+.main .content.page .releases.lists .release > .info .duration {
+  font-size: 14px;
+}
+.main .content.page .releases.lists .release > .info .tracklist {
+  padding-left: 0;
+}
+.main .content.page .releases.lists .release > .info .tracklist span {
+  font-size: 70%;
+}
+.main .content.page .releases.lists .release > .info button {
+  font-size: 14px;
+  margin: 0;
+  padding: 6px;
+}
+
+@media only screen and (max-width: 859px) {
+  .footer.player {
+    padding-bottom: 0;
+  }
+  .footer.player button {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .footer.player > div {
+    margin: auto 0;
+  }
+}
+.footer.player .timeline {
+  width: 100%;
+  height: 8px;
+  border-radius: 8px;
+  position: relative;
+  top: -4px;
+}
+.footer.player .cover {
+  max-height: 100px;
+  max-width: calc(100px + 40px);
+  width: calc(100px + 40px);
+  padding-right: 20px;
+}
+.footer.player .cover img {
+  position: relative;
+  bottom: 60px;
+  max-height: calc(100px + 40px);
+  max-width: calc(100px + 40px);
+}
+.footer.player .actions.primary .time button {
+  padding: 0;
+}
+.footer.player .info {
+  font-size: 20px;
+}
+.footer.player .info button {
+  font-size: 20px;
+}
+@media only screen and (max-width: 859px) {
+  .footer.player .info {
+    font-size: 18px;
+  }
+  .footer.player .info button {
+    font-size: 18px;
+  }
+}
+.footer.player .info .details {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+@media only screen and (max-width: 859px) {
+  .footer.player .info .details {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+@media only screen and (max-width: 859px) {
+  .footer.player .info {
+    padding-bottom: 0;
+  }
+  .footer.player .info .info .details,
+.footer.player .info button {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+.footer.player .info button {
+  padding: 0;
+}
+.footer.player .actions.secondary .date button {
+  padding: 0;
+}
+
+.main .menu button {
+  margin-top: 0px;
+  display: block;
+  text-align: left;
+  width: calc(100% - 2 * 10px);
+}
+
+.menu.hover.items {
+  display: none;
+  position: absolute;
+  width: 100%;
+  text-align: left;
+  margin: 0;
+  right: 0;
+}
+.menu.hover.items.active {
+  display: block;
+}
+
+.header.secondary .menu {
+  display: flex;
+  /*button.search {
+      display: none;
+  }*/
+}
+.header.secondary .menu input.search {
+  display: none;
+}
+.header.secondary .menu button.close {
+  display: none;
+}
+.header.secondary .menu input.search {
+  padding: 10px;
+}
+.header.secondary .menu input.search:focus + button.search {
+  display: block;
+}
+.header.secondary .menu .show-hide,
+.header.secondary .menu input.search {
+  width: 100%;
+  text-align: left;
+}
+.header.secondary .menu button.search {
+  width: 24px;
+}
+
+.header.primary .menu.primary button {
+  border-radius: 300px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.footer.menu.releases {
+  z-index: 2;
+}
+.footer.menu.releases .primary {
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.footer.menu.releases .primary button {
+  text-align: center;
+  padding: 10px 0;
+  margin: 0;
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+.footer.menu.releases .primary button i {
+  font-size: 18px;
+}
+.footer.menu.releases .primary .more {
+  display: none;
+}
+@media screen and (max-width: 399px) {
+  .footer.menu.releases .primary {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .footer.menu.releases .primary .appears,
+.footer.menu.releases .primary .compilations {
+    display: none;
+  }
+  .footer.menu.releases .primary .more {
+    display: grid;
+  }
+  .footer.menu.releases .hover .appears,
+.footer.menu.releases .hover .compilations {
+    display: flex;
+  }
+}
+@media screen and (max-width: 231px) {
+  .footer.menu.releases .primary {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .footer.menu.releases .primary .podcasts {
+    display: none;
+  }
+  .footer.menu.releases .hover .podcasts {
+    display: flex;
+  }
+}
+@media screen and (max-width: 149px) {
+  .footer.menu.releases .primary {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer.menu.releases .primary .tracks {
+    display: none;
+  }
+  .footer.menu.releases .hover .tracks {
+    display: flex;
+  }
+}
+@media screen and (max-width: 99px) {
+  .footer.menu.releases .primary {
+    grid-template-columns: 1fr;
+  }
+  .footer.menu.releases .primary .albums {
+    display: none;
+  }
+  .footer.menu.releases .hover .albums {
+    display: flex;
+  }
+}
+.footer.menu.releases .hover {
+  min-width: 160px;
+  width: 160px;
+  bottom: 60px;
+  max-height: calc(100vh - 60px);
+  position: fixed;
+  word-wrap: anywhere;
+  display: grid;
+}
+.footer.menu.releases .hover button {
+  display: none;
+}
+.footer.menu.releases .hover i {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+@media screen and (max-width: 160px) {
+  .footer.menu.releases .hover {
+    width: 100%;
+    min-width: 100%;
+    word-wrap: anywhere;
+  }
+}
+@media only screen and (max-width: 100px) {
+  .footer.menu.releases .hover span {
+    display: none;
+  }
+  .footer.menu.releases .hover i {
+    margin: auto;
+  }
+}
+
+.header.secondary .menu.filter,
+.footer.secondary.menu.filter {
+  text-align: left;
+  display: flex;
+  white-space: nowrap;
+  overflow: auto;
+  margin: auto 0;
+  width: 100%;
+}
+.header.secondary .menu.filter button,
+.footer.secondary.menu.filter button {
+  font-size: 14px;
+  padding: 5px 10px;
+  margin: auto 3px;
+  border-radius: 16px;
+  height: 20px;
+}
+.header.secondary .menu.filter .actions,
+.footer.secondary.menu.filter .actions {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.footer.secondary.menu.filter button:first-child {
+  margin-left: 20px;
+}
+.footer.secondary.menu.filter button:last-child {
+  margin-right: 20px;
+}
+
+.body.hide-player .footer.menu.mobile {
+  bottom: calc(60px + 50px);
+}
+.body.hide-player .footer.menu.mobile .items {
+  max-height: calc(100vh - 60px - 50px);
+}
+
+.footer.menu.mobile {
+  position: fixed;
+  bottom: calc(40px + 60px + 50px);
+  height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.footer.menu.mobile .round {
+  border-radius: 12px;
+  height: 24px;
+  width: 40px;
+  display: inline-flex;
+  margin-right: 5px;
+  margin-left: auto;
+  z-index: 1;
+  right: 10px;
+  position: relative;
+}
+.footer.menu.mobile .round i {
+  margin: auto;
+  font-size: 24px;
+}
+.footer.menu.mobile .round.show-hide.mobile {
+  z-index: 3;
+}
+.footer.menu.mobile .round-text {
+  text-align: right;
+  height: auto;
+  width: auto;
+  font-size: 18px;
+}
+.footer.menu.mobile .round-text i {
+  margin-left: 5px;
+}
+@media only screen and (max-width: 100px) {
+  .footer.menu.mobile .round {
+    width: 40px;
+  }
+  .footer.menu.mobile .round span {
+    display: none;
+  }
+  .footer.menu.mobile .round i {
+    margin: auto;
+  }
+}
+.footer.menu.mobile .items {
+  position: absolute;
+  overflow: auto;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  min-width: 250px;
+  width: 250px;
+  max-height: calc(100vh - 40px - 60px - 50px);
+  display: grid;
+}
+.footer.menu.mobile .items.active {
+  display: block;
+}
+.footer.menu.mobile .items p {
+  cursor: default;
+  padding: 10px 10px 0 10px;
+}
+.footer.menu.mobile .items button {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.footer.menu.mobile .items button i {
+  display: none;
+}
+.footer.menu.mobile .items button,
+.footer.menu.mobile .items p {
+  display: block;
+  text-align: left;
+}
+.footer.menu.mobile .items button:first-child,
+.footer.menu.mobile .items p:first-child {
+  margin-top: 24px;
+}
+.footer.menu.mobile .items button:last-child,
+.footer.menu.mobile .items p:last-child {
+  margin-bottom: 24px;
+}
+@media screen and (max-width: 250px) {
+  .footer.menu.mobile .items {
+    width: 100%;
+    min-width: 100%;
+    word-wrap: anywhere;
+  }
+}
+@media only screen and (max-width: 100px) {
+  .footer.menu.mobile .items {
+    bottom: 20px;
+  }
+  .footer.menu.mobile .items p,
+.footer.menu.mobile .items button span {
+    display: none;
+  }
+  .footer.menu.mobile .items button {
+    display: flex;
+    padding: 10px;
+  }
+  .footer.menu.mobile .items button i {
+    display: block;
+    margin: auto;
+  }
+}
+
+.loader {
+  border-radius: 4px;
+  background-size: 20%;
+  background-repeat: repeat-y;
+  background-position: -25% 0;
+  display: grid;
+  width: 100%;
+  height: 4px;
+}
+.loader.active {
+  animation: loader 3s ease-in-out infinite;
+}
+
+@keyframes loader {
+  50% {
+    background-size: 80%;
+  }
+  100% {
+    background-position: 125% 0;
+  }
+}
+.list {
+  /*max-height: 400px;
+  overflow: auto;*/
+}
+.list button,
+.list input,
+.list a {
+  display: flex;
+  font-size: 18px;
+  padding: 10px;
+}
+.list .right {
+  margin-left: auto;
+}
+.list i {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.list .row {
+  display: flex;
+}
+.list.tracklist .track .info {
+  display: flex;
+  flex-wrap: wrap;
+}
+.list.tracklist .track .info > * {
+  margin-right: 5px;
+}
+.list.tracklist .track .info .artists {
+  display: inline-block;
+  margin: auto 0;
+  padding: 0 10px;
+}
+.list.tracklist .track .info .artists .artist {
+  display: inline;
+  padding: 10px 0;
+}
+.list.tracklist .track .info .right {
+  margin-left: auto;
+}
+.list.playlists .update i {
+  margin: 0;
+}
+.list.playlists .new,
+.list.playlists .row .add:first-child {
+  width: calc(100% - 20px);
+}
+
+.settings .list button,
+.settings .list a:first-child,
+.login .list button,
+.login .list a:first-child {
+  width: calc(100% - 20px);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.skrejto {
+  display: none !important;
+}
+
+/*
+white-space: nowrap;
+max-width: 100%;
+overflow: hidden;
+text-overflow: ellipsis;
+*/
+.header.primary.hide-mobile.left {
+  display: none;
+}
