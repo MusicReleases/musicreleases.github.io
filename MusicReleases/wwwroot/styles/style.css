@@ -1838,6 +1838,13 @@
   background: linear-gradient(to right, #1ab26b, #1ab26b);
 }
 
+@media only screen and (min-width: 860px) {
+  body {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
 .body.classic {
   display: grid;
   grid-auto-columns: 1fr;
@@ -1845,8 +1852,8 @@
 }
 @media only screen and (min-width: 860px) {
   .body.classic {
-    height: 100vh;
-    overflow: hidden;
+    /*height: 100vh;
+    overflow: hidden;*/
     grid-template-columns: auto;
     grid-template-rows: 4px 48px 48px calc(100vh - 4px - 48px - 48px - 100px) 100px;
   }
@@ -1911,8 +1918,8 @@
   }
   .body.classic .header.secondary .menu.releases,
 .body.classic .main .menu.releases {
-    width: 160px;
-    min-width: 160px;
+    width: 170px;
+    min-width: 170px;
     order: 0;
   }
   .body.classic .header.secondary .menu.playlists,
@@ -1941,8 +1948,8 @@
 .body.classic .header.secondary .content.page,
 .body.classic .main .menu.filter,
 .body.classic .main .content.page {
-    width: calc(100vw - 160px - 250px - 160px - 200px);
-    min-width: calc(100vw - 160px - 250px - 160px - 200px);
+    width: calc(100vw - 170px - 250px - 160px - 200px);
+    min-width: calc(100vw - 170px - 250px - 160px - 200px);
     order: 3;
   }
   .body.classic .header.secondary .content,

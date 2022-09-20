@@ -1,8 +1,18 @@
 ﻿@inherits LayoutComponentBase
 @using MusicReleases.Components.LoggedOut
 
-<div class="login">
-	<Login Type=@Enums.Login.Spotify></Login>
+<div class="body classic hide-player">
+    <div class="header secondary hide-mobile">
+        <MusicReleases.Components.LoggedIn.Components.Logo></MusicReleases.Components.LoggedIn.Components.Logo>
+    </div>
+    <div class="main">
+        <div class="login">
+            <h2>Login</h2>
+            <div class="login list icon-text box">
+                <Login Type=@Enums.Login.Spotify></Login>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
