@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
-    <Content Remove="Pages\Test.razor" />
+    <Content Remove="Web\Pages\Test.razor" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,22 +7,26 @@
     </div>
 </div>
 
-@code {
-	
+@code
+{
+    // TODO loading page
     protected override async Task OnInitializedAsync()
     {
         if (Api.Spotify.Main.User == null)
         {
+            // get token from url
             string currentUrl = navManager.Uri;
             await Api.Spotify.Main.SetUser(new Uri(currentUrl));
         }
 
         if (Api.Spotify.Main.User == null)
         {
+            // user is not logged in (error)
             navManager.NavigateTo("");
         }
         else
         {
+            // navigate to releases page
             navManager.NavigateTo("releases");            
         }
     }

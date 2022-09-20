@@ -1,0 +1,16 @@
+﻿
+
+<div class="header loader @_active"></div>
+
+@code
+{
+    [CascadingParameter]
+    public bool LoaderActive { get; set; } = false;
+
+    private string _active = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        _active = LoaderActive ? "active" : string.Empty;
+    }
+}

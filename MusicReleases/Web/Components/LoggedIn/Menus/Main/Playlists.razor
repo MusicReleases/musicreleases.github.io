@@ -6,7 +6,7 @@
     @if (Api.Spotify.Main.User == null)
     {
         <p>User not logged in</p>
-        <button @onclick=Update>Update</button>
+        <button @onclick=UpdatePlaylists>Update</button>
     }
     else
     {
@@ -17,7 +17,7 @@
         else if (_playlists.Count < 1)
         {
             <p>0 playlists</p>
-            <button @onclick=Update>Update</button>
+            <button @onclick=UpdatePlaylists>Update</button>
         }
         else
         {
@@ -40,35 +40,17 @@
     {
         if (Type == Enums.Login.Spotify)
         {
+            // TODO show loader
             // display playlists
             if (Api.Spotify.Main.User == null) return;
 
             _playlists = await Api.Spotify.Main.User.GetPlaylists();
-
-            /*if (_playlists.Count < 1)
-            {
-                _playlists = await Api.Spotify.Controller.GetPlaylists();
-                Api.Spotify.Main.User.Playlists = _playlists;                
-            }*/
         }
     }
 
-    /*private bool shouldRender = true;
-
-    protected override bool ShouldRender()
-    {
-        return shouldRender;
-    }*/
-
-    /*protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        return base.OnAfterRenderAsync(firstRender);
-    }*/
-
-    private async Task Update()
+    private async Task UpdatePlaylists()
     {
         _playlists = await Api.Spotify.Controller.GetPlaylists();
-        //Api.Spotify.Main.User.Playlists = _playlists;
         StateHasChanged();
     }
 }
