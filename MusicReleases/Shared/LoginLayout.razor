@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager navManager
+
+<div class="page">
+	<p>Loggin in user</p>
+</div>
+
+@code {
+	
+    protected override async Task OnInitializedAsync()
+    {
+        if (Api.Spotify.Main.User == null)
+        {
+            string currentUrl = navManager.Uri;
+            await Api.Spotify.Main.SetUser(new Uri(currentUrl));
+        }
+
+        if (Api.Spotify.Main.User == null)
+        {
+            navManager.NavigateTo("");
+        }
+        else
+        {
+            navManager.NavigateTo("releases");            
+        }
+    }
+}

@@ -1,0 +1,77 @@
+﻿@using MusicReleases;
+@using MusicReleases.Api.Spotify.Objects
+@inject NavigationManager NavManager
+
+<div class="menu playlists">
+</div>
+
+<div class="menu playlists items scroll">
+    @if (Api.Spotify.Main.User == null)
+    {
+        <p>User not logged in</p>
+        <button @onclick=Update>Update</button>
+    }
+    else
+    {
+        @if (_playlists == null)
+        {
+            <p>Loading playlists...</p>
+        }
+        else if (_playlists.Count < 1)
+        {
+            <p>0 playlists</p>
+            <button @onclick=Update>Update</button>
+        }
+        else
+        {
+            @foreach (var playlist in _playlists)
+            {
+                <button class="playlist" data-menu_type="playlist" data-menu_artist="playlist-id-@playlist.Id">@playlist.Name</button>
+            }
+        }
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public Enums.Login Type { get; set; }
+
+    private HashSet<Playlist> _playlists;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Type == Enums.Login.Spotify)
+        {
+            // display playlists
+            if (Api.Spotify.Main.User == null) return;
+
+            _playlists = await Api.Spotify.Main.User.GetPlaylists();
+
+            /*if (_playlists.Count < 1)
+            {
+                _playlists = await Api.Spotify.Controller.GetPlaylists();
+                Api.Spotify.Main.User.Playlists = _playlists;                
+            }*/
+        }
+    }
+
+    /*private bool shouldRender = true;
+
+    protected override bool ShouldRender()
+    {
+        return shouldRender;
+    }*/
+
+    /*protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        return base.OnAfterRenderAsync(firstRender);
+    }*/
+
+    private async Task Update()
+    {
+        _playlists = await Api.Spotify.Controller.GetPlaylists();
+        //Api.Spotify.Main.User.Playlists = _playlists;
+        StateHasChanged();
+    }
+}

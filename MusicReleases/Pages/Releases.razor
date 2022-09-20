@@ -1,0 +1,15 @@
+﻿@page "/releases"
+@layout MainLayout
+@inject NavigationManager navManager
+
+@code
+{
+    // <DynamicComponent Type=""></DynamicComponent>
+    protected override void OnInitialized()
+    {
+        if (Api.Spotify.Main.User == null)
+        {
+            navManager.NavigateTo("");
+        }
+    }
+}
