@@ -1,15 +1,13 @@
-﻿
+﻿@if (String.IsNullOrEmpty(_releaseType)) return;
 
-@if (String.IsNullOrEmpty(_releaseType)) return;
-
-<button class="@_releaseType.ToLower()" title="View released @_releaseType.ToLower()" type="button">
+<button type="button" class="@_releaseType.ToLower()" title="View released @_releaseType.ToLower()">
     <i class="fas fa-@_icon" aria-hidden="true"></i>
     <span>@_releaseType</span>
 </button>
 
 @code
 {
-    [Parameter]
+    [Parameter, EditorRequired]
     public Api.Spotify.Enums.ReleaseType ReleaseType { get; set; }
 
     private string? _releaseType;

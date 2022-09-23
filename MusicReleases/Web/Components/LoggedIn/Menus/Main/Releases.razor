@@ -1,14 +1,16 @@
 ﻿@using MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons
+@using static MusicReleases.Api.Spotify.Enums
 
 <div class="menu releases icon-text items scroll">
-    <Release ReleaseType=@Api.Spotify.Enums.ReleaseType.Albums></Release>
-    <Release ReleaseType=@Api.Spotify.Enums.ReleaseType.Tracks></Release>
-    <Release ReleaseType=@Api.Spotify.Enums.ReleaseType.Appears></Release>
-    <Release ReleaseType=@Api.Spotify.Enums.ReleaseType.Compilations></Release>
-    <Release ReleaseType=@Api.Spotify.Enums.ReleaseType.Podcasts></Release>
-    <UserSettings></UserSettings>
+    <Release ReleaseType=@ReleaseType.Albums></Release>
+    <Release ReleaseType=@ReleaseType.Tracks></Release>
+    <Release ReleaseType=@ReleaseType.Appears></Release>
+    <Release ReleaseType=@ReleaseType.Compilations></Release>
+    <Release ReleaseType=@ReleaseType.Podcasts></Release>
+    <User></User>
 </div>
 
-@code {
+@code
+{
 
 }

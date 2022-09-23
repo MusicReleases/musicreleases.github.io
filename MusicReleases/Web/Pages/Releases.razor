@@ -14,7 +14,7 @@
     private ReleaseType _type;
 
     // <DynamicComponent Type=""></DynamicComponent>
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (Api.Spotify.Main.User == null)
         {
@@ -24,6 +24,8 @@
         {
             // TODO display all releases and remember last selection
             navManager.NavigateTo("/releases/albums");
+            // TODO if is return here, code doesnt refresh the content
+            // TODO but if is not here, code just continue and doesnt get the right Type (for example)
             return;
         }
 
@@ -35,5 +37,11 @@
         {
             _type = ReleaseType.Albums;
         }
+
+        // TODO loading artists two times???
+        // display playlists
+        /*if (Api.Spotify.Main.User == null) return;
+
+        var artists = await Api.Spotify.Main.User.GetArtists();*/
     }
 }

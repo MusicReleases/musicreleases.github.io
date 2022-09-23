@@ -23,7 +23,7 @@
         {
             @foreach (var playlist in _playlists)
             {
-                <button class="playlist" data-menu_type="playlist" data-menu_artist="playlist-id-@playlist.Id">@playlist.Name</button>
+                <MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons.Playlist PlaylistId=@playlist.Id PlaylistName=@playlist.Name></MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons.Playlist>
             }
         }
     }
