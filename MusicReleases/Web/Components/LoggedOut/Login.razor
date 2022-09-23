@@ -12,7 +12,7 @@
     /// Service type (Spotify, Apple Music, ...)
     /// </summary>
     [Parameter]
-    public Enums.Login Type { get; set; }
+    public Enums.ServiceType Type { get; set; }
 
     private string _type = String.Empty;
 
@@ -27,7 +27,7 @@
     /// </summary>
     private void LoginUser()
     {
-        if (Type == Enums.Login.Spotify)
+        if (Type == Enums.ServiceType.Spotify)
         {
             // spotify login
             Uri redirectUrl = NavManager.ToAbsoluteUri(NavManager.BaseUri + "login");

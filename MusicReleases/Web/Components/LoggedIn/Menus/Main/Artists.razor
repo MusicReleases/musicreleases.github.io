@@ -2,7 +2,7 @@
 @using MusicReleases.Api.Spotify.Objects
 @inject NavigationManager NavManager
 
-<div class="menu playlists items scroll">
+<div class="menu artists items scroll">
     @if (Api.Spotify.Main.User == null)
     {
         <p>User not logged in</p>
@@ -10,31 +10,31 @@
     }
     else
     {
-        @if (_playlists == null)
+        @if (_artists == null)
         {
-            <p>Loading playlists...</p>
+            <p>Loading artists...</p>
         }
-        else if (_playlists.Count < 1)
+        else if (_artists.Count < 1)
         {
-            <p>0 playlists</p>
+            <p>0 artists</p>
             <button @onclick=UpdatePlaylists>Update</button>
         }
         else
         {
-            @foreach (var playlist in _playlists)
+            @foreach (var artist in _artists)
             {
-                <button class="playlist" data-menu_type="playlist" data-menu_artist="playlist-id-@playlist.Id">@playlist.Name</button>
+                <button class="artist" data-menu_type="artist" data-menu_artist="playlist-id-@artist.Id">@artist.Name</button>
             }
         }
     }
 </div>
 
-@code {
-
+@code
+{
     [Parameter]
     public Enums.ServiceType ServiceType { get; set; }
 
-    private HashSet<Playlist> _playlists;
+    private SortedSet<Artist> _artists;
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,13 +44,13 @@
             // display playlists
             if (Api.Spotify.Main.User == null) return;
 
-            _playlists = await Api.Spotify.Main.User.GetPlaylists();
+            _artists = await Api.Spotify.Main.User.GetArtists();
         }
     }
 
     private async Task UpdatePlaylists()
     {
-        _playlists = await Api.Spotify.Controller.GetPlaylists();
+        _artists = await Api.Spotify.Controller.GetArtists();
         StateHasChanged();
     }
 }

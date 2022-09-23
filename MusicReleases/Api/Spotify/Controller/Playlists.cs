@@ -30,7 +30,8 @@ namespace MusicReleases.Api.Spotify
                 Limit = 50
             };
 
-            var playlists = await Main.Client.PaginateAll(await Main.Client.Playlists.CurrentUsers(request));
+            var response = await Main.Client.Playlists.CurrentUsers(request);
+            var playlists = await Main.Client.PaginateAll(response);
 
             return playlists;
         }

@@ -1,18 +1,7 @@
 ﻿@using MusicReleases.Web.Components.LoggedIn.Menus.Main
 
 <div class="main">
-    <div class="menu releases icon-text items scroll">
-        <button class="albums active" title="View released albums"><i class="fas fa-compact-disc" aria-hidden="true"></i><span>Albums</span></button>
-        <button class="tracks" title="View released Tracks"><i class="fas fa-music" aria-hidden="true"></i><span>Tracks</span></button>
-        <button class="appears" title="View released appears"><i class="fas fa-user-friends" aria-hidden="true"></i><span>Appears</span></button>
-        <button class="compilations" title="View released compilations"><i class="fas fa-th-large" aria-hidden="true"></i><span>Compilations</span></button>
-        <button class="podcasts" title="View newest podcasts"><i class="fas fa-podcast" aria-hidden="true"></i><span>Podcasts</span></button>
-        <div class="user icon-text">
-            <button class="player" title="Show player"><i class="fas fa-play-circle" aria-hidden="true"></i></button>
-            <button class="settings" title="Show settings"><i class="fas fa-wrench" aria-hidden="true"></i>Settings</button>
-            <button class="logout" title="Logout"><i class="fas fa-sign-out-alt" aria-hidden="true"></i>Logout</button>
-        </div>
-    </div>
+    <Releases></Releases>
 
     <div class="menu date year items scroll">
         <button class="year icon-text-right" data-menu_type="year" data-menu_year="2021">2021<i class="fas fa-angle-down" aria-hidden="true"></i></button>
@@ -54,21 +43,8 @@
         <button class="year" data-menu_type="year" data-menu_year="2000">2000</button>
         <button class="year" data-menu_type="year" data-menu_year="-">-</button>
     </div>
-
-    <div class="menu artists items scroll">
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 1">Artist 1</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 2">Artist 2</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 3">Artist 3</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 4">Artist 4</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 5">Artist 5</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 6">Artist 6</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 7">Artist 7</button>
-        <button class="artist active" data-menu_type="artist" data-menu_artist="Artist 8">Artist 8</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 9">Artist 9</button>
-        <button class="artist" data-menu_type="artist" data-menu_artist="Artist 10">Artist 10</button>
-    </div>
-
-	<Playlists Type=@Enums.Login.Spotify></Playlists>
+    <Artists ServiceType=@Enums.ServiceType.Spotify></Artists>
+	<Playlists ServiceType=@Enums.ServiceType.Spotify></Playlists>
 
     <div class="content page scroll">
         <div class="login">

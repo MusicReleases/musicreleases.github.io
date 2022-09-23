@@ -1,4 +1,5 @@
-﻿using SpotifyAPI.Web;
+﻿using MusicReleases.Web.Components.LoggedIn.Menus.Header;
+using SpotifyAPI.Web;
 
 namespace MusicReleases.Api.Spotify.Objects
 {
@@ -20,8 +21,20 @@ namespace MusicReleases.Api.Spotify.Objects
                 _playlists = value;
             }
         }
+        public SortedSet<Artist> Artists
+        {
+            private get
+            {
+                return _artists;
+            }
+            set
+            {
+                _artists = value;
+            }
+        }
 
         private HashSet<Playlist>? _playlists = null;
+        private SortedSet<Artist>? _artists = null;
 
         public User(PrivateUser user)
         {
@@ -53,6 +66,14 @@ namespace MusicReleases.Api.Spotify.Objects
                 _playlists = await Controller.GetPlaylists();
             }
             return _playlists;
+        }
+        public async Task<SortedSet<Artist>> GetArtists()
+        {
+            if (_artists == null)
+            {
+                _artists = await Controller.GetArtists();
+            }
+            return _artists;
         }
     }
 }

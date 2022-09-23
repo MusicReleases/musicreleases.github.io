@@ -2,7 +2,7 @@
 
 namespace MusicReleases.Api.Spotify.Objects
 {
-    public class Artist
+    public class Artist : IComparable
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -21,6 +21,16 @@ namespace MusicReleases.Api.Spotify.Objects
         {
             Id = id;
             Name = name;
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = (Artist)obj;
+            var lastNameComparison = Name.CompareTo(other.Name);
+
+            return (lastNameComparison != 0)
+                ? lastNameComparison :
+                (Id.CompareTo(other.Id));
         }
     }
 }

@@ -1,0 +1,16 @@
+﻿@page "/testing"
+@using static MusicReleases.Api.Spotify.Enums
+@layout LayoutMain
+@inject NavigationManager navManager
+
+@code
+{
+    // <DynamicComponent Type=""></DynamicComponent>
+    protected override void OnInitialized()
+    {
+        if (Api.Spotify.Main.User == null)
+        {
+            navManager.NavigateTo("");
+        }
+    }
+}

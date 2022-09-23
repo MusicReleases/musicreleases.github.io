@@ -1,8 +1,8 @@
-﻿namespace MusicReleases
+﻿    namespace MusicReleases
 {
     public static class Enums
     {
-        public enum Login
+        public enum ServiceType
         {
             Spotify
         }

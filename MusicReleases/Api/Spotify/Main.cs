@@ -1,12 +1,13 @@
 ﻿using MusicReleases.Api.Spotify.Objects;
 using SpotifyAPI.Web;
+using System.Xml.Serialization;
 
 namespace MusicReleases.Api.Spotify
 {
     public static class Main
     {
         public const string AppId = "c5f5fe8e454e486aae846c51a68ddd98";
-        public static readonly ICollection<string>? Scope = new[] { Scopes.UserLibraryRead, Scopes.PlaylistReadPrivate, Scopes.PlaylistReadCollaborative };
+        public static readonly ICollection<string>? Scope = new[] { Scopes.UserLibraryRead, Scopes.PlaylistReadPrivate, Scopes.PlaylistReadCollaborative, Scopes.UserFollowRead };
 
         public static SpotifyClient? Client { get; private set; }
 
@@ -30,15 +31,20 @@ namespace MusicReleases.Api.Spotify
               .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
 
             // get user from access token
-            bool loggedIn = urlParameters.ContainsKey("access_token");
+            var loggedIn = urlParameters.ContainsKey("access_token");
             if (!loggedIn) return;
 
-            Client = new(urlParameters["access_token"]);
-            var privateUser = await Client.UserProfile.Current();
-            User = new(user: privateUser);
+            var accessToken = urlParameters["access_token"];
+            Client = new(accessToken);
 
-            /*var playlists = await Controller.GetPlaylists();
-            User.Playlists = playlists;*/
+            var privateUser = await Client.UserProfile.Current();
+            User = new(privateUser);
+
+            if (!urlParameters.ContainsKey("expires_in")) return;
+            var accessTokenExpires = urlParameters["expires_in"];
+
+
+
         }
     }
 }

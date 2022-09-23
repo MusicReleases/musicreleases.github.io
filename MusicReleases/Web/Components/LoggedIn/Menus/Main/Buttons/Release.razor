@@ -1,0 +1,23 @@
+﻿
+
+@if (String.IsNullOrEmpty(_releaseType)) return;
+
+<button class="@_releaseType.ToLower()" title="View released @_releaseType.ToLower()" type="button">
+    <i class="fas fa-@_icon" aria-hidden="true"></i>
+    <span>@_releaseType</span>
+</button>
+
+@code
+{
+    [Parameter]
+    public Api.Spotify.Enums.ReleaseType ReleaseType { get; set; }
+
+    private string? _releaseType;
+    private string? _icon;
+
+    protected override void OnInitialized()
+    {
+        _releaseType = ReleaseType.ToString();
+        _icon = MusicReleases.Main.Icons.GetReleases(ReleaseType);
+    }
+}

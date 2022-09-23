@@ -1,11 +1,22 @@
 ﻿@inherits LayoutComponentBase
+@using MusicReleases.Web.Components.LoggedIn.Menus.Main
 @using MusicReleases.Web.Components.LoggedIn
 
 <div class="body classic">
 	<CascadingValue Value="@LoaderActive">
 		<Header></Header>
-		<Main></Main>
-		@Body
+    <div class="main">
+        <Releases></Releases>
+
+        <div class="menu date year items scroll">
+        </div>
+        <Artists ServiceType=@Enums.ServiceType.Spotify></Artists>
+	    <Playlists ServiceType=@Enums.ServiceType.Spotify></Playlists>
+
+        <div class="content page scroll">
+            @Body
+        </div>
+    </div>
 	</CascadingValue>
 </div>
 

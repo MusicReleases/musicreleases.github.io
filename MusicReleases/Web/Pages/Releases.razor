@@ -1,15 +1,39 @@
-﻿@page "/releases"
+﻿@page "/releases/{type?}"
+@using static MusicReleases.Api.Spotify.Enums
 @layout LayoutMain
 @inject NavigationManager navManager
 
+<p>Loading releases...</p>
+
 @code
 {
+    [Parameter]
+    public string? Type { get; set; }
+
+    // TODO enable to select and display more than 1 release type
+    private ReleaseType _type;
+
     // <DynamicComponent Type=""></DynamicComponent>
     protected override void OnInitialized()
     {
         if (Api.Spotify.Main.User == null)
         {
             navManager.NavigateTo("");
+        }
+        if (String.IsNullOrEmpty(Type))
+        {
+            // TODO display all releases and remember last selection
+            navManager.NavigateTo("/releases/albums");
+            return;
+        }
+
+        try
+        {
+            _type = Enum.Parse<ReleaseType>(Type);
+        }
+        catch
+        {
+            _type = ReleaseType.Albums;
         }
     }
 }
