@@ -2,13 +2,16 @@
 
 namespace MusicReleases.Api.Spotify
 {
-    public static partial class Controller
+    public partial class Controller
     {
-        public static Uri GetLoginUrl(Uri currentUrl)
+        public Uri GetLoginUrl(Uri currentUrl)
         {
-            var loginRequest = new LoginRequest(currentUrl, Main.AppId, LoginRequest.ResponseType.Token)
+            ICollection<string>? scope = new[] { Scopes.UserLibraryRead, Scopes.PlaylistReadPrivate, Scopes.PlaylistReadCollaborative, Scopes.UserFollowRead };
+            const string appId = "c5f5fe8e454e486aae846c51a68ddd98";
+
+            var loginRequest = new LoginRequest(currentUrl, appId, LoginRequest.ResponseType.Token)
             {
-                Scope = Main.Scope
+                Scope = scope
             };
             return loginRequest.ToUri();
         }

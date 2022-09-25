@@ -1,7 +1,9 @@
 ﻿@page "/releases/{type?}"
+@using MusicReleases.Api.Spotify.Objects
 @using static MusicReleases.Api.Spotify.Enums
 @layout LayoutMain
 @inject NavigationManager navManager
+@inject User spotifyUser
 
 <p>Loading releases...</p>
 
@@ -16,7 +18,7 @@
     // <DynamicComponent Type=""></DynamicComponent>
     protected override async Task OnInitializedAsync()
     {
-        if (Api.Spotify.Main.User == null)
+        if (spotifyUser == null)
         {
             navManager.NavigateTo("");
         }

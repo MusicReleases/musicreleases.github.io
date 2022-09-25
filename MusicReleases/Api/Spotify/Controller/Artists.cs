@@ -3,9 +3,9 @@ using SpotifyAPI.Web;
 
 namespace MusicReleases.Api.Spotify
 {
-    public static partial class Controller
+    public partial class Controller
     {
-        public static HashSet<Artist> GetArtists(List<SimpleArtist> simpleArtistsList)
+        public HashSet<Artist> GetArtists(List<SimpleArtist> simpleArtistsList)
         {
             HashSet<Artist> artistsList = new();
             foreach (var artist in simpleArtistsList)
@@ -16,7 +16,7 @@ namespace MusicReleases.Api.Spotify
             return artistsList;
         }
 
-        public static async Task<SortedSet<Artist>?> GetArtists()
+        public async Task<SortedSet<Artist>?> GetArtists()
         {
             SortedSet<Artist> artists = new();
             var artistsFromApi = await GetArtistsApi();
@@ -31,9 +31,9 @@ namespace MusicReleases.Api.Spotify
 
             return artists;
         }
-        private static async Task<IList<FullArtist>?> GetArtistsApi()
+        private async Task<IList<FullArtist>?> GetArtistsApi()
         {
-            if (Main.Client == null) return null;
+            if (_spotifyUser.Client == null) return null;
 
             List<FullArtist> artists = new();
 
@@ -42,8 +42,8 @@ namespace MusicReleases.Api.Spotify
                 Limit = 50
             };
 
-            var response = await Main.Client.Follow.OfCurrentUser(request);
-            await foreach (var artist in Main.Client.Paginate(response.Artists, (s) => s.Artists))
+            var response = await _spotifyUser.Client.Follow.OfCurrentUser(request);
+            await foreach (var artist in _spotifyUser.Client.Paginate(response.Artists, (s) => s.Artists))
             {
                 artists.Add(artist);
             }

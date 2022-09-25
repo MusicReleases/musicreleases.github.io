@@ -1,14 +1,18 @@
 ﻿using MusicReleases.Web.Components.LoggedIn.Menus.Header;
 using SpotifyAPI.Web;
+using System;
 
 namespace MusicReleases.Api.Spotify.Objects
 {
-    public class User
+    public class User : IUser
     {
         /// <summary>
         /// Logged in Spotify user
         /// </summary>
-        public PrivateUser LoggedIn { get; private set; }
+        public PrivateUser? LoggedIn { get; private set; }
+        public ISpotifyClient? Client { get; private set; }
+
+        private Controller _controller;
 
         public HashSet<Playlist> Playlists
         {
@@ -36,15 +40,51 @@ namespace MusicReleases.Api.Spotify.Objects
         private HashSet<Playlist>? _playlists = null;
         private SortedSet<Artist>? _artists = null;
 
-        public User(PrivateUser user)
+        public User(Controller controller)
+        {
+            _controller = controller;
+        }
+        /*public User(PrivateUser user)
         {
             LoggedIn = user;
             //Playlists = new();
-        }
-        public User(PrivateUser user, HashSet<Playlist> playlists)
+        }*/
+        /*public User(PrivateUser user, HashSet<Playlist> playlists)
         {
             LoggedIn = user;
             _playlists = playlists;
+        }*/
+
+        public async Task SetUser(string url)
+        {
+            await SetUser(new Uri(url));
+        }
+
+        public async Task SetUser(Uri url)
+        {
+            // get url parameters
+            var maxLen = Math.Min(1, url.Fragment.Length);
+            Dictionary<string, string> urlParameters = url.Fragment[maxLen..]?
+              .Split("&", StringSplitOptions.RemoveEmptyEntries)?
+              .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
+              .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
+
+            // get user from access token
+            var loggedIn = urlParameters.ContainsKey("access_token");
+            if (!loggedIn) return;
+
+            var accessToken = urlParameters["access_token"];
+            Client = new SpotifyClient(accessToken);
+
+            LoggedIn = await Client.UserProfile.Current();
+
+            if (!urlParameters.ContainsKey("expires_in")) return;
+            var accessTokenExpires = urlParameters["expires_in"];
+        }
+
+        public void SetUser(PrivateUser user)
+        {
+            LoggedIn = user;
         }
 
         public async Task<Playlist?> GetPlaylist(string playlistId, bool getTracks = false)
@@ -53,7 +93,7 @@ namespace MusicReleases.Api.Spotify.Objects
 
             if (getTracks)
             {
-                await Controller.GetTracks(playlistId);
+                await _controller.GetTracks(playlistId);
             }
 
             return playlist;
@@ -63,7 +103,7 @@ namespace MusicReleases.Api.Spotify.Objects
         {
             if (_playlists == null)
             {
-                _playlists = await Controller.GetPlaylists();
+                _playlists = await _controller.GetPlaylists();
             }
             return _playlists;
         }
@@ -71,7 +111,7 @@ namespace MusicReleases.Api.Spotify.Objects
         {
             if (_artists == null)
             {
-                _artists = await Controller.GetArtists();
+                _artists = await _controller.GetArtists();
             }
             return _artists;
         }

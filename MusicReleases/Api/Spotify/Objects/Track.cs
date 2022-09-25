@@ -20,20 +20,23 @@ namespace MusicReleases.Api.Spotify.Objects
             }
         }
 
+        // TODO artists - GetArtists
         public Track(SimpleTrack simpleTrack)
         {
             Id = simpleTrack.Id;
             Name = simpleTrack.Name;
             // TODO empty??
             Album = null;
-            _artists = Controller.GetArtists(simpleTrack.Artists);
+            _artists = new();
+            //_artists = Controller.GetArtists(simpleTrack.Artists);
         }
         public Track(FullTrack fullTrack)
         {
             Id = fullTrack.Id;
             Name = fullTrack.Name;
             Album = new(fullTrack.Album);
-            _artists = Controller.GetArtists(fullTrack.Artists);
+            _artists = new();
+            //_artists = Controller.GetArtists(fullTrack.Artists);
         }
         public Track(FullEpisode fullEpisode)
         {

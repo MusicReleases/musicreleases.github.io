@@ -1,9 +1,10 @@
 ﻿@using MusicReleases;
 @using MusicReleases.Api.Spotify.Objects
 @inject NavigationManager NavManager
+@inject IUser spotifyUser
 
 <div class="menu playlists items scroll">
-    @if (Api.Spotify.Main.User == null)
+    @if (spotifyUser == null)
     {
         <p>User not logged in</p>
         <button @onclick=UpdatePlaylists>Update</button>
@@ -42,15 +43,15 @@
         {
             // TODO show loader
             // display playlists
-            if (Api.Spotify.Main.User == null) return;
+            if (spotifyUser == null) return;
 
-            _playlists = await Api.Spotify.Main.User.GetPlaylists();
+            _playlists = await spotifyUser.GetPlaylists();
         }
     }
 
     private async Task UpdatePlaylists()
     {
-        _playlists = await Api.Spotify.Controller.GetPlaylists();
+        _playlists = await spotifyUser.GetPlaylists();
         StateHasChanged();
     }
 }

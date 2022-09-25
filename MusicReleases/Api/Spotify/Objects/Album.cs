@@ -9,17 +9,20 @@ namespace MusicReleases.Api.Spotify.Objects
 
         public HashSet<Artist> Artists { get; private set; }
 
+        // TODO artists - GetArtists
         public Album(SimpleAlbum simpleAlbum)
         {
             Id = simpleAlbum.Id;
             Name = simpleAlbum.Name;
-            Artists = Controller.GetArtists(simpleAlbum.Artists);
+            Artists = new();
+            //Artists = Controller.GetArtists(simpleAlbum.Artists);
         }
         public Album(FullAlbum fullAlbum)
         {
             Id = fullAlbum.Id;
             Name = fullAlbum.Name;
-            Artists = Controller.GetArtists(fullAlbum.Artists);
+            Artists = new();
+            //Artists = Controller.GetArtists(fullAlbum.Artists);
         }
         public Album(SimpleShow simpleShow)
         {

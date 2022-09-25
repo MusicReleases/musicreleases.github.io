@@ -1,5 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using MusicReleases.Api.Spotify.Objects
+@inherits LayoutComponentBase
 @inject NavigationManager navManager
+@inject IUser spotifyUser
 
 <div class="body classic hide-player">
     <div class="page">
@@ -12,14 +14,15 @@
     // TODO loading page
     protected override async Task OnInitializedAsync()
     {
-        if (Api.Spotify.Main.User == null)
+        if (spotifyUser == null)
         {
             // get token from url
             string currentUrl = navManager.Uri;
-            await Api.Spotify.Main.SetUser(new Uri(currentUrl));
+            await spotifyUser.SetUser(currentUrl);
+            //await Api.Spotify.Base.SetUser();
         }
 
-        if (Api.Spotify.Main.User == null)
+        if (spotifyUser == null)
         {
             // user is not logged in (error)
             navManager.NavigateTo("");

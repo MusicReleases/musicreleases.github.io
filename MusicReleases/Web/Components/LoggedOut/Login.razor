@@ -1,5 +1,7 @@
 ﻿@using MusicReleases
+@using MusicReleases.Api.Spotify
 @inject NavigationManager NavManager
+@inject Controller spotifyController
 
 <button type="button" class="@_type.ToLower()" @onclick="LoginUser">
     <i class="fab fa-spotify" aria-hidden="true"></i>
@@ -12,7 +14,7 @@
     /// Service type (Spotify, Apple Music, ...)
     /// </summary>
     [Parameter]
-    public Enums.ServiceType Type { get; set; }
+    public MusicReleases.Enums.ServiceType Type { get; set; }
 
     private string _type = String.Empty;
 
@@ -27,11 +29,11 @@
     /// </summary>
     private void LoginUser()
     {
-        if (Type == Enums.ServiceType.Spotify)
+        if (Type == MusicReleases.Enums.ServiceType.Spotify)
         {
             // spotify login
             Uri redirectUrl = NavManager.ToAbsoluteUri(NavManager.BaseUri + "login");
-            Uri loginUrl = Api.Spotify.Controller.GetLoginUrl(redirectUrl);
+            Uri loginUrl = spotifyController.GetLoginUrl(redirectUrl);
             NavManager.NavigateTo(loginUrl.AbsoluteUri);
         }
     }

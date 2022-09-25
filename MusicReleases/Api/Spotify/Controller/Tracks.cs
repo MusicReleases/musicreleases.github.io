@@ -3,15 +3,15 @@ using SpotifyAPI.Web;
 
 namespace MusicReleases.Api.Spotify
 {
-    public static partial class Controller
+    public partial class Controller
     {
-        public static async Task<List<Track>> GetTracks(string playlistId)
+        public async Task<List<Track>> GetTracks(string playlistId)
         {
             List<Track> tracks = new();
 
-            if (Main.User == null) return tracks;
+            if (_spotifyUser == null) return tracks;
 
-            var playlist = await Main.User.GetPlaylist(playlistId);
+            var playlist = await _spotifyUser.GetPlaylist(playlistId);
 
             if (playlist != null)
             {
@@ -48,16 +48,16 @@ namespace MusicReleases.Api.Spotify
             return tracks;
         }
 
-        private static async Task<IList<PlaylistTrack<IPlayableItem>>?> GetTracksApi(string playlistId)
+        private  async Task<IList<PlaylistTrack<IPlayableItem>>?> GetTracksApi(string playlistId)
         {
-            if (Main.Client == null) return null;
+            if (_spotifyUser.Client == null) return null;
 
             var request = new PlaylistGetItemsRequest
             {
                 Limit = 100
             };
 
-            var tracks = await Main.Client.PaginateAll(await Main.Client.Playlists.GetItems(playlistId,request));
+            var tracks = await _spotifyUser.Client.PaginateAll(await _spotifyUser.Client.Playlists.GetItems(playlistId,request));
             return tracks;
         }
     }
