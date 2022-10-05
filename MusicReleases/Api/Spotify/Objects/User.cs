@@ -8,9 +8,9 @@ namespace MusicReleases.Api.Spotify.Objects
     {
         /// <summary>
         /// Logged in Spotify user
-        /// </summary>
-        public PrivateUser? LoggedIn { get; private set; }
-        public ISpotifyClient? Client { get; private set; }
+        /// </sApiUserummary>
+        public PrivateUser? ApiUser { get; private set; }
+        //public ISpotifyClient? Client { get; private set; }
 
         private Controller _controller;
 
@@ -55,7 +55,7 @@ namespace MusicReleases.Api.Spotify.Objects
             _playlists = playlists;
         }*/
 
-        public async Task SetUser(string url)
+        /*public async Task SetUser(string url)
         {
             await SetUser(new Uri(url));
         }
@@ -76,7 +76,7 @@ namespace MusicReleases.Api.Spotify.Objects
             var accessToken = urlParameters["access_token"];
             Client = new SpotifyClient(accessToken);
 
-            LoggedIn = await Client.UserProfile.Current();
+            ApiUser = await Client.UserProfile.Current();
 
             if (!urlParameters.ContainsKey("expires_in")) return;
             var accessTokenExpires = urlParameters["expires_in"];
@@ -84,9 +84,15 @@ namespace MusicReleases.Api.Spotify.Objects
 
         public void SetUser(PrivateUser user)
         {
-            LoggedIn = user;
+            ApiUser = user;
+        }*/
+
+        public async Task SetUser()
+        {
+            ApiUser = await _controller.GetUser();
         }
 
+        // get user playlist (with tracks)
         public async Task<Playlist?> GetPlaylist(string playlistId, bool getTracks = false)
         {
             var playlist = _playlists.Where(x => x.Id == playlistId).FirstOrDefault();
@@ -99,6 +105,7 @@ namespace MusicReleases.Api.Spotify.Objects
             return playlist;
         }
 
+        // get user playlists
         public async Task<HashSet<Playlist>> GetPlaylists()
         {
             if (_playlists == null)
@@ -107,6 +114,7 @@ namespace MusicReleases.Api.Spotify.Objects
             }
             return _playlists;
         }
+        // get user followed artists
         public async Task<SortedSet<Artist>> GetArtists()
         {
             if (_artists == null)

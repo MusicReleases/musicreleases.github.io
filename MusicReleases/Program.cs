@@ -4,6 +4,8 @@ using MusicReleases;
 using Blazored.LocalStorage;
 using MusicReleases.Api.Spotify.Objects;
 using MusicReleases.Api.Spotify;
+using SpotifyAPI.Web;
+using SpotifyAPI.Web.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

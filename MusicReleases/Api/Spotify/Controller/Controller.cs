@@ -1,4 +1,5 @@
 ﻿using MusicReleases.Api.Spotify.Objects;
+using SpotifyAPI.Web;
 
 namespace MusicReleases.Api.Spotify
 {
@@ -11,9 +12,13 @@ namespace MusicReleases.Api.Spotify
         {
             _spotifyUser = spotifyUser;
         }*/
+
+
+        public ISpotifyClient? SpotifyClient { set; get; }
+
         public Controller()
         {
-
         }
+
     }
 }

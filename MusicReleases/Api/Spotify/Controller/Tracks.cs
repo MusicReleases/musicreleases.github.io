@@ -1,64 +1,63 @@
 ﻿using MusicReleases.Api.Spotify.Objects;
 using SpotifyAPI.Web;
 
-namespace MusicReleases.Api.Spotify
+namespace MusicReleases.Api.Spotify;
+
+public partial class Controller
 {
-    public partial class Controller
+    public async Task<List<Track>> GetTracks(string playlistId)
     {
-        public async Task<List<Track>> GetTracks(string playlistId)
+        List<Track> tracks = new();
+
+        // TODO : commented
+        /*if (_spotifyUser == null) return tracks;
+        var playlist = await _spotifyUser.GetPlaylist(playlistId);
+        if (playlist != null)
         {
-            List<Track> tracks = new();
+            if (playlist.Tracks.Count > 0) return playlist.Tracks;
+        }*/
 
-            if (_spotifyUser == null) return tracks;
+        // get tracksfrom api
+        IList<PlaylistTrack<IPlayableItem>>? tracksFromApi = await GetTracksApi(playlistId);
+        if (tracksFromApi == null) return tracks;
 
-            var playlist = await _spotifyUser.GetPlaylist(playlistId);
-
-            if (playlist != null)
+        foreach (var trackApi in tracksFromApi)
+        {
+            if (trackApi.Track == null) continue;
+            var type = trackApi.Track.Type;
+            // TODO podcasts
+            if (type == ItemType.Track)
             {
-                if (playlist.Tracks.Count > 0) return playlist.Tracks;
+                var fullTrackApi = (FullTrack)trackApi.Track;
+                Track track = new(fullTrack: fullTrackApi);
+                tracks.Add(track);
             }
-
-            // get tracksfrom api
-            IList<PlaylistTrack<IPlayableItem>>? tracksFromApi = await GetTracksApi(playlistId);
-            if (tracksFromApi == null) return tracks;
-
-            foreach (var trackApi in tracksFromApi)
+            else
             {
-                if (trackApi.Track == null) continue;
-                var type = trackApi.Track.Type;
-                // TODO podcasts
-                if (type == ItemType.Track)
-                {
-                    var fullTrackApi = (FullTrack)trackApi.Track;
-                    Track track = new(fullTrack: fullTrackApi);
-                    tracks.Add(track);
-                }
-                else
-                {
-                    // podcast (episode)
-                    var fullEpisodeApi = (FullEpisode)trackApi.Track;
-                    Track track = new(fullEpisode: fullEpisodeApi);
-                    tracks.Add(track);
-                }
+                // podcast (episode)
+                var fullEpisodeApi = (FullEpisode)trackApi.Track;
+                Track track = new(fullEpisode: fullEpisodeApi);
+                tracks.Add(track);
             }
-
-            // save tracks to playlist
-            if (playlist != null) playlist.Tracks = tracks;
-
-            return tracks;
         }
 
-        private  async Task<IList<PlaylistTrack<IPlayableItem>>?> GetTracksApi(string playlistId)
+        // TODO : commented
+        // save tracks to playlist
+        //if (playlist != null) playlist.Tracks = tracks;
+
+        return tracks;
+    }
+
+    private  async Task<IList<PlaylistTrack<IPlayableItem>>?> GetTracksApi(string playlistId)
+    {
+        if (SpotifyClient == null) return null;
+
+        var request = new PlaylistGetItemsRequest
         {
-            if (_spotifyUser.Client == null) return null;
+            Limit = 100
+        };
 
-            var request = new PlaylistGetItemsRequest
-            {
-                Limit = 100
-            };
-
-            var tracks = await _spotifyUser.Client.PaginateAll(await _spotifyUser.Client.Playlists.GetItems(playlistId,request));
-            return tracks;
-        }
+        var tracks = await SpotifyClient.PaginateAll(await SpotifyClient.Playlists.GetItems(playlistId,request));
+        return tracks;
     }
 }

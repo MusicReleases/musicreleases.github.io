@@ -1,6 +1,9 @@
-﻿@using MusicReleases.Api.Spotify.Objects
+﻿@using MusicReleases.Api.Spotify
+@using MusicReleases.Api.Spotify.Objects
+@using SpotifyAPI.Web
 @inherits LayoutComponentBase
 @inject NavigationManager navManager
+@inject Controller spotifyController
 @inject IUser spotifyUser
 
 <div class="body classic hide-player">
@@ -14,15 +17,15 @@
     // TODO loading page
     protected override async Task OnInitializedAsync()
     {
-        if (spotifyUser == null)
+        if (spotifyUser.ApiUser == null)
         {
             // get token from url
             string currentUrl = navManager.Uri;
-            await spotifyUser.SetUser(currentUrl);
+            await LoginUser(currentUrl);
             //await Api.Spotify.Base.SetUser();
         }
 
-        if (spotifyUser == null)
+        if (spotifyUser.ApiUser == null)
         {
             // user is not logged in (error)
             navManager.NavigateTo("");
@@ -32,5 +35,34 @@
             // navigate to releases page
             navManager.NavigateTo("releases");            
         }
+    }
+
+    private async Task LoginUser(string url)
+    {
+        await LoginUser(new Uri(url));
+    }
+
+    private async Task LoginUser(Uri url)
+    {
+        // get url parameters
+        var maxLen = Math.Min(1, url.Fragment.Length);
+        Dictionary<string, string> urlParameters = url.Fragment[maxLen..]?
+          .Split("&", StringSplitOptions.RemoveEmptyEntries)?
+          .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
+          .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
+
+        // get user from access token
+        var loggedIn = urlParameters.ContainsKey("access_token");
+        if (!loggedIn) return;
+
+        var accessToken = urlParameters["access_token"];
+        //spotifyController.SetClient(new SpotifyClient(accessToken));
+        spotifyController.SpotifyClient = new SpotifyClient(accessToken);
+        await spotifyUser.SetUser();
+
+        //var user = await client.UserProfile.Current();
+
+        if (!urlParameters.ContainsKey("expires_in")) return;
+        var accessTokenExpires = urlParameters["expires_in"];
     }
 }

@@ -23,15 +23,15 @@ namespace MusicReleases.Api.Spotify
 
         private async Task<IList<SimplePlaylist>?> GetPlaylistsApi()
         {
-            if (_spotifyUser.Client == null) return null;
+            if (SpotifyClient == null) return null;
 
             var request = new PlaylistCurrentUsersRequest
             {
                 Limit = 50
             };
 
-            var response = await _spotifyUser.Client.Playlists.CurrentUsers(request);
-            var playlists = await _spotifyUser.Client.PaginateAll(response);
+            var response = await SpotifyClient.Playlists.CurrentUsers(request);
+            var playlists = await SpotifyClient.PaginateAll(response);
 
             return playlists;
         }

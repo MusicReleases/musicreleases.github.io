@@ -33,7 +33,7 @@ namespace MusicReleases.Api.Spotify
         }
         private async Task<IList<FullArtist>?> GetArtistsApi()
         {
-            if (_spotifyUser.Client == null) return null;
+            if (SpotifyClient == null) return null;
 
             List<FullArtist> artists = new();
 
@@ -42,8 +42,8 @@ namespace MusicReleases.Api.Spotify
                 Limit = 50
             };
 
-            var response = await _spotifyUser.Client.Follow.OfCurrentUser(request);
-            await foreach (var artist in _spotifyUser.Client.Paginate(response.Artists, (s) => s.Artists))
+            var response = await SpotifyClient.Follow.OfCurrentUser(request);
+            await foreach (var artist in SpotifyClient.Paginate(response.Artists, (s) => s.Artists))
             {
                 artists.Add(artist);
             }

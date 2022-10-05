@@ -10,7 +10,8 @@ namespace MusicReleases.Api.Spotify.Objects
 
         public int? TotalTracks { get; private set; }
 
-        public List<Track> Tracks { get; set; } = new();
+        public List<Track> Tracks_old { get; set; } = new();
+        public HashSet<Track> Tracks { get; set; } = new();
 
         // TODO playlist owner - currentuserowned
         public Playlist(SimplePlaylist simplePlaylist)
