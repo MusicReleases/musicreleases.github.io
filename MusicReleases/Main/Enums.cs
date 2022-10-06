@@ -1,10 +1,9 @@
-﻿    namespace MusicReleases
+﻿namespace MusicReleases;
+
+public static class Enums
 {
-    public static class Enums
+    public enum ServiceType
     {
-        public enum ServiceType
-        {
-            Spotify
-        }
+        Spotify
     }
 }

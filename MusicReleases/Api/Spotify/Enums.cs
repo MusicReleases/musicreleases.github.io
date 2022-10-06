@@ -1,14 +1,13 @@
-﻿namespace MusicReleases.Api.Spotify
+﻿namespace MusicReleases.Api.Spotify;
+
+public static class Enums
 {
-    public static class Enums
+    public enum ReleaseType
     {
-        public enum ReleaseType
-        {
-            Albums,
-            Tracks,
-            Appears,
-            Compilations,
-            Podcasts
-        }
+        Albums,
+        Tracks,
+        Appears,
+        Compilations,
+        Podcasts
     }
 }

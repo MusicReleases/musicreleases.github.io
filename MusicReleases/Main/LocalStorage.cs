@@ -1,19 +1,18 @@
 ﻿using Blazored.LocalStorage;
 
-namespace MusicReleases.Main
+namespace MusicReleases.Main;
+
+public class LocalStorage
 {
-    public class LocalStorage
+    private ILocalStorageService _localStorage;
+
+    public LocalStorage(ILocalStorageService localStorage)
     {
-        private ILocalStorageService _localStorage;
+        _localStorage = localStorage;
+    }
 
-        public LocalStorage(ILocalStorageService localStorage)
-        {
-            _localStorage = localStorage;
-        }
-
-        public async Task Save(string key, string data)
-        {
-            await _localStorage.SetItemAsync(key, data);
-        }
+    public async Task Save(string key, string data)
+    {
+        await _localStorage.SetItemAsync(key, data);
     }
 }

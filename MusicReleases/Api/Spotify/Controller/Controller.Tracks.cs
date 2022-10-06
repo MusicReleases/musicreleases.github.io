@@ -5,7 +5,7 @@ namespace MusicReleases.Api.Spotify;
 
 public partial class Controller
 {
-    public async Task<List<Track>> GetTracks(string playlistId)
+    public async Task<List<Track>> GetPlaylistTracks(string playlistId)
     {
         List<Track> tracks = new();
 
@@ -18,7 +18,7 @@ public partial class Controller
         }*/
 
         // get tracksfrom api
-        IList<PlaylistTrack<IPlayableItem>>? tracksFromApi = await GetTracksApi(playlistId);
+        IList<PlaylistTrack<IPlayableItem>>? tracksFromApi = await GetPlaylistTracksFromApi(playlistId);
         if (tracksFromApi == null) return tracks;
 
         foreach (var trackApi in tracksFromApi)
@@ -48,7 +48,7 @@ public partial class Controller
         return tracks;
     }
 
-    private  async Task<IList<PlaylistTrack<IPlayableItem>>?> GetTracksApi(string playlistId)
+    private async Task<IList<PlaylistTrack<IPlayableItem>>?> GetPlaylistTracksFromApi(string playlistId)
     {
         if (SpotifyClient == null) return null;
 
@@ -57,7 +57,7 @@ public partial class Controller
             Limit = 100
         };
 
-        var tracks = await SpotifyClient.PaginateAll(await SpotifyClient.Playlists.GetItems(playlistId,request));
+        var tracks = await SpotifyClient.PaginateAll(await SpotifyClient.Playlists.GetItems(playlistId, request));
         return tracks;
     }
 }
