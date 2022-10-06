@@ -2,16 +2,16 @@
 @using MusicReleases.Web.Components.LoggedIn.Menus.Main
 
 <div class="main">
-    <Releases></Releases>
+	<Releases></Releases>
 
-    <div class="menu date year items scroll">
-    </div>
-    <Artists ServiceType=@Enums.ServiceType.Spotify></Artists>
+	<div class="menu date year items scroll">
+	</div>
+	<Artists ServiceType=@Enums.ServiceType.Spotify></Artists>
 	<Playlists ServiceType=@Enums.ServiceType.Spotify></Playlists>
 
-    <div class="content page scroll">
-        @Body
-    </div>
+	<div class="content page scroll">
+		@Body
+	</div>
 </div>
 
 @code {

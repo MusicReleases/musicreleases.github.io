@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 
-namespace MusicReleases.Main;
+namespace MusicReleases.Base;
 
 public class LocalStorage
 {

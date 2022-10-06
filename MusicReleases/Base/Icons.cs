@@ -1,6 +1,6 @@
 ﻿using static MusicReleases.Api.Spotify.Enums;
 
-namespace MusicReleases.Main;
+namespace MusicReleases.Base;
 
 public static class Icons
 {
