@@ -1,6 +1,6 @@
 ﻿using SpotifyAPI.Web;
 
-namespace MusicReleases.Api.Spotify;
+namespace JakubKastner.SpotifyApi;
 
 public partial class Controller
 {

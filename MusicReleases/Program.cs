@@ -1,9 +1,9 @@
 using Blazored.LocalStorage;
+using JakubKastner.SpotifyApi;
+using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MusicReleases;
-using MusicReleases.Api.Spotify;
-using MusicReleases.Api.Spotify.Objects;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

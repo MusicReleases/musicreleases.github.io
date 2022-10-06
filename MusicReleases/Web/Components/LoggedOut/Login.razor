@@ -1,5 +1,5 @@
 ﻿@using MusicReleases
-@using MusicReleases.Api.Spotify
+@using JakubKastner.SpotifyApi
 @inject NavigationManager NavManager
 
 <button type="button" class="@_type.ToLower()" @onclick="LoginUser">
@@ -32,7 +32,7 @@
         {
             // spotify login
             Uri redirectUrl = NavManager.ToAbsoluteUri(NavManager.BaseUri + "login");
-            Uri loginUrl = Api.Spotify.Login.GetLoginUrl(redirectUrl);
+            Uri loginUrl = JakubKastner.SpotifyApi.Login.GetLoginUrl(redirectUrl);
             NavManager.NavigateTo(loginUrl.AbsoluteUri);
         }
     }

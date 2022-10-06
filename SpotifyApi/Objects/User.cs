@@ -1,6 +1,6 @@
 ﻿using SpotifyAPI.Web;
 
-namespace MusicReleases.Api.Spotify.Objects;
+namespace JakubKastner.SpotifyApi.Objects;
 
 public class User : IUser
 {

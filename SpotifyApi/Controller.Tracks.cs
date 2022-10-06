@@ -1,7 +1,7 @@
-﻿using MusicReleases.Api.Spotify.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
-namespace MusicReleases.Api.Spotify;
+namespace JakubKastner.SpotifyApi;
 
 public partial class Controller
 {

@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicReleases", "MusicReleases\MusicReleases.csproj", "{463AE7FA-DBE6-428C-9897-539F73245D7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84} = {EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyApi", "SpotifyApi\SpotifyApi.csproj", "{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{463AE7FA-DBE6-428C-9897-539F73245D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{463AE7FA-DBE6-428C-9897-539F73245D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{463AE7FA-DBE6-428C-9897-539F73245D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
