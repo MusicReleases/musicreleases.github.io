@@ -1,11 +1,9 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MusicReleases;
-using Blazored.LocalStorage;
-using MusicReleases.Api.Spotify.Objects;
 using MusicReleases.Api.Spotify;
-using SpotifyAPI.Web;
-using SpotifyAPI.Web.Http;
+using MusicReleases.Api.Spotify.Objects;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -18,6 +16,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<IUser, User>();
 // TODO interface
 builder.Services.AddScoped<Controller>();
+builder.Services.AddScoped<Login>();
 
 // LocalStorage
 builder.Services.AddBlazoredLocalStorage();

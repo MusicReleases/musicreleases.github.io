@@ -4,7 +4,7 @@
 @inject IUser spotifyUser
 
 <div class="menu playlists items scroll">
-    @if (spotifyUser == null)
+    @if (spotifyUser.LoggedIn == null)
     {
         <p>User not logged in</p>
         <button @onclick=UpdatePlaylists>Update</button>
@@ -30,8 +30,8 @@
     }
 </div>
 
-@code {
-
+@code
+{
     [Parameter]
     public Enums.ServiceType ServiceType { get; set; }
 
@@ -43,7 +43,7 @@
         {
             // TODO show loader
             // display playlists
-            if (spotifyUser == null) return;
+            if (spotifyUser.LoggedIn == null) return;
 
             _playlists = await spotifyUser.GetPlaylists();
         }

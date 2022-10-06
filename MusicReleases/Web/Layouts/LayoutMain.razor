@@ -5,23 +5,23 @@
 <div class="body classic">
 	<CascadingValue Value="@LoaderActive">
 		<Header></Header>
-    <div class="main">
-        <Releases></Releases>
+	<div class="main">
+		<Releases></Releases>
 
-        <div class="menu date year items scroll">
-        </div>
-        <Artists ServiceType=@Enums.ServiceType.Spotify></Artists>
-	    <Playlists ServiceType=@Enums.ServiceType.Spotify></Playlists>
+		<div class="menu date year items scroll">
+		</div>
+		<Artists ServiceType=@Enums.ServiceType.Spotify></Artists>
+		<Playlists ServiceType=@Enums.ServiceType.Spotify></Playlists>
 
-        <div class="content page scroll">
-            @Body
-        </div>
-    </div>
+		<div class="content page scroll">
+			@Body
+		</div>
+	</div>
 	</CascadingValue>
 </div>
 
 @code
 {
 	// TODO doesnt work if i change it in code
-	public static bool LoaderActive { get; set; } = false;
+	public bool LoaderActive { get; set; } = false;
 }

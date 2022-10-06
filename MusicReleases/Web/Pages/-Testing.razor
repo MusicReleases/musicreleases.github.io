@@ -10,7 +10,7 @@
     // <DynamicComponent Type=""></DynamicComponent>
     protected override void OnInitialized()
     {
-        if (spotifyUser == null)
+        if (spotifyUser.LoggedIn == null)
         {
             navManager.NavigateTo("");
         }

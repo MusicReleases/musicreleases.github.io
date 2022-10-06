@@ -1,0 +1,39 @@
+﻿@using MusicReleases.Api.Spotify
+@using MusicReleases.Api.Spotify.Objects
+@using SpotifyAPI.Web
+@inherits LayoutComponentBase
+@inject NavigationManager navManager
+@inject IUser spotifyUser
+@inject Login spotifyLogin
+
+<div class="body classic hide-player">
+	<div class="page">
+		<p>Loggin in user</p>
+	</div>
+</div>
+
+@code
+{
+	// TODO loading page
+	protected override async Task OnInitializedAsync()
+	{
+		if (spotifyUser.LoggedIn == null)
+		{
+			// get token from url
+			string currentUrl = navManager.Uri;
+			await spotifyLogin.LoginUser(currentUrl);
+			//await Api.Spotify.Base.SetUser();
+		}
+
+		if (spotifyUser.LoggedIn == null)
+		{
+			// user is not logged in (error)
+			navManager.NavigateTo("");
+		}
+		else
+		{
+			// navigate to releases page
+			navManager.NavigateTo("releases");            
+		}
+	}
+}

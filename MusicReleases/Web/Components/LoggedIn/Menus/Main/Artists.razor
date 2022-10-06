@@ -4,10 +4,10 @@
 @inject IUser spotifyUser
 
 <div class="menu artists items scroll">
-    @if (spotifyUser == null)
+    @if (spotifyUser.LoggedIn == null)
     {
         <p>User not logged in</p>
-        <button @onclick=UpdatePlaylists>Update</button>
+        <button @onclick=UpdateArtists>Update</button>
     }
     else
     {
@@ -18,7 +18,7 @@
         else if (_artists.Count < 1)
         {
             <p>0 artists</p>
-            <button @onclick=UpdatePlaylists>Update</button>
+            <button @onclick=UpdateArtists>Update</button>
         }
         else
         {
@@ -43,13 +43,13 @@
         {
             // TODO show loader
             // display playlists
-            if (spotifyUser == null) return;
+            if (spotifyUser.LoggedIn == null) return;
 
             _artists = await spotifyUser.GetArtists();
         }
     }
 
-    private async Task UpdatePlaylists()
+    private async Task UpdateArtists()
     {
         _artists = await spotifyUser.GetArtists();
         StateHasChanged();

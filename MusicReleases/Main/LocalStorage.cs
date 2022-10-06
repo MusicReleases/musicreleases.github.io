@@ -4,7 +4,7 @@ namespace MusicReleases.Main;
 
 public class LocalStorage
 {
-    private ILocalStorageService _localStorage;
+    private readonly ILocalStorageService _localStorage;
 
     public LocalStorage(ILocalStorageService localStorage)
     {

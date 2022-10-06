@@ -18,7 +18,7 @@
     // <DynamicComponent Type=""></DynamicComponent>
     protected override async Task OnInitializedAsync()
     {
-        if (spotifyUser == null)
+        if (spotifyUser.LoggedIn == null)
         {
             navManager.NavigateTo("");
         }
