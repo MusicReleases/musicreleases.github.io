@@ -1,4 +1,5 @@
 ﻿using SpotifyAPI.Web;
+using static JakubKastner.SpotifyApi.Enums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
@@ -36,6 +37,7 @@ public class User : IUser
 
     private HashSet<Playlist>? _playlists = null;
     private SortedSet<Artist>? _artists = null;
+    private SortedSet<Album>? _albums = null;
 
     public User(Controller controller)
     {
@@ -77,5 +79,29 @@ public class User : IUser
             _artists = await _controller.GetUserArtists();
         }
         return _artists;
+    }
+
+    // get releases
+    public async Task<SortedSet<Album>> GetReleases(ReleaseType releaseType = ReleaseType.Albums)
+    {
+        await GetArtists();
+
+        if (_albums == null)
+        {
+            _albums = new();
+
+            foreach (var artist in _artists)
+            {
+                var albumsFromApi = await _controller.GetReleases(releaseType, artist.Id);
+                // TODO try again
+                if (albumsFromApi == null)
+                {
+                    albumsFromApi = await _controller.GetReleases(releaseType, artist.Id);
+                }
+                _albums.UnionWith(albumsFromApi);
+            }
+        }
+
+        return _albums;
     }
 }

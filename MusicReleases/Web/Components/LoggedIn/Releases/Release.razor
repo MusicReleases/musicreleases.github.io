@@ -1,29 +1,31 @@
-﻿
-<div class="releases boxes">
-    <div class="release album box" data-release_type="album" data-release_id="2qaaaIfTuEAh5cqI1ksz">
-        <div class="info">
-            <img src="images/no-cover.png" alt="No cover" class="cover">
-            <a class="name icon-text" href="https://open.spotify.com/album/2qaaaIfB5TuEAh5cqI1ksz" target="_blank" rel="noopener noreferrer">Release name</a>
-            <div class="artists icon-text">
-                <button class="artist" data-menu_type="artist" data-menu_artist="Artist 1">Artist 1</button><span>•</span>
-                <button class="artist" data-menu_type="artist" data-menu_artist="Artist 2">Artist 2</button><span>•</span>
-                <button class="artist" data-menu_type="artist" data-menu_artist="Artist 3">Artist 3</button><span>•</span>
-                <button class="artist" data-menu_type="artist" data-menu_artist="Artist 4">Artist 4</button>
-            </div>
-            <p class="date icon-text">
-                <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                <button class="year">2020</button>-<button class="month">10</button>-<button class="day">01</button>
-            </p>
-            <p class="duration icon-text">
-                <i class="explicit fas fa-compact-disc" title="Album release" aria-hidden="true"><span title="Explicit lyrics">E</span></i><span class="sr-only">Album release</span>
-                <i class="fas fa-bolt" title="New release" aria-hidden="true"></i><span class="sr-only">New release</span>
-                <i class="far fa-clock" aria-hidden="true"></i>00:02:03
-            </p>
+﻿@using JakubKastner.SpotifyApi.Objects
+
+<div class="release album box" data-release_type="album" data-release_id="@ReleaseObj.Id">
+    <div class="info">
+        <img src="@ReleaseObj.ImageUrl" alt="Cover" class="cover">
+        <a class="name icon-text" href="@ReleaseObj.Uri" target="_blank" rel="noopener noreferrer">@ReleaseObj.Name</a>
+        <div class="artists icon-text">
+            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 1">Artist 1</button><span>•</span>
+            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 2">Artist 2</button><span>•</span>
+            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 3">Artist 3</button><span>•</span>
+            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 4">Artist 4</button>
         </div>
+        <p class="date icon-text">
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+            <button>@ReleaseObj.ReleaseDate</button>
+        </p>
+        <p class="duration icon-text">
+            <i class="explicit fas fa-compact-disc" title="Album release" aria-hidden="true"><span title="Explicit lyrics">E</span></i>
+            <span class="sr-only">Album release</span>
+            <i class="fas fa-bolt" title="New release" aria-hidden="true"></i>
+            <span class="sr-only">New release</span>
+            <i class="far fa-clock" aria-hidden="true"></i>00:00:00
+        </p>
     </div>
 </div>
 
 @code
 {
-
+    [Parameter, EditorRequired]
+    public Album ReleaseObj { get; set; }
 }

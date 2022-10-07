@@ -1,4 +1,5 @@
 ﻿@page "/releases/{type?}"
+@using JakubKastner.SpotifyApi
 @using JakubKastner.SpotifyApi.Objects
 @using static JakubKastner.SpotifyApi.Enums
 @layout LayoutMain
@@ -7,6 +8,16 @@
 
 <p>Loading releases...</p>
 
+<button type="button" @onclick="GetReleases">
+    Get releases
+</button>
+<div class="releases boxes">
+    <Virtualize Items="@_albums" Context="release">
+        <MusicReleases.Web.Components.LoggedIn.Releases.Release ReleaseObj="@release"/>
+    </Virtualize>
+</div>
+
+
 @code
 {
     [Parameter]
@@ -14,6 +25,8 @@
 
     // TODO enable to select and display more than 1 release type
     private ReleaseType _type;
+
+    private SortedSet<Album> _albums = new();
 
     // <DynamicComponent Type=""></DynamicComponent>
     protected override async Task OnInitializedAsync()
@@ -25,7 +38,7 @@
         if (String.IsNullOrEmpty(Type))
         {
             // TODO display all releases and remember last selection
-            navManager.NavigateTo("/releases/albums");
+            //navManager.NavigateTo("/releases/albums");
             // TODO if is return here, code doesnt refresh the content
             // TODO but if is not here, code just continue and doesnt get the right Type (for example)
             return;
@@ -45,5 +58,10 @@
         /*if (Api.Spotify.Main.User == null) return;
 
         var artists = await Api.Spotify.Main.User.GetArtists();*/
+    }
+
+    private async Task GetReleases()
+    {
+        _albums = await spotifyUser.GetReleases();
     }
 }

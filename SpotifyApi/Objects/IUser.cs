@@ -1,4 +1,5 @@
 ﻿using SpotifyAPI.Web;
+using static JakubKastner.SpotifyApi.Enums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
@@ -11,4 +12,5 @@ public interface IUser
     Task<SortedSet<Artist>> GetArtists();
     Task<Playlist?> GetPlaylist(string playlistId, bool getTracks = false);
     Task<HashSet<Playlist>> GetPlaylists();
+    Task<SortedSet<Album>> GetReleases(ReleaseType releaseType = ReleaseType.Albums);
 }

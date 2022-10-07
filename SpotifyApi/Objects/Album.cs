@@ -2,18 +2,33 @@
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class Album
+public class Album : IComparable
 {
     public string Id { get; private set; }
     public string Name { get; private set; }
+    public string ReleaseDate { get; private set; }
+    public string AlbumType { get; private set; }
+    public int TotalTracks { get; private set; }
+    public string Uri { get; private set; }
+
+    public string ImageUrl { get; private set; }
+
+    public List<Image> Images { get; private set; }
 
     public HashSet<Artist> Artists { get; private set; }
 
     // TODO artists - GetArtists
+    // TODO images
     public Album(SimpleAlbum simpleAlbum)
     {
         Id = simpleAlbum.Id;
         Name = simpleAlbum.Name;
+        ReleaseDate = simpleAlbum.ReleaseDate;
+        AlbumType = simpleAlbum.AlbumType;
+        TotalTracks = simpleAlbum.TotalTracks;
+        Images = simpleAlbum.Images;
+        ImageUrl = simpleAlbum.Images.First().Url;
+        Uri = simpleAlbum.Uri;
         Artists = new();
         //Artists = Controller.GetArtists(simpleAlbum.Artists);
     }
@@ -21,6 +36,12 @@ public class Album
     {
         Id = fullAlbum.Id;
         Name = fullAlbum.Name;
+        ReleaseDate = fullAlbum.ReleaseDate;
+        AlbumType = fullAlbum.AlbumType;
+        TotalTracks = fullAlbum.TotalTracks;
+        Images = fullAlbum.Images;
+        ImageUrl = fullAlbum.Images.First().Url;
+        Uri = fullAlbum.Uri;
         Artists = new();
         //Artists = Controller.GetArtists(fullAlbum.Artists);
     }
@@ -28,9 +49,26 @@ public class Album
     {
         Id = simpleShow.Id;
         Name = simpleShow.Name;
+        ReleaseDate = "0";
+        AlbumType = "Podcast";
+        TotalTracks = 1;
+        Images = simpleShow.Images;
+        ImageUrl = simpleShow.Images.First().Url;
+        Uri = simpleShow.Uri;
         Artists = new()
         {
             new(id: "0", name: simpleShow.Publisher)
         };
+    }
+
+
+    public int CompareTo(object obj)
+    {
+        var other = (Album)obj;
+        var lastNameComparison = -ReleaseDate.CompareTo(other.ReleaseDate);
+
+        return (lastNameComparison != 0)
+            ? lastNameComparison :
+            (Id.CompareTo(other.Name));
     }
 }
