@@ -8,16 +8,19 @@ on:
 
 jobs:
   deploy-to-github-pages:
-
     runs-on: ubuntu-latest
-
-    steps:
-    
+    steps:    
     - uses: actions/checkout@v3
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+      
+    - name: Publish .NET project
+      run: dotnet publish MusicReleases/MusicReleases.csproj -c Release -o release --nologo
+  
+
     #- name: Restore dependencies
     #  run: dotnet restore
     #- name: Build
@@ -25,5 +28,5 @@ jobs:
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal
     # publishes Blazor project to the release-folder
-    - name: Publish .NET Core Project
-      run: dotnet publish -c Release -o release --nologo
+    #- name: Publish .NET Core Project
+    #  run: dotnet publish -c Release -o release --nologo
