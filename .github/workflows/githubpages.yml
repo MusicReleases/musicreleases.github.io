@@ -18,7 +18,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: list
-      run: ls MusicReleases -al
+      run: ls /home/runner/work/music-releases-blazor/music-releases-blazor/MusicReleases/ -al
       
     - name: Publish .NET project
       run: dotnet publish MusicReleases/MusicReleases.csproj -c Release -o release --nologo
