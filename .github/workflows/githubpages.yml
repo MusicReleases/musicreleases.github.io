@@ -16,6 +16,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+        
+    - name: list
+      run: ls -al
       
     - name: Publish .NET project
       run: dotnet publish MusicReleases/MusicReleases.csproj -c Release -o release --nologo
