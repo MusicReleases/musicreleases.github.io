@@ -1,0 +1,35 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  deploy-to-github-pages:
+    runs-on: ubuntu-latest
+    steps:    
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: list
+      run: ls /home/runner/work/music-releases-blazor/music-releases-blazor/MusicReleases/ -al
+      
+    - name: Publish .NET project
+      run: dotnet publish MusicReleases/MusicReleases.csproj -c Release -o release --nologo
+  
+
+    #- name: Restore dependencies
+    #  run: dotnet restore
+    #- name: Build
+    #  run: dotnet build --no-restore
+    #- name: Test
+    #  run: dotnet test --no-build --verbosity normal
+    # publishes Blazor project to the release-folder
+    #- name: Publish .NET Core Project
+    #  run: dotnet publish -c Release -o release --nologo
