@@ -10,6 +10,12 @@
     }
 }
 
+.main .menu.releases.buttons-rounded-xl {
+    button {
+        margin: 0;
+    }
+}
+
 // mobile menu (footer)
 .footer.menu.releases {
     z-index: 2;

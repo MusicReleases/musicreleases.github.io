@@ -18,7 +18,7 @@ public class Album : IComparable
     public HashSet<Artist> Artists { get; private set; }
 
     // TODO artists - GetArtists
-    // TODO images
+    // TODO images (0), default
     public Album(SimpleAlbum simpleAlbum)
     {
         Id = simpleAlbum.Id;
@@ -27,7 +27,14 @@ public class Album : IComparable
         AlbumType = simpleAlbum.AlbumType;
         TotalTracks = simpleAlbum.TotalTracks;
         Images = simpleAlbum.Images;
-        ImageUrl = simpleAlbum.Images.First().Url;
+        if (simpleAlbum.Images.Count > 0)
+        {
+            ImageUrl = simpleAlbum.Images.First().Url;
+        }
+        else
+        {
+            ImageUrl = "";
+        }
         Uri = simpleAlbum.Uri;
         Artists = new();
         //Artists = Controller.GetArtists(simpleAlbum.Artists);
@@ -40,7 +47,14 @@ public class Album : IComparable
         AlbumType = fullAlbum.AlbumType;
         TotalTracks = fullAlbum.TotalTracks;
         Images = fullAlbum.Images;
-        ImageUrl = fullAlbum.Images.First().Url;
+        if (fullAlbum.Images.Count > 0)
+        {
+            ImageUrl = fullAlbum.Images.First().Url;
+        }
+        else
+        {
+            ImageUrl = "";
+        }
         Uri = fullAlbum.Uri;
         Artists = new();
         //Artists = Controller.GetArtists(fullAlbum.Artists);
@@ -53,7 +67,14 @@ public class Album : IComparable
         AlbumType = "Podcast";
         TotalTracks = 1;
         Images = simpleShow.Images;
-        ImageUrl = simpleShow.Images.First().Url;
+        if (simpleShow.Images.Count > 0)
+        {
+            ImageUrl = simpleShow.Images.First().Url;
+        }
+        else
+        {
+            ImageUrl = "";
+        }
         Uri = simpleShow.Uri;
         Artists = new()
         {

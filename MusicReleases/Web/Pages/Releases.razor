@@ -1,10 +1,12 @@
 ﻿@page "/releases/{type?}"
 @using JakubKastner.SpotifyApi
 @using JakubKastner.SpotifyApi.Objects
+@using MusicReleases.Web.Objects
 @using static JakubKastner.SpotifyApi.Enums
 @layout LayoutMain
 @inject NavigationManager navManager
 @inject IUser spotifyUser
+@inject LoaderService loader
 
 <p>Loading releases...</p>
 
@@ -12,8 +14,13 @@
     Get releases
 </button>
 <div class="releases boxes">
-    <Virtualize Items="@_albums" Context="release">
-        <MusicReleases.Web.Components.LoggedIn.Releases.Release ReleaseObj="@release"/>
+    <Virtualize Items="@_albums" Context="release" ItemSize="233" OverscanCount="4">
+        <ItemContent>
+            <MusicReleases.Web.Components.LoggedIn.Releases.Release ReleaseObj="@release" />
+        </ItemContent>
+        <Placeholder>
+            <p>Loading</p>
+        </Placeholder>
     </Virtualize>
 </div>
 
@@ -62,6 +69,8 @@
 
     private async Task GetReleases()
     {
+        loader.Start();
         _albums = await spotifyUser.GetReleases();
+        loader.Stop();
     }
 }

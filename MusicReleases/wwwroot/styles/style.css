@@ -1855,7 +1855,7 @@
     /*height: 100vh;
     overflow: hidden;*/
     grid-template-columns: auto;
-    grid-template-rows: 4px 48px 48px calc(100vh - 4px - 48px - 48px - 100px) 100px;
+    grid-template-rows: 4px 48px 40px calc(100vh - 4px - 48px - 40px - 100px) 100px;
   }
   .body.classic.hide-player .main {
     grid-area: 4/1/6/1;
@@ -2117,24 +2117,6 @@ p {
   font-size: 18px;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  box-sizing: content-box;
-  font-size: 18px;
-  padding: 10px;
-  display: inline-block;
-}
-button.active .fa-heart {
-  font-weight: 900;
-}
-button.active:hover .fa-heart {
-  font-weight: 400;
-}
-button:hover .fa-heart {
-  font-weight: 900;
-}
-
 input {
   border: none;
   padding: 0;
@@ -2315,8 +2297,8 @@ input {
 }
 .main .content.page .releases.boxes .release > .info .cover {
   margin-right: 30px;
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 140px;
+  max-height: 140px;
   float: left;
 }
 @media only screen and (max-width: 1099px) {
@@ -2575,6 +2557,10 @@ input {
   padding-bottom: 12px;
 }
 
+.main .menu.releases.buttons-rounded-xl button {
+  margin: 0;
+}
+
 .footer.menu.releases {
   z-index: 2;
 }
@@ -2690,14 +2676,6 @@ input {
   overflow: auto;
   margin: auto 0;
   width: 100%;
-}
-.header.secondary .menu.filter button,
-.footer.secondary.menu.filter button {
-  font-size: 14px;
-  padding: 5px 10px;
-  margin: auto 3px;
-  border-radius: 16px;
-  height: 20px;
 }
 .header.secondary .menu.filter .actions,
 .footer.secondary.menu.filter .actions {
@@ -2903,6 +2881,48 @@ input {
 .login .list button,
 .login .list a:first-child {
   width: calc(100% - 20px);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  box-sizing: content-box;
+  font-size: 18px;
+  padding: 10px;
+  display: inline-block;
+}
+button.active .fa-heart {
+  font-weight: 900;
+}
+button.active:hover .fa-heart {
+  font-weight: 400;
+}
+button:hover .fa-heart {
+  font-weight: 900;
+}
+
+.buttons-rounded-m button {
+  font-size: 15px;
+  padding: 5px 10px;
+  margin: auto 3px;
+  border-radius: 16px;
+  height: 20px;
+}
+
+.buttons-rounded-l button {
+  font-size: 16px;
+  padding: 5px 10px;
+  margin: auto 3px;
+  border-radius: 16px;
+  height: 20px;
+}
+
+.buttons-rounded-xl button {
+  font-size: 17px;
+  padding: 10px;
+  margin: auto 3px;
+  border-radius: 10px;
+  height: 20px;
 }
 
 .hidden {

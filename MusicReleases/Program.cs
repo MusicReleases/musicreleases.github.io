@@ -4,6 +4,7 @@ using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MusicReleases;
+using MusicReleases.Web.Objects;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IUser, User>();
 // TODO interface
 builder.Services.AddScoped<Controller>();
 builder.Services.AddScoped<Login>();
+builder.Services.AddScoped<LoaderService>();
 
 // LocalStorage
 builder.Services.AddBlazoredLocalStorage();

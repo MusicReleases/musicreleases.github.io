@@ -1,16 +1,32 @@
-﻿
+﻿@using MusicReleases.Web.Objects
+@inject LoaderService LoaderService
+@implements IDisposable
 
-<div class="header loader @_active"></div>
+<div class="header loader{@LoaderService.ActiveClass}"></div>
 
 @code
 {
-    [CascadingParameter]
-    public bool LoaderActive { get; set; } = false;
+	// TODO doesnt work, it just happends when page is opened first time, need refresh
+	/*private string _active = string.Empty;
 
-    private string _active = string.Empty;
+	public bool Active { set => _active = (value ? " active" : string.Empty); }
 
-    protected override void OnInitialized()
-    {
-        _active = LoaderActive ? "active" : string.Empty;
-    }
+	public void Start()
+		{
+		Active = true;
+	}
+	public void Stop()
+		{
+		Active = false;
+	}*/
+
+	protected override void OnInitialized()
+	{
+		LoaderService.OnChange += () => StateHasChanged();
+	}
+
+	public void Dispose()
+	{
+		LoaderService.OnChange -= () => StateHasChanged();
+	}
 }

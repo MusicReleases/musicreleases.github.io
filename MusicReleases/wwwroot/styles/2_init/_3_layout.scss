@@ -1,7 +1,7 @@
 // PAGE LAYOUT
 
 $spaces: 30px;
-$cover_width: 150px;
+$cover_width: 140px;
 
 $height_footer_menu: 60px;
 $margin_right_icon: 5px;
@@ -16,8 +16,9 @@ $width_main: calc(100vw - #{$width_menu_releases} - #{$width_menu_playlist} - #{
 
 // page height
 $height_loader: 4px; // 1
-$height_header_primary: 48px; // pc 2
-$height_header_secondary: 48px; // pc 3
+$height_header_primary: 48px; // pc 2 = deleted
+//$height_header_secondary: 48px; // pc 3
+$height_header_secondary: 40px; // pc 3
 $height_player: 100px; // pc 5
 $height_player_mobile: 40px; // mobile 3
 $height_menu_mobile_filter: 50px; // mobile 4
