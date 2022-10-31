@@ -1858,7 +1858,7 @@
     grid-template-rows: 4px 48px 40px calc(100vh - 4px - 48px - 40px - 100px) 100px;
   }
   .body.classic.hide-player .main {
-    grid-area: 4/1/6/1;
+    grid-area: 3/1/6/1;
   }
   .body.classic.hide-player .footer.player {
     display: none;
@@ -1918,14 +1918,14 @@
   }
   .body.classic .header.secondary .menu.releases,
 .body.classic .main .menu.releases {
-    width: 170px;
-    min-width: 170px;
+    width: 130px;
+    min-width: 130px;
     order: 0;
   }
   .body.classic .header.secondary .menu.playlists,
 .body.classic .main .menu.playlists {
-    width: 250px;
-    min-width: 250px;
+    width: 200px;
+    min-width: 200px;
     order: 4;
   }
   .body.classic .header.secondary .menu.date,
@@ -1936,20 +1936,19 @@
   }
   .body.classic .header.secondary .menu.artists,
 .body.classic .main .menu.artists {
-    width: 200px;
-    min-width: 200px;
+    width: 190px;
+    min-width: 190px;
     order: 1;
-  }
-  .body.classic .header.secondary .menu.artists button.search,
-.body.classic .main .menu.artists button.search {
-    padding-right: 20px;
+    /*button.search {
+        padding-right: $padding_left_right;
+    }*/
   }
   .body.classic .header.secondary .menu.filter,
 .body.classic .header.secondary .content.page,
 .body.classic .main .menu.filter,
 .body.classic .main .content.page {
-    width: calc(100vw - 170px - 250px - 160px - 200px);
-    min-width: calc(100vw - 170px - 250px - 160px - 200px);
+    width: calc(100vw - 130px - 200px - 160px - 190px);
+    min-width: calc(100vw - 130px - 200px - 160px - 190px);
     order: 3;
   }
   .body.classic .header.secondary .content,
@@ -1957,28 +1956,22 @@
 .body.classic .main .content,
 .body.classic .main .menu.items {
     overflow: auto;
-  }
-  .body.classic .header.secondary .content.menu,
-.body.classic .header.secondary .menu.items.menu,
-.body.classic .main .content.menu,
-.body.classic .main .menu.items.menu {
-    /*&:hover {
+    /*&.menu {
+        //overflow: hidden;
+
+        &.artists button {
+            padding-right: $padding_left_right;
+            width: calc(100% - 10px - 20px);
+        }
+
+        &.playlists button {
+            padding-left: $padding_left_right;
+            width: calc(100% - 10px - 20px);
+        }
+        /*&:hover {
         overflow: auto;
     }*/
-  }
-  .body.classic .header.secondary .content.menu.artists button,
-.body.classic .header.secondary .menu.items.menu.artists button,
-.body.classic .main .content.menu.artists button,
-.body.classic .main .menu.items.menu.artists button {
-    padding-right: 20px;
-    width: calc(100% - 10px - 20px);
-  }
-  .body.classic .header.secondary .content.menu.playlists button,
-.body.classic .header.secondary .menu.items.menu.playlists button,
-.body.classic .main .content.menu.playlists button,
-.body.classic .main .menu.items.menu.playlists button {
-    padding-left: 20px;
-    width: calc(100% - 10px - 20px);
+    /*}*/
   }
   .body.classic .header.secondary .content > div,
 .body.classic .main .content > div {
@@ -2195,6 +2188,10 @@ input {
         padding-right: 0;
     }
 }*/
+.header.secondary button {
+  margin: auto 3px;
+  height: 20px;
+}
 .header.secondary .menu.releases .favicon {
   height: 100%;
   margin-left: 10px;
@@ -2560,6 +2557,15 @@ input {
 .main .menu.releases.buttons-rounded-xl button {
   margin: 0;
 }
+.main .menu.releases.buttons-rounded-xl > button {
+  display: grid;
+}
+.main .menu.releases.buttons-rounded-xl > button i, .main .menu.releases.buttons-rounded-xl > button span {
+  margin: auto;
+}
+.main .menu.releases.buttons-rounded-xl > button span {
+  margin-top: 5px;
+}
 
 .footer.menu.releases {
   z-index: 2;
@@ -2904,25 +2910,17 @@ button:hover .fa-heart {
 .buttons-rounded-m button {
   font-size: 15px;
   padding: 5px 10px;
-  margin: auto 3px;
   border-radius: 16px;
-  height: 20px;
 }
-
 .buttons-rounded-l button {
   font-size: 16px;
   padding: 5px 10px;
-  margin: auto 3px;
   border-radius: 16px;
-  height: 20px;
 }
-
 .buttons-rounded-xl button {
-  font-size: 17px;
+  font-size: 16px;
   padding: 10px;
-  margin: auto 3px;
   border-radius: 10px;
-  height: 20px;
 }
 
 .hidden {

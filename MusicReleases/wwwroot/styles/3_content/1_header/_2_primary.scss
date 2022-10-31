@@ -1,19 +1,25 @@
 // PRIMARY HEADER
 
-.header.secondary .menu.releases {
+.header.secondary {
+    button {
+        margin: auto 3px;
 
-    // text size
-
-
-    // icon
-    .favicon {
-        //background: transparent;
-        height: 100%;
-        margin-left: 10px;
+        // TODO only logo
+        height: 20px;
     }
 
-    &:hover>.favicon {
-        animation: spin 2s linear infinite;
+    .menu.releases {
+        // text size
+        // icon
+        .favicon {
+            //background: transparent;
+            height: 100%;
+            margin-left: 10px;
+        }
+
+        &:hover > .favicon {
+            animation: spin 2s linear infinite;
+        }
     }
 }
 

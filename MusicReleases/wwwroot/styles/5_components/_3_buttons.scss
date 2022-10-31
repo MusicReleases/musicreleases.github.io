@@ -23,26 +23,23 @@ button {
     }
 }
 
-.buttons-rounded-m button {
-    font-size: 15px;
-    padding: 5px 10px;
-    margin: auto 3px;
-    border-radius: 16px;
-    height: 20px;
-}
+.buttons-rounded {
 
-.buttons-rounded-l button {
-    font-size: 16px;
-    padding: 5px 10px;
-    margin: auto 3px;
-    border-radius: 16px;
-    height: 20px;
-}
+    &-m button {
+        font-size: 15px;
+        padding: 5px 10px;
+        border-radius: 16px;
+    }
 
-.buttons-rounded-xl button {
-    font-size: 17px;
-    padding: 10px;
-    margin: auto 3px;
-    border-radius: 10px;
-    height: 20px;
+    &-l button {
+        font-size: 16px;
+        padding: 5px 10px;
+        border-radius: 16px;
+    }
+
+    &-xl button {
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 10px;
+    }
 }

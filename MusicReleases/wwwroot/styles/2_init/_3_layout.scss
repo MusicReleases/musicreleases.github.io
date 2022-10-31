@@ -8,10 +8,10 @@ $margin_right_icon: 5px;
 
 
 // page width
-$width_menu_releases: 170px;
-$width_menu_playlist: 250px; // 1
+$width_menu_releases: 130px;
+$width_menu_playlist: 200px; // 1
 $width_menu_date: 160px; // 3
-$width_menu_artists: 200px; // 4
+$width_menu_artists: 190px; // 4
 $width_main: calc(100vw - #{$width_menu_releases} - #{$width_menu_playlist} - #{$width_menu_date} - #{$width_menu_artists}); // 2
 
 // page height
@@ -59,7 +59,7 @@ body {
         &.hide {
             &-player {
                 .main {
-                    grid-area: 4 / 1 / 6 / 1;
+                    grid-area: 3 / 1 / 6 / 1;
                 }
 
                 .footer {
@@ -187,9 +187,9 @@ body {
                     order: 1;
                     //order: 4;
 
-                    button.search {
+                    /*button.search {
                         padding-right: $padding_left_right;
-                    }
+                    }*/
                 }
             }
             // content and menus
@@ -205,7 +205,7 @@ body {
             .menu.items {
                 overflow: auto;
 
-                &.menu {
+                /*&.menu {
                     //overflow: hidden;
 
                     &.artists button {
@@ -220,7 +220,7 @@ body {
                     /*&:hover {
                     overflow: auto;
                 }*/
-                }
+                /*}*/
             }
 
             .content > div {
