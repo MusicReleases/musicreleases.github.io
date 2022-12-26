@@ -21,11 +21,11 @@ jobs:
       run: dotnet workload install wasm-tools
 
     - name: Publish .NET project
-      run: dotnet publish MusicReleases/MusicReleases.csproj -c:Release -p:GHPages=true -o release --nologo
+      run: dotnet publish MusicReleases/MusicReleases.csproj -c:Release -p:GHPages=true -o dist/Web --nologo
 
     # changes the base-tag in index.html from '/' to 'music-releases-blazor' to match GitHub Pages repository subdirectory
     - name: Change base-tag
-      run: sed -i 's/<base href="\/" \/>/<base href="\/music-releases-blazor\/" \/>/g' release/index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/music-releases-blazor\/" \/>/g' dist/Web/index.html
 
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
