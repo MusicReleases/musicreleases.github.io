@@ -1,0 +1,26 @@
+// LOADER
+.loader {
+    border-radius: $height_loader;
+    background-size: 20%;
+    background-repeat: repeat-y;
+    background-position: -25% 0;
+    display: grid;
+    width: 100%;
+    height: $height_loader;
+
+    // loader - active
+    &.active {
+        animation: loader 3s ease-in-out infinite;
+    }
+}
+
+// animation
+@keyframes loader {
+    50% {
+        background-size: 80%;
+    }
+
+    100% {
+        background-position: 125% 0;
+    }
+}

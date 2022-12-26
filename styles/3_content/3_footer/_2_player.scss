@@ -1,0 +1,96 @@
+.footer.player {
+    //padding-bottom: $padding_left_right;
+
+    @include respond(mobile) {
+        padding-bottom: 0;
+
+        button {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        &>div {
+            margin: auto 0;
+        }
+    }
+
+    .timeline {
+        width: 100%;
+        height: 8px;
+        border-radius: 8px;
+        position: relative;
+        top: -4px;
+    }
+
+    // image
+    .cover {
+        max-height: $height_player;
+        max-width: $width_player_image;
+        width: $width_player_image;
+        padding-right: $padding_left_right;
+
+        img {
+            position: relative;
+            bottom: $bottom_player_image;
+            max-height: $width_player_image;
+            max-width: $width_player_image;
+        }
+    }
+
+    // info
+    .actions.primary {
+        .time {
+            button {
+                padding: 0;
+            }
+        }
+    }
+
+    .info {
+        font-size: 20px;
+
+        button {
+            font-size: 20px;
+        }
+
+        @include respond(mobile) {
+            font-size: 18px;
+
+            button {
+                font-size: 18px;
+            }
+        }
+
+        .details {
+            padding-top: $padding_button;
+            padding-bottom: $padding_button;
+
+            @include respond(mobile) {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        @include respond(mobile) {
+            padding-bottom: 0;
+
+            .info .details,
+            button {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        button {
+            padding: 0;
+        }
+    }
+
+    .actions.secondary {
+        .date {
+            button {
+                padding: 0;
+            }
+        }
+    }
+}

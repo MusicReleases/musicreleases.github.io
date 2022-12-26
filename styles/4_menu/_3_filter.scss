@@ -1,0 +1,33 @@
+// FILTER MENU (SECONDARY MENU)
+
+// pc/tablet menu (header)
+//.header.secondary .menu.filter {}
+
+// mobile menu (footer)
+
+.header.secondary .menu.filter,
+.footer.secondary.menu.filter {
+    text-align: left;
+    display: flex;
+    white-space: nowrap;
+    overflow: auto;
+    margin: auto 0;
+    width: 100%;
+
+    .actions {
+        margin-right: 0;
+        margin-left: auto;
+    }
+}
+
+.footer.secondary.menu.filter {
+    button {
+        &:first-child {
+            margin-left: $padding_left_right;
+        }
+
+        &:last-child {
+            margin-right: $padding_left_right;
+        }
+    }
+}

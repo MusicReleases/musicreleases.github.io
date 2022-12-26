@@ -1,0 +1,81 @@
+.list {
+    // TODO možná??? omezit výšku
+    /*max-height: 400px;
+    overflow: auto;*/
+
+    button,
+    input,
+    a {
+        //cursor: pointer;
+        display: flex;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .right {
+        margin-left: auto;
+    }
+
+    i {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    // tracklist
+    &.tracklist {
+        .track {
+            .info {
+                display: flex;
+                flex-wrap: wrap;
+
+                &>* {
+                    margin-right: 5px;
+                }
+
+                .artists {
+                    display: inline-block;
+                    margin: auto 0;
+                    padding: 0 10px;
+
+                    .artist {
+                        display: inline;
+                        padding: 10px 0;
+                    }
+                }
+
+                .right {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+
+    // playlists
+    &.playlists {
+        .update {
+            i {
+                margin: 0;
+            }
+        }
+
+        .new,
+        .row .add:first-child {
+            width: calc(100% - 20px);
+        }
+    }
+}
+
+.settings,
+.login {
+    .list {
+
+        button,
+        a:first-child {
+            width: calc(100% - 20px);
+        }
+    }
+}

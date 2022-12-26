@@ -1,0 +1,385 @@
+// PAGE LAYOUT
+
+$spaces: 30px;
+$cover_width: 140px;
+
+$height_footer_menu: 60px;
+$margin_right_icon: 5px;
+
+
+// page width
+$width_menu_releases: 130px;
+$width_menu_playlist: 200px; // 1
+$width_menu_date: 160px; // 3
+$width_menu_artists: 190px; // 4
+$width_main: calc(100vw - #{$width_menu_releases} - #{$width_menu_playlist} - #{$width_menu_date} - #{$width_menu_artists}); // 2
+
+// page height
+$height_loader: 4px; // 1
+$height_header_primary: 35px; // pc 2
+//$height_header_secondary: 48px; // pc 3 = deleted
+$height_header_secondary: 40px; // pc 3
+$height_player: 100px; // pc 5
+$height_player_mobile: 40px; // mobile 3
+$height_menu_mobile_filter: 50px; // mobile 4
+$height_menu_mobile_releases: 60px; // mobile 5
+$height_main: calc(100vh - #{$height_loader} - #{$height_header_primary} - #{$height_header_secondary} - #{$height_player}); // mobile 2, pc 4
+
+
+// content -ok
+
+$padding_left_right: 20px;
+$padding_button: 10px;
+$bottom_player_image: 60px;
+
+$height_menu_mobile_round_button: 24px;
+$width_menu_mobile_items: 250px;
+$width_player_image: calc(#{$height_player} + 40px);
+
+body {
+    @include respond(pctab) {
+        height: 100vh;
+        overflow: hidden;
+    }
+}
+
+.body.classic {
+    display: grid;
+    grid-auto-columns: 1fr;
+    gap: 0px 0px;
+    // pc
+    @include respond(pctab) {
+        /*height: 100vh;
+        overflow: hidden;*/
+
+        grid-template-columns: auto;
+        // loader, primary header, secondary header, content, player
+        grid-template-rows: $height_loader $height_header_primary $height_header_secondary $height_main $height_player;
+        // hide menus and player
+        &.hide {
+            &-player {
+                .main {
+                    grid-area: 3 / 1 / 6 / 1;
+                }
+
+                .footer {
+                    &.player {
+                        display: none;
+                    }
+                }
+            }
+
+            &-menu {
+                &-playlists {
+                    .main {
+                        .menu.items.playlists {
+                            display: none;
+                        }
+                        // content
+                        .content.page {
+                            width: auto;
+                            min-width: auto;
+                        }
+                    }
+                }
+
+                &-date {
+                    .main {
+                        .menu.items.date {
+                            display: none;
+                        }
+                        // content
+                        .content.page {
+                            width: auto;
+                            min-width: auto;
+                        }
+                    }
+                }
+
+                &-artists {
+                    // order secondary header icons
+                    .header.secondary .menu {
+                        &.date {
+                            order: 4;
+
+                            button.search {
+                                padding-right: $padding_left_right;
+                            }
+                        }
+
+                        &.artists {
+                            order: 3;
+                        }
+                    }
+
+                    .main {
+                        // content
+                        .content.page {
+                            width: auto;
+                            min-width: auto;
+                        }
+
+                        .menu.items.date button {
+                            padding-right: $padding_left_right;
+                            width: calc(100% - #{$padding_button} - #{$padding_left_right});
+                        }
+
+                        .menu.items.artists {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+        // headers
+        .header {
+            &.loader {
+                grid-area: 1 / 1 / 2 / 1;
+            }
+
+            &.primary {
+                grid-area: 2 / 1 / 3 / 1;
+            }
+
+            &.secondary {
+                grid-area: 2 / 1 / 3 / 1;
+                //grid-area: 3 / 1 / 4 / 1;
+            }
+        }
+        // main content
+        .main {
+            grid-area: 3 / 1 / 5 / 1;
+            //grid-area: 4 / 1 / 5 / 1;
+        }
+
+        .main .menu.releases button:last-child {
+            margin-bottom: $bottom_player_image;
+        }
+        // secondary header and main content
+        .header.secondary,
+        .main {
+            display: inline-flex;
+            // menus
+            .menu {
+                &.releases {
+                    width: $width_menu_releases;
+                    min-width: $width_menu_releases;
+                    order: 0;
+                }
+
+                &.playlists {
+                    width: $width_menu_playlist;
+                    min-width: $width_menu_playlist;
+                    //order: 1;
+                    order: 4;
+                }
+
+                &.date {
+                    width: $width_menu_date;
+                    min-width: $width_menu_date;
+                    //order: 1;
+                    order: 2;
+                }
+
+                &.artists {
+                    width: $width_menu_artists;
+                    min-width: $width_menu_artists;
+                    order: 1;
+                    //order: 4;
+
+                    /*button.search {
+                        padding-right: $padding_left_right;
+                    }*/
+                }
+            }
+            // content and menus
+            .menu.filter,
+            .content.page {
+                width: $width_main;
+                min-width: $width_main;
+                //order: 1;
+                order: 3;
+            }
+
+            .content,
+            .menu.items {
+                overflow: auto;
+
+                /*&.menu {
+                    //overflow: hidden;
+
+                    &.artists button {
+                        padding-right: $padding_left_right;
+                        width: calc(100% - #{$padding_button} - #{$padding_left_right});
+                    }
+
+                    &.playlists button {
+                        padding-left: $padding_left_right;
+                        width: calc(100% - #{$padding_button} - #{$padding_left_right});
+                    }
+                    /*&:hover {
+                    overflow: auto;
+                }*/
+                /*}*/
+            }
+
+            .content > div {
+                margin-top: 20px;
+                margin-bottom: $bottom_player_image;
+            }
+        }
+        // footer
+        .footer {
+            &.player {
+                grid-area: 5 / 1 / 6 / 1;
+                //display: inline-flex;
+                display: grid;
+                grid-auto-columns: 1fr;
+                gap: 0px 0px;
+                grid-template-rows: 4px auto;
+                grid-template-columns: calc(#{$width_player_image} + 2 * #{$padding_left_right}) 220px auto 220px;
+
+                .timeline {
+                    grid-area: 1 / 1 / 2 / 5;
+                    margin-left: calc(#{$width_player_image} + 2 * #{$padding_left_right});
+                    margin-right: $padding_left_right;
+                    width: calc(100% - #{$width_player_image} - 3 * #{$padding_left_right});
+                }
+
+                .cover {
+                    grid-area: 2 / 1 / 3 / 2;
+                }
+
+                .actions {
+                    &.primary {
+                        grid-area: 2 / 2 / 3 / 3;
+                    }
+
+                    &.secondary {
+                        grid-area: 2 / 4 / 3 / 5;
+                    }
+                }
+
+                .info {
+                    grid-area: 2 / 3 / 3 / 4;
+                }
+            }
+        }
+    }
+    // mobile
+    @include respond(mobile) {
+        grid-template-columns: auto;
+        // loader, content, player, mobile menu filer, mobile menu releases
+        grid-template-rows: $height_loader 100% $height_player_mobile $height_menu_mobile_filter $height_menu_mobile_releases;
+        height: auto;
+        overflow: auto;
+        // hide player
+        &.hide-player {
+            .main {
+                grid-area: 2 / 1 / 4 / 1;
+            }
+
+            .footer.player {
+                display: none;
+            }
+        }
+        // header
+        .header {
+            &.loader {
+                grid-area: 1 / 1 / 2 / 1;
+                position: fixed;
+                top: 0;
+            }
+
+            &.primary {
+                display: none;
+            }
+
+            &.secondary {
+                display: none;
+            }
+        }
+        // main content and menus
+        .main {
+            grid-area: 2 / 1 / 3 / 1;
+            display: inline-flex;
+
+            .content > div {
+                margin-top: 20px;
+                margin-bottom: 160px;
+            }
+            // menus
+            .menu {
+                display: none;
+                width: 100%;
+                min-width: 100%;
+                /*&.playlists {
+                display: block;
+            }*/
+                /*&.date {
+                display: block;
+            }*/
+                /*&.artists {
+                display: block;
+            }*/
+            }
+
+
+            .page.content {
+                //display: none;
+                order: 2;
+            }
+        }
+        // footer
+        .footer {
+            &.player {
+                position: fixed;
+                bottom: calc(#{$height_menu_mobile_releases} + #{$height_menu_mobile_filter});
+                height: $height_player_mobile;
+                display: flex;
+                white-space: nowrap;
+                overflow: auto;
+                margin: auto 0;
+                width: 100%;
+
+                .cover,
+                .timeline,
+                .actions.secondary,
+                .time {
+                    display: none;
+                }
+
+
+                .actions.primary .prev {
+                    padding-left: $padding_left_right;
+                }
+                // TODO show player
+                //display: none;
+                /*grid-area: 3 / 1 / 4 / 1;
+            display: grid;
+            position: fixed;
+            bottom: $filter_menu_mobile_height + $releases_menu_mobile_height;
+            height: $player_height;
+            width: 100%;*/
+            }
+
+            &.menu {
+                &.filter {
+                    grid-area: 4 / 1 / 5 / 1;
+                    position: fixed;
+                    bottom: $height_menu_mobile_releases;
+                    height: $height_menu_mobile_filter;
+                }
+
+                &.releases {
+                    grid-area: 5 / 1 / 6 / 1;
+                    display: grid;
+                    position: fixed;
+                    bottom: 0;
+                    width: 100%;
+                    height: $height_menu_mobile_releases;
+                }
+            }
+        }
+    }
+}

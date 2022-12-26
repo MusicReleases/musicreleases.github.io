@@ -1,0 +1,186 @@
+.main .content.page .releases {
+    &.boxes .release {
+
+        @media only screen and (max-width: 69px) {
+            padding: 0;
+        }
+
+        &>div {
+            width: 100%;
+            padding: 0;
+        }
+
+        &>.info {
+            .cover {
+                margin-right: $spaces;
+                max-width: $cover_width;
+                max-height: $cover_width;
+                float: left;
+
+                @media only screen and (max-width: 1099px) {
+                    max-width: 100px;
+                    max-height: 100px;
+                }
+
+                @media only screen and (max-width: 159px) {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            }
+
+            .name {
+                font-size: 24px;
+            }
+
+            .artists {
+                .artist {
+                    font-size: 20px;
+
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                }
+            }
+
+            .date {
+                font-size: 18px;
+                margin-bottom: 8px;
+
+                button {
+                    padding: 0;
+                    margin: 0;
+                    font-size: 18px;
+                }
+            }
+        }
+
+        &>.buttons {
+            .tracklist {
+                padding-left: 0;
+
+                span {
+                    font-size: 70%;
+                }
+            }
+
+            button {
+                font-size: 25px;
+                margin: 0;
+                padding: 6px;
+            }
+        }
+    }
+
+    &.texts .release {
+        padding: 15px 30px;
+        margin: 0px;
+
+        &>div {
+            //width: 100%;
+            padding: 0;
+        }
+
+        &>.info {
+            .cover {
+                display: none;
+            }
+
+            .duration,
+            .date {
+                display: none;
+            }
+
+            .name {
+                float: left;
+                font-size: 18px;
+                margin-right: 10px;
+            }
+
+            .artists {
+                .artist {
+                    font-size: 15px;
+                    padding-top: 0;
+                    padding-bottom: 0;
+
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &.lists .release {
+        padding: 15px 30px;
+        margin-bottom: 10px;
+
+        &>div {
+            width: 100%;
+            padding: 0;
+        }
+
+        &>.info {
+            .cover {
+                margin-right: 20px;
+                max-width: 70px;
+                max-height: 70px;
+                float: left;
+
+                @media only screen and (max-width: 1099px) {
+                    max-width: 100px;
+                    max-height: 100px;
+                }
+
+                @media only screen and (max-width: 159px) {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            }
+
+            .name {
+                font-size: 18px;
+            }
+
+            .artists {
+                .artist {
+                    font-size: 15px;
+
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                }
+            }
+
+            .date {
+                font-size: 14px;
+                margin-bottom: 8px;
+                float: left;
+                margin-right: 20px;
+
+                button {
+                    padding: 0;
+                    margin: 0;
+                    font-size: 14px;
+                }
+            }
+
+            .duration {
+                font-size: 14px;
+            }
+
+            .tracklist {
+                padding-left: 0;
+
+                span {
+                    font-size: 70%;
+                }
+            }
+
+            button {
+                font-size: 14px;
+                margin: 0;
+                padding: 6px;
+            }
+        }
+    }
+}

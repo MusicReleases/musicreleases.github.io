@@ -1,0 +1,45 @@
+﻿// buttons
+button {
+    cursor: pointer;
+    border: none;
+    //background-color: transparent;
+    box-sizing: content-box;
+    font-size: 18px;
+    padding: $padding_button;
+    display: inline-block;
+    // add to library button
+    &.active {
+        .fa-heart {
+            font-weight: 900;
+        }
+
+        &:hover .fa-heart {
+            font-weight: 400;
+        }
+    }
+
+    &:hover .fa-heart {
+        font-weight: 900;
+    }
+}
+
+.buttons-rounded {
+
+    &-m button {
+        font-size: 15px;
+        padding: 5px 10px;
+        border-radius: 16px;
+    }
+
+    &-l button {
+        font-size: 16px;
+        padding: 5px 10px;
+        border-radius: 16px;
+    }
+
+    &-xl button {
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+}

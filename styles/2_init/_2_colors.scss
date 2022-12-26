@@ -1,0 +1,354 @@
+/** COLORS
+ *  Colors for themes (light, dark, color).
+ */
+
+$color_text_button: rgb(26, 178, 107);
+
+// TODO delete
+$color_0: rgb(0, 0, 0);
+
+// 0 čistá
+// 1 body
+// 2 header footer
+// 3,4 hover
+
+
+// theme
+// 1 = light
+// 2 = dark
+// 3 = color
+@mixin theme-colors($theme: 2) {
+    // -> init colors
+    // dark colors
+    $color_1: rgb(6, 6, 6);
+    $color_2: rgb(16, 16, 16);
+    $color_3: rgb(26, 26, 26);
+    $color_4: rgb(36, 36, 36);
+    $color_5: rgb(46, 46, 46);
+    $color_6: rgb(56, 56, 56);
+    $color_7: rgb(66, 66, 66);
+
+    $color_text: rgb(255, 255, 255);
+
+    // light colors
+    @if $theme==1 {
+        $color_1: rgb(255, 255, 255);
+        $color_2: rgb(245, 245, 245);
+        $color_3: rgb(235, 235, 235);
+        $color_4: rgb(225, 225, 225);
+        $color_5: rgb(215, 215, 215);
+        $color_6: rgb(205, 205, 205);
+        $color_7: rgb(195, 195, 195);
+
+        $color_text: rgb(0, 0, 0);
+    }
+
+    // color theme$
+    @if $theme==3 {
+        // https://coolors.co/293f14-386c0b-388a06-38a700-31d843-3eff8b-50ff96
+        $color_1: rgb(41, 63, 20);
+        $color_2: rgb(56, 138, 6);
+        $color_3: rgb(56, 108, 11);
+        $color_4: rgb(56, 167, 0);
+        $color_5: rgb(49, 216, 67);
+        $color_6: rgb(62, 255, 139);
+        $color_7: rgb(80, 255, 150);
+    }
+
+
+    // body
+    color: $color_text;
+    background-color: $color_1;
+
+    @include respond(mobile) {
+        background-color: $color_2;
+    }
+
+    // header
+    h2 {
+        color: $color_text_button;
+    }
+
+    // buttons
+    button {
+        color: $color_text;
+
+        &.active {
+            color: $color_text_button;
+        }
+    }
+
+    // links
+    a {
+        color: $color_text;
+    }
+
+    // scrollbars
+
+    // firefox
+    .scroll {
+        scrollbar-color: $color_6 transparent;
+    }
+
+    // chrome
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-track:horizontal {
+        background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb,
+    ::-webkit-scrollbar-thumb:horizontal {
+        background-color: $color_6;
+
+        &:hover {
+            background-color: rgb(106, 106, 106);
+        }
+    }
+
+    // text input
+    input {
+        background-color: $color_1;
+        color: $color_text;
+
+        &:focus {
+            outline: none !important;
+            background-color: $color_2;
+        }
+    }
+
+    // primarary header
+    .header.primary {
+        background-color: $color_1;
+
+        .page-name {
+            color: $color_text_button;
+        }
+
+
+        // buttons
+        button {
+            background-color: $color_1;
+
+            &.active {
+                background-color: $color_3;
+            }
+
+            &:hover {
+                background-color: $color_3;
+            }
+        }
+
+        .user:hover {
+            button {
+                background-color: $color_3;
+            }
+
+            .menu.hover.items button {
+                &:hover {
+                    background-color: $color_5;
+                }
+            }
+        }
+    }
+
+
+    // secondary header filter
+    .header.secondary .menu.filter,
+    .footer.secondary.menu.filter {
+        background-color: $color_2;
+
+        button {
+            background-color: $color_1;
+
+            &:hover,
+            &.active {
+                background-color: $color_text_button;
+                color: $color_1;
+            }
+        }
+    }
+
+    // menu
+    .header.secondary,
+    .main {
+        .menu button {
+
+            &.active,
+            &:hover {
+                background-color: $color_3;
+            }
+        }
+    }
+
+
+    .header.secondary,
+    .main {
+        background-color: $color_2;
+
+        button {
+            background-color: transparent;
+        }
+    }
+
+    .main .box {
+        background-color: $color_1;
+    }
+
+    // releases
+    .main .releases .release {
+        .info {
+
+            button,
+            a {
+                &:hover {
+                    background-color: transparent;
+                    color: $color_text_button;
+                }
+            }
+        }
+    }
+
+    // lists
+    .list {
+
+        &.tracklist .list.playlists button,
+        button,
+        a {
+
+            &.active,
+            &:hover {
+                background-color: $color_2;
+            }
+        }
+
+        &.tracklist {
+            button {
+
+                &.active,
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+
+    // footer player
+    .footer.player {
+        @include respond(pctab) {
+            background-color: $color_1;
+
+            button,
+            a {
+                background-color: $color_1;
+
+                &:hover {
+                    background-color: transparent;
+                    color: $color_text_button;
+                }
+            }
+        }
+
+        @include respond(mobile) {
+            background-color: $color_2;
+
+            button,
+            a {
+                background-color: $color_2;
+
+                &:hover {
+                    background-color: transparent;
+                    color: $color_text_button;
+                }
+            }
+        }
+
+        .timeline {
+            background-color: $color_text_button;
+
+            @for $i from 0 through 100 {
+                &.width-#{$i} {
+                    $width: $i + '%';
+                    background: linear-gradient(to right, $color_text_button #{$width}, $color_6 0%);
+                }
+            }
+        }
+    }
+
+    .footer.menu.releases {
+        background-color: $color_1;
+
+        button {
+            background-color: transparent;
+
+            &.active,
+            &:hover {
+                background-color: $color_2;
+            }
+        }
+    }
+
+    .footer.menu.mobile {
+        button {
+            background-color: $color_4;
+
+            &:hover {
+                background-color: $color_3;
+            }
+        }
+
+        .hover.items {
+            background-color: $color_1;
+
+            p,
+            button {
+                background-color: transparent;
+            }
+
+            p {
+                color: $color_text_button;
+            }
+
+            button:hover {
+                background-color: $color_2;
+            }
+        }
+    }
+
+    .footer.menu.releases {
+        .menu.hover.items {
+            background-color: $color_1;
+        }
+    }
+
+
+    .main .content .login {
+        button {
+            background-color: $color_1;
+
+            &:hover {
+                background-color: $color_3;
+            }
+        }
+    }
+}
+
+// dark mode
+@media (prefers-color-scheme: dark) {
+    .body {
+        @include theme-colors($theme: 2);
+
+        &.light {
+            @include theme-colors($theme: 1);
+        }
+
+        &.color {
+            @include theme-colors($theme: 3);
+        }
+    }
+}
+
+.loader {
+    background-color: transparent;
+    background: linear-gradient(to right, $color_text_button, $color_text_button);
+}
