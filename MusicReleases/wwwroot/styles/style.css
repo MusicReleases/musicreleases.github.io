@@ -259,12 +259,24 @@
     display: none;
   }
 }
-@keyframes spin {
+@-webkit-keyframes spin {
   0% {
-    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
   }
   100% {
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 /** COLORS
@@ -443,306 +455,508 @@
     background-color: rgb(26, 178, 107);
   }
   .body .footer.player .timeline.width-0 {
+    background: -webkit-gradient(linear, left top, right top, from(rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 0%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 0%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-1 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(1%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 1%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 1%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-2 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(2%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 2%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 2%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-3 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(3%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 3%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 3%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-4 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(4%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 4%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 4%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-5 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(5%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 5%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 5%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-6 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(6%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 6%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 6%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-7 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(7%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 7%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 7%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-8 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(8%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 8%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 8%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-9 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(9%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 9%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 9%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-10 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(10%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 10%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 10%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-11 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(11%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 11%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 11%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-12 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(12%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 12%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 12%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-13 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(13%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 13%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 13%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-14 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(14%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 14%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 14%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-15 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(15%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 15%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 15%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-16 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(16%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 16%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 16%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-17 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(17%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 17%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 17%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-18 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(18%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 18%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 18%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-19 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(19%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 19%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 19%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-20 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(20%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 20%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 20%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-21 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(21%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 21%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 21%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-22 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(22%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 22%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 22%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-23 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(23%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 23%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 23%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-24 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(24%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 24%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 24%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-25 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(25%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 25%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 25%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-26 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(26%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 26%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 26%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-27 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(27%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 27%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 27%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-28 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(28%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 28%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 28%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-29 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(29%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 29%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 29%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-30 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(30%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 30%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 30%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-31 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(31%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 31%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 31%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-32 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(32%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 32%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 32%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-33 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(33%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 33%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 33%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-34 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(34%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 34%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 34%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-35 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(35%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 35%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 35%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-36 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(36%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 36%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 36%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-37 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(37%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 37%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 37%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-38 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(38%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 38%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 38%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-39 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(39%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 39%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 39%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-40 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(40%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 40%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 40%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-41 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(41%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 41%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 41%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-42 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(42%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 42%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 42%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-43 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(43%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 43%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 43%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-44 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(44%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 44%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 44%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-45 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(45%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 45%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 45%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-46 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(46%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 46%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 46%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-47 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(47%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 47%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 47%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-48 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(48%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 48%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 48%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-49 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(49%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 49%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 49%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-50 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(50%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 50%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 50%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-51 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(51%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 51%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 51%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-52 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(52%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 52%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 52%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-53 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(53%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 53%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 53%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-54 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(54%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 54%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 54%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-55 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(55%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 55%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 55%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-56 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(56%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 56%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 56%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-57 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(57%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 57%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 57%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-58 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(58%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 58%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 58%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-59 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(59%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 59%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 59%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-60 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(60%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 60%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 60%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-61 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(61%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 61%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 61%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-62 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(62%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 62%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 62%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-63 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(63%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 63%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 63%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-64 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(64%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 64%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 64%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-65 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(65%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 65%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 65%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-66 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(66%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 66%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 66%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-67 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(67%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 67%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 67%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-68 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(68%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 68%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 68%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-69 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(69%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 69%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 69%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-70 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(70%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 70%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 70%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-71 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(71%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 71%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 71%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-72 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(72%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 72%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 72%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-73 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(73%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 73%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 73%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-74 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(74%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 74%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 74%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-75 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(75%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 75%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 75%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-76 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(76%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 76%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 76%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-77 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(77%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 77%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 77%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-78 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(78%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 78%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 78%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-79 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(79%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 79%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 79%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-80 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(80%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 80%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 80%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-81 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(81%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 81%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 81%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-82 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(82%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 82%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 82%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-83 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(83%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 83%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 83%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-84 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(84%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 84%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 84%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-85 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(85%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 85%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 85%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-86 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(86%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 86%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 86%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-87 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(87%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 87%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 87%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-88 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(88%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 88%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 88%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-89 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(89%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 89%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 89%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-90 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(90%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 90%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 90%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-91 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(91%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 91%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 91%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-92 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(92%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 92%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 92%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-93 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(93%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 93%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 93%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-94 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(94%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 94%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 94%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-95 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(95%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 95%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 95%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-96 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(96%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 96%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 96%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-97 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(97%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 97%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 97%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-98 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(98%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 98%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 98%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-99 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(99%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 99%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 99%, rgb(56, 56, 56) 0%);
   }
   .body .footer.player .timeline.width-100 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(100%, rgb(26, 178, 107)), color-stop(0%, rgb(56, 56, 56)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 100%, rgb(56, 56, 56) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 100%, rgb(56, 56, 56) 0%);
   }
 }
@@ -964,306 +1178,508 @@
     background-color: rgb(26, 178, 107);
   }
   .body.light .footer.player .timeline.width-0 {
+    background: -webkit-gradient(linear, left top, right top, from(rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 0%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 0%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-1 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(1%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 1%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 1%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-2 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(2%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 2%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 2%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-3 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(3%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 3%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 3%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-4 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(4%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 4%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 4%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-5 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(5%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 5%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 5%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-6 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(6%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 6%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 6%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-7 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(7%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 7%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 7%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-8 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(8%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 8%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 8%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-9 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(9%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 9%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 9%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-10 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(10%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 10%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 10%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-11 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(11%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 11%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 11%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-12 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(12%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 12%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 12%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-13 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(13%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 13%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 13%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-14 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(14%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 14%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 14%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-15 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(15%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 15%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 15%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-16 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(16%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 16%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 16%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-17 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(17%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 17%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 17%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-18 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(18%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 18%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 18%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-19 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(19%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 19%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 19%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-20 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(20%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 20%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 20%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-21 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(21%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 21%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 21%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-22 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(22%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 22%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 22%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-23 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(23%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 23%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 23%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-24 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(24%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 24%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 24%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-25 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(25%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 25%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 25%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-26 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(26%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 26%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 26%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-27 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(27%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 27%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 27%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-28 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(28%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 28%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 28%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-29 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(29%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 29%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 29%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-30 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(30%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 30%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 30%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-31 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(31%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 31%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 31%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-32 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(32%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 32%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 32%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-33 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(33%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 33%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 33%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-34 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(34%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 34%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 34%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-35 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(35%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 35%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 35%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-36 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(36%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 36%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 36%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-37 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(37%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 37%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 37%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-38 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(38%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 38%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 38%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-39 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(39%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 39%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 39%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-40 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(40%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 40%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 40%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-41 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(41%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 41%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 41%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-42 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(42%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 42%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 42%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-43 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(43%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 43%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 43%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-44 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(44%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 44%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 44%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-45 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(45%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 45%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 45%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-46 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(46%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 46%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 46%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-47 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(47%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 47%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 47%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-48 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(48%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 48%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 48%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-49 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(49%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 49%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 49%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-50 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(50%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 50%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 50%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-51 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(51%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 51%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 51%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-52 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(52%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 52%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 52%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-53 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(53%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 53%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 53%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-54 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(54%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 54%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 54%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-55 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(55%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 55%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 55%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-56 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(56%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 56%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 56%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-57 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(57%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 57%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 57%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-58 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(58%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 58%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 58%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-59 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(59%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 59%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 59%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-60 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(60%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 60%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 60%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-61 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(61%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 61%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 61%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-62 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(62%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 62%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 62%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-63 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(63%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 63%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 63%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-64 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(64%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 64%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 64%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-65 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(65%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 65%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 65%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-66 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(66%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 66%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 66%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-67 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(67%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 67%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 67%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-68 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(68%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 68%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 68%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-69 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(69%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 69%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 69%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-70 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(70%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 70%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 70%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-71 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(71%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 71%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 71%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-72 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(72%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 72%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 72%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-73 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(73%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 73%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 73%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-74 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(74%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 74%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 74%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-75 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(75%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 75%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 75%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-76 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(76%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 76%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 76%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-77 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(77%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 77%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 77%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-78 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(78%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 78%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 78%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-79 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(79%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 79%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 79%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-80 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(80%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 80%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 80%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-81 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(81%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 81%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 81%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-82 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(82%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 82%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 82%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-83 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(83%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 83%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 83%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-84 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(84%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 84%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 84%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-85 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(85%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 85%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 85%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-86 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(86%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 86%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 86%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-87 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(87%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 87%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 87%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-88 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(88%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 88%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 88%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-89 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(89%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 89%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 89%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-90 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(90%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 90%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 90%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-91 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(91%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 91%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 91%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-92 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(92%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 92%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 92%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-93 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(93%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 93%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 93%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-94 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(94%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 94%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 94%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-95 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(95%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 95%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 95%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-96 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(96%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 96%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 96%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-97 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(97%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 97%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 97%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-98 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(98%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 98%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 98%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-99 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(99%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 99%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 99%, rgb(205, 205, 205) 0%);
   }
   .body.light .footer.player .timeline.width-100 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(100%, rgb(26, 178, 107)), color-stop(0%, rgb(205, 205, 205)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 100%, rgb(205, 205, 205) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 100%, rgb(205, 205, 205) 0%);
   }
 }
@@ -1485,306 +1901,508 @@
     background-color: rgb(26, 178, 107);
   }
   .body.color .footer.player .timeline.width-0 {
+    background: -webkit-gradient(linear, left top, right top, from(rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 0%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 0%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-1 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(1%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 1%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 1%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-2 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(2%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 2%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 2%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-3 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(3%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 3%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 3%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-4 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(4%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 4%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 4%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-5 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(5%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 5%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 5%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-6 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(6%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 6%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 6%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-7 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(7%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 7%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 7%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-8 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(8%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 8%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 8%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-9 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(9%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 9%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 9%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-10 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(10%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 10%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 10%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-11 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(11%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 11%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 11%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-12 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(12%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 12%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 12%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-13 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(13%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 13%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 13%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-14 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(14%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 14%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 14%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-15 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(15%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 15%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 15%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-16 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(16%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 16%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 16%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-17 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(17%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 17%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 17%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-18 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(18%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 18%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 18%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-19 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(19%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 19%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 19%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-20 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(20%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 20%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 20%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-21 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(21%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 21%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 21%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-22 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(22%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 22%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 22%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-23 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(23%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 23%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 23%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-24 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(24%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 24%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 24%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-25 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(25%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 25%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 25%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-26 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(26%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 26%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 26%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-27 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(27%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 27%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 27%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-28 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(28%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 28%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 28%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-29 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(29%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 29%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 29%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-30 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(30%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 30%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 30%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-31 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(31%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 31%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 31%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-32 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(32%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 32%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 32%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-33 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(33%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 33%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 33%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-34 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(34%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 34%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 34%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-35 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(35%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 35%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 35%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-36 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(36%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 36%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 36%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-37 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(37%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 37%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 37%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-38 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(38%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 38%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 38%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-39 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(39%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 39%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 39%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-40 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(40%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 40%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 40%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-41 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(41%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 41%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 41%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-42 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(42%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 42%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 42%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-43 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(43%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 43%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 43%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-44 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(44%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 44%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 44%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-45 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(45%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 45%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 45%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-46 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(46%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 46%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 46%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-47 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(47%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 47%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 47%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-48 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(48%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 48%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 48%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-49 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(49%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 49%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 49%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-50 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(50%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 50%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 50%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-51 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(51%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 51%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 51%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-52 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(52%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 52%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 52%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-53 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(53%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 53%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 53%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-54 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(54%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 54%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 54%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-55 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(55%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 55%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 55%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-56 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(56%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 56%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 56%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-57 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(57%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 57%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 57%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-58 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(58%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 58%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 58%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-59 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(59%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 59%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 59%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-60 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(60%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 60%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 60%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-61 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(61%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 61%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 61%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-62 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(62%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 62%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 62%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-63 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(63%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 63%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 63%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-64 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(64%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 64%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 64%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-65 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(65%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 65%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 65%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-66 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(66%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 66%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 66%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-67 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(67%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 67%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 67%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-68 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(68%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 68%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 68%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-69 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(69%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 69%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 69%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-70 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(70%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 70%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 70%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-71 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(71%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 71%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 71%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-72 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(72%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 72%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 72%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-73 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(73%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 73%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 73%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-74 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(74%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 74%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 74%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-75 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(75%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 75%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 75%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-76 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(76%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 76%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 76%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-77 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(77%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 77%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 77%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-78 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(78%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 78%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 78%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-79 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(79%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 79%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 79%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-80 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(80%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 80%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 80%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-81 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(81%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 81%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 81%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-82 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(82%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 82%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 82%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-83 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(83%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 83%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 83%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-84 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(84%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 84%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 84%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-85 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(85%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 85%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 85%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-86 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(86%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 86%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 86%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-87 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(87%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 87%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 87%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-88 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(88%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 88%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 88%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-89 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(89%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 89%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 89%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-90 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(90%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 90%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 90%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-91 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(91%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 91%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 91%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-92 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(92%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 92%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 92%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-93 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(93%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 93%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 93%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-94 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(94%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 94%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 94%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-95 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(95%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 95%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 95%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-96 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(96%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 96%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 96%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-97 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(97%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 97%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 97%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-98 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(98%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 98%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 98%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-99 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(99%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 99%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 99%, rgb(62, 255, 139) 0%);
   }
   .body.color .footer.player .timeline.width-100 {
+    background: -webkit-gradient(linear, left top, right top, color-stop(100%, rgb(26, 178, 107)), color-stop(0%, rgb(62, 255, 139)));
+    background: -o-linear-gradient(left, rgb(26, 178, 107) 100%, rgb(62, 255, 139) 0%);
     background: linear-gradient(to right, rgb(26, 178, 107) 100%, rgb(62, 255, 139) 0%);
   }
 }
@@ -1835,6 +2453,8 @@
 }
 .loader {
   background-color: transparent;
+  background: -webkit-gradient(linear, left top, right top, from(rgb(26, 178, 107)), to(rgb(26, 178, 107)));
+  background: -o-linear-gradient(left, rgb(26, 178, 107), rgb(26, 178, 107));
   background: linear-gradient(to right, rgb(26, 178, 107), rgb(26, 178, 107));
 }
 
@@ -1878,13 +2498,17 @@
     min-width: auto;
   }
   .body.classic.hide-menu-artists .header.secondary .menu.date {
-    order: 4;
+    -webkit-box-ordinal-group: 5;
+        -ms-flex-order: 4;
+            order: 4;
   }
   .body.classic.hide-menu-artists .header.secondary .menu.date button.search {
     padding-right: 20px;
   }
   .body.classic.hide-menu-artists .header.secondary .menu.artists {
-    order: 3;
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
   }
   .body.classic.hide-menu-artists .main .content.page {
     width: auto;
@@ -1914,31 +2538,41 @@
   }
   .body.classic .header.secondary,
   .body.classic .main {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
   }
   .body.classic .header.secondary .menu.releases,
   .body.classic .main .menu.releases {
     width: 130px;
     min-width: 130px;
-    order: 0;
+    -webkit-box-ordinal-group: 1;
+        -ms-flex-order: 0;
+            order: 0;
   }
   .body.classic .header.secondary .menu.playlists,
   .body.classic .main .menu.playlists {
     width: 200px;
     min-width: 200px;
-    order: 4;
+    -webkit-box-ordinal-group: 5;
+        -ms-flex-order: 4;
+            order: 4;
   }
   .body.classic .header.secondary .menu.date,
   .body.classic .main .menu.date {
     width: 160px;
     min-width: 160px;
-    order: 2;
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
   }
   .body.classic .header.secondary .menu.artists,
   .body.classic .main .menu.artists {
     width: 190px;
     min-width: 190px;
-    order: 1;
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
     /*button.search {
         padding-right: $padding_left_right;
     }*/
@@ -1949,7 +2583,9 @@
   .body.classic .main .content.page {
     width: calc(100vw - 130px - 200px - 160px - 190px);
     min-width: calc(100vw - 130px - 200px - 160px - 190px);
-    order: 3;
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
   }
   .body.classic .header.secondary .content,
   .body.classic .header.secondary .menu.items,
@@ -2031,6 +2667,8 @@
   }
   .body.classic .main {
     grid-area: 2/1/3/1;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
   }
   .body.classic .main .content > div {
@@ -2052,12 +2690,16 @@
     }*/
   }
   .body.classic .main .page.content {
-    order: 2;
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
   }
   .body.classic .footer.player {
     position: fixed;
     bottom: calc(60px + 50px);
     height: 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     white-space: nowrap;
     overflow: auto;
@@ -2195,6 +2837,8 @@ input {
   margin: auto;
 }
 .header.secondary .menu.releases.logo button {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   padding: 0 5px;
   height: auto;
@@ -2210,23 +2854,33 @@ input {
   height: 25px;
 }
 .header.secondary .menu.releases.logo:hover > .favicon {
-  animation: spin 2s linear infinite;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
 }
 
 .main .menu.releases {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 .main .menu.releases .user {
   margin-top: auto;
 }
 
 .header.primary {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
 }
 .header.primary .page-name {
   cursor: context-menu;
   padding: 4px 10px 16px 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   font-weight: 800;
 }
@@ -2239,7 +2893,8 @@ input {
   margin-left: 5px;
 }
 .header.primary .page-name:hover > .favicon {
-  animation: spin 2s linear infinite;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
 }
 .header.primary .menu.actions {
   margin-left: auto;
@@ -2258,6 +2913,8 @@ input {
   margin-bottom: auto;
 }
 .header.primary .user button.menu.hover {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
 }
 .header.primary .user.menu.items button {
@@ -2535,6 +3192,8 @@ input {
 }
 
 .header.secondary .menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   /*button.search {
       display: none;
@@ -2587,7 +3246,9 @@ input {
   display: grid;
   grid-template-rows: 1fr;
   gap: 0px 0px;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   justify-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
@@ -2619,6 +3280,8 @@ input {
   }
   .footer.menu.releases .hover .appears,
   .footer.menu.releases .hover .compilations {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
   }
 }
@@ -2630,6 +3293,8 @@ input {
     display: none;
   }
   .footer.menu.releases .hover .podcasts {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
   }
 }
@@ -2641,6 +3306,8 @@ input {
     display: none;
   }
   .footer.menu.releases .hover .tracks {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
   }
 }
@@ -2652,6 +3319,8 @@ input {
     display: none;
   }
   .footer.menu.releases .hover .albums {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
   }
 }
@@ -2690,6 +3359,8 @@ input {
 .header.secondary .menu.filter,
 .footer.secondary.menu.filter {
   text-align: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   white-space: nowrap;
   overflow: auto;
@@ -2721,14 +3392,23 @@ input {
   bottom: calc(40px + 60px + 50px);
   height: 0;
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 .footer.menu.mobile .round {
   border-radius: 12px;
   height: 24px;
   width: 40px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   margin-right: 5px;
   margin-left: auto;
@@ -2817,6 +3497,8 @@ input {
     display: none;
   }
   .footer.menu.mobile .items button {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     padding: 10px;
   }
@@ -2836,7 +3518,17 @@ input {
   height: 4px;
 }
 .loader.active {
-  animation: loader 3s ease-in-out infinite;
+  -webkit-animation: loader 3s ease-in-out infinite;
+          animation: loader 3s ease-in-out infinite;
+}
+
+@-webkit-keyframes loader {
+  50% {
+    background-size: 80%;
+  }
+  100% {
+    background-position: 125% 0;
+  }
 }
 
 @keyframes loader {
@@ -2854,6 +3546,8 @@ input {
 .list button,
 .list input,
 .list a {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   font-size: 18px;
   padding: 10px;
@@ -2866,11 +3560,16 @@ input {
   margin-bottom: auto;
 }
 .list .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 .list.tracklist .track .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 .list.tracklist .track .info > * {
   margin-right: 5px;
@@ -2905,7 +3604,8 @@ input {
 button {
   cursor: pointer;
   border: none;
-  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
   font-size: 18px;
   padding: 10px;
   display: inline-block;
@@ -2953,3 +3653,5 @@ text-overflow: ellipsis;
 .header.primary.hide-mobile.left {
   display: none;
 }
+
+/*# sourceMappingURL=D:\Jakub\Programy\Web\Music releases\MusicReleases\MusicReleases\wwwroot\styles\style.css.map */
