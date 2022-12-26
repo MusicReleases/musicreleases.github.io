@@ -297,7 +297,7 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-Ykl3JNZulr5MdpfRcRPOC6nSdjPo+xB34XY6TR5fWd4=",
+      "hash": "sha256-vDiuYWnQD+LilJey6jblVXVgzUENCEb4t4EizQdeMAM=",
       "url": "index.html"
     },
     {
@@ -397,16 +397,8 @@
       "url": "styles\/5_components\/_3_buttons.scss"
     },
     {
-      "hash": "sha256-9NfSEVgI4qs84W4yeh26GeVY53CgLudCCOVcd3RQKlg=",
+      "hash": "sha256-cQoFQquSFD2Mwss8PKQOQc3mDGcs4CpITTTOWnlQWfw=",
       "url": "styles\/style.css"
-    },
-    {
-      "hash": "sha256-qXUxHvGsmOWjUV0YRMn2uaazDAh0DyuYXjK4ixvxWwQ=",
-      "url": "styles\/style.min.css"
-    },
-    {
-      "hash": "sha256-ykWASUns36Zyt0\/4JsXvl6i8+fyP1cUk8DqypQCDz6A=",
-      "url": "styles\/style.min.css.gz"
     },
     {
       "hash": "sha256-Pyzn3vdBjThuSCKEDbE0GQs4f7Ufke11hbxlU\/4c77w=",
@@ -421,5 +413,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "nAvZ+naj"
+  "version": "Iy2JEJRw"
 };
