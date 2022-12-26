@@ -25,7 +25,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-PsCK1m78GBKC7X6Dd7oZp5TC0AD8qHEyVSJ5uft+jis=",
+      "hash": "sha256-Dv0aX9LJM8CJapV3EcwM5SL6cdE63+3qaY6dCSfuH6g=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -93,7 +93,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-mmFQtcHupoWc887qtNcnNLDU+Pz9bLG8qK6PHoAhS38=",
+      "hash": "sha256-DmPA8DDlPd8CYW24SnsT7TA0yrumxv70db6chiA\/NFc=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -269,31 +269,131 @@
       "url": "404.html"
     },
     {
-      "hash": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
+      "hash": "sha256-6sbxK8R4rKSNLebtRcOLp1wS26u9hWIqq9JZ8IRII5A=",
+      "url": "browserconfig.xml"
+    },
+    {
+      "hash": "sha256-W2A2EnaWw5quCvxodW89V5pBsfF8DFGR6Lha7s8n5Ks=",
+      "url": "images\/favicon\/android-chrome-144x144.png"
+    },
+    {
+      "hash": "sha256-tIkTd6hQY2KDU3tndv0\/\/YsmZpeOPGOzhZMDT3GAgi4=",
+      "url": "images\/favicon\/android-chrome-192x192.png"
+    },
+    {
+      "hash": "sha256-PV9QPgeZlULbdmPGDw\/FoxbWsR6XYiPPf02P23MVIUY=",
+      "url": "images\/favicon\/android-chrome-256x256.png"
+    },
+    {
+      "hash": "sha256-ndk5o1ApJeia061D3d5xVzjpkPyzcN8Q3Ga3QGilNl4=",
+      "url": "images\/favicon\/android-chrome-36x36.png"
+    },
+    {
+      "hash": "sha256-Uf1Kj1kNTR\/s2qCnzGXFm3Nzexu6HPTG\/Gp4R9YcQSo=",
+      "url": "images\/favicon\/android-chrome-384x384.png"
+    },
+    {
+      "hash": "sha256-54z1U6WgrHdFUoV4h2LlPMewv88UL3XlXj2aAW7ca4k=",
+      "url": "images\/favicon\/android-chrome-48x48.png"
+    },
+    {
+      "hash": "sha256-Ry08qiz0W0wpepKpDKyV+nuc4z+sgCI7ObaMbvdKj6U=",
+      "url": "images\/favicon\/android-chrome-512x512.png"
+    },
+    {
+      "hash": "sha256-+HSOAU001Ax0bWHqsLu+V5mTqRSGMJ6KnNTkUva1\/\/4=",
+      "url": "images\/favicon\/android-chrome-72x72.png"
+    },
+    {
+      "hash": "sha256-KgCpFNLT60ywkYhutK8BVpN8wsdQWdl1qm9UUVVf4Y4=",
+      "url": "images\/favicon\/android-chrome-96x96.png"
+    },
+    {
+      "hash": "sha256-Epjy4YOeu+1Cu9Rq8yrEHkG+\/8obU2kWCat7kWN1ipg=",
+      "url": "images\/favicon\/apple-touch-icon-114x114.png"
+    },
+    {
+      "hash": "sha256-48zybLx9u3iSz8lFETjKZv7yT6zs\/ByVNtU5v22T+fE=",
+      "url": "images\/favicon\/apple-touch-icon-120x120.png"
+    },
+    {
+      "hash": "sha256-W2A2EnaWw5quCvxodW89V5pBsfF8DFGR6Lha7s8n5Ks=",
+      "url": "images\/favicon\/apple-touch-icon-144x144.png"
+    },
+    {
+      "hash": "sha256-o2ZfnYJHeHnIapjpKj8JUTCva390mM4svkxTZA4MOss=",
+      "url": "images\/favicon\/apple-touch-icon-152x152.png"
+    },
+    {
+      "hash": "sha256-fV+lzz+6iS8tfzUMHTAAT2l8mWtrVI+C7Z6s7R9Cvxk=",
+      "url": "images\/favicon\/apple-touch-icon-180x180.png"
+    },
+    {
+      "hash": "sha256-quf7pZ\/D88epJu9o7yV+KR65Q3pd4s6Ud7Adofj6V28=",
+      "url": "images\/favicon\/apple-touch-icon-57x57.png"
+    },
+    {
+      "hash": "sha256-cYuwqYkj9hnrCVKICEE34YdqOrZHh0bZ825u2DSZD8Q=",
+      "url": "images\/favicon\/apple-touch-icon-60x60.png"
+    },
+    {
+      "hash": "sha256-+HSOAU001Ax0bWHqsLu+V5mTqRSGMJ6KnNTkUva1\/\/4=",
+      "url": "images\/favicon\/apple-touch-icon-72x72.png"
+    },
+    {
+      "hash": "sha256-pOAx2WWY2\/qKYDN3LDGPVO3HuYp3e\/t0TLa7F\/tWsTc=",
+      "url": "images\/favicon\/apple-touch-icon-76x76.png"
+    },
+    {
+      "hash": "sha256-fV+lzz+6iS8tfzUMHTAAT2l8mWtrVI+C7Z6s7R9Cvxk=",
+      "url": "images\/favicon\/apple-touch-icon.png"
+    },
+    {
+      "hash": "sha256-ZJivO0yfajhVkBlBPA5lBMIXrbMn+H356+nIlyis+xI=",
+      "url": "images\/favicon\/favicon-16x16.png"
+    },
+    {
+      "hash": "sha256-2LzVTvFMhbv3k8kVwNeNnzn37TBD7WeiHfD3ESMsPpI=",
+      "url": "images\/favicon\/favicon-32x32.png"
+    },
+    {
+      "hash": "sha256-BOJ\/iEYxSh98qx2fuPOhKu204kFnD9xTbGUalsytc9g=",
       "url": "images\/favicon\/favicon.ico"
     },
     {
-      "hash": "sha256-BaftcPYU7tCtV91keXwgbRDiVTH6mExQJmn2Zhvwfh0=",
-      "url": "images\/favicon\/favicon.png"
+      "hash": "sha256-cq7XdrF5bO\/NhtQ0yShmNE9mc9YXyOKO7RS9\/2XajCU=",
+      "url": "images\/favicon\/mstile-144x144.png"
     },
     {
-      "hash": "sha256-DbpQaq68ZSb5IoPosBErM1QWBfsbTxpJqhU0REi6wP4=",
-      "url": "images\/favicon\/icon-192.png"
+      "hash": "sha256-NilCi33cjUBLBh07HiURaPZv1ZKt0ey+cxwdK3ZbEoc=",
+      "url": "images\/favicon\/mstile-150x150.png"
     },
     {
-      "hash": "sha256-oEo6d+KqX5fjxTiZk\/w9NB3Mi0+ycS5yLwCKwr4IkbA=",
-      "url": "images\/favicon\/icon-512.png"
+      "hash": "sha256-hDumCIEEhVDDw8uzTJa2s4UOFanlovY4qJYu0Rrb2v0=",
+      "url": "images\/favicon\/mstile-310x150.png"
+    },
+    {
+      "hash": "sha256-AiOtU6PDdSCZZmUYVLnS+5j6AlZ3CDv8axzjOfWLfao=",
+      "url": "images\/favicon\/mstile-310x310.png"
+    },
+    {
+      "hash": "sha256-C5KTN+BfWJ8\/1jiy6vm\/E70qhHGw0Vtk61Ssp84EBUs=",
+      "url": "images\/favicon\/mstile-70x70.png"
+    },
+    {
+      "hash": "sha256-iCNsIdJuHTB2N56cmtHJASD6cUUq9vdYlQzryaFkXC8=",
+      "url": "images\/favicon\/safari-pinned-tab.svg"
     },
     {
       "hash": "sha256-HNybWP199i1djkqpotxxznyfANNsgfen4yXE+vh2NxU=",
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-EpXWpRPrVYSR\/olONzkQ4\/4MheqD0hvvRFK01kHsVXY=",
+      "hash": "sha256-vf\/Y\/7KqHpB\/wX965Ewi+unsDpUcJxJJNdP1+9X09Ho=",
       "url": "index.html"
     },
     {
-      "hash": "sha256-v+IPX6j0afg4nm7zi2VlEbbB5w8L0Ms0ixLQREI2Lw8=",
+      "hash": "sha256-MX\/BpT4Nul+aL9sI930jnDR6f5Gxpj5rgHzVtxnkoeg=",
       "url": "manifest.json"
     },
     {
@@ -409,5 +509,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "Ls+RxsG5"
+  "version": "+StIMqFD"
 };
