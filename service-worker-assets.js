@@ -281,6 +281,10 @@
       "url": "favicon.ico"
     },
     {
+      "hash": "sha256-nm62GXevafYJ1G\/hjEk9HiQNuVpZx5hMObAAPYjMq5U=",
+      "url": "github-pages.js"
+    },
+    {
       "hash": "sha256-DbpQaq68ZSb5IoPosBErM1QWBfsbTxpJqhU0REi6wP4=",
       "url": "icon-192.png"
     },
@@ -297,7 +301,7 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-vDiuYWnQD+LilJey6jblVXVgzUENCEb4t4EizQdeMAM=",
+      "hash": "sha256-1fpLgp1mewPW6B6qCDQkDLW3VR0DmlNRDfxyswXpq2k=",
       "url": "index.html"
     },
     {
@@ -413,5 +417,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "Iy2JEJRw"
+  "version": "Np3D9MI9"
 };
