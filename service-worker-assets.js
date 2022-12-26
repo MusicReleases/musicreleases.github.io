@@ -265,6 +265,10 @@
       "url": "_framework\/dotnet.wasm"
     },
     {
+      "hash": "sha256-GyAFOGAuvtAzVK3b238E0+CX8ElubpaP5O7eZB1UVE8=",
+      "url": "404.html"
+    },
+    {
       "hash": "sha256-yIDVKoaFSvP39eDeH5+B5zztjgOPegdedeMIEOpM74s=",
       "url": "css\/app.css"
     },
@@ -417,5 +421,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "Np3D9MI9"
+  "version": "XRJTq\/ba"
 };
