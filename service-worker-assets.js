@@ -289,7 +289,7 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-h7u2p8OMK94MRDeA9QhJyhCw3dEU0q2rVDCXwLk905s=",
+      "hash": "sha256-EpXWpRPrVYSR\/olONzkQ4\/4MheqD0hvvRFK01kHsVXY=",
       "url": "index.html"
     },
     {
@@ -302,19 +302,19 @@
     },
     {
       "hash": "sha256-Q9wom+LEX0cUn81SuNKOcEEmskFxnAESjtbVW4O6VkM=",
-      "url": "scripts\/service-worker.min.js"
+      "url": "service-worker.min.js"
     },
     {
       "hash": "sha256-l736N6uR+1EEczJTUvfHj6K1w1f2n1KiHUHj1hoErq0=",
-      "url": "scripts\/service-worker.min.js.gz"
+      "url": "service-worker.min.js.gz"
     },
     {
       "hash": "sha256-HzC7JT19VH1cIyYitE52\/bdt6gK14+c0TZgpv2v3EBA=",
-      "url": "scripts\/service-worker.published.min.js"
+      "url": "service-worker.published.min.js"
     },
     {
       "hash": "sha256-xhzNlvC6Qrnqmth\/wadd+3sYW0xQ3S+xrykDKEsj1Pk=",
-      "url": "scripts\/service-worker.published.min.js.gz"
+      "url": "service-worker.published.min.js.gz"
     },
     {
       "hash": "sha256-jZxCdbl6unH9ymS4eSEq2kLUyeuTzISpgb6GW1haYEU=",
@@ -409,5 +409,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "4W+vRzZH"
+  "version": "Ls+RxsG5"
 };
