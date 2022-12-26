@@ -10,15 +10,12 @@ jobs:
   deploy-to-github-pages:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-
-    #- name: list
-    #  run: ls /home/runner/work/music-releases-blazor/music-releases-blazor/MusicReleases/ -al
 
     - name: Install .NET WASM Build Tools
       run: dotnet workload install wasm-tools
@@ -32,13 +29,3 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: github-pages
         FOLDER: dist/Web/wwwroot
-
-    #- name: Restore dependencies
-    #  run: dotnet restore
-    #- name: Build
-    #  run: dotnet build --no-restore
-    #- name: Test
-    #  run: dotnet test --no-build --verbosity normal
-    # publishes Blazor project to the release-folder
-    #- name: Publish .NET Core Project
-    #  run: dotnet publish -c Release -o release --nologo
