@@ -389,7 +389,7 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-FEkJCYq6sDaTMLLA6FCoJSHRdRbZQSkV0HRZ07VLFKE=",
+      "hash": "sha256-fluS8HTmQxiyEhtUAij15QAEqJCfM19zRFW1ZMlWcYo=",
       "url": "index.html"
     },
     {
@@ -513,5 +513,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "kK2o5z\/E"
+  "version": "C5t+txQS"
 };
