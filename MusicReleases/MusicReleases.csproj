@@ -8,11 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
-    <Content Remove="Web\Pages\Test.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.1" PrivateAssets="all" />
@@ -24,10 +19,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="compilerconfig.json" />
   </ItemGroup>
 
   <ItemGroup>
