@@ -17,7 +17,7 @@ public class Login
     public static Uri GetLoginUrl(Uri currentUrl)
     {
         ICollection<string>? scope = new[] { Scopes.UserLibraryRead, Scopes.PlaylistReadPrivate, Scopes.PlaylistReadCollaborative, Scopes.UserFollowRead };
-        const string appId = "c5f5fe8e454e486aae846c51a68ddd98";
+        const string appId = "67bbd538e581437597ae4574431682df";
 
         var loginRequest = new LoginRequest(currentUrl, appId, LoginRequest.ResponseType.Token)
         {
