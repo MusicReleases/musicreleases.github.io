@@ -1,44 +1,5 @@
 // PRIMARY HEADER
 
-
-.header.secondary {
-    button {
-        margin: auto 3px;
-        // TODO only logo
-        //height: 20px;
-    }
-
-    .menu.releases.logo {
-        margin: auto;
-
-        button {
-            display: flex;
-            padding: 0 5px;
-            height: auto;
-
-            .favicon {
-                margin: auto 0 auto auto;
-            }
-
-            span {
-                font-size: 20px;
-                margin: auto auto auto 0;
-            }
-        }
-        // text size
-        // icon
-        .favicon {
-            //height: 100%;
-            //margin-left: 10px;
-            height: 25px;
-        }
-
-        &:hover > .favicon {
-            animation: spin 2s linear infinite;
-        }
-    }
-}
-
 .main .menu.releases {
     display: flex;
     flex-direction: column;
