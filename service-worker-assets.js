@@ -265,7 +265,7 @@
       "url": "_framework\/dotnet.wasm"
     },
     {
-      "hash": "sha256-GyAFOGAuvtAzVK3b238E0+CX8ElubpaP5O7eZB1UVE8=",
+      "hash": "sha256-3R6+eyFA7bZM0vgsW\/m\/w6KeaGJate0dftQ3mAYfIr4=",
       "url": "404.html"
     },
     {
@@ -389,12 +389,16 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-vf\/Y\/7KqHpB\/wX965Ewi+unsDpUcJxJJNdP1+9X09Ho=",
+      "hash": "sha256-FEkJCYq6sDaTMLLA6FCoJSHRdRbZQSkV0HRZ07VLFKE=",
       "url": "index.html"
     },
     {
       "hash": "sha256-MX\/BpT4Nul+aL9sI930jnDR6f5Gxpj5rgHzVtxnkoeg=",
       "url": "manifest.json"
+    },
+    {
+      "hash": "sha256-k+\/Bh\/G8pXEtivAORtqy6w0QLP9OzSt7N3aF7aHiaC4=",
+      "url": "scripts\/github-pages-404.js"
     },
     {
       "hash": "sha256-nm62GXevafYJ1G\/hjEk9HiQNuVpZx5hMObAAPYjMq5U=",
@@ -449,7 +453,7 @@
       "url": "styles\/3_content\/1_header\/_1_header.scss"
     },
     {
-      "hash": "sha256-FIH3XMphURHiqiKyPyF+5SGNtFT\/YMUCOBGdbjyHIMs=",
+      "hash": "sha256-dQQ+3zf7aaG7EI4\/vtaLHZD4B0w2Zg7kqWktTJCA+Mc=",
       "url": "styles\/3_content\/1_header\/_2_primary.scss"
     },
     {
@@ -509,5 +513,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "+StIMqFD"
+  "version": "1JUPCBq1"
 };
