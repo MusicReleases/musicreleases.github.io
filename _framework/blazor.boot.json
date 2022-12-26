@@ -72,7 +72,7 @@
     "runtime": {
       "dotnet.7.0.1.w3hwc9o6o2.js": "sha256-Y5qYDEhVvH\/qTDDyzwOq5S6AZvlDVxWh0EBXZmBavrA=",
       "dotnet.timezones.blat": "sha256-6Aw0ALXLw\/A0vGcC5uG5GnFafYpL\/iHHLo22LyOR+TA=",
-      "dotnet.wasm": "sha256-nNtqqYMRyX0MW4AQZKuivuP0gn2+ZV5AyMMCQ8P07Qs=",
+      "dotnet.wasm": "sha256-dC4UJmZYnYHVhbP9vNkHs+VoJo1uDOAAw5Wditit+JY=",
       "icudt_CJK.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
       "icudt_EFIGS.dat": "sha256-l7NtS3cI+3VUoQ2XQvlzMb8x4Ow1BtnOJNLWc6bifW0=",
       "icudt_no_CJK.dat": "sha256-SNAStZO8ryN4gEbGzRYHea+b+VMpFMMNWXKTM3Y1gH4=",
@@ -81,7 +81,7 @@
     "runtimeAssets": {
       "dotnet.wasm": {
         "behavior": "dotnetwasm",
-        "hash": "sha256-nNtqqYMRyX0MW4AQZKuivuP0gn2+ZV5AyMMCQ8P07Qs="
+        "hash": "sha256-dC4UJmZYnYHVhbP9vNkHs+VoJo1uDOAAw5Wditit+JY="
       }
     },
     "satelliteResources": null
