@@ -6,8 +6,8 @@
 @import '2_init/3_layout';
 @import '2_init/4_main';
 
-@import '3_content/1_header/1_primary';
-@import '3_content/1_header/_2_secondary';
+@import '3_content/1_header/1_header';
+@import '3_content/1_header/2_primary';
 
 @import '3_content/2_main/1_content';
 @import '3_content/2_main/2_releases';
@@ -22,7 +22,7 @@
 
 @import '5_components/1_loader';
 @import '5_components/2_lists';
-@import '5_components/_3_buttons';
+@import '5_components/_3_buttons.scss';
 
 @import 'x_temp/1_dev';
 @import 'x_temp/2_testing';
