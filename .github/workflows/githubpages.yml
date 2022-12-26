@@ -21,7 +21,7 @@ jobs:
       run: dotnet workload install wasm-tools
 
     - name: Publish .NET project
-      run: dotnet publish -c:Release -o release --nologo
+      run: dotnet publish -c:Release -p:GHPages=true -o release --nologo
 
     # changes the base-tag in index.html from '/' to 'music-releases-blazor' to match GitHub Pages repository subdirectory
     - name: Change base-tag
