@@ -21,19 +21,19 @@ jobs:
       run: dotnet workload install wasm-tools
 
     - name: Publish .NET project
-      run: dotnet publish MusicReleases/MusicReleases.csproj -c:Release -o dist/Web --nologo
+      run: dotnet publish 'MusicReleases/MusicReleases.csproj' -c:Release -o 'dist/Web' --nologo
 
     # changes the base-tag in index.html from '/' to 'music-releases-blazor' to match GitHub Pages repository subdirectory
-    - name: Change base-tag
-      run: sed -i 's/<base href="\/" \/>/<base href="\/music-releases-blazor\/" \/>/g' dist/Web/index.html
+    #- name: Change base-tag
+    #  run: sed -i 's/<base href="\/" \/>/<base href="\/music-releases-blazor\/" \/>/g' dist/Web/index.html
 
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
-    - name: Add .nojekyll file
-      run: touch dist/Web/index.html/wwwroot/.nojekyll
+    #- name: Add .nojekyll file
+    #  run: touch dist/Web/index.html/wwwroot/.nojekyll
 
+    # commit published app to github pages
     - name: Commit wwwroot to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: github-pages
-        FOLDER: dist/Web/wwwroot
+        branch: github-pages
+        folder: dist/Web/wwwroot
