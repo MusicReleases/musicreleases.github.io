@@ -393,7 +393,7 @@
       "url": "index.html"
     },
     {
-      "hash": "sha256-MX\/BpT4Nul+aL9sI930jnDR6f5Gxpj5rgHzVtxnkoeg=",
+      "hash": "sha256-TGomp\/HYzae9M0kxcMp78sj1c9lX4NAgF8QDGNWwRXE=",
       "url": "manifest.json"
     },
     {
@@ -513,5 +513,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "1JUPCBq1"
+  "version": "kK2o5z\/E"
 };
