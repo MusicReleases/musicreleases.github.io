@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicReleases", "MusicRelea
 		{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84} = {EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpotifyApi", "SpotifyApi\SpotifyApi.csproj", "{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyApi", "SpotifyApi\SpotifyApi.csproj", "{EA309DF9-A2CD-47EB-86A6-0298BE6E4B84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
