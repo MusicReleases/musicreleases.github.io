@@ -22,4 +22,11 @@
     <ProjectReference Include="..\SpotifyApi\SpotifyApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\browserconfig.xml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
