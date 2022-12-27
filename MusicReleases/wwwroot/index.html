@@ -8,17 +8,17 @@
     <base href="/" />
     <link rel="stylesheet" href="styles/style.css" />
     <link rel="manifest" href="manifest.json" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png?v=1.0.0">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png?v=1.0.0">
-    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon/android-chrome-192x192.png?v=1.0.0">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png?v=1.0.0">
-    <link rel="mask-icon" href="images/favicon/safari-pinned-tab.svg?v=1.0.0" color="#1ab26b">
-    <link rel="shortcut icon" href="images/favicon/favicon.ico?v=1.0.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicons/apple-touch-icon.png?v=1.0.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicons/favicon-32x32.png?v=1.0.0">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicons/android-chrome-192x192.png?v=1.0.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicons/favicon-16x16.png?v=1.0.0">
+    <link rel="mask-icon" href="images/favicons/safari-pinned-tab.svg?v=1.0.0" color="#1ab26b">
+    <link rel="shortcut icon" href="images/favicons/favicon.ico?v=1.0.0">
     <meta name="apple-mobile-web-app-title" content="Music Releases">
     <meta name="application-name" content="Music Releases">
     <meta name="msapplication-TileColor" content="#ff0000">
-    <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png?v=1.0.0">
-    <meta name="msapplication-config" content="images/favicon/browserconfig.xml?v=1.0.0">
+    <meta name="msapplication-TileImage" content="images/favicons/mstile-144x144.png?v=1.0.0">
+    <meta name="msapplication-config" content="images/favicons/browserconfig.xml?v=1.0.0">
     <meta name="theme-color" content="#101010">
 </head>
 
@@ -31,7 +31,8 @@
     </div>
     <script src="scripts/github-pages.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script>navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' });</script>
+    <script src="sw-registrator.js"></script>
+    <!--<script>navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' });</script>-->
     <script src="https://kit.fontawesome.com/ebe995aabe.js" crossorigin="anonymous"></script>
 </body>
 
