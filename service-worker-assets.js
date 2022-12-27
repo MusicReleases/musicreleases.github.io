@@ -269,7 +269,7 @@
       "url": "404.html"
     },
     {
-      "hash": "sha256-kHhsse8BXNbgR8GZZ9+XS6L7UO0eP30poBzE3v9olz8=",
+      "hash": "sha256-1hUL22lceE3HSgofzvXc25elxbieKP37rorUdfQC2gg=",
       "url": "browserconfig.xml"
     },
     {
@@ -433,11 +433,11 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-Fry0hsBWmMiEk456wTEvvVrgFAgLtYc0YjOHOaTnBUo=",
+      "hash": "sha256-tu7ggKJy9s34QAE+6B16mw9Lrryg2EIl+0hQlC\/gk9g=",
       "url": "index.html"
     },
     {
-      "hash": "sha256-CgGSTaGnUf3n7aE4ZXGb7mOUDuj8+eLaOpfi3tsibEk=",
+      "hash": "sha256-TGomp\/HYzae9M0kxcMp78sj1c9lX4NAgF8QDGNWwRXE=",
       "url": "manifest.json"
     },
     {
@@ -557,5 +557,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "N\/z0rcvo"
+  "version": "djLrsPpi"
 };
