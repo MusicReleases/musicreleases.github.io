@@ -1,12 +1,13 @@
 ﻿@page "/releases/{type?}"
 @using JakubKastner.SpotifyApi
 @using JakubKastner.SpotifyApi.Objects
-@using MusicReleases.Web.Objects
+@using JakubKastner.MusicReleases.Web.Objects
 @using static JakubKastner.SpotifyApi.Enums
 @layout LayoutMain
 @inject NavigationManager navManager
-@inject IUser spotifyUser
 @inject LoaderService loader
+
+@inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerUser
 
 <p>Loading releases...</p>
 
@@ -16,7 +17,7 @@
 <div class="releases boxes">
     <Virtualize Items="@_albums" Context="release" ItemSize="233" OverscanCount="4">
         <ItemContent>
-            <MusicReleases.Web.Components.LoggedIn.Releases.Release ReleaseObj="@release" />
+            <JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases.Release ReleaseObj="@release" />
         </ItemContent>
         <Placeholder>
             <p>Loading</p>
@@ -38,11 +39,11 @@
     // <DynamicComponent Type=""></DynamicComponent>
     protected override async Task OnInitializedAsync()
     {
-        if (spotifyUser.LoggedIn == null)
+        if (!controllerUser.IsLoggedIn())
         {
             navManager.NavigateTo("");
         }
-        if (String.IsNullOrEmpty(Type))
+        if (string.IsNullOrEmpty(Type))
         {
             // TODO display all releases and remember last selection
             //navManager.NavigateTo("/releases/albums");
@@ -70,7 +71,7 @@
     private async Task GetReleases()
     {
         loader.Start();
-        _albums = await spotifyUser.GetReleases();
+        _albums = await controllerUser.GetReleases();
         loader.Stop();
     }
 }

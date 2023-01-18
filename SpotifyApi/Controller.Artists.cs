@@ -16,7 +16,7 @@ public partial class Controller
         return artistsList;
     }
 
-    public async Task<SortedSet<Artist>?> GetUserArtists()
+    public async Task<SortedSet<Artist>> GetUserArtists()
     {
         SortedSet<Artist> artists = new();
         var artistsFromApi = await GetUserArtistsFromApi();

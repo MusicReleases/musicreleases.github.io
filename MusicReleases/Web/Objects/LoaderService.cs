@@ -1,4 +1,4 @@
-﻿namespace MusicReleases.Web.Objects;
+﻿namespace JakubKastner.MusicReleases.Web.Objects;
 public class LoaderService
 {
     private bool _active = false;

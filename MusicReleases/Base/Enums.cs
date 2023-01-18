@@ -1,4 +1,4 @@
-﻿namespace MusicReleases;
+﻿namespace JakubKastner.MusicReleases.Base;
 
 public static class Enums
 {

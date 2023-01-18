@@ -3,8 +3,9 @@
 @using SpotifyAPI.Web
 @inherits LayoutComponentBase
 @inject NavigationManager navManager
-@inject IUser spotifyUser
-@inject Login spotifyLogin
+@inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerSpotify
+@inject JakubKastner.SpotifyApi.Controllers.Api.ControllerApiUser controllerApiSpotify
+
 
 <div class="body classic hide-player">
 	<div class="page">
@@ -15,25 +16,24 @@
 @code
 {
 	// TODO loading page
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		if (spotifyUser.LoggedIn == null)
+		if (!controllerSpotify.IsLoggedIn())
 		{
 			// get token from url
-			string currentUrl = navManager.Uri;
-			await spotifyLogin.LoginUser(currentUrl);
+			var currentUrl = navManager.Uri;
+			var login = controllerApiSpotify.LoginUser(currentUrl);
+			if (login)
+			{
+				// navigate to releases page
+				navManager.NavigateTo("releases");
+			}
+			else
+			{
+				// user is not logged in (error)
+				navManager.NavigateTo("");
+			}
 			//await Api.Spotify.Base.SetUser();
-		}
-
-		if (spotifyUser.LoggedIn == null)
-		{
-			// user is not logged in (error)
-			navManager.NavigateTo("");
-		}
-		else
-		{
-			// navigate to releases page
-			navManager.NavigateTo("releases");            
 		}
 	}
 }

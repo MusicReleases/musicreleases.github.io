@@ -28,8 +28,6 @@ public class Artist : IComparable
         var other = (Artist)obj;
         var lastNameComparison = Name.CompareTo(other.Name);
 
-        return (lastNameComparison != 0)
-            ? lastNameComparison :
-            (Id.CompareTo(other.Id));
+        return (lastNameComparison != 0) ? lastNameComparison : Id.CompareTo(other.Id);
     }
 }

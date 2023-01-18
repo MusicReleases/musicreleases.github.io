@@ -88,8 +88,6 @@ public class Album : IComparable
         var other = (Album)obj;
         var lastNameComparison = -ReleaseDate.CompareTo(other.ReleaseDate);
 
-        return (lastNameComparison != 0)
-            ? lastNameComparison :
-            (Id.CompareTo(other.Name));
+        return (lastNameComparison != 0) ? lastNameComparison : Id.CompareTo(other.Name);
     }
 }

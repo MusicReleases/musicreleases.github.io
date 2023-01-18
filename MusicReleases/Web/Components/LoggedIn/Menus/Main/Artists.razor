@@ -1,10 +1,11 @@
-﻿@using MusicReleases;
+﻿@using JakubKastner.MusicReleases.Base;
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons
 @using JakubKastner.SpotifyApi.Objects
 @inject NavigationManager NavManager
-@inject IUser spotifyUser
+@inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerUser
 
 <div class="menu artists items scroll buttons-rounded-m">
-    @if (spotifyUser.LoggedIn == null)
+    @if (!controllerUser.IsLoggedIn())
     {
         <p>User not logged in</p>
         <button @onclick=UpdateArtists>Update</button>
@@ -24,7 +25,7 @@
         {
             @foreach (var artist in _artists)
             {
-                <MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons.Artist ArtistId=@artist.Id ArtistName=@artist.Name></MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons.Artist>
+                <Artist ArtistId=@artist.Id ArtistName=@artist.Name></Artist>
             }
         }
     }
@@ -35,7 +36,7 @@
     [Parameter]
     public Enums.ServiceType ServiceType { get; set; }
 
-    private SortedSet<Artist> _artists;
+    private SortedSet<SpotifyApi.Objects.Artist> _artists;
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,15 +44,15 @@
         {
             // TODO show loader
             // display playlists
-            if (spotifyUser.LoggedIn == null) return;
+            if (!controllerUser.IsLoggedIn()) return;
 
-            _artists = await spotifyUser.GetArtists();
+            _artists = await controllerUser.GetArtists();
         }
     }
 
     private async Task UpdateArtists()
     {
-        _artists = await spotifyUser.GetArtists();
+        _artists = await controllerUser.GetArtists();
         StateHasChanged();
     }
 }

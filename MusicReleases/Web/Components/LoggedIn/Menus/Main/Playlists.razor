@@ -1,10 +1,13 @@
-﻿@using MusicReleases;
+﻿@using JakubKastner.MusicReleases.Base;
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons
+@using JakubKastner.MusicReleases;
 @using JakubKastner.SpotifyApi.Objects
 @inject NavigationManager NavManager
-@inject IUser spotifyUser
+@inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerUser
+@inject JakubKastner.SpotifyApi.Controllers.ControllerPlaylist controllerPlaylist
 
 <div class="menu playlists items scroll buttons-rounded-m">
-    @if (spotifyUser.LoggedIn == null)
+    @if (!controllerUser.IsLoggedIn())
     {
         <p>User not logged in</p>
         <button @onclick=UpdatePlaylists>Update</button>
@@ -24,7 +27,7 @@
         {
             @foreach (var playlist in _playlists)
             {
-                <MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons.Playlist PlaylistId=@playlist.Id PlaylistName=@playlist.Name></MusicReleases.Web.Components.LoggedIn.Menus.Main.Buttons.Playlist>
+                <Playlist PlaylistId=@playlist.Id PlaylistName=@playlist.Name></Playlist>
             }
         }
     }
@@ -35,7 +38,7 @@
     [Parameter]
     public Enums.ServiceType ServiceType { get; set; }
 
-    private HashSet<Playlist> _playlists;
+    private HashSet<SpotifyApi.Objects.Playlist> _playlists;
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,15 +46,15 @@
         {
             // TODO show loader
             // display playlists
-            if (spotifyUser.LoggedIn == null) return;
+            if (!controllerUser.IsLoggedIn()) return;
 
-            _playlists = await spotifyUser.GetPlaylists();
+            _playlists = await controllerPlaylist.GetUserPlaylists();
         }
     }
 
     private async Task UpdatePlaylists()
     {
-        _playlists = await spotifyUser.GetPlaylists();
+        _playlists = await controllerPlaylist.GetUserPlaylists();
         StateHasChanged();
     }
 }

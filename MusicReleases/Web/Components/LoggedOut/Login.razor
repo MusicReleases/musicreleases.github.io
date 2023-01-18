@@ -1,5 +1,6 @@
-﻿@using MusicReleases
+﻿@using JakubKastner.MusicReleases
 @using JakubKastner.SpotifyApi
+@using static global::JakubKastner.MusicReleases.Base.Enums;
 @inject NavigationManager NavManager
 
 <button type="button" class="@_type.ToLower()" @onclick="LoginUser">
@@ -13,7 +14,7 @@
     /// Service type (Spotify, Apple Music, ...)
     /// </summary>
     [Parameter]
-    public MusicReleases.Enums.ServiceType Type { get; set; }
+    public ServiceType Type { get; set; }
 
     private string _type = String.Empty;
 
@@ -28,11 +29,11 @@
     /// </summary>
     private void LoginUser()
     {
-        if (Type == MusicReleases.Enums.ServiceType.Spotify)
+        if (Type == ServiceType.Spotify)
         {
             // spotify login
-            Uri redirectUrl = NavManager.ToAbsoluteUri(NavManager.BaseUri + "login");
-            Uri loginUrl = JakubKastner.SpotifyApi.Login.GetLoginUrl(redirectUrl);
+            var redirectUrl = NavManager.ToAbsoluteUri(NavManager.BaseUri + "login");
+            var loginUrl = JakubKastner.SpotifyApi.Login.GetLoginUrl(redirectUrl);
             NavManager.NavigateTo(loginUrl.AbsoluteUri);
         }
     }
