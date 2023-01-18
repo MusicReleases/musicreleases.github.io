@@ -25,7 +25,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-ovaFst4XMHCNWP9lwNf6hH28Om9XE+U8NojEtZCJ73Q=",
+      "hash": "sha256-faIOxgMXv89Rl6Kjr\/B5Aj\/hASosCkHJkNLOiFNS2Bs=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -33,15 +33,15 @@
       "url": "_framework\/Blazored.LocalStorage.dll"
     },
     {
-      "hash": "sha256-USc6Pie13akjXrzV5AEgFtHT7GMdxt1YIVYsK+PKJ68=",
+      "hash": "sha256-efcINT7h2bgzZ0wfhJSCPoAdO3ZwFHybEKMkjVG3w70=",
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
-      "hash": "sha256-CeoeWroExKODSgSohDRn72l5EUrsGWlvHhqMVJpFByc=",
+      "hash": "sha256-YsbtFeo4H\/Fv3ZfJSIY\/88MvGJ9hc+rr+YKEk+dn70U=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.dll"
     },
     {
-      "hash": "sha256-jj0gEWGz0IP5DtImmDS2JCnL7nDJvw39GXaOgt9q2BU=",
+      "hash": "sha256-2Jg3mQhCSyqkofbgXHMRw0whL7fAl07+VKYd0lApk7I=",
       "url": "_framework\/Microsoft.AspNetCore.Components.WebAssembly.dll"
     },
     {
@@ -85,15 +85,15 @@
       "url": "_framework\/Microsoft.Extensions.Primitives.dll"
     },
     {
-      "hash": "sha256-nRIYymw1CokPwUDSUBNUhzMpEKTG8+RY1rAsNaEEX5k=",
+      "hash": "sha256-x3cJET3iuAPkC\/j6P0NXkAsKWrFihEeHMFgp0jGhAqw=",
       "url": "_framework\/Microsoft.JSInterop.dll"
     },
     {
-      "hash": "sha256-bn\/jJGkSeaQbmqAl6uUM0y1joLrVEzldOc3y5mscYMk=",
+      "hash": "sha256-ClhDy3j6C2coeaYSd71VzhinK6w5QGa2ViwhRhQ6L40=",
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-eKq77ICxsXXUEHMBs+HAn2\/qF1j+c6mtIaXMfRMqTpI=",
+      "hash": "sha256-MPaai1roZYL5KvrJB0S+9mAZOO786DV32cmrllqXQ6c=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -105,7 +105,7 @@
       "url": "_framework\/Newtonsoft.Json.dll"
     },
     {
-      "hash": "sha256-q1drO8DnU2lfSlct9YPDJ8yh5K3b26kKfYw+1dbenng=",
+      "hash": "sha256-ZtfH7ru26Xc2UenllxJFaJ39w8MZxItpE7qwAk6rIW8=",
       "url": "_framework\/SpotifyApi.dll"
     },
     {
@@ -549,5 +549,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "0BDGmp0N"
+  "version": "9wQFKacZ"
 };
