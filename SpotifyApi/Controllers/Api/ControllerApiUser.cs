@@ -4,11 +4,11 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiUser
 {
-    private readonly Client _spotifyClient;
+    private readonly Client _client;
 
-    public ControllerApiUser(Client spotifyClient)
+    public ControllerApiUser(Client client)
     {
-        _spotifyClient = spotifyClient;
+        _client = client;
     }
 
     public bool LoginUser(string url)
@@ -31,7 +31,7 @@ public class ControllerApiUser
 
         var accessToken = urlParameters["access_token"];
         if (string.IsNullOrEmpty(accessToken)) return false;
-        _spotifyClient.Init(accessToken);
+        _client.Init(accessToken);
 
         if (!urlParameters.ContainsKey("expires_in")) return false;
         var accessTokenExpires = urlParameters["expires_in"];
@@ -41,7 +41,7 @@ public class ControllerApiUser
 
     public async Task<PrivateUser> GetLoggedInUser()
     {
-        var apiClient = _spotifyClient.GetClient();
-        return await apiClient.UserProfile.Current();
+        var spotifyClient = _client.GetClient();
+        return await spotifyClient.UserProfile.Current();
     }
 }

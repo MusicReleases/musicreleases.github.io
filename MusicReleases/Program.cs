@@ -15,20 +15,28 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-// testing
-builder.Services.AddScoped<Client>();
-builder.Services.AddScoped<User>();
-builder.Services.AddScoped<ControllerApiUser>();
-builder.Services.AddScoped<ControllerApiPlaylist>();
-builder.Services.AddScoped<ControllerUser>();
-builder.Services.AddScoped<ControllerPlaylist>();
-
 // TODO interface
-builder.Services.AddScoped<Controller>();
-builder.Services.AddScoped<Login>();
 builder.Services.AddScoped<LoaderService>();
 
-// LocalStorage
+// client and user
+builder.Services.AddScoped<Client>();
+builder.Services.AddScoped<User>();
+
+// api controllers
+builder.Services.AddScoped<ControllerApiArtist>();
+builder.Services.AddScoped<ControllerApiPlaylist>();
+builder.Services.AddScoped<ControllerApiRelease>();
+builder.Services.AddScoped<ControllerApiTrack>();
+builder.Services.AddScoped<ControllerApiUser>();
+
+// controllers
+builder.Services.AddScoped<ControllerArtist>();
+builder.Services.AddScoped<ControllerPlaylist>();
+builder.Services.AddScoped<ControllerRelease>();
+builder.Services.AddScoped<ControllerTrack>();
+builder.Services.AddScoped<ControllerUser>();
+
+// local storage
 builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();

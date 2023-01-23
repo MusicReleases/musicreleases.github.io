@@ -1,50 +1,27 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using static JakubKastner.SpotifyApi.Enums;
+﻿using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
 public class ControllerUser
 {
-    private readonly Controller _controller;
-    private readonly User _user;
-    private readonly Client _spotifyClient;
+    private readonly Client _client;
 
-    public ControllerUser(Controller controller, User user, Client spotifyClient)
+    public ControllerUser(Client spotifyClient)
     {
-        _controller = controller;
-        _user = user;
-        _spotifyClient = spotifyClient;
+        _client = spotifyClient;
     }
 
-    public bool IsLoggedIn() => _spotifyClient.IsInicialized();
-
-    // get list of user followed artists
-    public async Task<SortedSet<Artist>> GetArtists()
+    public Uri GetLoginUrl(Uri currentUrl)
     {
-        if (_user.FollowedArtists == null)
+        ICollection<string>? scope = new[] { Scopes.UserLibraryRead, Scopes.PlaylistReadPrivate, Scopes.PlaylistReadCollaborative, Scopes.UserFollowRead };
+        const string appId = "67bbd538e581437597ae4574431682df";
+
+        var loginRequest = new LoginRequest(currentUrl, appId, LoginRequest.ResponseType.Token)
         {
-            _user.FollowedArtists = await _controller.GetUserArtists();
-        }
-        return _user.FollowedArtists;
+            Scope = scope
+        };
+        return loginRequest.ToUri();
     }
 
-    // get releases
-    public async Task<SortedSet<Album>> GetReleases(ReleaseType releaseType = ReleaseType.Albums)
-    {
-        var artists = await GetArtists();
-        var albums = new SortedSet<Album>();
-
-        foreach (var artist in artists)
-        {
-            var albumsFromApi = await _controller.GetReleases(releaseType, artist.Id);
-            // TODO try again
-            if (albumsFromApi == null)
-            {
-                albumsFromApi = await _controller.GetReleases(releaseType, artist.Id);
-            }
-            albums.UnionWith(albumsFromApi);
-        }
-
-        return albums;
-    }
+    public bool IsLoggedIn() => _client.IsInicialized();
 }

@@ -8,6 +8,7 @@
 @inject LoaderService loader
 
 @inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerUser
+@inject JakubKastner.SpotifyApi.Controllers.ControllerRelease controllerRelease
 
 <p>Loading releases...</p>
 
@@ -64,14 +65,14 @@
         // TODO loading artists two times???
         // display playlists
         /*if (Api.Spotify.Main.User == null) return;
-
+         * 
         var artists = await Api.Spotify.Main.User.GetArtists();*/
     }
 
     private async Task GetReleases()
     {
         loader.Start();
-        _albums = await controllerUser.GetReleases();
+        _albums = await controllerRelease.GetAllUserFollowedArtistsReleases();
         loader.Stop();
     }
 }

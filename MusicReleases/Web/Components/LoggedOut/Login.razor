@@ -1,7 +1,9 @@
 ﻿@using JakubKastner.MusicReleases
 @using JakubKastner.SpotifyApi
+@using JakubKastner.SpotifyApi.Controllers;
 @using static global::JakubKastner.MusicReleases.Base.Enums;
 @inject NavigationManager NavManager
+@inject ControllerUser controllerUser
 
 <button type="button" class="@_type.ToLower()" @onclick="LoginUser">
     <i class="fab fa-spotify" aria-hidden="true"></i>
@@ -33,7 +35,7 @@
         {
             // spotify login
             var redirectUrl = NavManager.ToAbsoluteUri(NavManager.BaseUri + "login");
-            var loginUrl = JakubKastner.SpotifyApi.Login.GetLoginUrl(redirectUrl);
+            var loginUrl = controllerUser.GetLoginUrl(redirectUrl);
             NavManager.NavigateTo(loginUrl.AbsoluteUri);
         }
     }

@@ -1,11 +1,18 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi;
+namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public partial class Controller
+public class ControllerApiTrack
 {
-    public async Task<List<Track>> GetPlaylistTracks(string playlistId)
+    private readonly SpotifyClient _spotifyClient;
+
+    public ControllerApiTrack(Client client)
+    {
+        _spotifyClient = client.GetClient();
+    }
+
+    public async Task<List<Track>> GetPlaylistTracksFromApi(string playlistId)
     {
         List<Track> tracks = new();
 
@@ -18,7 +25,7 @@ public partial class Controller
         }*/
 
         // get tracksfrom api
-        IList<PlaylistTrack<IPlayableItem>>? tracksFromApi = await GetPlaylistTracksFromApi(playlistId);
+        var tracksFromApi = await GetPlaylistTracksApi(playlistId);
         if (tracksFromApi == null) return tracks;
 
         foreach (var trackApi in tracksFromApi)
@@ -48,16 +55,15 @@ public partial class Controller
         return tracks;
     }
 
-    private async Task<IList<PlaylistTrack<IPlayableItem>>?> GetPlaylistTracksFromApi(string playlistId)
+    private async Task<IList<PlaylistTrack<IPlayableItem>>?> GetPlaylistTracksApi(string playlistId)
     {
-        if (SpotifyClient == null) return null;
-
         var request = new PlaylistGetItemsRequest
         {
             Limit = 100
         };
 
-        var tracks = await SpotifyClient.PaginateAll(await SpotifyClient.Playlists.GetItems(playlistId, request));
+        var response = await _spotifyClient.Playlists.GetItems(playlistId, request);
+        var tracks = await _spotifyClient.PaginateAll(response);
         return tracks;
     }
 }

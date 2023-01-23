@@ -5,10 +5,11 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiPlaylist
 {
-	private readonly Client _client;
+	private readonly SpotifyClient _spotifyClient;
+
 	public ControllerApiPlaylist(Client client)
 	{
-		_client = client;
+		_spotifyClient = client.GetClient();
 	}
 
 	public async Task<HashSet<Playlist>> GetUserPlaylistsFromApi()
@@ -34,10 +35,8 @@ public class ControllerApiPlaylist
 			Limit = 50
 		};
 
-		var client = _client.GetClient();
-
-		var response = await client.Playlists.CurrentUsers(request);
-		var playlists = await client.PaginateAll(response);
+		var response = await _spotifyClient.Playlists.CurrentUsers(request);
+		var playlists = await _spotifyClient.PaginateAll(response);
 
 		return playlists;
 	}

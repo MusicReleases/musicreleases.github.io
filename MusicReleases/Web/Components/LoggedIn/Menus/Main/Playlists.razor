@@ -38,7 +38,7 @@
     [Parameter]
     public Enums.ServiceType ServiceType { get; set; }
 
-    private HashSet<SpotifyApi.Objects.Playlist> _playlists;
+    private HashSet<SpotifyApi.Objects.Playlist>? _playlists;
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,13 +48,13 @@
             // display playlists
             if (!controllerUser.IsLoggedIn()) return;
 
-            _playlists = await controllerPlaylist.GetUserPlaylists();
+            _playlists = await controllerPlaylist.GetAllUserPlaylists();
         }
     }
 
     private async Task UpdatePlaylists()
     {
-        _playlists = await controllerPlaylist.GetUserPlaylists();
+        _playlists = await controllerPlaylist.GetAllUserPlaylists();
         StateHasChanged();
     }
 }

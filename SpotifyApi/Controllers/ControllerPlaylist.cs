@@ -6,19 +6,18 @@ namespace JakubKastner.SpotifyApi.Controllers;
 public class ControllerPlaylist
 {
 	private readonly ControllerApiPlaylist _controllerApiPlaylist;
+	private readonly ControllerApiTrack _controllerApiTrack;
 	private readonly User _user;
-	private readonly Controller _controller;
 
-	public ControllerPlaylist(ControllerApiPlaylist controllerApiPlaylist, User user, Controller controller)
+	public ControllerPlaylist(ControllerApiPlaylist controllerApiPlaylist, ControllerApiTrack controllerApiTrack, User user)
 	{
 		_controllerApiPlaylist = controllerApiPlaylist;
 		_user = user;
-		_controller = controller;
+		_controllerApiTrack = controllerApiTrack;
 	}
 
-
 	// get list of user playlists
-	public async Task<HashSet<Playlist>> GetUserPlaylists()
+	public async Task<HashSet<Playlist>> GetAllUserPlaylists()
 	{
 		return _user.Playlists ??= await _controllerApiPlaylist.GetUserPlaylistsFromApi();
 	}
@@ -26,8 +25,9 @@ public class ControllerPlaylist
 	// get user playlist (with tracks)
 	public async Task<Playlist?> GetUserPlaylist(string playlistId, bool getTracks = false)
 	{
-		if (GetUserPlaylists() == null)
+		if (await GetAllUserPlaylists() == null)
 		{
+			// TODO getalluserplaylist() is not nullable
 			return null;
 		}
 
@@ -35,7 +35,7 @@ public class ControllerPlaylist
 
 		if (getTracks)
 		{
-			var tracks = await _controller.GetPlaylistTracks(playlistId);
+			var tracks = await _controllerApiTrack.GetPlaylistTracksFromApi(playlistId);
 		}
 
 		return playlist;

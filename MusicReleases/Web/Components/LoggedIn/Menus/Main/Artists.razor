@@ -3,6 +3,7 @@
 @using JakubKastner.SpotifyApi.Objects
 @inject NavigationManager NavManager
 @inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerUser
+@inject JakubKastner.SpotifyApi.Controllers.ControllerArtist controllerArtist
 
 <div class="menu artists items scroll buttons-rounded-m">
     @if (!controllerUser.IsLoggedIn())
@@ -36,7 +37,7 @@
     [Parameter]
     public Enums.ServiceType ServiceType { get; set; }
 
-    private SortedSet<SpotifyApi.Objects.Artist> _artists;
+    private SortedSet<SpotifyApi.Objects.Artist>? _artists;
 
     protected override async Task OnInitializedAsync()
     {
@@ -46,13 +47,13 @@
             // display playlists
             if (!controllerUser.IsLoggedIn()) return;
 
-            _artists = await controllerUser.GetArtists();
+            _artists = await controllerArtist.GetUserFollowedArtists();
         }
     }
 
     private async Task UpdateArtists()
     {
-        _artists = await controllerUser.GetArtists();
+        _artists = await controllerArtist.GetUserFollowedArtists();
         StateHasChanged();
     }
 }
