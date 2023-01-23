@@ -5,11 +5,11 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiArtist
 {
-    private readonly SpotifyClient _spotifyClient;
+    private readonly Client _client;
 
     public ControllerApiArtist(Client client)
     {
-        _spotifyClient = client.GetClient();
+        _client = client;
     }
 
     public async Task<SortedSet<Artist>> GetUserFollowedArtistsFromApi()
@@ -21,7 +21,7 @@ public class ControllerApiArtist
 
         foreach (var artistApi in artistsFromApi)
         {
-            var artist = new Artist(artistApi);
+            Artist artist = new(artistApi);
             artists.Add(artist);
         }
 
@@ -32,12 +32,11 @@ public class ControllerApiArtist
     {
         var request = new FollowOfCurrentUserRequest(FollowOfCurrentUserRequest.Type.Artist)
         {
-            Limit = 50
+            Limit = ApiRequestLimit.UserFollowedArtists,
         };
-
-
-        var response = await _spotifyClient.Follow.OfCurrentUser(request);
-        var artistsAsync = _spotifyClient.Paginate(response.Artists, (s) => s.Artists);
+        var spotifyClient = _client.GetClient();
+        var response = await spotifyClient.Follow.OfCurrentUser(request);
+        var artistsAsync = spotifyClient.Paginate(response.Artists, (s) => s.Artists);
 
         List<FullArtist> artists = new();
 

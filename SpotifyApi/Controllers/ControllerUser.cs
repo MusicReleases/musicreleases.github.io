@@ -6,9 +6,9 @@ public class ControllerUser
 {
     private readonly Client _client;
 
-    public ControllerUser(Client spotifyClient)
+    public ControllerUser(Client client)
     {
-        _client = spotifyClient;
+        _client = client;
     }
 
     public Uri GetLoginUrl(Uri currentUrl)

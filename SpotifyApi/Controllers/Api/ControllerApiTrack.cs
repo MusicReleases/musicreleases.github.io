@@ -5,11 +5,11 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiTrack
 {
-    private readonly SpotifyClient _spotifyClient;
+    private readonly Client _client;
 
     public ControllerApiTrack(Client client)
     {
-        _spotifyClient = client.GetClient();
+        _client = client;
     }
 
     public async Task<List<Track>> GetPlaylistTracksFromApi(string playlistId)
@@ -59,11 +59,11 @@ public class ControllerApiTrack
     {
         var request = new PlaylistGetItemsRequest
         {
-            Limit = 100
+            Limit = ApiRequestLimit.ReleaseTracks,
         };
-
-        var response = await _spotifyClient.Playlists.GetItems(playlistId, request);
-        var tracks = await _spotifyClient.PaginateAll(response);
+        var spotifyClient = _client.GetClient();
+        var response = await spotifyClient.Playlists.GetItems(playlistId, request);
+        var tracks = await spotifyClient.PaginateAll(response);
         return tracks;
     }
 }

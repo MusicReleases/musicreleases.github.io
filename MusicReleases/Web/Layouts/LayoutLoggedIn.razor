@@ -16,14 +16,14 @@
 @code
 {
 	// TODO loading page
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		if (!controllerSpotify.IsLoggedIn())
 		{
 			// get token from url
 			var currentUrl = navManager.Uri;
-			var login = controllerApiSpotify.LoginUser(currentUrl);
-			if (login)
+			var user = await controllerApiSpotify.LoginUser(currentUrl);
+			if (user)
 			{
 				// navigate to releases page
 				navManager.NavigateTo("releases");

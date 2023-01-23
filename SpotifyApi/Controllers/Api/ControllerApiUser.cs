@@ -1,42 +1,65 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.Objects;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiUser
 {
     private readonly Client _client;
+    private readonly User _user;
 
-    public ControllerApiUser(Client client)
+    public ControllerApiUser(Client client, User user)
     {
         _client = client;
+        _user = user;
     }
 
-    public bool LoginUser(string url)
+    public async Task<bool> LoginUser(string url)
     {
-        return LoginUser(new Uri(url));
+        return await LoginUser(new Uri(url));
     }
 
-    public bool LoginUser(Uri url)
+    public async Task<bool> LoginUser(Uri url)
     {
         // get url parameters
+        var urlParameters = GetUrlParameters(url);
+
+        // get user from access token
+        var loggedIn = urlParameters.ContainsKey("access_token");
+        if (!loggedIn)
+        {
+            return false;
+        }
+
+        var accessToken = urlParameters["access_token"];
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            return false;
+        }
+        _client.Init(accessToken);
+
+        if (!urlParameters.ContainsKey("expires_in"))
+        {
+            return false;
+        }
+        var accessTokenExpires = urlParameters["expires_in"];
+
+        // get user info
+        var userApi = await GetLoggedInUser();
+        _user.Id = userApi.Id;
+
+        return true;
+    }
+
+    private Dictionary<string, string> GetUrlParameters(Uri url)
+    {
         var maxLen = Math.Min(1, url.Fragment.Length);
-        Dictionary<string, string> urlParameters = url.Fragment[maxLen..]?
+        var urlParameters = url.Fragment[maxLen..]?
           .Split("&", StringSplitOptions.RemoveEmptyEntries)?
           .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
           .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
 
-        // get user from access token
-        var loggedIn = urlParameters.ContainsKey("access_token");
-        if (!loggedIn) return false;
-
-        var accessToken = urlParameters["access_token"];
-        if (string.IsNullOrEmpty(accessToken)) return false;
-        _client.Init(accessToken);
-
-        if (!urlParameters.ContainsKey("expires_in")) return false;
-        var accessTokenExpires = urlParameters["expires_in"];
-
-        return true;
+        return urlParameters;
     }
 
     public async Task<PrivateUser> GetLoggedInUser()

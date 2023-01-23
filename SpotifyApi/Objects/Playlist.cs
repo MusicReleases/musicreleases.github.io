@@ -6,39 +6,29 @@ public class Playlist
 {
     public string Id { get; private set; }
     public string Name { get; private set; }
-    //public bool CurrentUserOwned { get; private set; }
+    public bool CurrentUserOwned { get; private set; }
+    public bool Collaborative { get; private set; }
 
     public int? TotalTracks { get; private set; }
 
-    public List<Track> Tracks_old { get; set; } = new();
     public HashSet<Track> Tracks { get; set; } = new();
 
     // TODO playlist owner - currentuserowned
-    public Playlist(SimplePlaylist simplePlaylist)
+    public Playlist(SimplePlaylist simplePlaylist, bool currentUserOwned = false)
     {
         Id = simplePlaylist.Id;
         Name = simplePlaylist.Name;
         TotalTracks = simplePlaylist.Tracks.Total;
-        //CurrentUserOwned = IsCurrentUserPlaylist(simplePlaylist.Owner.Id);
+        Collaborative = simplePlaylist.Collaborative;
+        CurrentUserOwned = currentUserOwned;
     }
-    public Playlist(FullPlaylist fullPlaylist)
+    public Playlist(FullPlaylist fullPlaylist, bool currentUserOwned = false)
     {
         // TODO null
         Id = fullPlaylist.Id ?? "";
         Name = fullPlaylist.Name ?? "";
         TotalTracks = fullPlaylist.Tracks?.Total;
-        /*if (fullPlaylist.Owner == null)
-        {
-            CurrentUserOwned = false;
-        }
-        else
-        {
-            CurrentUserOwned = IsCurrentUserPlaylist(fullPlaylist.Owner.Id);
-        }*/
+        Collaborative = fullPlaylist.Collaborative ?? false;
+        CurrentUserOwned = currentUserOwned;
     }
-
-    /*private static bool IsCurrentUserPlaylist(string playlistOwnerId)
-    {
-        return playlistOwnerId == Base.User?.LoggedIn.Id;
-    }*/
 }

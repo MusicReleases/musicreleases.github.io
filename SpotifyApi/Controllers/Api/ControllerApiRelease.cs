@@ -6,11 +6,11 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiRelease
 {
-    private readonly SpotifyClient _spotifyClient;
+    private readonly Client _client;
 
     public ControllerApiRelease(Client client)
     {
-        _spotifyClient = client.GetClient();
+        _client = client;
     }
 
     public async Task<SortedSet<Album>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
@@ -22,7 +22,7 @@ public class ControllerApiRelease
 
         foreach (var albumApi in albumsFromApi)
         {
-            var album = new Album(albumApi);
+            Album album = new(albumApi);
             albums.Add(album);
         }
 
@@ -33,14 +33,17 @@ public class ControllerApiRelease
     {
         var request = new ArtistsAlbumsRequest
         {
-            Limit = 50,
-            // TODO Market
+            Limit = ApiRequestLimit.ArtistReleases,
+            IncludeGroupsParam = ArtistsAlbumsRequest.IncludeGroups.Album,
+            // TODO Market, albums/ singles and more release types
         };
+
+        var spotifyClient = _client.GetClient();
 
         try
         {
-            var response = await _spotifyClient.Artists.GetAlbums(artistId, request);
-            var albums = await _spotifyClient.PaginateAll(response);
+            var response = await spotifyClient.Artists.GetAlbums(artistId, request);
+            var albums = await spotifyClient.PaginateAll(response);
             return albums;
         }
         catch (APIException e)

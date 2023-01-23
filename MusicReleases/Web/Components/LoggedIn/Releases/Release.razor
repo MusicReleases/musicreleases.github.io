@@ -4,12 +4,7 @@
     <div class="info">
         <img src="@ReleaseObj.ImageUrl" alt="Cover" class="cover">
         <a class="name icon-text" href="@ReleaseObj.Uri" target="_blank" rel="noopener noreferrer">@ReleaseObj.Name</a>
-        <div class="artists icon-text">
-            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 1">Artist 1</button><span>•</span>
-            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 2">Artist 2</button><span>•</span>
-            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 3">Artist 3</button><span>•</span>
-            <button class="artist" data-menu_type="artist" data-menu_artist="Artist 4">Artist 4</button>
-        </div>
+        <Artists ArtistsObj="ReleaseObj.Artists" />
         <p class="date icon-text">
             <i class="fas fa-calendar-alt" aria-hidden="true"></i>
             <button>@ReleaseObj.ReleaseDate</button>

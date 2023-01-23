@@ -48,13 +48,13 @@
             // display playlists
             if (!controllerUser.IsLoggedIn()) return;
 
-            _playlists = await controllerPlaylist.GetAllUserPlaylists();
+            _playlists = await controllerPlaylist.GetUserPlaylists(true);
         }
     }
 
     private async Task UpdatePlaylists()
     {
-        _playlists = await controllerPlaylist.GetAllUserPlaylists();
+        _playlists = await controllerPlaylist.GetUserPlaylists(true);
         StateHasChanged();
     }
 }

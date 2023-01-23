@@ -36,7 +36,8 @@ public class Album : IComparable
             ImageUrl = "";
         }
         Uri = simpleAlbum.Uri;
-        Artists = new();
+        //Artists = new();
+        Artists = simpleAlbum.Artists.Select(simpleArtist => new Artist(simpleArtist)).ToHashSet();
         //Artists = Controller.GetArtists(simpleAlbum.Artists);
     }
     public Album(FullAlbum fullAlbum)
@@ -56,7 +57,8 @@ public class Album : IComparable
             ImageUrl = "";
         }
         Uri = fullAlbum.Uri;
-        Artists = new();
+        //Artists = new();
+        Artists = fullAlbum.Artists.Select(simpleArtist => new Artist(simpleArtist)).ToHashSet();
         //Artists = Controller.GetArtists(fullAlbum.Artists);
     }
     public Album(SimpleShow simpleShow)
@@ -81,7 +83,6 @@ public class Album : IComparable
             new(id: "0", name: simpleShow.Publisher)
         };
     }
-
 
     public int CompareTo(object obj)
     {

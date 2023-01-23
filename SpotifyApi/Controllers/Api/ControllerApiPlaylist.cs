@@ -5,23 +5,29 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiPlaylist
 {
-	private readonly SpotifyClient _spotifyClient;
+	private readonly Client _client;
+	private readonly User _user;
 
-	public ControllerApiPlaylist(Client client)
+	public ControllerApiPlaylist(Client client, User user)
 	{
-		_spotifyClient = client.GetClient();
+		_client = client;
+		_user = user;
 	}
 
 	public async Task<HashSet<Playlist>> GetUserPlaylistsFromApi()
 	{
-		HashSet<Playlist> playlists = new();
 		var playlistsFromApi = await GetUserPlaylistsApi();
+		HashSet<Playlist> playlists = new();
 
-		if (playlistsFromApi == null) return playlists;
+		if (playlistsFromApi == null)
+		{
+			return playlists;
+		}
 
 		foreach (var playlistApi in playlistsFromApi)
 		{
-			Playlist playlist = new(simplePlaylist: playlistApi);
+			var currentUserOwned = IsPlaylistOwnedByCurrentUser(playlistApi);
+			Playlist playlist = new(simplePlaylist: playlistApi, currentUserOwned);
 			playlists.Add(playlist);
 		}
 
@@ -32,12 +38,22 @@ public class ControllerApiPlaylist
 	{
 		var request = new PlaylistCurrentUsersRequest
 		{
-			Limit = 50
+			Limit = ApiRequestLimit.UserPlaylists,
 		};
-
-		var response = await _spotifyClient.Playlists.CurrentUsers(request);
-		var playlists = await _spotifyClient.PaginateAll(response);
+		var spotifyClient = _client.GetClient();
+		var response = await spotifyClient.Playlists.CurrentUsers(request);
+		var playlists = await spotifyClient.PaginateAll(response);
 
 		return playlists;
+	}
+
+	private bool IsPlaylistOwnedByCurrentUser(SimplePlaylist playlistApi)
+	{
+		var playlistOwnerId = playlistApi.Owner.Id;
+		if (string.IsNullOrEmpty(playlistOwnerId))
+		{
+			return false;
+		}
+		return playlistOwnerId == _user.Id;
 	}
 }
