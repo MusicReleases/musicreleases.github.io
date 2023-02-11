@@ -1,11 +1,13 @@
-﻿@using JakubKastner.SpotifyApi
-@using JakubKastner.SpotifyApi.Objects
-@using SpotifyAPI.Web
-@inherits LayoutComponentBase
-@inject NavigationManager navManager
-@inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerSpotify
-@inject JakubKastner.SpotifyApi.Controllers.Api.ControllerApiUser controllerApiSpotify
+﻿@inherits LayoutComponentBase;
 
+@using JakubKastner.SpotifyApi;
+@using JakubKastner.SpotifyApi.Controllers.Api;
+@using JakubKastner.SpotifyApi.Controllers;
+@using JakubKastner.SpotifyApi.Objects;
+@using SpotifyAPI.Web;
+
+@inject NavigationManager _navManager;
+@inject ControllerUser _spotifyControllerUser;
 
 <div class="body classic hide-player">
 	<div class="page">
@@ -18,20 +20,21 @@
 	// TODO loading page
 	protected override async Task OnInitializedAsync()
 	{
-		if (!controllerSpotify.IsLoggedIn())
+		if (!_spotifyControllerUser.IsLoggedIn())
 		{
 			// get token from url
-			var currentUrl = navManager.Uri;
-			var user = await controllerApiSpotify.LoginUser(currentUrl);
+			var currentUrl = _navManager.Uri;
+			var user = await _spotifyControllerUser.LoginUser(currentUrl);
 			if (user)
 			{
 				// navigate to releases page
-				navManager.NavigateTo("releases");
+				// TODO change release type
+				_navManager.NavigateTo("releases/albums");
 			}
 			else
 			{
 				// user is not logged in (error)
-				navManager.NavigateTo("");
+				_navManager.NavigateTo("");
 			}
 			//await Api.Spotify.Base.SetUser();
 		}

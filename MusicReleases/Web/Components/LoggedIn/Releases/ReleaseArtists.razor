@@ -1,0 +1,20 @@
+﻿@using JakubKastner.SpotifyApi.Objects
+
+<div class="artists icon-text">
+    @foreach (var artist in ArtistsObj)
+    {
+        <button class="artist" data-menu_type="artist" data-menu_artist="@artist.Id">@artist.Name</button>
+        @if (++_index != ArtistsObj.Count)
+        {
+            <span>•</span>            
+        }     
+    }
+</div>
+
+@code
+{
+    [Parameter, EditorRequired]
+    public HashSet<Artist> ArtistsObj { get; set; }
+
+    private int _index = 0;
+}

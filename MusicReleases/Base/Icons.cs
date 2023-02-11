@@ -1,10 +1,11 @@
-﻿using static JakubKastner.SpotifyApi.Enums;
+﻿using static JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Base;
 
 public static class Icons
 {
-    public static string? GetReleases(ReleaseType releaseType)
+    // TODO DI
+    public static string? GetIconForRelease(ReleaseType releaseType)
     {
         return releaseType switch
         {

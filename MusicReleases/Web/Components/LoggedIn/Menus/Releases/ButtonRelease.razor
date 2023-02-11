@@ -1,0 +1,35 @@
+﻿@using JakubKastner.MusicReleases.Base;
+@using static JakubKastner.SpotifyApi.SpotifyEnums;
+
+@inject NavigationManager _navManager;
+
+
+@if (String.IsNullOrEmpty(_releaseType))
+{
+    return;    
+}
+
+<button type="button" class="@_releaseType.ToLower()" title="View released @_releaseType.ToLower()" @onclick="DisplayReleases">
+    <i class="fas fa-@_icon" aria-hidden="true"></i>
+    <span>@_releaseType</span>
+</button>
+
+@code
+{
+    [Parameter, EditorRequired]
+    public ReleaseType ReleaseType { get; set; }
+
+    private string? _releaseType;
+    private string? _icon;
+
+    protected override void OnInitialized()
+    {
+        _releaseType = ReleaseType.ToString();
+        _icon = Icons.GetIconForRelease(ReleaseType);
+    }
+
+    private void DisplayReleases()
+    {
+        _navManager.NavigateTo("releases/" + _releaseType?.ToLower());
+    }
+}

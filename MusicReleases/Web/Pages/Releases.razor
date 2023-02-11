@@ -2,7 +2,7 @@
 @using JakubKastner.SpotifyApi
 @using JakubKastner.SpotifyApi.Objects
 @using JakubKastner.MusicReleases.Web.Objects
-@using static JakubKastner.SpotifyApi.Enums
+@using static JakubKastner.SpotifyApi.SpotifyEnums
 @layout LayoutMain
 @inject NavigationManager navManager
 @inject LoaderService loader
@@ -44,6 +44,24 @@
         {
             navManager.NavigateTo("");
         }
+
+        // TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
+        GetParameter();
+
+        // TODO loading artists two times???
+        // display playlists
+        /*if (Api.Spotify.Main.User == null) return;
+        * 
+        var artists = await Api.Spotify.Main.User.GetArtists();*/
+    }
+
+    protected override void OnParametersSet()
+    {
+        GetParameter();
+    }
+
+    private void GetParameter()
+    {
         if (string.IsNullOrEmpty(Type))
         {
             // TODO display all releases and remember last selection
@@ -52,7 +70,6 @@
             // TODO but if is not here, code just continue and doesnt get the right Type (for example)
             return;
         }
-
         try
         {
             _type = Enum.Parse<ReleaseType>(Type);
@@ -60,19 +77,13 @@
         catch
         {
             _type = ReleaseType.Albums;
-        }
-
-        // TODO loading artists two times???
-        // display playlists
-        /*if (Api.Spotify.Main.User == null) return;
-         * 
-        var artists = await Api.Spotify.Main.User.GetArtists();*/
+        }        
     }
 
     private async Task GetReleases()
     {
         loader.Start();
-        _albums = await controllerRelease.GetAllUserFollowedArtistsReleases();
+        _albums = await controllerRelease.GetAllUserFollowedArtistsReleases(_type);
         loader.Stop();
     }
 }

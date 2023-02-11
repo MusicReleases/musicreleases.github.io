@@ -1,6 +1,6 @@
 ﻿using JakubKastner.SpotifyApi.Controllers.Api;
 using JakubKastner.SpotifyApi.Objects;
-using static JakubKastner.SpotifyApi.Enums;
+using static JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 

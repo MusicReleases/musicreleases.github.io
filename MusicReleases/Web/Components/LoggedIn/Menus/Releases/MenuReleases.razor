@@ -1,0 +1,14 @@
+﻿@using static JakubKastner.SpotifyApi.SpotifyEnums;
+
+<div class="menu releases icon-text items scroll buttons-rounded-xl">
+	@foreach (var releaseType in GetAllReleaseTypes())
+	{
+		<ButtonRelease ReleaseType=@releaseType></ButtonRelease>
+	}
+	<MenuSettings></MenuSettings>
+</div>
+
+@code
+{
+
+}

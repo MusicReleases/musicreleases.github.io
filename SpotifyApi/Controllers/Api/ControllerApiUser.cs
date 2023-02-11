@@ -14,12 +14,12 @@ public class ControllerApiUser
         _user = user;
     }
 
-    public async Task<bool> LoginUser(string url)
+    public async Task<User?> LoginUser(string url)
     {
         return await LoginUser(new Uri(url));
     }
 
-    public async Task<bool> LoginUser(Uri url)
+    public async Task<User?> LoginUser(Uri url)
     {
         // get url parameters
         var urlParameters = GetUrlParameters(url);
@@ -28,19 +28,19 @@ public class ControllerApiUser
         var loggedIn = urlParameters.ContainsKey("access_token");
         if (!loggedIn)
         {
-            return false;
+            return null;
         }
 
         var accessToken = urlParameters["access_token"];
         if (string.IsNullOrEmpty(accessToken))
         {
-            return false;
+            return null;
         }
         _client.Init(accessToken);
 
         if (!urlParameters.ContainsKey("expires_in"))
         {
-            return false;
+            return null;
         }
         var accessTokenExpires = urlParameters["expires_in"];
 
@@ -48,7 +48,16 @@ public class ControllerApiUser
         var userApi = await GetLoggedInUser();
         _user.Id = userApi.Id;
 
-        return true;
+        return GetUser(userApi);
+    }
+
+    public User GetUser(PrivateUser userApi)
+    {
+        return new()
+        {
+            Id = userApi.Id,
+            Name = userApi.DisplayName
+        };
     }
 
     private Dictionary<string, string> GetUrlParameters(Uri url)
