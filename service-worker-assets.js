@@ -25,7 +25,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-jcaDc3c4ny0WgKIC9a6Ec0Af9lE0imC\/EOgxu6Oqap4=",
+      "hash": "sha256-+e5p4T2bciG2D3O0J5ouiU7RfwzuZkpXkAU\/PMmfUvA=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -93,7 +93,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-VEuH4cBiBh+bBXU9wQl6ugWNNq01ZOg2AYk1GFtevmY=",
+      "hash": "sha256-Q7+2ygz8mecVBBelOYqaYMQi\/K6AiFUL4Rn7RgJ2euY=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -105,7 +105,7 @@
       "url": "_framework\/Newtonsoft.Json.dll"
     },
     {
-      "hash": "sha256-seL\/j1+KPBOMCp2KP9DWZt45WrReLhTo0J1jj\/\/XlCI=",
+      "hash": "sha256-4Lxm0s88pqLTehP55b7NdUqaDg0aqoItEWQVWaLkRLg=",
       "url": "_framework\/SpotifyApi.dll"
     },
     {
@@ -209,7 +209,7 @@
       "url": "_framework\/System.Private.Xml.Linq.dll"
     },
     {
-      "hash": "sha256-gHtrUr0S8g8+vaxJgsWmC+JIBzrOfhDdsKl2Eemz0\/E=",
+      "hash": "sha256-2F\/UCwjWWR2nLwTDoU3t17NEP1NfNO1o5AHtOuTjRnM=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -549,5 +549,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "PwuBh\/mo"
+  "version": "7v79CoHE"
 };
