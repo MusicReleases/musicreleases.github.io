@@ -25,12 +25,24 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-+e5p4T2bciG2D3O0J5ouiU7RfwzuZkpXkAU\/PMmfUvA=",
+      "hash": "sha256-PZqDBlXT2Z52JP5vCGiUpi6XbctLEeFKPenjaYZTkcw=",
       "url": "_framework\/blazor.boot.json"
     },
     {
       "hash": "sha256-eXVgTw72kEn74FZgDQbLtvAmXbiZDSj5gzUnxVmwowQ=",
       "url": "_framework\/Blazored.LocalStorage.dll"
+    },
+    {
+      "hash": "sha256-siW3UzNgUwWMV15Ax+syneIsmQ+Yj8DkKnd\/OltkGh0=",
+      "url": "_framework\/Fluxor.Blazor.Web.dll"
+    },
+    {
+      "hash": "sha256-cuGpAzjbDnvOIjNV\/lLpGTkEuCVL3lCh6uKWwwv7HHo=",
+      "url": "_framework\/Fluxor.Blazor.Web.ReduxDevTools.dll"
+    },
+    {
+      "hash": "sha256-Jp5omkDwzgtdTreGmfe8R4rKq7e1YPoNyBT0R\/H1Kw4=",
+      "url": "_framework\/Fluxor.dll"
     },
     {
       "hash": "sha256-efcINT7h2bgzZ0wfhJSCPoAdO3ZwFHybEKMkjVG3w70=",
@@ -61,7 +73,7 @@
       "url": "_framework\/Microsoft.Extensions.Configuration.Json.dll"
     },
     {
-      "hash": "sha256-rARH+sRLCJWdc90V8H8fQaCwFqcsNd13YZ2HIlA7IOw=",
+      "hash": "sha256-UnzP2F555WesJCrKuxlYyvgrw5\/YE5OkGK6G\/ld5les=",
       "url": "_framework\/Microsoft.Extensions.DependencyInjection.Abstractions.dll"
     },
     {
@@ -93,7 +105,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-Q7+2ygz8mecVBBelOYqaYMQi\/K6AiFUL4Rn7RgJ2euY=",
+      "hash": "sha256-gg4OMx6\/+mlFnmuU0FQOvMDLj0elIWKXOa7s\/IX4Fto=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -117,7 +129,7 @@
       "url": "_framework\/System.Collections.Concurrent.dll"
     },
     {
-      "hash": "sha256-E8OkbMN5anMTjSm5GvI\/gN02wjHISjePHIaaU2lx2hU=",
+      "hash": "sha256-cZX23Z9zaeZtVTNYDrR\/KMfpF8JvEV92bAc7UtGqdF4=",
       "url": "_framework\/System.Collections.dll"
     },
     {
@@ -149,6 +161,10 @@
       "url": "_framework\/System.Data.Common.dll"
     },
     {
+      "hash": "sha256-jdvLGMKaM\/Q2fdsgvj1gMHZWXIPRDn5D9DDV0D75e04=",
+      "url": "_framework\/System.Diagnostics.StackTrace.dll"
+    },
+    {
       "hash": "sha256-sl3qqZmJ\/f58MPlyu+PfF7zeysNFSlm2ElBANAVFhPQ=",
       "url": "_framework\/System.Diagnostics.TraceSource.dll"
     },
@@ -165,7 +181,7 @@
       "url": "_framework\/System.Drawing.Primitives.dll"
     },
     {
-      "hash": "sha256-WheHK26ijXhXHln6deTYXGfYkWUbKbzdMqUA3WADm1c=",
+      "hash": "sha256-FeYGs1v3V0DwKcoXkwsWtEwVotBYmmD7HbFD5vNQi78=",
       "url": "_framework\/System.Linq.dll"
     },
     {
@@ -193,7 +209,7 @@
       "url": "_framework\/System.ObjectModel.dll"
     },
     {
-      "hash": "sha256-Tre5TFjAFG5qNIc3FOj8hY920ba\/xWAhJo36OKaKDiw=",
+      "hash": "sha256-BLvDxABIXdMIMdbYlSBvCiXq5IGzhJOw7TeVdsXlkMU=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -209,7 +225,7 @@
       "url": "_framework\/System.Private.Xml.Linq.dll"
     },
     {
-      "hash": "sha256-2F\/UCwjWWR2nLwTDoU3t17NEP1NfNO1o5AHtOuTjRnM=",
+      "hash": "sha256-nzwoe8xH9ULYNqqAS7sQ\/\/NpgLCbtWfthQfg4Cok\/mU=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -237,7 +253,7 @@
       "url": "_framework\/System.Text.Encodings.Web.dll"
     },
     {
-      "hash": "sha256-iqJElFfMaJ6YwAsmZiXujIZmb0xiCLjnGs7Bewnnn\/k=",
+      "hash": "sha256-YDkzB805KHa2BdiQn\/YXZ+4XnNhhvxAJ2KluU19Sa8E=",
       "url": "_framework\/System.Text.Json.dll"
     },
     {
@@ -245,7 +261,7 @@
       "url": "_framework\/System.Text.RegularExpressions.dll"
     },
     {
-      "hash": "sha256-dhPnUuPL1WvcNmU461p5jXu9M9kUpkVorucxAEg05MQ=",
+      "hash": "sha256-2\/7cKBgyz8CGzGqNfSxAKONieletWdd5cfhGQmfqZH0=",
       "url": "_framework\/System.Threading.dll"
     },
     {
@@ -261,7 +277,7 @@
       "url": "_framework\/dotnet.7.0.2.ejy5ovff4t.js"
     },
     {
-      "hash": "sha256-aOiVJxdcmLM7tbaPsl03jNZfs2HyT83DDqkK6Ef2EkM=",
+      "hash": "sha256-S1ajCVO4iivEPv3YeG5c9jYRI6GIgpbsS6pqjc5qcx0=",
       "url": "_framework\/dotnet.wasm"
     },
     {
@@ -549,5 +565,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "7v79CoHE"
+  "version": "SG7ga7eT"
 };
