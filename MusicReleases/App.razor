@@ -1,4 +1,8 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@*@inject Fluxor.IStore _store;
+@_store.InitializeAsync();*@
+<Fluxor.Blazor.Web.StoreInitializer/>
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(LayoutEmpty)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +14,4 @@
         </LayoutView>
     </NotFound>
 </Router>
+  

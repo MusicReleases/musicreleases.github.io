@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Fluxor;
 using JakubKastner.MusicReleases;
 using JakubKastner.MusicReleases.Web.Objects;
 using JakubKastner.SpotifyApi;
@@ -38,5 +39,14 @@ builder.Services.AddScoped<ControllerUser>();
 
 // local storage
 builder.Services.AddBlazoredLocalStorage();
+
+// fluxor
+builder.Services.AddFluxor(options =>
+{
+	options.ScanAssemblies(typeof(Program).Assembly);
+#if DEBUG
+	options.UseReduxDevTools();
+#endif
+});
 
 await builder.Build().RunAsync();

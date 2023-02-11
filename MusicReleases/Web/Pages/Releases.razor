@@ -1,89 +1,106 @@
-﻿@page "/releases/{type?}"
-@using JakubKastner.SpotifyApi
-@using JakubKastner.SpotifyApi.Objects
-@using JakubKastner.MusicReleases.Web.Objects
-@using static JakubKastner.SpotifyApi.SpotifyEnums
-@layout LayoutMain
-@inject NavigationManager navManager
-@inject LoaderService loader
+﻿@page "/releases/{type?}";
+@layout LayoutMain;
 
-@inject JakubKastner.SpotifyApi.Controllers.ControllerUser controllerUser
-@inject JakubKastner.SpotifyApi.Controllers.ControllerRelease controllerRelease
+@using Fluxor;
+@using JakubKastner.MusicReleases.Store.Releases;
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
+@using JakubKastner.SpotifyApi;
+@using JakubKastner.SpotifyApi.Objects;
+@using JakubKastner.MusicReleases.Web.Objects;
+@using static JakubKastner.SpotifyApi.SpotifyEnums;
 
-<p>Loading releases...</p>
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent;
 
-<button type="button" @onclick="GetReleases">
-    Get releases
-</button>
+@inject IDispatcher _dispatcher;
+@inject IState<StateReleases> _releasesState;
+@inject NavigationManager _navManager;
+@inject JakubKastner.SpotifyApi.Controllers.ControllerUser _spotifyControllerUser;
+@inject JakubKastner.SpotifyApi.Controllers.ControllerRelease _spotifyControllerRelease;
+@*@inject LoaderService loader*@
+
+@if (_releasesState.Value.Loaded)
+{
+	<p>Loaded</p>
+}
+else
+{
+	<p>Loading releases...</p>
+	<button type="button" @onclick="GetReleases">
+		Get releases
+	</button>
+}
+
 <div class="releases boxes">
-    <Virtualize Items="@_albums" Context="release" ItemSize="233" OverscanCount="4">
-        <ItemContent>
-            <JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases.Release ReleaseObj="@release" />
-        </ItemContent>
-        <Placeholder>
-            <p>Loading</p>
-        </Placeholder>
-    </Virtualize>
+	<Virtualize Items="@_albums" Context="release" ItemSize="233" OverscanCount="4">
+		<ItemContent>
+			<Release ReleaseObj="@release" />
+		</ItemContent>
+		<Placeholder>
+			<p>Loading</p>
+		</Placeholder>
+	</Virtualize>
 </div>
 
 
 @code
 {
-    [Parameter]
-    public string? Type { get; set; }
+	[Parameter]
+	public string? Type { get; set; }
 
-    // TODO enable to select and display more than 1 release type
-    private ReleaseType _type;
+	// TODO enable to select and display more than 1 release type
+	private ReleaseType _type;
 
-    private SortedSet<Album> _albums = new();
+	private SortedSet<Album> _albums = new();
 
-    // <DynamicComponent Type=""></DynamicComponent>
-    protected override async Task OnInitializedAsync()
-    {
-        if (!controllerUser.IsLoggedIn())
-        {
-            navManager.NavigateTo("");
-        }
+	// <DynamicComponent Type=""></DynamicComponent>
+	protected override async Task OnInitializedAsync()
+	{
+		if (!_spotifyControllerUser.IsLoggedIn())
+		{
+			_navManager.NavigateTo("");
+		}
 
-        // TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
-        GetParameter();
+		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
+		GetParameter();
 
-        // TODO loading artists two times???
-        // display playlists
-        /*if (Api.Spotify.Main.User == null) return;
-        * 
-        var artists = await Api.Spotify.Main.User.GetArtists();*/
-    }
+		// TODO loading artists two times???
+		// display playlists
+		/*if (Api.Spotify.Main.User == null) return;
+		*
+		var artists = await Api.Spotify.Main.User.GetArtists();*/
+	}
 
-    protected override void OnParametersSet()
-    {
-        GetParameter();
-    }
+	protected override void OnParametersSet()
+	{
+		GetParameter();
+	}
 
-    private void GetParameter()
-    {
-        if (string.IsNullOrEmpty(Type))
-        {
-            // TODO display all releases and remember last selection
-            //navManager.NavigateTo("/releases/albums");
-            // TODO if is return here, code doesnt refresh the content
-            // TODO but if is not here, code just continue and doesnt get the right Type (for example)
-            return;
-        }
-        try
-        {
-            _type = Enum.Parse<ReleaseType>(Type);
-        }
-        catch
-        {
-            _type = ReleaseType.Albums;
-        }        
-    }
+	private void GetParameter()
+	{
+		if (string.IsNullOrEmpty(Type))
+		{
+			// TODO display all releases and remember last selection
+			//navManager.NavigateTo("/releases/albums");
+			// TODO if is return here, code doesnt refresh the content
+			// TODO but if is not here, code just continue and doesnt get the right Type (for example)
+			return;
+		}
+		try
+		{
+			_type = Enum.Parse<ReleaseType>(Type);
+		}
+		catch
+		{
+			_type = ReleaseType.Albums;
+		}
+	}
 
-    private async Task GetReleases()
-    {
-        loader.Start();
-        _albums = await controllerRelease.GetAllUserFollowedArtistsReleases(_type);
-        loader.Stop();
-    }
+	private async Task GetReleases()
+	{
+		//_loader.Start();
+		_albums = await _spotifyControllerRelease.GetAllUserFollowedArtistsReleases(_type);
+
+		_dispatcher.Dispatch(new ActionReleasesLoaded());
+		//_loader.Stop();
+	}
 }
