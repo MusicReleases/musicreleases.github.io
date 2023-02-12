@@ -1,7 +1,5 @@
-﻿@inherits FluxorComponent;
-
+﻿@using Fluxor;
 @using Fluxor.Blazor.Web.Components;
-@using Fluxor;
 @using JakubKastner.MusicReleases.Base;
 @using JakubKastner.MusicReleases;
 @using JakubKastner.MusicReleases.Store.Api.Spotify.Playlists;
@@ -9,10 +7,11 @@
 @using JakubKastner.SpotifyApi.Controllers;
 @using JakubKastner.SpotifyApi.Objects;
 
+@inherits FluxorComponent;
+
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
 @inject ControllerUser _spotifyControllerUser;
-@inject ControllerPlaylist _spotifyControllerPlaylist;
 
 <div class="menu playlists items scroll buttons-rounded-m">
 	@if (!_spotifyControllerUser.IsLoggedIn())
@@ -46,7 +45,7 @@
 	[Parameter]
 	public Enums.ServiceType ServiceType { get; set; }
 
-	private HashSet<Playlist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
+	private SortedSet<Playlist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
 	private bool _loading => _stateSpotifyPlaylists.Value.Loading;
 
 	protected override void OnInitialized()
@@ -62,9 +61,9 @@
 			{
 				LoadPlaylists();
 				_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
+				base.OnInitialized();
 			}
 		}
-		base.OnInitialized();
 	}
 
 	private void LoadPlaylists()

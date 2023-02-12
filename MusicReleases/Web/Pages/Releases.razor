@@ -2,32 +2,53 @@
 @layout LayoutMain;
 
 @using Fluxor;
+@using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Store.Releases;
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
 @using JakubKastner.SpotifyApi;
 @using JakubKastner.SpotifyApi.Objects;
 @using static JakubKastner.SpotifyApi.SpotifyEnums;
+@using JakubKastner.MusicReleases.Store.Api.Spotify.Releases;
 
-@inherits Fluxor.Blazor.Web.Components.FluxorComponent;
+@inherits FluxorComponent;
 
 @inject IDispatcher _dispatcher;
-@inject IState<StateReleases> _stateReleases;
+@inject IState<SpotifyReleasesState> _stateSpotifyReleases;
 @inject NavigationManager _navManager;
 @inject JakubKastner.SpotifyApi.Controllers.ControllerUser _spotifyControllerUser;
-@inject JakubKastner.SpotifyApi.Controllers.ControllerRelease _spotifyControllerRelease;
 @*@inject LoaderService loader*@
 
-@if (_stateReleases.Value.Loaded)
+@if (!_spotifyControllerUser.IsLoggedIn())
 {
-	<p>Loaded</p>
+	<p>User not logged in</p>
+	<button @onclick=LoadReleases>Update</button>
 }
 else
 {
-	<p>Loading releases...</p>
-	<button type="button" @onclick="GetReleases">
-		Get releases
-	</button>
+	@if (_loading || _releases == null)
+	{
+		<p>Loading releases...</p>
+	}
+	else if (_releases.Count < 1)
+	{
+		<p>0 releases</p>
+		<button @onclick=LoadReleases>Update</button>
+	}
+	else
+	{
+		<div class="releases boxes">
+			<Virtualize Items="@_releases" Context="release" ItemSize="233" OverscanCount="4">
+				<ItemContent>
+					<Release ReleaseObj="@release" />
+				</ItemContent>
+				<Placeholder>
+					<p>Loading</p>
+				</Placeholder>
+			</Virtualize>
+		</div>
+	}
 }
+
 <button type="button" @onclick="Loader">
 	start
 </button>
@@ -35,16 +56,6 @@ else
 	stop
 </button>
 
-<div class="releases boxes">
-	<Virtualize Items="@_albums" Context="release" ItemSize="233" OverscanCount="4">
-		<ItemContent>
-			<Release ReleaseObj="@release" />
-		</ItemContent>
-		<Placeholder>
-			<p>Loading</p>
-		</Placeholder>
-	</Virtualize>
-</div>
 
 
 @code
@@ -55,10 +66,10 @@ else
 	// TODO enable to select and display more than 1 release type
 	private ReleaseType _type;
 
-	private SortedSet<Album> _albums = new();
+	private SortedSet<Album>? _releases => _stateSpotifyReleases.Value.Releases;
+	private bool _loading => _stateSpotifyReleases.Value.Loading;
 
-	// <DynamicComponent Type=""></DynamicComponent>
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
 		if (!_spotifyControllerUser.IsLoggedIn())
 		{
@@ -66,13 +77,28 @@ else
 		}
 
 		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
-		GetParameter();
+		//GetParameter();
 
-		// TODO loading artists two times???
-		// display playlists
-		/*if (Api.Spotify.Main.User == null) return;
-		*
-		var artists = await Api.Spotify.Main.User.GetArtists();*/
+		if (_stateSpotifyReleases.Value.Initialized == false)
+		{
+			LoadReleases();
+			_dispatcher.Dispatch(new SpotifyReleasesActionInitialized());
+			base.OnInitialized();
+		}
+	}
+
+	private void LoadReleases()
+	{
+		_dispatcher.Dispatch(new SpotifyReleasesActionLoad());
+	}
+
+	private void Loader()
+	{
+	_dispatcher.Dispatch(new LoaderAction(true));
+	}
+	private void LoaderS()
+	{
+	_dispatcher.Dispatch(new LoaderAction(false));
 	}
 
 	protected override void OnParametersSet()
@@ -98,26 +124,5 @@ else
 		{
 			_type = ReleaseType.Albums;
 		}
-	}
-	private void Loader()
-	{
-		_dispatcher.Dispatch(new LoaderAction(true));
-	}
-	private void LoaderS()
-	{
-		_dispatcher.Dispatch(new LoaderAction(false));
-	}
-
-	private async Task GetReleases()
-	{
-		//_loader.Start();
-		//var loader = new LoaderAction();
-		//_dispatcher.Dispatch(loader);
-		_albums = await _spotifyControllerRelease.GetAllUserFollowedArtistsReleases(_type);
-
-		_dispatcher.Dispatch(new ActionReleasesLoaded());
-		//loader.Loading = false;
-		//_dispatcher.Dispatch(loader);
-		//_loader.Stop();
 	}
 }

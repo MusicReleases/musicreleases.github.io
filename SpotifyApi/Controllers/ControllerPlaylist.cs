@@ -17,17 +17,17 @@ public class ControllerPlaylist
 	}
 
 	// get list of user playlists
-	public async Task<HashSet<Playlist>> GetUserPlaylists(bool onlyEditable = false)
+	public async Task<SortedSet<Playlist>> GetUserPlaylists(bool onlyEditable = false)
 	{
 		var playlists = _user.Playlists ??= await _controllerApiPlaylist.GetUserPlaylistsFromApi();
 
 		if (!onlyEditable)
 		{
-			return playlists;
+			return new(playlists);
 		}
 
 		// TODO settings
-		return playlists.Where(playlist => playlist.CurrentUserOwned == true && playlist.Collaborative == false).ToHashSet();
+		return new(playlists.Where(playlist => playlist.CurrentUserOwned == true && playlist.Collaborative == false));
 	}
 
 	// get user playlist (with tracks)

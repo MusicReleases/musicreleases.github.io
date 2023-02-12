@@ -4,22 +4,23 @@
 @using JakubKastner.MusicReleases.Store.Releases;
 @using JakubKastner.SpotifyApi.Controllers;
 @using JakubKastner.SpotifyApi.Objects;
+@using JakubKastner.MusicReleases.Store.Api.Spotify.Releases;
 
 @inherits FluxorComponent;
 
-@inject IState<StateReleases> _stateReleases;
+@inject IState<SpotifyReleasesState> _stateSpotifyReleases;
 @inject ControllerUser _spotifyControllerUser;
 @inject ControllerArtist _spotifyControllerArtist;
 
 <div class="menu date items scroll buttons-rounded-m">
-	@if (_stateReleases.Value.Loaded)
+	@*@if (_stateSpotifyReleases.Value.Loaded)
 	{
 		<p>Loaded</p>
 	}
 	else
 	{
 		<p>Loading...</p>
-	}
+	}*@
 </div>
 
 @code

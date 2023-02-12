@@ -84,11 +84,22 @@ public class Album : IComparable
         };
     }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
+        if (obj == null)
+        {
+            return -1;
+        }
+
         var other = (Album)obj;
         var lastNameComparison = -ReleaseDate.CompareTo(other.ReleaseDate);
 
         return (lastNameComparison != 0) ? lastNameComparison : Id.CompareTo(other.Name);
+    }
+
+    public override bool Equals(object obj)
+    {
+        var other = (Album)obj;
+        return string.Equals(Id, other.Id);
     }
 }

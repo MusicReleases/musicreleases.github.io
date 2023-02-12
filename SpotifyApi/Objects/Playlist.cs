@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class Playlist
+public class Playlist : IComparable
 {
     public string Id { get; private set; }
     public string Name { get; private set; }
@@ -30,5 +30,13 @@ public class Playlist
         TotalTracks = fullPlaylist.Tracks?.Total;
         Collaborative = fullPlaylist.Collaborative ?? false;
         CurrentUserOwned = currentUserOwned;
+    }
+
+    public int CompareTo(object obj)
+    {
+        var other = (Playlist)obj;
+        var lastNameComparison = Name.CompareTo(other.Name);
+
+        return (lastNameComparison != 0) ? lastNameComparison : Id.CompareTo(other.Id);
     }
 }

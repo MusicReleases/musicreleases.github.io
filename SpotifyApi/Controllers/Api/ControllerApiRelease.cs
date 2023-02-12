@@ -43,6 +43,7 @@ public class ControllerApiRelease
 		var request = new ArtistsAlbumsRequest
 		{
 			Limit = ApiRequestLimit.ArtistReleases,
+			IncludeGroupsParam = GetApiReleaseType(releaseType),
 			// TODO market
 		};
 		// TODO all??

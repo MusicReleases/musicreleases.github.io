@@ -1,12 +1,11 @@
 ﻿using Fluxor;
-using JakubKastner.MusicReleases.Store.Releases;
 
 namespace JakubKastner.MusicReleases.Store.Api.Spotify.Playlists;
 
 public static class SpotifyPlaylistsReducers
 {
 	[ReducerMethod]
-	public static SpotifyPlaylistsState OnSetForecasts(SpotifyPlaylistsState state, SpotifyPlaylistsActionSet action)
+	public static SpotifyPlaylistsState OnSetPlaylists(SpotifyPlaylistsState state, SpotifyPlaylistsActionSet action)
 	{
 		return state with
 		{
@@ -25,7 +24,7 @@ public static class SpotifyPlaylistsReducers
 	}
 
 	[ReducerMethod(typeof(SpotifyPlaylistsActionLoad))]
-	public static SpotifyPlaylistsState OnLoadForecasts(SpotifyPlaylistsState state)
+	public static SpotifyPlaylistsState OnLoadPlaylists(SpotifyPlaylistsState state)
 	{
 		return state with
 		{
