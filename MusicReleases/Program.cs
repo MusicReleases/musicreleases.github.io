@@ -1,7 +1,6 @@
 using Blazored.LocalStorage;
 using Fluxor;
 using JakubKastner.MusicReleases;
-using JakubKastner.MusicReleases.Web.Objects;
 using JakubKastner.SpotifyApi;
 using JakubKastner.SpotifyApi.Controllers;
 using JakubKastner.SpotifyApi.Controllers.Api;
@@ -15,9 +14,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-// TODO interface
-builder.Services.AddScoped<LoaderService>();
 
 // client and user
 builder.Services.AddScoped<Client>();

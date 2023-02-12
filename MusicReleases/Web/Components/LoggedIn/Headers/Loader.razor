@@ -1,32 +1,10 @@
-﻿@using JakubKastner.MusicReleases.Web.Objects
-@inject LoaderService LoaderService
-@implements IDisposable
+﻿@inherits FluxorComponent;
 
-<div class="header loader{@LoaderService.ActiveClass}"></div>
+@using Fluxor;
+@using Fluxor.Blazor.Web.Components;
+@using JakubKastner.MusicReleases.Store.Releases;
+@using JakubKastner.MusicReleases.Store.Api.Spotify.Playlists;
 
-@code
-{
-	// TODO doesnt work, it just happends when page is opened first time, need refresh
-	/*private string _active = string.Empty;
+@inject IState<LoaderState> _stateLoader;
 
-	public bool Active { set => _active = (value ? " active" : string.Empty); }
-
-	public void Start()
-		{
-		Active = true;
-	}
-	public void Stop()
-		{
-		Active = false;
-	}*/
-
-	protected override void OnInitialized()
-	{
-		LoaderService.OnChange += () => StateHasChanged();
-	}
-
-	public void Dispose()
-	{
-		LoaderService.OnChange -= () => StateHasChanged();
-	}
-}
+<div class="header loader@_stateLoader.Value.LoadingClass()"></div>

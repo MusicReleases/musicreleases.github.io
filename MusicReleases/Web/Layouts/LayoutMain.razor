@@ -1,27 +1,25 @@
-﻿@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase;
 
 @using JakubKastner.MusicReleases.Base;
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Artists
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases
 
 <div class="body classic hide-player">
-	<CascadingValue Value="@LoaderActive">
-		<Header></Header>
-		<div class="main">
-			<MenuReleases></MenuReleases>
+	<Header></Header>
+	<div class="main">
+		<MenuReleases></MenuReleases>
 
-			<div class="menu date year items scroll">
-			</div>
-			<MenuArtists ServiceType=@Enums.ServiceType.Spotify></MenuArtists>
-			<MenuPlaylists ServiceType=@Enums.ServiceType.Spotify></MenuPlaylists>
+		<MenuDate ServiceType=@Enums.ServiceType.Spotify></MenuDate>
+		<MenuArtists ServiceType=@Enums.ServiceType.Spotify></MenuArtists>
+		<MenuPlaylists ServiceType=@Enums.ServiceType.Spotify></MenuPlaylists>
 
-			<div class="content page scroll">
-				@Body
-			</div>
+		<div class="content page scroll">
+			@Body
 		</div>
-	</CascadingValue>
+	</div>
 </div>
 
 @code

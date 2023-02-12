@@ -1,8 +1,16 @@
-﻿@using JakubKastner.MusicReleases.Base;
+﻿@inherits FluxorComponent;
+
+@using Fluxor.Blazor.Web.Components;
+@using Fluxor;
+@using JakubKastner.MusicReleases.Base;
 @using JakubKastner.MusicReleases;
+@using JakubKastner.MusicReleases.Store.Api.Spotify.Playlists;
+@using JakubKastner.MusicReleases.Store.Releases;
 @using JakubKastner.SpotifyApi.Controllers;
 @using JakubKastner.SpotifyApi.Objects;
 
+@inject IDispatcher _dispatcher;
+@inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
 @inject ControllerUser _spotifyControllerUser;
 @inject ControllerPlaylist _spotifyControllerPlaylist;
 
@@ -10,18 +18,18 @@
 	@if (!_spotifyControllerUser.IsLoggedIn())
 	{
 		<p>User not logged in</p>
-		<button @onclick=UpdatePlaylists>Update</button>
+		<button @onclick=LoadPlaylists>Update</button>
 	}
 	else
 	{
-		@if (_playlists == null)
+		@if (_loading || _playlists == null)
 		{
 			<p>Loading playlists...</p>
 		}
 		else if (_playlists.Count < 1)
 		{
 			<p>0 playlists</p>
-			<button @onclick=UpdatePlaylists>Update</button>
+			<button @onclick=LoadPlaylists>Update</button>
 		}
 		else
 		{
@@ -38,23 +46,29 @@
 	[Parameter]
 	public Enums.ServiceType ServiceType { get; set; }
 
-	private HashSet<Playlist>? _playlists;
+	private HashSet<Playlist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
+	private bool _loading => _stateSpotifyPlaylists.Value.Loading;
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
 		if (ServiceType == Enums.ServiceType.Spotify)
 		{
-			// TODO show loader
-			// display playlists
-			if (!_spotifyControllerUser.IsLoggedIn()) return;
+			if (!_spotifyControllerUser.IsLoggedIn())
+			{
+				return;
+			}
 
-			_playlists = await _spotifyControllerPlaylist.GetUserPlaylists(true);
+			if (_stateSpotifyPlaylists.Value.Initialized == false)
+			{
+				LoadPlaylists();
+				_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
+			}
 		}
+		base.OnInitialized();
 	}
 
-	private async Task UpdatePlaylists()
+	private void LoadPlaylists()
 	{
-		_playlists = await _spotifyControllerPlaylist.GetUserPlaylists(true);
-		StateHasChanged();
+		_dispatcher.Dispatch(new SpotifyPlaylistsActionLoad());
 	}
 }

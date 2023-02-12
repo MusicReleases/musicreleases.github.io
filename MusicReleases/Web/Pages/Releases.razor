@@ -6,19 +6,18 @@
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
 @using JakubKastner.SpotifyApi;
 @using JakubKastner.SpotifyApi.Objects;
-@using JakubKastner.MusicReleases.Web.Objects;
 @using static JakubKastner.SpotifyApi.SpotifyEnums;
 
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent;
 
 @inject IDispatcher _dispatcher;
-@inject IState<StateReleases> _releasesState;
+@inject IState<StateReleases> _stateReleases;
 @inject NavigationManager _navManager;
 @inject JakubKastner.SpotifyApi.Controllers.ControllerUser _spotifyControllerUser;
 @inject JakubKastner.SpotifyApi.Controllers.ControllerRelease _spotifyControllerRelease;
 @*@inject LoaderService loader*@
 
-@if (_releasesState.Value.Loaded)
+@if (_stateReleases.Value.Loaded)
 {
 	<p>Loaded</p>
 }
@@ -29,6 +28,12 @@ else
 		Get releases
 	</button>
 }
+<button type="button" @onclick="Loader">
+	start
+</button>
+<button type="button" @onclick="LoaderS">
+	stop
+</button>
 
 <div class="releases boxes">
 	<Virtualize Items="@_albums" Context="release" ItemSize="233" OverscanCount="4">
@@ -94,13 +99,25 @@ else
 			_type = ReleaseType.Albums;
 		}
 	}
+	private void Loader()
+	{
+		_dispatcher.Dispatch(new LoaderAction(true));
+	}
+	private void LoaderS()
+	{
+		_dispatcher.Dispatch(new LoaderAction(false));
+	}
 
 	private async Task GetReleases()
 	{
 		//_loader.Start();
+		//var loader = new LoaderAction();
+		//_dispatcher.Dispatch(loader);
 		_albums = await _spotifyControllerRelease.GetAllUserFollowedArtistsReleases(_type);
 
 		_dispatcher.Dispatch(new ActionReleasesLoaded());
+		//loader.Loading = false;
+		//_dispatcher.Dispatch(loader);
 		//_loader.Stop();
 	}
 }
