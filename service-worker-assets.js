@@ -25,7 +25,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-PZqDBlXT2Z52JP5vCGiUpi6XbctLEeFKPenjaYZTkcw=",
+      "hash": "sha256-OioUmz1ISmfUrb2aupduINe\/gYwubryxoryyqsPjmYM=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -45,7 +45,7 @@
       "url": "_framework\/Fluxor.dll"
     },
     {
-      "hash": "sha256-efcINT7h2bgzZ0wfhJSCPoAdO3ZwFHybEKMkjVG3w70=",
+      "hash": "sha256-j9ptnk9nkVR4OC5UCcagNXUnrPpjfnfV0iTt3fT6SCQ=",
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
@@ -105,7 +105,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-gg4OMx6\/+mlFnmuU0FQOvMDLj0elIWKXOa7s\/IX4Fto=",
+      "hash": "sha256-ZO7zmkXX7FzPJpH9qsbexlLyC2s2fuLw0W2aNPLc2og=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -209,7 +209,7 @@
       "url": "_framework\/System.ObjectModel.dll"
     },
     {
-      "hash": "sha256-BLvDxABIXdMIMdbYlSBvCiXq5IGzhJOw7TeVdsXlkMU=",
+      "hash": "sha256-BP4npU\/kgrEanoUV96eLinOI7GqeWkcy5QU+SDXLGlw=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -225,7 +225,7 @@
       "url": "_framework\/System.Private.Xml.Linq.dll"
     },
     {
-      "hash": "sha256-nzwoe8xH9ULYNqqAS7sQ\/\/NpgLCbtWfthQfg4Cok\/mU=",
+      "hash": "sha256-P03+QrE72Z0XRioQmdAFl+TRtFhxiwlUIoh5d30fXbw=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -277,7 +277,7 @@
       "url": "_framework\/dotnet.7.0.2.ejy5ovff4t.js"
     },
     {
-      "hash": "sha256-S1ajCVO4iivEPv3YeG5c9jYRI6GIgpbsS6pqjc5qcx0=",
+      "hash": "sha256-kXCXNLiVx6hm72HLzUHgz5RqRXEtnu05kb0w5X2gCgA=",
       "url": "_framework\/dotnet.wasm"
     },
     {
@@ -565,5 +565,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "SG7ga7eT"
+  "version": "EkqOwW1Q"
 };
