@@ -25,11 +25,47 @@ public class Artist : IComparable
 		Name = name;
 	}
 
-	public int CompareTo(object obj)
+	public int CompareTo(object? obj)
 	{
-		var other = (Artist)obj;
-		var lastNameComparison = Name.CompareTo(other.Name);
+		if (obj == null)
+		{
+			return -1;
+		}
 
-		return (lastNameComparison != 0) ? lastNameComparison : Id.CompareTo(other.Id);
+		var other = (Artist)obj;
+
+		var nameComparison = Name?.CompareTo(other.Name);
+		if (nameComparison.HasValue && nameComparison != 0)
+		{
+			return nameComparison.Value;
+		}
+
+		var idComparison = Id?.CompareTo(other.Id);
+		if (idComparison.HasValue)
+		{
+			return idComparison.Value;
+		}
+
+		return -1;
+	}
+
+	public override bool Equals(object? obj)
+	{
+		if (obj == null)
+		{
+			return this == null;
+		}
+
+		var other = (Artist)obj;
+		return string.Equals(Id, other.Id);
+	}
+
+	public override int GetHashCode()
+	{
+		if (Id == null)
+		{
+			return new();
+		}
+		return Id.GetHashCode();
 	}
 }
