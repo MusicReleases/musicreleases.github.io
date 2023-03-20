@@ -26,10 +26,11 @@
 		else if (_artists.Count < 1)
 		{
 			<p>0 artists</p>
-			<button @onclick=LoadArtists>Update</button>
+			<button @onclick=LoadArtistsApi>Update</button>
 		}
 		else
 		{
+			<button @onclick=Save>Save</button>
 			@foreach (var artist in _artists)
 			{
 				<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name></ButtonArtist>
@@ -66,6 +67,20 @@
 
 	private void LoadArtists()
 	{
-		_dispatcher.Dispatch(new SpotifyArtistsActionLoad());
+		// local storage
+		_dispatcher.Dispatch(new SpotifyArtistsActionStorageGet());
+		/*if (_stateSpotifyArtists.Value.Artists?.Count < 1)
+			{
+			// spotify api
+			_dispatcher.Dispatch(new SpotifyArtistsActionLoad());
+		}*/
+	}
+	private void LoadArtistsApi()
+	{
+		_dispatcher.Dispatch(new SpotifyArtistsActionLoad());		
+	}
+	private void Save()
+	{
+		_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
 	}
 }

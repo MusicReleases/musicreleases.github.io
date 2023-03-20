@@ -11,17 +11,24 @@ public static class SpotifyArtistsReducers
 		{
 			Artists = action.Artists,
 			Loading = false,
+			Initialized = true,
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyArtistsActionInitialized))]
+	[ReducerMethod]
+	public static SpotifyArtistsState OnSetArtistsFromStorage(SpotifyArtistsState state, SpotifyArtistsActionStorageSet action)
+	{
+		return action.ArtistsState;
+	}
+
+	/*[ReducerMethod(typeof(SpotifyArtistsActionInitialized))]
 	public static SpotifyArtistsState OnSetInitialized(SpotifyArtistsState state)
 	{
 		return state with
 		{
 			Initialized = true,
 		};
-	}
+	}*/
 
 	[ReducerMethod(typeof(SpotifyArtistsActionLoad))]
 	public static SpotifyArtistsState OnLoadArtists(SpotifyArtistsState state)

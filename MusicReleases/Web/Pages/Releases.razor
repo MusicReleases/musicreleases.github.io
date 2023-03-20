@@ -3,6 +3,7 @@
 
 @using Fluxor;
 @using Fluxor.Blazor.Web.Components;
+@using JakubKastner.MusicReleases.Store.Api.Spotify.Artists;
 @using JakubKastner.MusicReleases.Store.Releases;
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
 @using JakubKastner.SpotifyApi;
@@ -14,6 +15,7 @@
 
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases;
+@inject IState<SpotifyArtistsState> _stateSpotifyArtists;
 @inject NavigationManager _navManager;
 @inject JakubKastner.SpotifyApi.Controllers.ControllerUser _spotifyControllerUser;
 @*@inject LoaderService loader*@
@@ -55,6 +57,9 @@ else
 <button type="button" @onclick="LoaderS">
 	stop
 </button>
+<button type="button" @onclick="SaveToStorage">
+	save
+</button>
 
 
 
@@ -94,13 +99,17 @@ else
 
 	private void Loader()
 	{
-	_dispatcher.Dispatch(new LoaderAction(true));
+		_dispatcher.Dispatch(new LoaderAction(true));
 	}
 	private void LoaderS()
 	{
-	_dispatcher.Dispatch(new LoaderAction(false));
+		_dispatcher.Dispatch(new LoaderAction(false));
 	}
 
+	private void SaveToStorage()
+	{
+		_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
+	}
 	protected override void OnParametersSet()
 	{
 		GetParameter();

@@ -34,7 +34,10 @@ builder.Services.AddScoped<ControllerTrack>();
 builder.Services.AddScoped<ControllerUser>();
 
 // local storage
-builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredLocalStorage(config =>
+{
+	config.JsonSerializerOptions.WriteIndented = true;
+});
 
 // fluxor
 builder.Services.AddFluxor(options =>
