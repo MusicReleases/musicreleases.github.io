@@ -23,6 +23,14 @@ jobs:
     - name: Publish .NET project
       run: dotnet publish 'MusicReleases/MusicReleases.csproj' -c:Release -p:GHPages=true -o 'dist/Web' --nologo
 
+    # copy index.html to 404.html to serve the same file when a file is not found
+    - name: copy index.html to 404.html
+      run: cp dist/Web/wwwroot/index.html dist/Web/wwwroot/404.html
+
+    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+
     # commit published app to github pages
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
