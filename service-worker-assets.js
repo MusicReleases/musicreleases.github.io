@@ -25,7 +25,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-YxydCFXEFZbZfEzQuhyFovOrshFXAsB8cu1a8PI1m98=",
+      "hash": "sha256-R\/TysTeO9xscGiylXQqbDfr1H9j0LZjctT1hTd6q7nQ=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -105,7 +105,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-F0Ji1IDSmULWrLT1XojCygSmiU3xu0Yn3bCNq+Ss0Bo=",
+      "hash": "sha256-q9ustn01+xAPPya6ftcns3HgInRZRD3nTxSuE77KniQ=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -281,10 +281,6 @@
       "url": "_framework\/dotnet.wasm"
     },
     {
-      "hash": "sha256-AmibW8ikhcCLWMeo980kUs9xyWzbq1nn1CisS7alGAI=",
-      "url": "404.html"
-    },
-    {
       "hash": "sha256-1hUL22lceE3HSgofzvXc25elxbieKP37rorUdfQC2gg=",
       "url": "browserconfig.xml"
     },
@@ -457,10 +453,6 @@
       "url": "manifest.json"
     },
     {
-      "hash": "sha256-An1wZilPyB4cLZ\/2SapnndtOz+LixvfSGsVEhpVHHRE=",
-      "url": "scripts\/github-pages.js"
-    },
-    {
       "hash": "sha256-loVh7tOHqA2\/ch2NLdun2wCjfVYzJnyIDoq0LGgq9ik=",
       "url": "scripts\/infinite-scrolling.js"
     },
@@ -573,5 +565,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "MDn2efly"
+  "version": "AWPvyOD1"
 };
