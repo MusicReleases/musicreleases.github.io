@@ -25,7 +25,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-R\/TysTeO9xscGiylXQqbDfr1H9j0LZjctT1hTd6q7nQ=",
+      "hash": "sha256-L7j2ObLKNpNVfQhOt8lxN1qSYl7azzhMPr2l92Y4RIg=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -105,7 +105,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-q9ustn01+xAPPya6ftcns3HgInRZRD3nTxSuE77KniQ=",
+      "hash": "sha256-ALJIhAcMFoQfI2SnHAQsF6AhDBCdQDLJpceKKoIni4Q=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -565,5 +565,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "AWPvyOD1"
+  "version": "9ZNZuro4"
 };
