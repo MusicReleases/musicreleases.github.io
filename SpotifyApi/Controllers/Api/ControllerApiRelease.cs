@@ -17,14 +17,17 @@ public class ControllerApiRelease
 	{
 		// TODO podcasts
 
-		SortedSet<Album> albums = new();
+		var albums = new SortedSet<Album>();
 		var releasesFromApi = await GetArtistReleasesApi(artistId, releaseType);
 
-		if (releasesFromApi == null) return albums;
+		if (releasesFromApi == null)
+		{
+			return albums;
+		}
 
 		foreach (var releaseApi in releasesFromApi)
 		{
-			Album album = new(releaseApi);
+			var album = new Album(releaseApi);
 			albums.Add(album);
 		}
 

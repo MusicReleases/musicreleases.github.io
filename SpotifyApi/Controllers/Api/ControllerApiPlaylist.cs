@@ -17,7 +17,7 @@ public class ControllerApiPlaylist
 	public async Task<HashSet<Playlist>> GetUserPlaylistsFromApi()
 	{
 		var playlistsFromApi = await GetUserPlaylistsApi();
-		HashSet<Playlist> playlists = new();
+		var playlists = new HashSet<Playlist>();
 
 		if (playlistsFromApi == null)
 		{
@@ -27,7 +27,7 @@ public class ControllerApiPlaylist
 		foreach (var playlistApi in playlistsFromApi)
 		{
 			var currentUserOwned = IsPlaylistOwnedByCurrentUser(playlistApi);
-			Playlist playlist = new(simplePlaylist: playlistApi, currentUserOwned);
+			var playlist = new Playlist(playlistApi, currentUserOwned);
 			playlists.Add(playlist);
 		}
 

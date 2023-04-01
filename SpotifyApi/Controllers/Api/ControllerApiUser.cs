@@ -42,13 +42,15 @@ public class ControllerApiUser
         {
             return null;
         }
-        var accessTokenExpires = urlParameters["expires_in"];
+        // TODO access token expire
+        //var accessTokenExpires = urlParameters["expires_in"];
 
         // get user info
         var userApi = await GetLoggedInUser();
         _user.Id = userApi.Id;
 
-        return GetUser(userApi);
+        var user = GetUser(userApi);
+        return user;
     }
 
     public User GetUser(PrivateUser userApi)
@@ -74,6 +76,7 @@ public class ControllerApiUser
     public async Task<PrivateUser> GetLoggedInUser()
     {
         var spotifyClient = _client.GetClient();
-        return await spotifyClient.UserProfile.Current();
+        var user = await spotifyClient.UserProfile.Current();
+        return user;
     }
 }

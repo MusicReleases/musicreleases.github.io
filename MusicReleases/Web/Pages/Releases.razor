@@ -39,12 +39,17 @@ else
 	else
 	{
 		<div class="releases boxes">
-			<Virtualize Items="@_releases" Context="release" ItemSize="233" OverscanCount="4">
+			@*ItemSize="233" OverscanCount="4"*@
+			<Virtualize Items="@_releases" Context="release">
 				<ItemContent>
-					<Release ReleaseObj="@release" />
+					<div style="height: 210px">
+						<Release ReleaseObj="@release" />
+					</div>
 				</ItemContent>
 				<Placeholder>
-					<p>Loading</p>
+					<div style="height: 210px">
+						<p>Loading</p>
+					</div>
 				</Placeholder>
 			</Virtualize>
 		</div>
