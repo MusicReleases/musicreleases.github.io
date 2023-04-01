@@ -281,7 +281,7 @@
       "url": "_framework\/dotnet.wasm"
     },
     {
-      "hash": "sha256-CTBTGW\/TZGcPtOOYrIPwHdJvLGNZlrHLnbAztre06hY=",
+      "hash": "sha256-AmibW8ikhcCLWMeo980kUs9xyWzbq1nn1CisS7alGAI=",
       "url": "404.html"
     },
     {
@@ -449,12 +449,16 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-HJUYn\/XajZkZ1bOqAv1gIhUgLeGWktmxyC71tfPuOMA=",
+      "hash": "sha256-jnnprCun9tYhJ4JiCgc216TCTPvljGphUaOYrJlEKmQ=",
       "url": "index.html"
     },
     {
       "hash": "sha256-TGomp\/HYzae9M0kxcMp78sj1c9lX4NAgF8QDGNWwRXE=",
       "url": "manifest.json"
+    },
+    {
+      "hash": "sha256-An1wZilPyB4cLZ\/2SapnndtOz+LixvfSGsVEhpVHHRE=",
+      "url": "scripts\/github-pages.js"
     },
     {
       "hash": "sha256-loVh7tOHqA2\/ch2NLdun2wCjfVYzJnyIDoq0LGgq9ik=",
@@ -569,5 +573,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "vGwuCPP1"
+  "version": "MDn2efly"
 };
