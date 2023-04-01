@@ -5,6 +5,7 @@
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Store.Api.Spotify.Artists;
 @using JakubKastner.MusicReleases.Store.Releases;
+@using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
 @using JakubKastner.SpotifyApi;
 @using JakubKastner.SpotifyApi.Objects;
@@ -39,19 +40,15 @@ else
 	else
 	{
 		<div class="releases boxes">
-			@*ItemSize="233" OverscanCount="4"*@
-			<Virtualize Items="@_releases" Context="release">
-				<ItemContent>
-					<div style="height: 210px">
-						<Release ReleaseObj="@release" />
-					</div>
-				</ItemContent>
-				<Placeholder>
-					<div style="height: 210px">
-						<p>Loading</p>
-					</div>
-				</Placeholder>
-			</Virtualize>
+
+			<InfiniteScrolling ItemsProvider="GetReleases">
+				<ItemTemplate Context="release">
+					<Release ReleaseObj="@release" />
+				</ItemTemplate>
+				<LoadingTemplate>
+					<div>Loading more @Type...</div>
+				</LoadingTemplate>
+			</InfiniteScrolling>
 		</div>
 	}
 }
@@ -95,6 +92,16 @@ else
 			_dispatcher.Dispatch(new SpotifyReleasesActionInitialized());
 			base.OnInitialized();
 		}
+	}
+
+	private async Task<IEnumerable<Album>> GetReleases(InfiniteScrollingItemsProviderRequest request)
+	{
+		await Task.Delay(0);
+		if (_releases == null)
+		{
+			return new SortedSet<Album>();
+		}
+		return _releases.Skip(request.StartIndex).Take(15);
 	}
 
 	private void LoadReleases()
