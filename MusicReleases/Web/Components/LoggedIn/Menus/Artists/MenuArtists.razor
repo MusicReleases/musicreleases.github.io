@@ -49,6 +49,8 @@
 
 	protected override void OnInitialized()
 	{
+		base.OnInitialized();
+
 		if (ServiceType != Enums.ServiceType.Spotify)
 		{
 			return;
@@ -62,7 +64,6 @@
 		{
 			LoadArtists();
 			_dispatcher.Dispatch(new SpotifyArtistsActionInitialized());
-			base.OnInitialized();
 		}
 	}
 

@@ -50,8 +50,11 @@
 
 	protected override void OnInitialized()
 	{
+		base.OnInitialized();
+
 		if (ServiceType == Enums.ServiceType.Spotify)
 		{
+
 			if (!_spotifyControllerUser.IsLoggedIn())
 			{
 				return;
@@ -61,7 +64,6 @@
 			{
 				LoadPlaylists();
 				_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
-				base.OnInitialized();
 			}
 		}
 	}

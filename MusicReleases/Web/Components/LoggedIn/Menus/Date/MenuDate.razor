@@ -30,8 +30,9 @@
 
 	//private SortedSet<SpotifyApi.Objects.Artist>? _artists;
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
+		base.OnInitialized();
 		if (ServiceType == Enums.ServiceType.Spotify)
 		{
 			// TODO show loader
