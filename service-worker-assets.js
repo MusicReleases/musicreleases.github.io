@@ -25,7 +25,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-ZLu4iPZ9cn\/pMH3x9iG+x2\/MGGY5AGFlL\/OAXZezs70=",
+      "hash": "sha256-YxydCFXEFZbZfEzQuhyFovOrshFXAsB8cu1a8PI1m98=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -45,11 +45,11 @@
       "url": "_framework\/Fluxor.dll"
     },
     {
-      "hash": "sha256-aAkakuwUWLL+XJ23Lc3wqOE7ZrbodAFUOpqxxr\/9GlI=",
+      "hash": "sha256-K5FuX7p9Sh\/NeQ2OmizMzUtV5gHvqdzUMHJfLA6x9mM=",
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
-      "hash": "sha256-YsbtFeo4H\/Fv3ZfJSIY\/88MvGJ9hc+rr+YKEk+dn70U=",
+      "hash": "sha256-xbljJkHE5KLll7mQpC+wXP9vzkyjydGEqjedSx\/04pU=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.dll"
     },
     {
@@ -97,7 +97,7 @@
       "url": "_framework\/Microsoft.Extensions.Primitives.dll"
     },
     {
-      "hash": "sha256-x3cJET3iuAPkC\/j6P0NXkAsKWrFihEeHMFgp0jGhAqw=",
+      "hash": "sha256-Erl6j\/7fyzffFfbqajxn2byeJdrxfBVH6qJ10CpQBE0=",
       "url": "_framework\/Microsoft.JSInterop.dll"
     },
     {
@@ -105,7 +105,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-hTEPmNKKhcPIlzGxspXlOnAvmOSlom6GcLqITOnDRAk=",
+      "hash": "sha256-F0Ji1IDSmULWrLT1XojCygSmiU3xu0Yn3bCNq+Ss0Bo=",
       "url": "_framework\/MusicReleases.dll"
     },
     {
@@ -117,7 +117,7 @@
       "url": "_framework\/Newtonsoft.Json.dll"
     },
     {
-      "hash": "sha256-TRp8Fb+LZpDg9jGIh4N+bOTrgMNodUu9opJn7EE2KUY=",
+      "hash": "sha256-a+eoF15KuUaswzroUB+6YcDGkLH8+7zETftwC7Kp+AQ=",
       "url": "_framework\/SpotifyApi.dll"
     },
     {
@@ -225,7 +225,7 @@
       "url": "_framework\/System.Private.Xml.Linq.dll"
     },
     {
-      "hash": "sha256-yi7R4ijFGlvvHypY+0G1fmlWGv9TP\/A1nVFsCqrK5sM=",
+      "hash": "sha256-Amyac\/qh5S1FpmOll3PtK8\/35L\/f8Bf3bm4XtIFDygg=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -457,6 +457,10 @@
       "url": "manifest.json"
     },
     {
+      "hash": "sha256-loVh7tOHqA2\/ch2NLdun2wCjfVYzJnyIDoq0LGgq9ik=",
+      "url": "scripts\/infinite-scrolling.js"
+    },
+    {
       "hash": "sha256-Q9wom+LEX0cUn81SuNKOcEEmskFxnAESjtbVW4O6VkM=",
       "url": "service-worker.min.js"
     },
@@ -565,5 +569,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "H7nLt5cQ"
+  "version": "s2hOUZMv"
 };
