@@ -11,7 +11,7 @@
 
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
-@inject SpotifyControllerUser _spotifyControllerUser;
+@inject ISpotifyControllerUser _spotifyControllerUser;
 
 <div class="menu playlists items scroll buttons-rounded-m">
 	@if (!_spotifyControllerUser.IsLoggedIn())

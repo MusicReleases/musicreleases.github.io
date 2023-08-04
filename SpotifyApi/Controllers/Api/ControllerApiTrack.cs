@@ -1,28 +1,29 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiTrack
+public class ControllerApiTrack : IControllerApiTrack
 {
-	private readonly SpotifyClient _client;
+	private readonly ISpotifyApiClient _client;
 
-	public ControllerApiTrack(SpotifyClient client)
+	public ControllerApiTrack(ISpotifyApiClient client)
 	{
 		_client = client;
 	}
 
-	public async Task<List<SpotifyTrack>> GetPlaylistTracksFromApi(string playlistId)
+	public async Task<IList<SpotifyTrack>> GetPlaylistTracksFromApi(string playlistId)
 	{
 		var tracks = new List<SpotifyTrack>();
 
 		// TODO : commented
 		/*if (_spotifyUser == null) return tracks;
-        var playlist = await _spotifyUser.GetPlaylist(playlistId);
-        if (playlist != null)
-        {
-            if (playlist.Tracks.Count > 0) return playlist.Tracks;
-        }*/
+		var playlist = await _spotifyUser.GetPlaylist(playlistId);
+		if (playlist != null)
+		{
+			if (playlist.Tracks.Count > 0) return playlist.Tracks;
+		}*/
 
 		// get tracksfrom api
 		var tracksFromApi = await GetPlaylistTracksApi(playlistId);

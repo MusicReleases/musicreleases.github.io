@@ -6,8 +6,8 @@ public class SpotifyPlaylistsActionSet
 {
 	public SortedSet<SpotifyPlaylist> Playlists { get; }
 
-	public SpotifyPlaylistsActionSet(SortedSet<SpotifyPlaylist> playlists)
+	public SpotifyPlaylistsActionSet(ISet<SpotifyPlaylist> playlists)
 	{
-		Playlists = playlists;
+		Playlists = new(playlists);
 	}
 }

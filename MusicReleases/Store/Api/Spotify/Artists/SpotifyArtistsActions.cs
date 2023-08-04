@@ -11,7 +11,7 @@ public record SpotifyArtistsActionLoadSuccess();
 public record SpotifyArtistsActionLoadFailure(string ErrorMessage);
 
 // set artists
-public record SpotifyArtistsActionSet(SortedSet<SpotifyArtist> Artists);
+public record SpotifyArtistsActionSet(ISet<SpotifyArtist> Artists);
 
 // local storage -> set
 public record SpotifyArtistsActionStorageSet(SpotifyArtistsState ArtistsState); // persists state

@@ -1,18 +1,19 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiArtist
+public class ControllerApiArtist : IControllerApiArtist
 {
-	private readonly SpotifyClient _client;
+	private readonly ISpotifyApiClient _client;
 
-	public ControllerApiArtist(SpotifyClient client)
+	public ControllerApiArtist(ISpotifyApiClient client)
 	{
 		_client = client;
 	}
 
-	public async Task<SortedSet<SpotifyArtist>> GetUserFollowedArtistsFromApi()
+	public async Task<ISet<SpotifyArtist>> GetUserFollowedArtistsFromApi()
 	{
 		var artists = new SortedSet<SpotifyArtist>();
 		var artistsFromApi = await GetUserFollowedArtistsApi();

@@ -1,20 +1,21 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiPlaylist
+public class ControllerApiPlaylist : IControllerApiPlaylist
 {
-	private readonly SpotifyClient _client;
+	private readonly ISpotifyApiClient _client;
 	private readonly SpotifyUser _user;
 
-	public ControllerApiPlaylist(SpotifyClient client, SpotifyUser user)
+	public ControllerApiPlaylist(ISpotifyApiClient client, SpotifyUser user)
 	{
 		_client = client;
 		_user = user;
 	}
 
-	public async Task<HashSet<SpotifyPlaylist>> GetUserPlaylistsFromApi()
+	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylistsFromApi()
 	{
 		var playlistsFromApi = await GetUserPlaylistsApi();
 		var playlists = new HashSet<SpotifyPlaylist>();

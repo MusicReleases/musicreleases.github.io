@@ -9,7 +9,7 @@ public static class SpotifyArtistsReducers
 	{
 		return state with
 		{
-			Artists = action.Artists,
+			Artists = new(action.Artists),
 			Loading = false,
 			Initialized = true,
 		};

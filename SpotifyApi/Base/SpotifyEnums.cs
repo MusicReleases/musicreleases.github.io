@@ -1,6 +1,6 @@
 ﻿using static SpotifyAPI.Web.ArtistsAlbumsRequest;
 
-namespace JakubKastner.SpotifyApi;
+namespace JakubKastner.SpotifyApi.Base;
 
 public static class SpotifyEnums
 {

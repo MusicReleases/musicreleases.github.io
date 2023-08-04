@@ -2,12 +2,12 @@
 
 public class SpotifyUser
 {
-    public string? Id { get; set; }
-    public string? Name { get; set; }
-    // TODO country
+	public string? Id { get; set; }
+	public string? Name { get; set; }
+	// TODO country
 
 
-    public HashSet<SpotifyPlaylist>? Playlists { get; set; }
-    public SortedSet<SpotifyArtist>? FollowedArtists { get; set; }
-    public SortedSet<SpotifyAlbum> ReleasedAlbums { get; set; } = new();
+	public ISet<SpotifyPlaylist>? Playlists { get; set; }
+	public ISet<SpotifyArtist>? FollowedArtists { get; set; }
+	public ISet<SpotifyAlbum> ReleasedAlbums { get; set; } = new SortedSet<SpotifyAlbum>();
 }

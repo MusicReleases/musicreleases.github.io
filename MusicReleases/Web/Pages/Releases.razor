@@ -8,8 +8,9 @@
 @using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
 @using JakubKastner.SpotifyApi;
+@using JakubKastner.SpotifyApi.Controllers;
 @using JakubKastner.SpotifyApi.Objects;
-@using static JakubKastner.SpotifyApi.SpotifyEnums;
+@using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 @using JakubKastner.MusicReleases.Store.Api.Spotify.Releases;
 
 @inherits FluxorComponent;
@@ -18,7 +19,7 @@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases;
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists;
 @inject NavigationManager _navManager;
-@inject JakubKastner.SpotifyApi.Controllers.SpotifyControllerUser _spotifyControllerUser;
+@inject ISpotifyControllerUser _spotifyControllerUser;
 
 <button type="button" @onclick="Loader">
 	start

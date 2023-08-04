@@ -1,4 +1,4 @@
-﻿using static JakubKastner.SpotifyApi.SpotifyEnums;
+﻿using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Base;
 

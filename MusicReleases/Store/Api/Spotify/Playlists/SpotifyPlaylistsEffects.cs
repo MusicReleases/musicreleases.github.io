@@ -5,9 +5,9 @@ namespace JakubKastner.MusicReleases.Store.Api.Spotify.Playlists;
 
 public class SpotifyPlaylistsEffects
 {
-	private readonly SpotifyControllerPlaylist _spotifyControllerPlaylist;
+	private readonly ISpotifyControllerPlaylist _spotifyControllerPlaylist;
 
-	public SpotifyPlaylistsEffects(SpotifyControllerPlaylist spotifyControllerPlaylist)
+	public SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControllerPlaylist)
 	{
 		_spotifyControllerPlaylist = spotifyControllerPlaylist;
 	}

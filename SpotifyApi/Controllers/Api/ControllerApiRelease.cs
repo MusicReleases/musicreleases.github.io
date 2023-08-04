@@ -1,19 +1,20 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
-using static JakubKastner.SpotifyApi.SpotifyEnums;
+using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiRelease
+public class ControllerApiRelease : IControllerApiRelease
 {
-	private readonly SpotifyClient _client;
+	private readonly ISpotifyApiClient _client;
 
-	public ControllerApiRelease(SpotifyClient client)
+	public ControllerApiRelease(ISpotifyApiClient client)
 	{
 		_client = client;
 	}
 
-	public async Task<SortedSet<SpotifyAlbum>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
+	public async Task<ISet<SpotifyAlbum>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
 	{
 		// TODO podcasts
 

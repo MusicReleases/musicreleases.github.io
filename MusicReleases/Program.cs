@@ -2,9 +2,6 @@ using Blazored.LocalStorage;
 using Fluxor;
 using JakubKastner.MusicReleases;
 using JakubKastner.SpotifyApi;
-using JakubKastner.SpotifyApi.Controllers;
-using JakubKastner.SpotifyApi.Controllers.Api;
-using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -15,23 +12,8 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-// client and user
-builder.Services.AddScoped<SpotifyClient>();
-builder.Services.AddScoped<SpotifyUser>();
-
-// api controllers
-builder.Services.AddScoped<ControllerApiArtist>();
-builder.Services.AddScoped<ControllerApiPlaylist>();
-builder.Services.AddScoped<ControllerApiRelease>();
-builder.Services.AddScoped<ControllerApiTrack>();
-builder.Services.AddScoped<ControllerApiUser>();
-
-// controllers
-builder.Services.AddScoped<SpotifyControllerArtist>();
-builder.Services.AddScoped<SpotifyControllerPlaylist>();
-builder.Services.AddScoped<SpotifyControllerRelease>();
-builder.Services.AddScoped<SpotifyControllerTrack>();
-builder.Services.AddScoped<SpotifyControllerUser>();
+// spotify api
+builder.Services.AddSpotifyApi();
 
 // local storage
 builder.Services.AddBlazoredLocalStorage(config =>

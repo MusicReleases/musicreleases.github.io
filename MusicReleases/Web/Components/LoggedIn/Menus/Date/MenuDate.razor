@@ -9,8 +9,8 @@
 @inherits FluxorComponent;
 
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases;
-@inject SpotifyControllerUser _spotifyControllerUser;
-@inject SpotifyControllerArtist _spotifyControllerArtist;
+@inject ISpotifyControllerUser _spotifyControllerUser;
+@inject ISpotifyControllerArtist _spotifyControllerArtist;
 
 <div class="menu date items scroll buttons-rounded-m">
 	@*@if (_stateSpotifyReleases.Value.Loaded)
