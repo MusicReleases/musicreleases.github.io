@@ -4,7 +4,7 @@
 @using static global::JakubKastner.MusicReleases.Base.Enums;
 
 @inject NavigationManager _navManager;
-@inject ControllerUser _spotifyControllerUser;
+@inject SpotifyControllerUser _spotifyControllerUser;
 
 <button type="button" class="@_type.ToLower()" @onclick="LoginUser">
 	<i class="fab fa-spotify" aria-hidden="true"></i>

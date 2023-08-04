@@ -11,7 +11,7 @@
 
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
-@inject ControllerUser _spotifyControllerUser;
+@inject SpotifyControllerUser _spotifyControllerUser;
 
 <div class="menu playlists items scroll buttons-rounded-m">
 	@if (!_spotifyControllerUser.IsLoggedIn())
@@ -45,7 +45,7 @@
 	[Parameter]
 	public Enums.ServiceType ServiceType { get; set; }
 
-	private SortedSet<Playlist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
+	private SortedSet<SpotifyPlaylist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
 	private bool _loading => _stateSpotifyPlaylists.Value.Loading;
 
 	protected override void OnInitialized()

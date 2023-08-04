@@ -3,19 +3,19 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class ControllerArtist
+public class SpotifyControllerArtist
 {
     private readonly ControllerApiArtist _controllerApiArtist;
-    private readonly User _user;
+    private readonly SpotifyUser _user;
 
-    public ControllerArtist(ControllerApiArtist controllerApiArtist, User user)
+    public SpotifyControllerArtist(ControllerApiArtist controllerApiArtist, SpotifyUser user)
     {
         _controllerApiArtist = controllerApiArtist;
         _user = user;
     }
 
     // get list of user followed artists
-    public async Task<SortedSet<Artist>> GetUserFollowedArtists()
+    public async Task<SortedSet<SpotifyArtist>> GetUserFollowedArtists()
     {
         return _user.FollowedArtists ??= await _controllerApiArtist.GetUserFollowedArtistsFromApi();
     }

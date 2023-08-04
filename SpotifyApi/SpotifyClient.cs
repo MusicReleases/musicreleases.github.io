@@ -1,10 +1,8 @@
-﻿using SpotifyAPI.Web;
+﻿namespace JakubKastner.SpotifyApi;
 
-namespace JakubKastner.SpotifyApi;
-
-public class Client
+public class SpotifyClient
 {
-    private SpotifyClient? _spotifyClient;
+    private SpotifyAPI.Web.SpotifyClient? _spotifyClient;
 
     public void Init(string accessToken)
     {
@@ -20,7 +18,7 @@ public class Client
         return _spotifyClient != null;
     }
 
-    public SpotifyClient GetClient()
+    public SpotifyAPI.Web.SpotifyClient GetClient()
     {
         if (!IsInicialized())
         {

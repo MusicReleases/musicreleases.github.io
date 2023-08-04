@@ -4,9 +4,9 @@ namespace JakubKastner.MusicReleases.Store.Api.Spotify.Releases;
 
 public class SpotifyReleasesActionSet
 {
-	public SortedSet<Album> Releases { get; }
+	public SortedSet<SpotifyAlbum> Releases { get; }
 
-	public SpotifyReleasesActionSet(SortedSet<Album> releases)
+	public SpotifyReleasesActionSet(SortedSet<SpotifyAlbum> releases)
 	{
 		Releases = releases;
 	}

@@ -6,18 +6,18 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiRelease
 {
-	private readonly Client _client;
+	private readonly SpotifyClient _client;
 
-	public ControllerApiRelease(Client client)
+	public ControllerApiRelease(SpotifyClient client)
 	{
 		_client = client;
 	}
 
-	public async Task<SortedSet<Album>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
+	public async Task<SortedSet<SpotifyAlbum>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
 	{
 		// TODO podcasts
 
-		var albums = new SortedSet<Album>();
+		var albums = new SortedSet<SpotifyAlbum>();
 		var releasesFromApi = await GetArtistReleasesApi(artistId, releaseType);
 
 		if (releasesFromApi == null)
@@ -27,7 +27,7 @@ public class ControllerApiRelease
 
 		foreach (var releaseApi in releasesFromApi)
 		{
-			var album = new Album(releaseApi);
+			var album = new SpotifyAlbum(releaseApi);
 			albums.Add(album);
 		}
 

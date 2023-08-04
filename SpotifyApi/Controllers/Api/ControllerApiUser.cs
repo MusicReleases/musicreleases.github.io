@@ -5,21 +5,21 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiUser
 {
-    private readonly Client _client;
-    private readonly User _user;
+    private readonly SpotifyClient _client;
+    private readonly SpotifyUser _user;
 
-    public ControllerApiUser(Client client, User user)
+    public ControllerApiUser(SpotifyClient client, SpotifyUser user)
     {
         _client = client;
         _user = user;
     }
 
-    public async Task<User?> LoginUser(string url)
+    public async Task<SpotifyUser?> LoginUser(string url)
     {
         return await LoginUser(new Uri(url));
     }
 
-    public async Task<User?> LoginUser(Uri url)
+    public async Task<SpotifyUser?> LoginUser(Uri url)
     {
         // get url parameters
         var urlParameters = GetUrlParameters(url);
@@ -53,7 +53,7 @@ public class ControllerApiUser
         return user;
     }
 
-    public User GetUser(PrivateUser userApi)
+    public SpotifyUser GetUser(PrivateUser userApi)
     {
         return new()
         {

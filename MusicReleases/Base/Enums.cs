@@ -2,8 +2,8 @@
 
 public static class Enums
 {
-    public enum ServiceType
-    {
-        Spotify
-    }
+	public enum ServiceType
+	{
+		Spotify,
+	}
 }

@@ -1,11 +1,6 @@
 ﻿@inherits LayoutComponentBase;
 
-@using JakubKastner.MusicReleases.Base;
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Artists
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases
+@* main layout - user is sucessfully logged in *@
 
 <div class="body classic hide-player">
 	<Header></Header>
@@ -21,9 +16,3 @@
 		</div>
 	</div>
 </div>
-
-@code
-{
-	// TODO doesnt work if i change it in code
-	public bool LoaderActive { get; set; } = false;
-}

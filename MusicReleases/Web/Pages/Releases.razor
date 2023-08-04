@@ -18,8 +18,17 @@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases;
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists;
 @inject NavigationManager _navManager;
-@inject JakubKastner.SpotifyApi.Controllers.ControllerUser _spotifyControllerUser;
-@*@inject LoaderService loader*@
+@inject JakubKastner.SpotifyApi.Controllers.SpotifyControllerUser _spotifyControllerUser;
+
+<button type="button" @onclick="Loader">
+	start
+</button>
+<button type="button" @onclick="LoaderS">
+	stop
+</button>
+<button type="button" @onclick="SaveToStorage">
+	save
+</button>
 
 @if (!_spotifyControllerUser.IsLoggedIn())
 {
@@ -53,18 +62,6 @@ else
 	}
 }
 
-<button type="button" @onclick="Loader">
-	start
-</button>
-<button type="button" @onclick="LoaderS">
-	stop
-</button>
-<button type="button" @onclick="SaveToStorage">
-	save
-</button>
-
-
-
 @code
 {
 	[Parameter]
@@ -73,7 +70,7 @@ else
 	// TODO enable to select and display more than 1 release type
 	private ReleaseType _type;
 
-	private SortedSet<Album>? _releases => _stateSpotifyReleases.Value.Releases;
+	private SortedSet<SpotifyAlbum>? _releases => _stateSpotifyReleases.Value.Releases;
 	private bool _loading => _stateSpotifyReleases.Value.Loading;
 
 	protected override void OnInitialized()
@@ -96,12 +93,12 @@ else
 		}
 	}
 
-	private async Task<IEnumerable<Album>> GetReleases(InfiniteScrollingItemsProviderRequest request)
+	private async Task<IEnumerable<SpotifyAlbum>> GetReleases(InfiniteScrollingItemsProviderRequest request)
 	{
 		await Task.Delay(0);
 		if (_releases == null)
 		{
-			return new SortedSet<Album>();
+			return new SortedSet<SpotifyAlbum>();
 		}
 		return _releases.Skip(request.StartIndex).Take(15);
 	}

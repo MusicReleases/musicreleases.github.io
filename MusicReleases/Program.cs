@@ -16,8 +16,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 // client and user
-builder.Services.AddScoped<Client>();
-builder.Services.AddScoped<User>();
+builder.Services.AddScoped<SpotifyClient>();
+builder.Services.AddScoped<SpotifyUser>();
 
 // api controllers
 builder.Services.AddScoped<ControllerApiArtist>();
@@ -27,11 +27,11 @@ builder.Services.AddScoped<ControllerApiTrack>();
 builder.Services.AddScoped<ControllerApiUser>();
 
 // controllers
-builder.Services.AddScoped<ControllerArtist>();
-builder.Services.AddScoped<ControllerPlaylist>();
-builder.Services.AddScoped<ControllerRelease>();
-builder.Services.AddScoped<ControllerTrack>();
-builder.Services.AddScoped<ControllerUser>();
+builder.Services.AddScoped<SpotifyControllerArtist>();
+builder.Services.AddScoped<SpotifyControllerPlaylist>();
+builder.Services.AddScoped<SpotifyControllerRelease>();
+builder.Services.AddScoped<SpotifyControllerTrack>();
+builder.Services.AddScoped<SpotifyControllerUser>();
 
 // local storage
 builder.Services.AddBlazoredLocalStorage(config =>

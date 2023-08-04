@@ -4,22 +4,22 @@ using static JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class ControllerRelease
+public class SpotifyControllerTrack
 {
     private readonly ControllerApiRelease _controllerApiRelease;
-    private readonly ControllerArtist _controllerArtist;
+    private readonly SpotifyControllerArtist _controllerArtist;
 
-    public ControllerRelease(ControllerApiRelease controllerApiRelease, ControllerArtist controllerArtist)
+    public SpotifyControllerTrack(ControllerApiRelease controllerApiRelease, SpotifyControllerArtist controllerArtist)
     {
         _controllerApiRelease = controllerApiRelease;
         _controllerArtist = controllerArtist;
     }
 
     // get all relases for user followed artist
-    public async Task<SortedSet<Album>> GetAllUserFollowedArtistsReleases(ReleaseType releaseType = ReleaseType.Albums)
+    public async Task<SortedSet<SpotifyAlbum>> GetAllUserFollowedArtistsReleases(ReleaseType releaseType = ReleaseType.Albums)
     {
         var artists = await _controllerArtist.GetUserFollowedArtists();
-        SortedSet<Album> releases = new();
+        SortedSet<SpotifyAlbum> releases = new();
 
         foreach (var artist in artists)
         {

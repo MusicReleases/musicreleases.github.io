@@ -5,19 +5,19 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiPlaylist
 {
-	private readonly Client _client;
-	private readonly User _user;
+	private readonly SpotifyClient _client;
+	private readonly SpotifyUser _user;
 
-	public ControllerApiPlaylist(Client client, User user)
+	public ControllerApiPlaylist(SpotifyClient client, SpotifyUser user)
 	{
 		_client = client;
 		_user = user;
 	}
 
-	public async Task<HashSet<Playlist>> GetUserPlaylistsFromApi()
+	public async Task<HashSet<SpotifyPlaylist>> GetUserPlaylistsFromApi()
 	{
 		var playlistsFromApi = await GetUserPlaylistsApi();
-		var playlists = new HashSet<Playlist>();
+		var playlists = new HashSet<SpotifyPlaylist>();
 
 		if (playlistsFromApi == null)
 		{
@@ -27,7 +27,7 @@ public class ControllerApiPlaylist
 		foreach (var playlistApi in playlistsFromApi)
 		{
 			var currentUserOwned = IsPlaylistOwnedByCurrentUser(playlistApi);
-			var playlist = new Playlist(playlistApi, currentUserOwned);
+			var playlist = new SpotifyPlaylist(playlistApi, currentUserOwned);
 			playlists.Add(playlist);
 		}
 

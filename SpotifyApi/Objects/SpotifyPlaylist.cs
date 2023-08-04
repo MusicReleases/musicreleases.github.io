@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class Playlist : IComparable
+public class SpotifyPlaylist : IComparable
 {
     public string Id { get; private set; }
     public string Name { get; private set; }
@@ -11,10 +11,10 @@ public class Playlist : IComparable
     public string? SnapshotId { get; private set; }
 
     public int? TotalTracks { get; private set; }
-    public HashSet<Track> Tracks { get; set; } = new();
+    public HashSet<SpotifyTrack> Tracks { get; set; } = new();
 
     // TODO playlist owner - currentuserowned
-    public Playlist(SimplePlaylist simplePlaylist, bool currentUserOwned = false)
+    public SpotifyPlaylist(SimplePlaylist simplePlaylist, bool currentUserOwned = false)
     {
         Id = simplePlaylist.Id;
         Name = simplePlaylist.Name;
@@ -23,7 +23,7 @@ public class Playlist : IComparable
         CurrentUserOwned = currentUserOwned;
         SnapshotId = simplePlaylist.SnapshotId;
     }
-    public Playlist(FullPlaylist fullPlaylist, bool currentUserOwned = false)
+    public SpotifyPlaylist(FullPlaylist fullPlaylist, bool currentUserOwned = false)
     {
         // TODO null
         Id = fullPlaylist.Id ?? "";
@@ -41,7 +41,7 @@ public class Playlist : IComparable
             return -1;
         }
 
-        var other = (Playlist)obj;
+        var other = (SpotifyPlaylist)obj;
         var nameComparison = Name.CompareTo(other.Name);
 
         return (nameComparison != 0) ? nameComparison : Id.CompareTo(other.Id);
@@ -54,7 +54,7 @@ public class Playlist : IComparable
             return this == null;
         }
 
-        var other = (Playlist)obj;
+        var other = (SpotifyPlaylist)obj;
         return string.Equals(Id, other.Id);
     }
 

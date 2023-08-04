@@ -6,13 +6,13 @@ namespace JakubKastner.MusicReleases.Store.Api.Spotify.Artists;
 
 public class SpotifyArtistsEffects
 {
-	private readonly ControllerArtist _spotifyControllerArtist;
+	private readonly SpotifyControllerArtist _spotifyControllerArtist;
 	private readonly ILocalStorageService _localStorageService;
 	private readonly IState<SpotifyArtistsState> _artistsState;
 
 	private const string _localStorageName = "spotify_artists";
 
-	public SpotifyArtistsEffects(ControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IState<SpotifyArtistsState> artistsState)
+	public SpotifyArtistsEffects(SpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IState<SpotifyArtistsState> artistsState)
 	{
 		_spotifyControllerArtist = spotifyControllerArtist;
 		_localStorageService = localStorageService;

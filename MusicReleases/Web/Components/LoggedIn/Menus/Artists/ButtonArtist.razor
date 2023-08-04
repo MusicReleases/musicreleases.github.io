@@ -1,12 +1,6 @@
-﻿@if (String.IsNullOrEmpty(ArtistId)) return;
-@if (String.IsNullOrEmpty(ArtistName)) return;
+﻿@if (String.IsNullOrEmpty(ArtistId) || String.IsNullOrEmpty(ArtistName))
+{
+    return;
+}
 
 <button type="button" class="artist" data-menu_type="artist" data-menu_artist="playlist-id-@ArtistId">@ArtistName</button>
-
-@code
-{
-    [Parameter, EditorRequired]
-    public string ArtistId { get; set; }
-    [Parameter, EditorRequired]
-    public string ArtistName { get; set; }
-}

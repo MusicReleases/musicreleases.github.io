@@ -3,12 +3,12 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class ControllerUser
+public class SpotifyControllerUser
 {
-    private readonly Client _client;
+    private readonly SpotifyClient _client;
     private readonly ControllerApiUser _controllerApiUser;
 
-    public ControllerUser(Client client, ControllerApiUser controllerApiUser)
+    public SpotifyControllerUser(SpotifyClient client, ControllerApiUser controllerApiUser)
     {
         _client = client;
         _controllerApiUser = controllerApiUser;

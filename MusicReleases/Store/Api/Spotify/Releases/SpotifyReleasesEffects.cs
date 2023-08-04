@@ -5,9 +5,9 @@ namespace JakubKastner.MusicReleases.Store.Api.Spotify.Releases;
 
 public class SpotifyReleasesEffects
 {
-	private readonly ControllerRelease _spotifyControllerRelease;
+	private readonly SpotifyControllerRelease _spotifyControllerRelease;
 
-	public SpotifyReleasesEffects(ControllerRelease spotifyControllerRelease)
+	public SpotifyReleasesEffects(SpotifyControllerRelease spotifyControllerRelease)
 	{
 		_spotifyControllerRelease = spotifyControllerRelease;
 	}

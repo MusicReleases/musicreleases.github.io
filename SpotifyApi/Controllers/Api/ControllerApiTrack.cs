@@ -5,16 +5,16 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public class ControllerApiTrack
 {
-	private readonly Client _client;
+	private readonly SpotifyClient _client;
 
-	public ControllerApiTrack(Client client)
+	public ControllerApiTrack(SpotifyClient client)
 	{
 		_client = client;
 	}
 
-	public async Task<List<Track>> GetPlaylistTracksFromApi(string playlistId)
+	public async Task<List<SpotifyTrack>> GetPlaylistTracksFromApi(string playlistId)
 	{
-		var tracks = new List<Track>();
+		var tracks = new List<SpotifyTrack>();
 
 		// TODO : commented
 		/*if (_spotifyUser == null) return tracks;
@@ -39,14 +39,14 @@ public class ControllerApiTrack
 			if (type == ItemType.Track)
 			{
 				var fullTrackApi = (FullTrack)trackApi.Track;
-				var track = new Track(fullTrack: fullTrackApi);
+				var track = new SpotifyTrack(fullTrack: fullTrackApi);
 				tracks.Add(track);
 			}
 			else
 			{
 				// podcast (episode)
 				var fullEpisodeApi = (FullEpisode)trackApi.Track;
-				var track = new Track(fullEpisode: fullEpisodeApi);
+				var track = new SpotifyTrack(fullEpisode: fullEpisodeApi);
 				tracks.Add(track);
 			}
 		}
