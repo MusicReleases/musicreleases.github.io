@@ -1,9 +1,8 @@
 ﻿@inherits LayoutComponentBase;
 
-@using JakubKastner.SpotifyApi.Controllers;
-
+@using JakubKastner.MusicReleases.Controllers.Base;
+@inject ILoginController _loginController;
 @inject NavigationManager _navManager;
-@inject ISpotifyControllerUser _spotifyControllerUser;
 
 @* loggin in user loading *@
 

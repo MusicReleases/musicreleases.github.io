@@ -15,6 +15,9 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 // spotify api
 builder.Services.AddSpotifyApi();
 
+// music releases
+builder.Services.AddMusicReleases();
+
 // local storage
 builder.Services.AddBlazoredLocalStorage(config =>
 {

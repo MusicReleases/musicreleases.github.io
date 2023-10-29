@@ -1,44 +1,7 @@
-﻿@using JakubKastner.MusicReleases;
-@using JakubKastner.SpotifyApi;
-@using JakubKastner.SpotifyApi.Controllers;
-@using static global::JakubKastner.MusicReleases.Base.Enums;
-
-@inject NavigationManager _navManager;
-@inject ISpotifyControllerUser _spotifyControllerUser;
+﻿@using JakubKastner.MusicReleases.Controllers.Base;
+@inject ILoginController _loginController;
 
 <button type="button" class="@_type.ToLower()" @onclick="LoginUser">
 	<i class="fab fa-spotify" aria-hidden="true"></i>
 	<span>Login via @_type</span>
 </button>
-
-@code
-{
-	/// <summary>
-	/// Service type (Spotify, Apple Music, ...)
-	/// </summary>
-	[Parameter]
-	public ServiceType Type { get; set; }
-
-	private string _type = string.Empty;
-
-	protected override void OnInitialized()
-	{
-		_type = Type.ToString();
-	}
-
-	/// <summary>
-	/// User clicked to login button.
-	/// </summary>
-	private void LoginUser()
-	{
-		if (Type == ServiceType.Spotify)
-		{
-			// spotify login
-			var redirectUrl = _navManager.ToAbsoluteUri(_navManager.BaseUri + "login");
-			var loginUrl = _spotifyControllerUser.GetLoginUrl(redirectUrl);
-			_navManager.NavigateTo(loginUrl.AbsoluteUri);
-			return;
-		}
-		throw new Exception("Unsopported service.");
-	}
-}

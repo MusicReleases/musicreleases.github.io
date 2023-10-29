@@ -7,21 +7,39 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 public class ControllerApiUser : IControllerApiUser
 {
 	private readonly ISpotifyApiClient _client;
-	private readonly SpotifyUser _user;
 
-	public ControllerApiUser(ISpotifyApiClient client, SpotifyUser user)
+	public ControllerApiUser(ISpotifyApiClient client)
 	{
 		_client = client;
-		_user = user;
 	}
 
-	public async Task<SpotifyUser?> LoginUser(string url)
+	/*public async Task<SpotifyUser?> LoginUser(string url)
 	{
 		return await LoginUser(new Uri(url));
-	}
+	}*/
 
-	public async Task<SpotifyUser?> LoginUser(Uri url)
+	public async Task<SpotifyUser?> LoginUser(string code, string loginVerifier, string redirectUrl)
 	{
+		// TODO app id to config file
+		const string appId = "67bbd538e581437597ae4574431682df";
+		var redirectUri = new Uri(redirectUrl);
+
+		var tokenRequest = new PKCETokenRequest(appId, code, redirectUri, loginVerifier);
+
+		var initialResponse = await new OAuthClient().RequestToken(tokenRequest);
+
+		var authenticator = new PKCEAuthenticator(appId, initialResponse);
+
+		var config = SpotifyClientConfig.CreateDefault().WithAuthenticator(authenticator);
+		var spotifyClient = new SpotifyClient(config);
+
+		_client.SetClient(spotifyClient);
+
+		var userApi = await GetLoggedInUser();
+
+
+		/*var currentDate = DateTime.Now;
+
 		// get url parameters
 		var urlParameters = GetUrlParameters(url);
 
@@ -43,24 +61,31 @@ public class ControllerApiUser : IControllerApiUser
 		{
 			return null;
 		}
-		// TODO access token expire
-		//var accessTokenExpires = urlParameters["expires_in"];
+
+		// access token expiration
+		var accessExpiration = Convert.ToInt32(urlParameters["expires_in"]);
+		var accessExpirationDate = currentDate.AddSeconds(accessExpiration);
 
 		// get user info
 		var userApi = await GetLoggedInUser();
-		_user.Id = userApi.Id;
+		//_user.Id = userApi.Id;*/
 
-		var user = GetUser(userApi);
+		var user = GetUserFromApi(userApi, initialResponse.RefreshToken);
 		return user;
 	}
 
-	public SpotifyUser GetUser(PrivateUser userApi)
+	private async Task<PrivateUser> GetLoggedInUser()
 	{
-		return new()
-		{
-			Id = userApi.Id,
-			Name = userApi.DisplayName
-		};
+		var spotifyClient = _client.GetClient();
+		var user = await spotifyClient.UserProfile.Current();
+		return user;
+	}
+
+	private SpotifyUser GetUserFromApi(PrivateUser userApi, string refreshToken)
+	{
+		var credentials = new SpotifyUserCredentials(refreshToken);
+		var user = new SpotifyUser(userApi, credentials);
+		return user;
 	}
 
 	private Dictionary<string, string> GetUrlParameters(Uri url)
@@ -72,12 +97,5 @@ public class ControllerApiUser : IControllerApiUser
 		  .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
 
 		return urlParameters;
-	}
-
-	public async Task<PrivateUser> GetLoggedInUser()
-	{
-		var spotifyClient = _client.GetClient();
-		var user = await spotifyClient.UserProfile.Current();
-		return user;
 	}
 }

@@ -55,6 +55,6 @@ public class ControllerApiPlaylist : IControllerApiPlaylist
 		{
 			return false;
 		}
-		return playlistOwnerId == _user.Id;
+		return playlistOwnerId == _user.Info?.Id;
 	}
 }
