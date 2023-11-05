@@ -3,15 +3,15 @@
 
 @using Fluxor;
 @using Fluxor.Blazor.Web.Components;
-@using JakubKastner.MusicReleases.Store.Api.Spotify.Artists;
-@using JakubKastner.MusicReleases.Store.Releases;
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
+@using JakubKastner.MusicReleases.Store.LoaderStore;
 @using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
 @using JakubKastner.SpotifyApi;
 @using JakubKastner.SpotifyApi.Controllers;
 @using JakubKastner.SpotifyApi.Objects;
 @using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
-@using JakubKastner.MusicReleases.Store.Api.Spotify.Releases;
 
 @inherits FluxorComponent;
 

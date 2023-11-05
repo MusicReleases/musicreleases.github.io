@@ -1,5 +1,5 @@
-﻿using JakubKastner.MusicReleases.Controllers.Base;
-using JakubKastner.MusicReleases.Controllers.Spotify;
+﻿using JakubKastner.MusicReleases.Controllers.BaseControllers;
+using JakubKastner.MusicReleases.Controllers.SpotifyControllers;
 
 namespace JakubKastner.MusicReleases;
 

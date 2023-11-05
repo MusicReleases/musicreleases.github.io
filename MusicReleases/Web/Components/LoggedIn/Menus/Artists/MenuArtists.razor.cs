@@ -1,5 +1,5 @@
 using JakubKastner.MusicReleases.Base;
-using JakubKastner.MusicReleases.Store.Api.Spotify.Artists;
+using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
