@@ -1,6 +1,8 @@
 ﻿@if (String.IsNullOrEmpty(ArtistId) || String.IsNullOrEmpty(ArtistName))
 {
-    return;
+	return;
 }
 
-<button type="button" class="artist" data-menu_type="artist" data-menu_artist="playlist-id-@ArtistId">@ArtistName</button>
+<button type="button" class="artist" data-menu_type="artist" data-menu_artist="playlist-id-@ArtistId">
+	@ArtistName
+</button>

@@ -3,6 +3,7 @@
 @using Fluxor;
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Base;
+@using JakubKastner.MusicReleases.Controllers.BaseControllers;
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 @using JakubKastner.SpotifyApi.Controllers;
 @using JakubKastner.SpotifyApi.Objects;
@@ -10,12 +11,15 @@
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists;
 @inject ISpotifyControllerUser _spotifyControllerUser;
+@inject IServiceTypeController _serviceTypeController;
 
 <div class="menu artists items scroll buttons-rounded-m">
 	@if (!_spotifyControllerUser.IsLoggedIn())
 	{
 		<p>User not logged in</p>
-		<button @onclick=LoadArtists>Update</button>
+		<button @onclick=LoadArtists>
+			Update
+		</button>
 	}
 	else
 	{
@@ -26,7 +30,9 @@
 		else if (_artists.Count < 1)
 		{
 			<p>0 artists</p>
-			<button @onclick=LoadArtistsApi>Update</button>
+			<button @onclick=LoadArtistsApi>
+				Update
+			</button>
 		}
 		else
 		{

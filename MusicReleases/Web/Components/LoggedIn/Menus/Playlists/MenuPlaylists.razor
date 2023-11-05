@@ -2,6 +2,7 @@
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Base;
 @using JakubKastner.MusicReleases;
+@using JakubKastner.MusicReleases.Controllers.BaseControllers;
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 @using JakubKastner.MusicReleases.Store.LoaderStore;
 @using JakubKastner.SpotifyApi.Controllers;
@@ -12,12 +13,15 @@
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
 @inject ISpotifyControllerUser _spotifyControllerUser;
+@inject IServiceTypeController _serviceTypeController;
 
 <div class="menu playlists items scroll buttons-rounded-m">
 	@if (!_spotifyControllerUser.IsLoggedIn())
 	{
 		<p>User not logged in</p>
-		<button @onclick=LoadPlaylists>Update</button>
+		<button @onclick=LoadPlaylists>
+			Update
+		</button>
 	}
 	else
 	{
@@ -28,7 +32,9 @@
 		else if (_playlists.Count < 1)
 		{
 			<p>0 playlists</p>
-			<button @onclick=LoadPlaylists>Update</button>
+			<button @onclick=LoadPlaylists>
+				Update
+			</button>
 		}
 		else
 		{
@@ -39,37 +45,3 @@
 		}
 	}
 </div>
-
-@code
-{
-	[Parameter]
-	public Enums.ServiceType ServiceType { get; set; }
-
-	private SortedSet<SpotifyPlaylist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
-	private bool _loading => _stateSpotifyPlaylists.Value.Loading;
-
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-
-		if (ServiceType == Enums.ServiceType.Spotify)
-		{
-
-			if (!_spotifyControllerUser.IsLoggedIn())
-			{
-				return;
-			}
-
-			if (_stateSpotifyPlaylists.Value.Initialized == false)
-			{
-				LoadPlaylists();
-				_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
-			}
-		}
-	}
-
-	private void LoadPlaylists()
-	{
-		_dispatcher.Dispatch(new SpotifyPlaylistsActionLoad());
-	}
-}

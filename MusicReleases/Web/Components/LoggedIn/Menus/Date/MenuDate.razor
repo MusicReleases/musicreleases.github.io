@@ -1,6 +1,7 @@
 ﻿@using Fluxor;
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Base;
+@using JakubKastner.MusicReleases.Controllers.BaseControllers;
 @using JakubKastner.MusicReleases.Store.LoaderStore;
 @using JakubKastner.SpotifyApi.Controllers;
 @using JakubKastner.SpotifyApi.Objects;
@@ -11,6 +12,7 @@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases;
 @inject ISpotifyControllerUser _spotifyControllerUser;
 @inject ISpotifyControllerArtist _spotifyControllerArtist;
+@inject IServiceTypeController _serviceTypeController;
 
 <div class="menu date items scroll buttons-rounded-m">
 	@*@if (_stateSpotifyReleases.Value.Loaded)
@@ -22,30 +24,3 @@
 		<p>Loading...</p>
 	}*@
 </div>
-
-@code
-{
-	[Parameter]
-	public Enums.ServiceType ServiceType { get; set; }
-
-	//private SortedSet<SpotifyApi.Objects.Artist>? _artists;
-
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		if (ServiceType == Enums.ServiceType.Spotify)
-		{
-			// TODO show loader
-			// display playlists
-			if (!_spotifyControllerUser.IsLoggedIn()) return;
-
-			//_artists = await _spotifyControllerArtist.GetUserFollowedArtists();
-		}
-	}
-
-	@*private async Task UpdateArtists()
-	{
-		_artists = await _spotifyControllerArtist.GetUserFollowedArtists();
-		StateHasChanged();
-	}*@
-}

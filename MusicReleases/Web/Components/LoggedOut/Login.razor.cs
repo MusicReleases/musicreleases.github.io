@@ -5,38 +5,27 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedOut;
 
 public partial class Login
 {
-	/// <summary>
-	/// Service type (Spotify, Apple Music, ...)
-	/// </summary>
-	[Parameter]
-	public ServiceType Type { get; set; }
+    /// <summary>
+    /// Service type (Spotify, Apple Music, ...)
+    /// </summary>
+    [Parameter]
+    public ServiceType Type { get; set; }
 
-	private string _type = string.Empty;
+    private string _type = string.Empty;
 
-	protected override async Task OnInitializedAsync()
-	{
-		_type = Type.ToString();
+    protected override async Task OnInitializedAsync()
+    {
+        _type = Type.ToString();
 
-		// check if user is logged in
-		await AutoLoginUser();
-	}
+        // check if user is logged in
+        await _loginController.AutoLoginUser(Type);
+    }
 
-	/// <summary>
-	/// User clicked to login button.
-	/// </summary>
-	private void LoginUser()
-	{
-		_loginController.LoginUser(Type);
-	}
-
-	private async Task AutoLoginUser()
-	{
-		var savedUser = await _loginController.IsUserSaved(Type);
-		if (!savedUser)
-		{
-			return;
-		}
-
-		LoginUser();
-	}
+    /// <summary>
+    /// User clicked to login button.
+    /// </summary>
+    private void LoginUser()
+    {
+        _loginController.LoginUser(Type);
+    }
 }

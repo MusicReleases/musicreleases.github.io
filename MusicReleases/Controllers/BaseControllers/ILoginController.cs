@@ -5,7 +5,8 @@ namespace JakubKastner.MusicReleases.Controllers.BaseControllers;
 
 public interface ILoginController
 {
-	Task LoginUser(ServiceType type);
-	Task SetUser(ServiceType type, StringValues code);
-	Task<bool> IsUserSaved(ServiceType type);
+    Task AutoLoginUser(ServiceType serviceType);
+    Task LoginUser(ServiceType type);
+    Task SetUser(ServiceType type, StringValues code);
+    Task<bool> IsUserSaved(ServiceType type);
 }

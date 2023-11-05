@@ -9,9 +9,12 @@
     <div class="main">
         <div class="login">
             <h2>Login</h2>
-            <div class="login list icon-text buttons-rounded-xl">
-                <Login Type=@Enums.ServiceType.Spotify></Login>
-            </div>
+            @foreach (var serviceType in Enum.GetValues<Enums.ServiceType>())
+            {
+                <div class="login list icon-text buttons-rounded-xl">
+                    <Login Type=@serviceType></Login>
+                </div>
+            }
         </div>
     </div>
 </div>
