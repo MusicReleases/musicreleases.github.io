@@ -35,7 +35,7 @@ public class ControllerApiPlaylist : IControllerApiPlaylist
 		return playlists;
 	}
 
-	private async Task<IList<SimplePlaylist>?> GetUserPlaylistsApi()
+	private async Task<IList<FullPlaylist>?> GetUserPlaylistsApi()
 	{
 		var request = new PlaylistCurrentUsersRequest
 		{
@@ -48,9 +48,9 @@ public class ControllerApiPlaylist : IControllerApiPlaylist
 		return playlists;
 	}
 
-	private bool IsPlaylistOwnedByCurrentUser(SimplePlaylist playlistApi)
+	private bool IsPlaylistOwnedByCurrentUser(FullPlaylist playlistApi)
 	{
-		var playlistOwnerId = playlistApi.Owner.Id;
+		var playlistOwnerId = playlistApi.Owner?.Id;
 		if (string.IsNullOrEmpty(playlistOwnerId))
 		{
 			return false;
