@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Primitives;
 using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Layouts;
@@ -11,10 +12,10 @@ public partial class LayoutLoadingLogin
 		// TODO global service type
 		var uri = new Uri(_navManager.Uri);
 		var queryParams = QueryHelpers.ParseQuery(uri.Query);
-		if (queryParams.ContainsKey("code"))
+		if (!queryParams.TryGetValue("code", out StringValues code))
 		{
-			var code = queryParams["code"];
-			await _loginController.SetUser(ServiceType.Spotify, code);
+			return;
 		}
+		await _loginController.SetUser(ServiceType.Spotify, code);
 	}
 }
