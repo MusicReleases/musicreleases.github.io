@@ -19,7 +19,8 @@ public static class Enums
 	{
 		var prefix = serviceType.ToString();
 		var key = localStorageKey.ToString();
+		var separator = "_";
 
-		return prefix + "_" + key;
+		return prefix + separator + key;
 	}
 }

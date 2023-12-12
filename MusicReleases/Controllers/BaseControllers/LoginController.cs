@@ -3,17 +3,10 @@ using Microsoft.Extensions.Primitives;
 using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.BaseControllers;
-public class LoginController : ILoginController
+public class LoginController(ISpotifyLoginController spotifyLoginController, IServiceTypeController serviceTypeController) : ILoginController
 {
-	private readonly ISpotifyLoginController _spotifyLoginController;
-	private readonly IServiceTypeController _serviceTypeController;
-
-
-	public LoginController(ISpotifyLoginController spotifyLoginController, IServiceTypeController serviceTypeController)
-	{
-		_spotifyLoginController = spotifyLoginController;
-		_serviceTypeController = serviceTypeController;
-	}
+	private readonly ISpotifyLoginController _spotifyLoginController = spotifyLoginController;
+	private readonly IServiceTypeController _serviceTypeController = serviceTypeController;
 
 	public async Task LoginUser(ServiceType serviceType)
 	{

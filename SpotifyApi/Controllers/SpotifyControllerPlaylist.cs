@@ -3,18 +3,11 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class SpotifyControllerPlaylist : ISpotifyControllerPlaylist
+public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlaylist, IControllerApiTrack controllerApiTrack, SpotifyUser user) : ISpotifyControllerPlaylist
 {
-	private readonly IControllerApiPlaylist _controllerApiPlaylist;
-	private readonly IControllerApiTrack _controllerApiTrack;
-	private readonly SpotifyUser _user;
-
-	public SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlaylist, IControllerApiTrack controllerApiTrack, SpotifyUser user)
-	{
-		_controllerApiPlaylist = controllerApiPlaylist;
-		_user = user;
-		_controllerApiTrack = controllerApiTrack;
-	}
+	private readonly IControllerApiPlaylist _controllerApiPlaylist = controllerApiPlaylist;
+	private readonly IControllerApiTrack _controllerApiTrack = controllerApiTrack;
+	private readonly SpotifyUser _user = user;
 
 	// get list of user playlists
 	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylists(bool onlyEditable = false)
@@ -27,7 +20,7 @@ public class SpotifyControllerPlaylist : ISpotifyControllerPlaylist
 		}
 
 		// TODO settings
-		return new SortedSet<SpotifyPlaylist>(playlists.Where(playlist => playlist.CurrentUserOwned == true && playlist.Collaborative == false));
+		return new SortedSet<SpotifyPlaylist>(playlists.Where(p => p.CurrentUserOwned == true && p.Collaborative == false));
 	}
 
 	// get user playlist (with tracks)
@@ -39,7 +32,7 @@ public class SpotifyControllerPlaylist : ISpotifyControllerPlaylist
 			return null;
 		}
 
-		var playlist = _user.Playlists!.FirstOrDefault(x => x.Id == playlistId);
+		var playlist = _user.Playlists!.FirstOrDefault(p => p.Id == playlistId);
 
 		if (getTracks)
 		{

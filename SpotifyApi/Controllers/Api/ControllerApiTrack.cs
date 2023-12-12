@@ -4,14 +4,9 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiTrack : IControllerApiTrack
+public class ControllerApiTrack(ISpotifyApiClient client) : IControllerApiTrack
 {
-	private readonly ISpotifyApiClient _client;
-
-	public ControllerApiTrack(ISpotifyApiClient client)
-	{
-		_client = client;
-	}
+	private readonly ISpotifyApiClient _client = client;
 
 	public async Task<IList<SpotifyTrack>> GetPlaylistTracksFromApi(string playlistId)
 	{

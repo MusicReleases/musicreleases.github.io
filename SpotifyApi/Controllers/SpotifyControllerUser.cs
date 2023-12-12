@@ -5,18 +5,12 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class SpotifyControllerUser : ISpotifyControllerUser
+public class SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser controllerApiUser) : ISpotifyControllerUser
 {
-	private readonly ISpotifyApiClient _client;
-	private readonly IControllerApiUser _controllerApiUser;
+	private readonly ISpotifyApiClient _client = client;
+	private readonly IControllerApiUser _controllerApiUser = controllerApiUser;
 
 	private SpotifyUser? _user;
-
-	public SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser controllerApiUser)
-	{
-		_client = client;
-		_controllerApiUser = controllerApiUser;
-	}
 
 	public (Uri loginUrl, string loginVerifier) GetLoginUrl(Uri currentUrl)
 	{

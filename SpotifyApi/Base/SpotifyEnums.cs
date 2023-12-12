@@ -24,12 +24,12 @@ public static class SpotifyEnums
 	{
 		return releaseType switch
 		{
-			//ReleaseType.All => throw new Exception("TODO"),// TODO all
+			//ReleaseType.All => throw new Exception("TODO"), // TODO all
 			ReleaseType.Albums => IncludeGroups.Album,
 			ReleaseType.Tracks => IncludeGroups.Single,
 			ReleaseType.Appears => IncludeGroups.AppearsOn,
 			ReleaseType.Compilations => IncludeGroups.Compilation,
-			ReleaseType.Podcasts => throw new Exception("TODO"),//TODO podcasts;
+			ReleaseType.Podcasts => throw new NotImplementedException(), //TODO podcasts;
 			_ => throw new Exception("Unsupported Release Type"),
 		};
 	}

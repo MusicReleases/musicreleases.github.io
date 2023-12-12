@@ -1,11 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Store.LoaderStore;
 
-public class LoaderAction
+public class LoaderAction(bool loading)
 {
-	public bool Loading { get; }
-
-	public LoaderAction(bool loading)
-	{
-		Loading = loading;
-	}
+	public bool Loading { get; } = loading;
 }

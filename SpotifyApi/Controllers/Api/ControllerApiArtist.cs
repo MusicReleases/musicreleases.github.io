@@ -4,14 +4,9 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiArtist : IControllerApiArtist
+public class ControllerApiArtist(ISpotifyApiClient client) : IControllerApiArtist
 {
-	private readonly ISpotifyApiClient _client;
-
-	public ControllerApiArtist(ISpotifyApiClient client)
-	{
-		_client = client;
-	}
+	private readonly ISpotifyApiClient _client = client;
 
 	public async Task<ISet<SpotifyArtist>> GetUserFollowedArtistsFromApi()
 	{

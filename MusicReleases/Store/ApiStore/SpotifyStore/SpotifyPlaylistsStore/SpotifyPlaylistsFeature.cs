@@ -12,7 +12,7 @@ public class SpotifyPlaylistsFeature : Feature<SpotifyPlaylistsState>
 		{
 			Initialized = false,
 			Loading = false,
-			Playlists = new(),
+			Playlists = [],
 		};
 	}
 }

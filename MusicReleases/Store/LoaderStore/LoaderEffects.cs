@@ -5,18 +5,11 @@ using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStor
 
 namespace JakubKastner.MusicReleases.Store.LoaderStore;
 
-public class LoaderEffects
+public class LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, IState<SpotifyArtistsState> spotifyArtistsState, IState<SpotifyReleasesState> spotifyReleasesState)
 {
-	private readonly IState<SpotifyPlaylistsState> _spotifyPlaylistsState;
-	private readonly IState<SpotifyArtistsState> _spotifyArtistsState;
-	private readonly IState<SpotifyReleasesState> _spotifyReleasesState;
-
-	public LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, IState<SpotifyArtistsState> spotifyArtistsState, IState<SpotifyReleasesState> spotifyReleasesState)
-	{
-		_spotifyPlaylistsState = spotifyPlaylistsState;
-		_spotifyArtistsState = spotifyArtistsState;
-		_spotifyReleasesState = spotifyReleasesState;
-	}
+	private readonly IState<SpotifyPlaylistsState> _spotifyPlaylistsState = spotifyPlaylistsState;
+	private readonly IState<SpotifyArtistsState> _spotifyArtistsState = spotifyArtistsState;
+	private readonly IState<SpotifyReleasesState> _spotifyReleasesState = spotifyReleasesState;
 
 	// spotify playlists
 	[EffectMethod(typeof(SpotifyPlaylistsActionLoad))]

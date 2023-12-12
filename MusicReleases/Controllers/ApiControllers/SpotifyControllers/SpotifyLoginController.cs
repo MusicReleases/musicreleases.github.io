@@ -5,18 +5,11 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 
-public class SpotifyLoginController : ISpotifyLoginController
+public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser, NavigationManager navManager, ISpotifyLoginStorageController spotifyLoginStorageController) : ISpotifyLoginController
 {
-	private readonly ISpotifyControllerUser _spotifyControllerUser;
-	private readonly ISpotifyLoginStorageController _spotifyLoginStorageController;
-	private readonly NavigationManager _navManager;
-
-	public SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser, NavigationManager navManager, ISpotifyLoginStorageController spotifyLoginStorageController)
-	{
-		_spotifyControllerUser = spotifyControllerUser;
-		_navManager = navManager;
-		_spotifyLoginStorageController = spotifyLoginStorageController;
-	}
+	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
+	private readonly ISpotifyLoginStorageController _spotifyLoginStorageController = spotifyLoginStorageController;
+	private readonly NavigationManager _navManager = navManager;
 
 	public async Task<bool> IsUserSaved()
 	{

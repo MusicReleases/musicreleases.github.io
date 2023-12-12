@@ -2,12 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
 
-public class SpotifyReleasesActionSet
+public class SpotifyReleasesActionSet(ISet<SpotifyAlbum> releases)
 {
-	public SortedSet<SpotifyAlbum> Releases { get; }
-
-	public SpotifyReleasesActionSet(ISet<SpotifyAlbum> releases)
-	{
-		Releases = new(releases);
-	}
+	public SortedSet<SpotifyAlbum> Releases { get; } = new(releases);
 }

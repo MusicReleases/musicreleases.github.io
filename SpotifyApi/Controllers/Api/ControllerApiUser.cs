@@ -4,14 +4,9 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiUser : IControllerApiUser
+public class ControllerApiUser(ISpotifyApiClient client) : IControllerApiUser
 {
-	private readonly ISpotifyApiClient _client;
-
-	public ControllerApiUser(ISpotifyApiClient client)
-	{
-		_client = client;
-	}
+	private readonly ISpotifyApiClient _client = client;
 
 	/*public async Task<SpotifyUser?> LoginUser(string url)
 	{
@@ -94,7 +89,7 @@ public class ControllerApiUser : IControllerApiUser
 		var urlParameters = url.Fragment[maxLen..]?
 		  .Split("&", StringSplitOptions.RemoveEmptyEntries)?
 		  .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
-		  .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
+		  .ToDictionary(param => param[0], param => param[1]) ?? [];
 
 		return urlParameters;
 	}

@@ -12,7 +12,7 @@ public class SpotifyArtistsFeature : Feature<SpotifyArtistsState>
 		{
 			Initialized = false,
 			Loading = false,
-			Artists = new(),
+			Artists = [],
 		};
 	}
 }

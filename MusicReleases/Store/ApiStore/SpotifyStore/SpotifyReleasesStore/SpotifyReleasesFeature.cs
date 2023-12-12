@@ -15,7 +15,7 @@ public class SpotifyReleasesFeature : Feature<SpotifyReleasesState>
 		{
 			Initialized = false,
 			Loading = false,
-			Releases = new(),
+			Releases = [],
 		};
 	}
 }

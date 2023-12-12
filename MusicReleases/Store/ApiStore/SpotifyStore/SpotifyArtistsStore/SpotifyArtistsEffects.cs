@@ -4,20 +4,13 @@ using JakubKastner.SpotifyApi.Controllers;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects
+public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IState<SpotifyArtistsState> artistsState)
 {
-	private readonly ISpotifyControllerArtist _spotifyControllerArtist;
-	private readonly ILocalStorageService _localStorageService;
-	private readonly IState<SpotifyArtistsState> _artistsState;
+	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
+	private readonly ILocalStorageService _localStorageService = localStorageService;
+	private readonly IState<SpotifyArtistsState> _artistsState = artistsState;
 
 	private const string _localStorageName = "spotify_artists";
-
-	public SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IState<SpotifyArtistsState> artistsState)
-	{
-		_spotifyControllerArtist = spotifyControllerArtist;
-		_localStorageService = localStorageService;
-		_artistsState = artistsState;
-	}
 
 	[EffectMethod(typeof(SpotifyArtistsActionLoad))]
 	public async Task LoadArtists(IDispatcher dispatcher)
@@ -97,7 +90,7 @@ public class SpotifyArtistsEffects
 			{
 				Initialized = false,
 				Loading = false,
-				Artists = new(),
+				Artists = [],
 			}));
 			dispatcher.Dispatch(new SpotifyArtistsActionStorageClearSuccess());
 		}

@@ -3,14 +3,9 @@ using JakubKastner.SpotifyApi.Controllers;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
 
-public class SpotifyReleasesEffects
+public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerRelease)
 {
-	private readonly ISpotifyControllerRelease _spotifyControllerRelease;
-
-	public SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerRelease)
-	{
-		_spotifyControllerRelease = spotifyControllerRelease;
-	}
+	private readonly ISpotifyControllerRelease _spotifyControllerRelease = spotifyControllerRelease;
 
 	[EffectMethod(typeof(SpotifyReleasesActionLoad))]
 	public async Task LoadReleases(IDispatcher dispatcher)

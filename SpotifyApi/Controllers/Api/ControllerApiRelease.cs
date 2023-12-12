@@ -5,14 +5,9 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiRelease : IControllerApiRelease
+public class ControllerApiRelease(ISpotifyApiClient client) : IControllerApiRelease
 {
-	private readonly ISpotifyApiClient _client;
-
-	public ControllerApiRelease(ISpotifyApiClient client)
-	{
-		_client = client;
-	}
+	private readonly ISpotifyApiClient _client = client;
 
 	public async Task<ISet<SpotifyAlbum>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
 	{
@@ -40,7 +35,7 @@ public class ControllerApiRelease : IControllerApiRelease
 		if (releaseType == ReleaseType.Podcasts)
 		{
 			// TODO podcasts
-			throw new Exception("TODO");
+			throw new NotImplementedException();
 			//var request = new EpisodesRequest
 		}
 
