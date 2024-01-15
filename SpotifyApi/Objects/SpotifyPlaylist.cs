@@ -11,7 +11,7 @@ public class SpotifyPlaylist : IComparable
 	public string? SnapshotId { get; private set; }
 
 	public int? TotalTracks { get; private set; }
-	public HashSet<SpotifyTrack> Tracks { get; set; } = new();
+	public HashSet<SpotifyTrack> Tracks { get; set; } = [];
 
 	// TODO playlist owner - currentuserowned
 	public SpotifyPlaylist(FullPlaylist fullPlaylist, bool currentUserOwned = false)

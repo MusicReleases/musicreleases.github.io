@@ -1,6 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
-using JakubKastner.MusicReleases.Store.LoaderStore;
 using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
@@ -31,12 +30,11 @@ public partial class Releases
 
 		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
 		//GetParameter();
+	}
 
-		if (_stateSpotifyReleases.Value.Initialized == false)
-		{
-			LoadReleases();
-			_dispatcher.Dispatch(new SpotifyReleasesActionInitialized());
-		}
+	protected override void OnParametersSet()
+	{
+		LoadReleases();
 	}
 
 	private async Task<IEnumerable<SpotifyAlbum>> GetReleases(InfiniteScrollingItemsProviderRequest request)
@@ -51,29 +49,6 @@ public partial class Releases
 
 	private void LoadReleases()
 	{
-		_dispatcher.Dispatch(new SpotifyReleasesActionLoad());
-	}
-
-	private void Loader()
-	{
-		_dispatcher.Dispatch(new LoaderAction(true));
-	}
-	private void LoaderS()
-	{
-		_dispatcher.Dispatch(new LoaderAction(false));
-	}
-
-	private void SaveToStorage()
-	{
-		_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
-	}
-	protected override void OnParametersSet()
-	{
-		GetParameter();
-	}
-
-	private void GetParameter()
-	{
 		if (string.IsNullOrEmpty(Type))
 		{
 			// TODO display all releases and remember last selection
@@ -82,13 +57,22 @@ public partial class Releases
 			// TODO but if is not here, code just continue and doesnt get the right Type (for example)
 			return;
 		}
-		try
-		{
-			_type = Enum.Parse<ReleaseType>(Type);
-		}
-		catch
+
+		if (!Enum.TryParse(Type, true, out _type))
 		{
 			_type = ReleaseType.Albums;
 		}
+
+		// TODO loading & loaded
+		/*if (_stateSpotifyReleases.Value.Initialized == false)
+		{*/
+		_dispatcher.Dispatch(new SpotifyReleasesActionLoad(_type));
+		_dispatcher.Dispatch(new SpotifyReleasesActionInitialized());
+		/*}*/
+	}
+
+	private void SaveToStorage()
+	{
+		_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
 	}
 }

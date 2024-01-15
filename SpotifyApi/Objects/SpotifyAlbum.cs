@@ -9,15 +9,16 @@ public class SpotifyAlbum : IComparable
 	public string ReleaseDate { get; private set; }
 	public string AlbumType { get; private set; }
 	public int TotalTracks { get; private set; }
-	public string Uri { get; private set; }
 
-	public string ImageUrl { get; private set; }
+	public string UrlApp { get; private set; }
+	public string UrlWeb { get; private set; }
+	public string UrlImage { get; private set; }
 
 	public List<Image> Images { get; private set; }
 
 	public HashSet<SpotifyArtist> Artists { get; private set; }
 
-	public SortedSet<SpotifyTrack> Tracks { get; private set; } = new();
+	public SortedSet<SpotifyTrack> Tracks { get; private set; } = [];
 
 	// TODO artists - GetArtists
 	// TODO images (0), default
@@ -31,13 +32,14 @@ public class SpotifyAlbum : IComparable
 		Images = simpleAlbum.Images;
 		if (simpleAlbum.Images.Count > 0)
 		{
-			ImageUrl = simpleAlbum.Images.First().Url;
+			UrlImage = simpleAlbum.Images.First().Url;
 		}
 		else
 		{
-			ImageUrl = "";
+			UrlImage = "";
 		}
-		Uri = simpleAlbum.Uri;
+		UrlApp = simpleAlbum.Uri;
+		UrlWeb = simpleAlbum.Href;
 		//Artists = new();
 		Artists = simpleAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
 		//Artists = Controller.GetArtists(simpleAlbum.Artists);
@@ -52,13 +54,14 @@ public class SpotifyAlbum : IComparable
 		Images = fullAlbum.Images;
 		if (fullAlbum.Images.Count > 0)
 		{
-			ImageUrl = fullAlbum.Images.First().Url;
+			UrlImage = fullAlbum.Images.First().Url;
 		}
 		else
 		{
-			ImageUrl = "";
+			UrlImage = "";
 		}
-		Uri = fullAlbum.Uri;
+		UrlApp = fullAlbum.Uri;
+		UrlWeb = fullAlbum.Href;
 		//Artists = new();
 		Artists = fullAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
 		//Artists = Controller.GetArtists(fullAlbum.Artists);
@@ -73,17 +76,18 @@ public class SpotifyAlbum : IComparable
 		Images = simpleShow.Images;
 		if (simpleShow.Images.Count > 0)
 		{
-			ImageUrl = simpleShow.Images.First().Url;
+			UrlImage = simpleShow.Images.First().Url;
 		}
 		else
 		{
-			ImageUrl = "";
+			UrlImage = "";
 		}
-		Uri = simpleShow.Uri;
-		Artists = new()
-		{
+		UrlApp = simpleShow.Uri;
+		UrlWeb = simpleShow.Href;
+		Artists =
+		[
 			new(id: "0", name: simpleShow.Publisher)
-		};
+		];
 	}
 
 	public int CompareTo(object? obj)

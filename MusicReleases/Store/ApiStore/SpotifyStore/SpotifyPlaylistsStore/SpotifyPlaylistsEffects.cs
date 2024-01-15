@@ -11,7 +11,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	public async Task LoadPlaylists(IDispatcher dispatcher)
 	{
 		//dispatcher.Dispatch(new LoaderAction(true));
-		var playlists = await _spotifyControllerPlaylist.GetUserPlaylists();
+		var playlists = await _spotifyControllerPlaylist.GetUserPlaylists(true);
 		dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
 		//dispatcher.Dispatch(new LoaderAction(false));
 	}

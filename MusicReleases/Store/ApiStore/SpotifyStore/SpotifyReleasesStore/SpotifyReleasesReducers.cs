@@ -5,11 +5,11 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleases
 public class SpotifyReleasesReducers
 {
 	[ReducerMethod]
-	public static SpotifyReleasesState OnSetPlaylists(SpotifyReleasesState state, SpotifyReleasesActionSet action)
+	public static SpotifyReleasesState OnSetReleases(SpotifyReleasesState state, SpotifyReleasesActionSet action)
 	{
 		return state with
 		{
-			Releases = action.Releases,
+			Releases = new(action.Releases),
 			Loading = false,
 		};
 	}
@@ -30,5 +30,11 @@ public class SpotifyReleasesReducers
 		{
 			Loading = true,
 		};
+	}
+
+	[ReducerMethod]
+	public static SpotifyReleasesState OnSetReleasesFromStorage(SpotifyReleasesState state, SpotifyReleasesActionStorageSet action)
+	{
+		return action.ReleasesState;
 	}
 }

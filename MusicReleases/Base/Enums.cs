@@ -7,6 +7,33 @@ public static class Enums
 		Spotify,
 	}
 
+	public enum Theme
+	{
+		System,
+		Dark,
+		Light,
+		Color,
+	}
+
+	public enum PlaylistVisiblity
+	{
+		Default,
+		Public,
+		Private,
+	}
+
+	public enum ReleasesFilters
+	{
+		Clear,
+		Tracks,
+		EPs,
+		Remixes,
+		FollowedArtists,
+		VariousArtists,
+		InLibrary,
+		OnlyNew,
+	}
+
 	public enum LocalStorageKey
 	{
 		UserInfo,

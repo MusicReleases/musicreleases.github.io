@@ -1,32 +1,26 @@
-﻿@page "/releases/{type?}";
-@layout LayoutMain;
+﻿@page "/releases/{type?}"
+@layout LayoutMain
 
-@using Fluxor;
-@using Fluxor.Blazor.Web.Components;
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
-@using JakubKastner.MusicReleases.Store.LoaderStore;
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
+@using JakubKastner.MusicReleases.Store.LoaderStore
 @using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
-@using JakubKastner.SpotifyApi;
-@using JakubKastner.SpotifyApi.Controllers;
-@using JakubKastner.SpotifyApi.Objects;
-@using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
+@using JakubKastner.SpotifyApi
+@using JakubKastner.SpotifyApi.Controllers
+@using JakubKastner.SpotifyApi.Objects
+@using static JakubKastner.SpotifyApi.Base.SpotifyEnums
 
 @inherits FluxorComponent;
 
-@inject IDispatcher _dispatcher;
-@inject IState<SpotifyReleasesState> _stateSpotifyReleases;
-@inject IState<SpotifyArtistsState> _stateSpotifyArtists;
-@inject NavigationManager _navManager;
-@inject ISpotifyControllerUser _spotifyControllerUser;
+@inject IDispatcher _dispatcher
+@inject IState<SpotifyReleasesState> _stateSpotifyReleases
+@inject IState<SpotifyArtistsState> _stateSpotifyArtists
+@inject NavigationManager _navManager
+@inject ISpotifyControllerUser _spotifyControllerUser
 
-<button type="button" @onclick="Loader">
-	start
-</button>
-<button type="button" @onclick="LoaderS">
-	stop
-</button>
 <button type="button" @onclick="SaveToStorage">
 	save
 </button>
@@ -53,7 +47,7 @@ else
 
 			<InfiniteScrolling ItemsProvider="GetReleases">
 				<ItemTemplate Context="release">
-					<Release ReleaseObj="@release" />
+					<Release SpotifyRelease="@release" />
 				</ItemTemplate>
 				<LoadingTemplate>
 					<div>Loading more @Type...</div>

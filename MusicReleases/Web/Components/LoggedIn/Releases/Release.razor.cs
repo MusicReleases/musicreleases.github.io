@@ -5,6 +5,12 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
 
 public partial class Release
 {
-    [Parameter, EditorRequired]
-    public SpotifyAlbum ReleaseObj { get; set; }
+	[Parameter]
+	public required SpotifyAlbum SpotifyRelease { get; set; }
+	//private string? _url;
+
+	protected override void OnInitialized()
+	{
+		//if ()
+	}
 }

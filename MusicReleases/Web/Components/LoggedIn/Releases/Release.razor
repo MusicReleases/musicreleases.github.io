@@ -1,16 +1,17 @@
 ﻿@using JakubKastner.SpotifyApi.Objects
 
-<div class="release album box" data-release_type="album" data-release_id="@ReleaseObj.Id">
+<div class="release album box" data-release_type="album" data-release_id="@SpotifyRelease.Id">
 	<div class="info">
-		<img src="@ReleaseObj.ImageUrl" alt="Cover" class="cover">
-		<a class="name icon-text" href="@ReleaseObj.Uri" target="_blank" rel="noopener noreferrer">
-			@ReleaseObj.Name
+		<img src="@SpotifyRelease.UrlImage" alt="Cover" class="cover">
+		@* target="_blank" *@
+		<a class="name icon-text" href="@SpotifyRelease.UrlApp" rel="noopener noreferrer">
+			@SpotifyRelease.Name
 		</a>
-		<ReleaseArtists ArtistsObj="ReleaseObj.Artists" />
+		<ReleaseArtists ArtistsObj="SpotifyRelease.Artists" />
 		<p class="date icon-text">
 			<i class="fas fa-calendar-alt" aria-hidden="true"></i>
 			<button>
-				@ReleaseObj.ReleaseDate
+				@SpotifyRelease.ReleaseDate
 			</button>
 		</p>
 		<p class="duration icon-text">

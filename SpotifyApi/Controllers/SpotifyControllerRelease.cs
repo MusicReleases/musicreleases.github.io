@@ -9,7 +9,7 @@ public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease
 	private readonly IControllerApiRelease _controllerApiRelease = controllerApiRelease;
 	private readonly ISpotifyControllerArtist _controllerArtist = controllerArtist;
 
-	// get all relases for user followed artist
+	// get all releases for user followed artist
 	public async Task<ISet<SpotifyAlbum>> GetAllUserFollowedArtistsReleases(ReleaseType releaseType = ReleaseType.Albums)
 	{
 		var artists = await _controllerArtist.GetUserFollowedArtists();
