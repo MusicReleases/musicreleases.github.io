@@ -9,11 +9,11 @@ public class ControllerApiRelease(ISpotifyApiClient client) : IControllerApiRele
 {
 	private readonly ISpotifyApiClient _client = client;
 
-	public async Task<ISet<SpotifyAlbum>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
+	public async Task<ISet<SpotifyRelease>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
 	{
 		// TODO podcasts
 
-		var albums = new SortedSet<SpotifyAlbum>();
+		var albums = new SortedSet<SpotifyRelease>();
 		var releasesFromApi = await GetArtistReleasesApi(artistId, releaseType);
 
 		if (releasesFromApi == null)
@@ -23,7 +23,7 @@ public class ControllerApiRelease(ISpotifyApiClient client) : IControllerApiRele
 
 		foreach (var releaseApi in releasesFromApi)
 		{
-			var album = new SpotifyAlbum(releaseApi);
+			var album = new SpotifyRelease(releaseApi, releaseType);
 			albums.Add(album);
 		}
 

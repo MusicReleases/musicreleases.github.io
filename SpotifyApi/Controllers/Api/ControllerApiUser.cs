@@ -8,11 +8,6 @@ public class ControllerApiUser(ISpotifyApiClient client) : IControllerApiUser
 {
 	private readonly ISpotifyApiClient _client = client;
 
-	/*public async Task<SpotifyUser?> LoginUser(string url)
-	{
-		return await LoginUser(new Uri(url));
-	}*/
-
 	public async Task<SpotifyUser?> LoginUser(string code, string loginVerifier, string redirectUrl)
 	{
 		// TODO app id to config file
@@ -32,39 +27,6 @@ public class ControllerApiUser(ISpotifyApiClient client) : IControllerApiUser
 
 		var userApi = await GetLoggedInUser();
 
-
-		/*var currentDate = DateTime.Now;
-
-		// get url parameters
-		var urlParameters = GetUrlParameters(url);
-
-		// get user from access token
-		var loggedIn = urlParameters.ContainsKey("access_token");
-		if (!loggedIn)
-		{
-			return null;
-		}
-
-		var accessToken = urlParameters["access_token"];
-		if (string.IsNullOrEmpty(accessToken))
-		{
-			return null;
-		}
-		_client.Init(accessToken);
-
-		if (!urlParameters.ContainsKey("expires_in"))
-		{
-			return null;
-		}
-
-		// access token expiration
-		var accessExpiration = Convert.ToInt32(urlParameters["expires_in"]);
-		var accessExpirationDate = currentDate.AddSeconds(accessExpiration);
-
-		// get user info
-		var userApi = await GetLoggedInUser();
-		//_user.Id = userApi.Id;*/
-
 		var user = GetUserFromApi(userApi, initialResponse.RefreshToken);
 		return user;
 	}
@@ -81,16 +43,5 @@ public class ControllerApiUser(ISpotifyApiClient client) : IControllerApiUser
 		var credentials = new SpotifyUserCredentials(refreshToken);
 		var user = new SpotifyUser(userApi, credentials);
 		return user;
-	}
-
-	private Dictionary<string, string> GetUrlParameters(Uri url)
-	{
-		var maxLen = Math.Min(1, url.Fragment.Length);
-		var urlParameters = url.Fragment[maxLen..]?
-		  .Split("&", StringSplitOptions.RemoveEmptyEntries)?
-		  .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
-		  .ToDictionary(param => param[0], param => param[1]) ?? [];
-
-		return urlParameters;
 	}
 }

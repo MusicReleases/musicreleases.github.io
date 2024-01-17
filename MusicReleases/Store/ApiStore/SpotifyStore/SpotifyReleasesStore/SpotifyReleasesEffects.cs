@@ -18,7 +18,7 @@ public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerR
 	{
 		try
 		{
-			var releases = await _spotifyControllerRelease.GetAllUserFollowedArtistsReleases(action.ReleaseType);
+			var releases = await _spotifyControllerRelease.GetAllReleasesFromUserFollowed(action.ReleaseType);
 			dispatcher.Dispatch(new SpotifyReleasesActionSet(releases));
 		}
 		catch (Exception ex)

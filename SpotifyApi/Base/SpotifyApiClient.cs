@@ -22,7 +22,7 @@ public class SpotifyApiClient : ISpotifyApiClient
 
 	public bool IsInicialized()
 	{
-		return _spotifyClient != null;
+		return _spotifyClient is not null;
 	}
 
 	public ISpotifyClient GetClient()

@@ -22,7 +22,7 @@ public class ControllerApiTrack(ISpotifyApiClient client) : IControllerApiTrack
 
 		// get tracksfrom api
 		var tracksFromApi = await GetPlaylistTracksApi(playlistId);
-		if (tracksFromApi == null)
+		if (tracksFromApi is null)
 		{
 			return tracks;
 		}

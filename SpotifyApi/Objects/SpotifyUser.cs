@@ -9,7 +9,7 @@ public class SpotifyUser
 
 	public ISet<SpotifyPlaylist>? Playlists { get; set; }
 	public ISet<SpotifyArtist>? FollowedArtists { get; set; }
-	public ISet<SpotifyAlbum> ReleasedAlbums { get; set; } = new SortedSet<SpotifyAlbum>();
+	public ISet<SpotifyRelease> ReleasedAlbums { get; set; } = new SortedSet<SpotifyRelease>();
 
 	public SpotifyUser() { }
 

@@ -15,7 +15,7 @@ public partial class Releases
 	// TODO enable to select and display more than 1 release type
 	private ReleaseType _type;
 
-	private SortedSet<SpotifyAlbum>? _releases => _stateSpotifyReleases.Value.Releases;
+	private SortedSet<SpotifyRelease>? _releases => _stateSpotifyReleases.Value.Releases;
 	private bool _loading => _stateSpotifyReleases.Value.Loading;
 
 	protected override void OnInitialized()
@@ -37,12 +37,12 @@ public partial class Releases
 		LoadReleases();
 	}
 
-	private async Task<IEnumerable<SpotifyAlbum>> GetReleases(InfiniteScrollingItemsProviderRequest request)
+	private async Task<IEnumerable<SpotifyRelease>> GetReleases(InfiniteScrollingItemsProviderRequest request)
 	{
 		await Task.Delay(0);
 		if (_releases == null)
 		{
-			return new SortedSet<SpotifyAlbum>();
+			return new SortedSet<SpotifyRelease>();
 		}
 		return _releases.Skip(request.StartIndex).Take(15);
 	}

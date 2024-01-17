@@ -60,4 +60,14 @@ public class SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser 
 	{
 		return _user;
 	}
+
+	public SpotifyUser GetUserRequired()
+	{
+		if (_user is null)
+		{
+			throw new UnauthorizedAccessException(nameof(GetUserRequired));
+		}
+
+		return _user;
+	}
 }

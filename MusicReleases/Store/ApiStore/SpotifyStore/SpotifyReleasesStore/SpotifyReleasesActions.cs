@@ -16,9 +16,9 @@ public record SpotifyReleasesActionLoadSuccess();
 public record SpotifyReleasesActionLoadFailure(string ErrorMessage);
 
 // set artists
-public class SpotifyReleasesActionSet(ISet<SpotifyAlbum> _releases)
+public class SpotifyReleasesActionSet(ISet<SpotifyRelease> _releases)
 {
-	public ISet<SpotifyAlbum> Releases { get; } = _releases;
+	public ISet<SpotifyRelease> Releases { get; } = _releases;
 };
 
 // local storage -> set

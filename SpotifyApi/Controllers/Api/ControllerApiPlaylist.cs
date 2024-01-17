@@ -4,10 +4,10 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Controllers.Api;
 
-public class ControllerApiPlaylist(ISpotifyApiClient client, SpotifyUser user) : IControllerApiPlaylist
+public class ControllerApiPlaylist(ISpotifyApiClient client, ISpotifyControllerUser controllerUser) : IControllerApiPlaylist
 {
 	private readonly ISpotifyApiClient _client = client;
-	private readonly SpotifyUser _user = user;
+	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
 	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylistsFromApi()
 	{
@@ -49,6 +49,7 @@ public class ControllerApiPlaylist(ISpotifyApiClient client, SpotifyUser user) :
 		{
 			return false;
 		}
-		return playlistOwnerId == _user.Info?.Id;
+		var user = _controllerUser.GetUser();
+		return playlistOwnerId == user?.Info?.Id;
 	}
 }

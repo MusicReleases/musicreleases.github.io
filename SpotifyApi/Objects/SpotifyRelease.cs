@@ -1,13 +1,13 @@
 ﻿using SpotifyAPI.Web;
+using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyAlbum : IComparable
+public class SpotifyRelease : IComparable
 {
 	public string Id { get; private set; }
 	public string Name { get; private set; }
 	public string ReleaseDate { get; private set; }
-	public string AlbumType { get; private set; }
 	public int TotalTracks { get; private set; }
 
 	public string UrlApp { get; private set; }
@@ -18,16 +18,18 @@ public class SpotifyAlbum : IComparable
 
 	public HashSet<SpotifyArtist> Artists { get; private set; }
 
-	public SortedSet<SpotifyTrack> Tracks { get; private set; } = [];
+	public SortedSet<SpotifyTrack>? Tracks { get; private set; }
+
+	public ReleaseType ReleaseType { get; private set; }
 
 	// TODO artists - GetArtists
 	// TODO images (0), default
-	public SpotifyAlbum(SimpleAlbum simpleAlbum)
+
+	public SpotifyRelease(SimpleAlbum simpleAlbum, ReleaseType releaseType)
 	{
 		Id = simpleAlbum.Id;
 		Name = simpleAlbum.Name;
 		ReleaseDate = simpleAlbum.ReleaseDate;
-		AlbumType = simpleAlbum.AlbumType;
 		TotalTracks = simpleAlbum.TotalTracks;
 		Images = simpleAlbum.Images;
 		if (simpleAlbum.Images.Count > 0)
@@ -40,16 +42,15 @@ public class SpotifyAlbum : IComparable
 		}
 		UrlApp = simpleAlbum.Uri;
 		UrlWeb = simpleAlbum.Href;
-		//Artists = new();
 		Artists = simpleAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
-		//Artists = Controller.GetArtists(simpleAlbum.Artists);
+		ReleaseType = releaseType;
 	}
-	public SpotifyAlbum(FullAlbum fullAlbum)
+
+	public SpotifyRelease(FullAlbum fullAlbum, ReleaseType releaseType)
 	{
 		Id = fullAlbum.Id;
 		Name = fullAlbum.Name;
 		ReleaseDate = fullAlbum.ReleaseDate;
-		AlbumType = fullAlbum.AlbumType;
 		TotalTracks = fullAlbum.TotalTracks;
 		Images = fullAlbum.Images;
 		if (fullAlbum.Images.Count > 0)
@@ -62,16 +63,15 @@ public class SpotifyAlbum : IComparable
 		}
 		UrlApp = fullAlbum.Uri;
 		UrlWeb = fullAlbum.Href;
-		//Artists = new();
 		Artists = fullAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
-		//Artists = Controller.GetArtists(fullAlbum.Artists);
+		ReleaseType = releaseType;
 	}
-	public SpotifyAlbum(SimpleShow simpleShow)
+
+	public SpotifyRelease(SimpleShow simpleShow)
 	{
 		Id = simpleShow.Id;
 		Name = simpleShow.Name;
 		ReleaseDate = "0";
-		AlbumType = "Podcast";
 		TotalTracks = 1;
 		Images = simpleShow.Images;
 		if (simpleShow.Images.Count > 0)
@@ -88,6 +88,7 @@ public class SpotifyAlbum : IComparable
 		[
 			new(id: "0", name: simpleShow.Publisher)
 		];
+		ReleaseType = ReleaseType.Podcasts;
 	}
 
 	public int CompareTo(object? obj)
@@ -97,7 +98,7 @@ public class SpotifyAlbum : IComparable
 			return -1;
 		}
 
-		var other = (SpotifyAlbum)obj;
+		var other = (SpotifyRelease)obj;
 		var releaseDateComparison = -ReleaseDate.CompareTo(other.ReleaseDate);
 
 		return (releaseDateComparison != 0) ? releaseDateComparison : Name.CompareTo(other.Name);
@@ -110,7 +111,7 @@ public class SpotifyAlbum : IComparable
 			return this == null;
 		}
 
-		var other = (SpotifyAlbum)obj;
+		var other = (SpotifyRelease)obj;
 		var idEquals = string.Equals(Id, other.Id);
 		if (idEquals)
 		{

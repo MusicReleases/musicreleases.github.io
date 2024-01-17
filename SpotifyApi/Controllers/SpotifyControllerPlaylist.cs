@@ -3,40 +3,45 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlaylist, IControllerApiTrack controllerApiTrack, SpotifyUser user) : ISpotifyControllerPlaylist
+public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlaylist, IControllerApiTrack controllerApiTrack, ISpotifyControllerUser controllerUser) : ISpotifyControllerPlaylist
 {
 	private readonly IControllerApiPlaylist _controllerApiPlaylist = controllerApiPlaylist;
 	private readonly IControllerApiTrack _controllerApiTrack = controllerApiTrack;
-	private readonly SpotifyUser _user = user;
+	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
 	// get list of user playlists
 	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylists(bool onlyEditable = false)
 	{
-		var playlists = _user.Playlists ??= await _controllerApiPlaylist.GetUserPlaylistsFromApi();
+		var user = _controllerUser.GetUserRequired();
+		var playlists = new SortedSet<SpotifyPlaylist>(user.Playlists ??= await _controllerApiPlaylist.GetUserPlaylistsFromApi());
 
 		if (!onlyEditable)
 		{
-			return new SortedSet<SpotifyPlaylist>(playlists);
+			return playlists;
 		}
 
 		// TODO settings
-		return new SortedSet<SpotifyPlaylist>(playlists.Where(p => p.CurrentUserOwned == true && p.Collaborative == false));
+		playlists = new(playlists.Where(p => p.CurrentUserOwned == true || p.Collaborative == true));
+
+		return playlists;
 	}
 
 	// get user playlist (with tracks)
 	public async Task<SpotifyPlaylist?> GetUserPlaylist(string playlistId, bool getTracks = false)
 	{
-		if (await GetUserPlaylists() == null)
-		{
-			// TODO getalluserplaylist() is not nullable
-			return null;
-		}
+		var playlists = await GetUserPlaylists();
 
-		var playlist = _user.Playlists!.FirstOrDefault(p => p.Id == playlistId);
+		var playlist = playlists.FirstOrDefault(p => p.Id == playlistId);
+
+		if (playlist is null)
+		{
+			throw new NullReferenceException(nameof(playlist));
+		}
 
 		if (getTracks)
 		{
 			var tracks = await _controllerApiTrack.GetPlaylistTracksFromApi(playlistId);
+			playlist.Tracks = [.. tracks];
 		}
 
 		return playlist;

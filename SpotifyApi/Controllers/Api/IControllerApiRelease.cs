@@ -5,5 +5,5 @@ namespace JakubKastner.SpotifyApi.Controllers.Api;
 
 public interface IControllerApiRelease
 {
-	Task<ISet<SpotifyAlbum>> GetArtistReleasesFromApi(string artistId, SpotifyEnums.ReleaseType releaseType);
+	Task<ISet<SpotifyRelease>> GetArtistReleasesFromApi(string artistId, SpotifyEnums.ReleaseType releaseType);
 }
