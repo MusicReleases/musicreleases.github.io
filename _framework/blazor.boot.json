@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MusicReleases",
   "resources": {
-    "hash": "sha256-59OYnZRtAQfw/1lDdqEnmMSAvh7CznDNMBSrJm6dvO4=",
+    "hash": "sha256-GJW31m3DqXUZ76Fq87RENLCl3YLTG5V2tACqC9xke70=",
     "jsModuleNative": {
       "dotnet.native.8.0.1.8324hx5xdp.js": "sha256-wzIS7ObQJdZqw7DfcflEEscAN6PbmbhryidcpHzuCps="
     },
@@ -37,9 +37,9 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-ua1wkm/TaUVHLRtctUs/Y1edQGwgGt4ABa/len7PZng=",
       "Microsoft.JSInterop.wasm": "sha256-SP3iQL8PA4iWdn8cngqX+g3gT91WXPbGX5bUlbYKhrk=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-CQVLCKiSxLN5ghyJZG3mhnMGRROdqrbNUjtAXB0nWb8=",
-      "MusicReleases.wasm": "sha256-vY+s3NYXQi3rTItZdp5K+2/8lOCO/7QwUX6ZhllcJCg=",
+      "MusicReleases.wasm": "sha256-bYRhMcoIB3iHoaA6WMDFrtUSabTSxUGsVxV72QUg54I=",
       "Newtonsoft.Json.wasm": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
-      "SpotifyApi.wasm": "sha256-SZyBpMKdwdzbTMf2b7RXQR68pAGjSyJaM14cU4+m+yg=",
+      "SpotifyApi.wasm": "sha256-rhtlkxLYNCtwolB2Fet6IcrtX5tkr2IWzZ2PB88lnwg=",
       "SpotifyAPI.Web.wasm": "sha256-o6WMMRVXu/y+0eYtoKF0DMiIQRT3dTZEM3BzLYArCs8=",
       "System.Collections.Concurrent.wasm": "sha256-y1TLCGXqtF8FHHCOynmkZCukOOtgJmYJL3jU4J1a4aw=",
       "System.Collections.NonGeneric.wasm": "sha256-bfTmKrqlk+CtUFKW05V5W0uJI4zVpkOR/PiexFbe7IM=",
@@ -74,7 +74,7 @@
       "System.Runtime.Numerics.wasm": "sha256-CGT33vbBBRejo3zbYU5HN9QvlAC52JyE736UH5ZI788=",
       "System.Runtime.Serialization.Formatters.wasm": "sha256-b41mIx/XiAmFgDGQR/tmOK0GD+R3knzngFJkQp4HHRk=",
       "System.Runtime.Serialization.Primitives.wasm": "sha256-i1/7voqniQOcQV2kxO7hwltB1LoalRJwlOWq8tQs4Mo=",
-      "System.Runtime.wasm": "sha256-dNDxKztkhByYnD0pGV8v8ubjpfzQZNTrrJ2s8AVySWA=",
+      "System.Runtime.wasm": "sha256-VCgzzhlXkOM49NfEWFAq6pKnCdY4jyrT/AuFs1Gqqw4=",
       "System.Security.Cryptography.wasm": "sha256-tBU9qIIe8z6BkHA2BV5LzRyE0HYcDlXDVcS+kO3IC40=",
       "System.Text.Encoding.Extensions.wasm": "sha256-y2shZ14COcHKyv6w6G8FWOeYGAsqmfffUV+VHdnnGlA=",
       "System.Text.Encodings.Web.wasm": "sha256-3ECwl3KCCs2yYp9crvnKqO8vGfiFUPgPD2gQF8CDAbg=",
