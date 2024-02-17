@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
+﻿using JakubKastner.MusicReleases.Controllers.ApiControllers;
+using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 using JakubKastner.MusicReleases.Controllers.BaseControllers;
 
 namespace JakubKastner.MusicReleases;
@@ -12,9 +13,9 @@ public static class ServiceCollectionExtensions
 	{
 		// base controllers
 		services.AddScoped<ILoginController, LoginController>();
-		services.AddScoped<IServiceTypeController, ServiceTypeController>();
 
 		// spotify controllers
+		services.AddScoped<IBaseLoginController, SpotifyLoginController>();
 		services.AddScoped<ISpotifyLoginController, SpotifyLoginController>();
 		services.AddScoped<ISpotifyLoginStorageController, SpotifyLoginStorageController>();
 

@@ -12,22 +12,21 @@ public partial class MenuArtists
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		var serviceType = _serviceTypeController.GetRequired();
 
-		if (serviceType != Enums.ServiceType.Spotify)
+		if (!_baseLoginController.IsUserLoggedIn())
 		{
 			return;
 		}
 
-		if (!_spotifyControllerUser.IsLoggedIn())
-		{
-			return;
-		}
+		var serviceType = _baseLoginController.GetServiceType();
 
-		if (_stateSpotifyArtists.Value.Initialized == false)
+		if (serviceType == Enums.ServiceType.Spotify)
 		{
-			LoadArtists();
-			_dispatcher.Dispatch(new SpotifyArtistsActionInitialized());
+			if (_stateSpotifyArtists.Value.Initialized == false)
+			{
+				LoadArtists();
+				_dispatcher.Dispatch(new SpotifyArtistsActionInitialized());
+			}
 		}
 	}
 

@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 
-namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
-
-public interface ISpotifyLoginController
+public interface ISpotifyLoginController : IBaseLoginController
 {
-	Task<bool> IsUserSaved();
-	Task LoginUser();
-	Task SetUser(StringValues code);
 }

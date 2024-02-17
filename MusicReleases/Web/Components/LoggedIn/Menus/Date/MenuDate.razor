@@ -1,6 +1,7 @@
 ﻿@using Fluxor;
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Base;
+@using JakubKastner.MusicReleases.Controllers.ApiControllers
 @using JakubKastner.MusicReleases.Controllers.BaseControllers;
 @using JakubKastner.MusicReleases.Store.LoaderStore;
 @using JakubKastner.SpotifyApi.Controllers;
@@ -12,7 +13,7 @@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases;
 @inject ISpotifyControllerUser _spotifyControllerUser;
 @inject ISpotifyControllerArtist _spotifyControllerArtist;
-@inject IServiceTypeController _serviceTypeController;
+@inject IBaseLoginController _baseLoginController;
 
 <div class="menu date items scroll buttons-rounded-m">
 	@*@if (_stateSpotifyReleases.Value.Loaded)

@@ -2,6 +2,7 @@
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Base;
 @using JakubKastner.MusicReleases;
+@using JakubKastner.MusicReleases.Controllers.ApiControllers
 @using JakubKastner.MusicReleases.Controllers.BaseControllers;
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 @using JakubKastner.MusicReleases.Store.LoaderStore;
@@ -13,10 +14,10 @@
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
 @inject ISpotifyControllerUser _spotifyControllerUser;
-@inject IServiceTypeController _serviceTypeController;
+@inject IBaseLoginController _baseLoginController;
 
 <div class="menu playlists items scroll buttons-rounded-m">
-	@if (!_spotifyControllerUser.IsLoggedIn())
+	@if (!_baseLoginController.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
 		<button @onclick=LoadPlaylists>

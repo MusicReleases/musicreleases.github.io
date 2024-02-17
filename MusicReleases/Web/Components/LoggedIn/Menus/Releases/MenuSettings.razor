@@ -1,4 +1,7 @@
-﻿<div class="user icon-text">
+﻿@using JakubKastner.MusicReleases.Controllers.BaseControllers
+@inject ILoginController _loginController;
+
+<div class="user icon-text">
     <button class="player skrejto" title="Show player">
         <i class="fas fa-play-circle" aria-hidden="true"></i>
     </button>
@@ -6,8 +9,10 @@
         <i class="fas fa-wrench" aria-hidden="true"></i>
         <span>Settings</span>
     </button>
-    <button class="logout" title="Logout">
+
+    <button class="logout" title="Logout" @onclick="LogoutUser">
         <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
         <span>Logout</span>
     </button>
+
 </div>

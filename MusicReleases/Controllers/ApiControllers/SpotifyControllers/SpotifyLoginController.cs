@@ -2,6 +2,7 @@
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Primitives;
+using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 
@@ -10,6 +11,11 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 	private readonly ISpotifyLoginStorageController _spotifyLoginStorageController = spotifyLoginStorageController;
 	private readonly NavigationManager _navManager = navManager;
+
+	public ServiceType GetServiceType()
+	{
+		return ServiceType.Spotify;
+	}
 
 	public async Task<bool> IsUserSaved()
 	{
@@ -57,8 +63,6 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 
 		await _spotifyLoginStorageController.SaveLoginVerifier(loginVerifier);
 		_navManager.NavigateTo(loginUrl.AbsoluteUri);
-
-		return;
 	}
 
 	public async Task SetUser(StringValues code)
@@ -106,6 +110,12 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 		return true;
 	}
 
+	public bool IsUserLoggedIn()
+	{
+		var userLoggedIn = _spotifyControllerUser.IsLoggedIn();
+		return userLoggedIn;
+	}
+
 	private async Task SetUserFromUrl(StringValues code)
 	{
 		if (_spotifyControllerUser.IsLoggedIn())
@@ -124,5 +134,13 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 
 		var codeString = code.ToString();
 		var userLogged = await _spotifyControllerUser.LoginUser(codeString, loginVerifier, baseUrl + "login/spotify");
+	}
+
+	public async Task LogoutUser()
+	{
+		// remove user
+		await _spotifyLoginStorageController.DeleteSavedUser();
+
+		_navManager.NavigateTo(_navManager.BaseUri);
 	}
 }

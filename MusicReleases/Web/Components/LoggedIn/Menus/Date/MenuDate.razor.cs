@@ -10,13 +10,16 @@ public partial class MenuDate
 	{
 		base.OnInitialized();
 
-		var serviceType = _serviceTypeController.GetRequired();
+		if (!_baseLoginController.IsUserLoggedIn())
+		{
+			return;
+		}
+
+		var serviceType = _baseLoginController.GetServiceType();
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
 			// TODO show loader
 			// display playlists
-			if (!_spotifyControllerUser.IsLoggedIn()) return;
-
 			//_artists = await _spotifyControllerArtist.GetUserFollowedArtists();
 		}
 	}

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
-using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Layouts;
 
@@ -16,6 +15,6 @@ public partial class LayoutLoadingLogin
 		{
 			return;
 		}
-		await _loginController.SetUser(ServiceType.Spotify, code);
+		await _loginController.SetUser(code);
 	}
 }

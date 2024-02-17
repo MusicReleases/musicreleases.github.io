@@ -1,58 +1,39 @@
-﻿using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
+﻿using JakubKastner.MusicReleases.Controllers.ApiControllers;
 using Microsoft.Extensions.Primitives;
-using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.BaseControllers;
-public class LoginController(ISpotifyLoginController spotifyLoginController, IServiceTypeController serviceTypeController) : ILoginController
+public class LoginController(IBaseLoginController baseLoginController) : ILoginController
 {
-	private readonly ISpotifyLoginController _spotifyLoginController = spotifyLoginController;
-	private readonly IServiceTypeController _serviceTypeController = serviceTypeController;
+	private readonly IBaseLoginController _baseLoginController = baseLoginController;
 
-	public async Task LoginUser(ServiceType serviceType)
+	public async Task LoginUser()
 	{
-		_serviceTypeController.Set(serviceType);
-
-		switch (serviceType)
-		{
-			case ServiceType.Spotify:
-				await _spotifyLoginController.LoginUser();
-				break;
-			default:
-				throw new Exception("Unsupported service.");
-		}
+		await _baseLoginController.LoginUser();
 	}
 
-	public async Task AutoLoginUser(ServiceType serviceType)
+	public async Task AutoLoginUser()
 	{
-		var savedUser = await IsUserSaved(serviceType);
+		var savedUser = await IsUserSaved();
 		if (!savedUser)
 		{
 			return;
 		}
-
-		_serviceTypeController.Set(serviceType);
-		await LoginUser(serviceType);
+		await LoginUser();
 	}
 
-	public async Task SetUser(ServiceType serviceType, StringValues code)
+	public async Task SetUser(StringValues code)
 	{
-		_serviceTypeController.Set(serviceType);
-		switch (serviceType)
-		{
-			case ServiceType.Spotify:
-				await _spotifyLoginController.SetUser(code);
-				break;
-			default:
-				throw new Exception("Unsupported service.");
-		}
+		await _baseLoginController.SetUser(code);
 	}
 
-	public async Task<bool> IsUserSaved(ServiceType serviceType)
+	public async Task<bool> IsUserSaved()
 	{
-		return serviceType switch
-		{
-			ServiceType.Spotify => await _spotifyLoginController.IsUserSaved(),
-			_ => throw new Exception("Unsupported service."),
-		};
+		return await _baseLoginController.IsUserSaved();
+	}
+
+	public async Task LogoutUser()
+	{
+		// TODO stop all running api calls
+		await _baseLoginController.LogoutUser();
 	}
 }

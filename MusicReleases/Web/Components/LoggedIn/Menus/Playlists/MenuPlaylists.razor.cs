@@ -5,32 +5,34 @@ using JakubKastner.SpotifyApi.Objects;
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 public partial class MenuPlaylists
 {
-    private SortedSet<SpotifyPlaylist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
-    private bool _loading => _stateSpotifyPlaylists.Value.Loading;
+	private SortedSet<SpotifyPlaylist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
+	private bool _loading => _stateSpotifyPlaylists.Value.Loading;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        var serviceType = _serviceTypeController.GetRequired();
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
 
-        if (serviceType == Enums.ServiceType.Spotify)
-        {
+		var userLoggedIn = _baseLoginController.IsUserLoggedIn();
 
-            if (!_spotifyControllerUser.IsLoggedIn())
-            {
-                return;
-            }
+		if (!userLoggedIn)
+		{
+			return;
+		}
 
-            if (_stateSpotifyPlaylists.Value.Initialized == false)
-            {
-                LoadPlaylists();
-                _dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
-            }
-        }
-    }
+		var serviceType = _baseLoginController.GetServiceType();
 
-    private void LoadPlaylists()
-    {
-        _dispatcher.Dispatch(new SpotifyPlaylistsActionLoad());
-    }
+		if (serviceType == Enums.ServiceType.Spotify)
+		{
+			if (_stateSpotifyPlaylists.Value.Initialized == false)
+			{
+				LoadPlaylists();
+				_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
+			}
+		}
+	}
+
+	private void LoadPlaylists()
+	{
+		_dispatcher.Dispatch(new SpotifyPlaylistsActionLoad());
+	}
 }
