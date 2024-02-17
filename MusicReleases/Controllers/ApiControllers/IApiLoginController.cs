@@ -3,7 +3,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.ApiControllers;
 
-public interface IBaseLoginController
+public interface IApiLoginController
 {
 	Task<bool> IsUserSaved();
 	bool IsUserLoggedIn();

@@ -1,5 +1,5 @@
 ﻿namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 
-public interface ISpotifyLoginController : IBaseLoginController
+public interface ISpotifyLoginController : IApiLoginController
 {
 }

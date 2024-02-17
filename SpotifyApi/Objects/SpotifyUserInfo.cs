@@ -7,6 +7,7 @@ public class SpotifyUserInfo
 	public string? Id { get; set; }
 	public string? Name { get; set; }
 	public string? Country { get; set; }
+	public Image? ProfilePicture { get; set; }
 
 	public SpotifyUserInfo() { }
 
@@ -15,5 +16,6 @@ public class SpotifyUserInfo
 		Id = userApi.Id;
 		Name = userApi.DisplayName;
 		Country = userApi.Country;
+		ProfilePicture = userApi.Images?.FirstOrDefault();
 	}
 }

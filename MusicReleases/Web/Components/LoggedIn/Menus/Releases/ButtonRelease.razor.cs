@@ -6,20 +6,22 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 
 public partial class ButtonRelease
 {
-    [Parameter, EditorRequired]
-    public ReleaseType ReleaseType { get; set; }
+	[Parameter, EditorRequired]
+	public ReleaseType ReleaseType { get; set; }
 
-    private string? _releaseType;
-    private string? _icon;
+	private string? _releaseType;
+	private string? _icon;
 
-    protected override void OnInitialized()
-    {
-        _releaseType = ReleaseType.ToString();
-        _icon = Icons.GetIconForRelease(ReleaseType);
-    }
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
 
-    private void DisplayReleases()
-    {
-        _navManager.NavigateTo("releases/" + _releaseType?.ToLower());
-    }
+		_releaseType = ReleaseType.ToString();
+		_icon = Icons.GetIconForRelease(ReleaseType);
+	}
+
+	private void DisplayReleases()
+	{
+		_navManager.NavigateTo("releases/" + _releaseType?.ToLower());
+	}
 }

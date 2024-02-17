@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Controllers.BaseControllers;
-public class LoginController(IBaseLoginController baseLoginController) : ILoginController
+public class LoginController(IApiLoginController baseLoginController) : ILoginController
 {
-	private readonly IBaseLoginController _baseLoginController = baseLoginController;
+	private readonly IApiLoginController _apiLoginController = baseLoginController;
 
 	public async Task LoginUser()
 	{
-		await _baseLoginController.LoginUser();
+		await _apiLoginController.LoginUser();
 	}
 
 	public async Task AutoLoginUser()
@@ -23,17 +23,17 @@ public class LoginController(IBaseLoginController baseLoginController) : ILoginC
 
 	public async Task SetUser(StringValues code)
 	{
-		await _baseLoginController.SetUser(code);
+		await _apiLoginController.SetUser(code);
 	}
 
 	public async Task<bool> IsUserSaved()
 	{
-		return await _baseLoginController.IsUserSaved();
+		return await _apiLoginController.IsUserSaved();
 	}
 
 	public async Task LogoutUser()
 	{
 		// TODO stop all running api calls
-		await _baseLoginController.LogoutUser();
+		await _apiLoginController.LogoutUser();
 	}
 }

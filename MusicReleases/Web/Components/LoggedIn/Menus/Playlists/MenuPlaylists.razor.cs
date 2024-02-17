@@ -12,14 +12,14 @@ public partial class MenuPlaylists
 	{
 		base.OnInitialized();
 
-		var userLoggedIn = _baseLoginController.IsUserLoggedIn();
+		var userLoggedIn = _apiLoginController.IsUserLoggedIn();
 
 		if (!userLoggedIn)
 		{
 			return;
 		}
 
-		var serviceType = _baseLoginController.GetServiceType();
+		var serviceType = _apiLoginController.GetServiceType();
 
 		if (serviceType == Enums.ServiceType.Spotify)
 		{

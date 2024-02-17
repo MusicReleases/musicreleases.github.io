@@ -10,12 +10,12 @@ public partial class MenuDate
 	{
 		base.OnInitialized();
 
-		if (!_baseLoginController.IsUserLoggedIn())
+		if (!_apiLoginController.IsUserLoggedIn())
 		{
 			return;
 		}
 
-		var serviceType = _baseLoginController.GetServiceType();
+		var serviceType = _apiLoginController.GetServiceType();
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
 			// TODO show loader

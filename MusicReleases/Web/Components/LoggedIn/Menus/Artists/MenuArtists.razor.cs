@@ -13,12 +13,12 @@ public partial class MenuArtists
 	{
 		base.OnInitialized();
 
-		if (!_baseLoginController.IsUserLoggedIn())
+		if (!_apiLoginController.IsUserLoggedIn())
 		{
 			return;
 		}
 
-		var serviceType = _baseLoginController.GetServiceType();
+		var serviceType = _apiLoginController.GetServiceType();
 
 		if (serviceType == Enums.ServiceType.Spotify)
 		{

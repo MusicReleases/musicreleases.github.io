@@ -13,7 +13,7 @@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases;
 @inject ISpotifyControllerUser _spotifyControllerUser;
 @inject ISpotifyControllerArtist _spotifyControllerArtist;
-@inject IBaseLoginController _baseLoginController;
+@inject IApiLoginController _apiLoginController;
 
 <div class="menu date items scroll buttons-rounded-m">
 	@*@if (_stateSpotifyReleases.Value.Loaded)

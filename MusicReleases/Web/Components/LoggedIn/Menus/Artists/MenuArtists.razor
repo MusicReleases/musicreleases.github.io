@@ -12,10 +12,10 @@
 @inject IDispatcher _dispatcher;
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists;
 @inject ISpotifyControllerUser _spotifyControllerUser;
-@inject IBaseLoginController _baseLoginController;
+@inject IApiLoginController _apiLoginController;
 
 <div class="menu artists items scroll buttons-rounded-m">
-	@if (!_baseLoginController.IsUserLoggedIn())
+	@if (!_apiLoginController.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
 		<button @onclick=LoadArtists>
