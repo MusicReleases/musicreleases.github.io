@@ -3,6 +3,7 @@
 
 @using Fluxor
 @using Fluxor.Blazor.Web.Components
+@using JakubKastner.MusicReleases.Controllers.ApiControllers
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
 @using JakubKastner.MusicReleases.Store.LoaderStore
@@ -19,13 +20,13 @@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists
 @inject NavigationManager _navManager
-@inject ISpotifyControllerUser _spotifyControllerUser
+@inject IApiLoginController _apiLoginController
 
 <button type="button" @onclick="SaveToStorage">
 	save
 </button>
 
-@if (!_spotifyControllerUser.IsLoggedIn())
+@if (!_apiLoginController.IsUserLoggedIn())
 {
 	<p>User not logged in</p>
 	<button @onclick=LoadReleases>Update</button>

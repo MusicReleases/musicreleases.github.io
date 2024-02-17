@@ -1,15 +1,16 @@
-﻿@using JakubKastner.SpotifyApi.Controllers
+﻿@using JakubKastner.MusicReleases.Controllers.ApiControllers
+@using JakubKastner.SpotifyApi.Controllers
 
 @inherits LayoutComponentBase;
 
-@inject ISpotifyControllerUser _spotifyControllerUser;
+@inject IApiLoginController _apiLoginController;
 @inject NavigationManager _navManager;
 
 @* main layout - user is sucessfully logged in *@
 
 <div class="body classic hide-player">
 
-	@if (!_spotifyControllerUser.IsLoggedIn())
+	@if (!_apiLoginController.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
 	}

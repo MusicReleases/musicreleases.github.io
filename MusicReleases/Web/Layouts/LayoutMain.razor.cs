@@ -6,7 +6,7 @@ public partial class LayoutMain
 	{
 		base.OnInitialized();
 
-		if (!_spotifyControllerUser.IsLoggedIn())
+		if (!_apiLoginController.IsUserLoggedIn())
 		{
 			_navManager.NavigateTo("");
 			return;
