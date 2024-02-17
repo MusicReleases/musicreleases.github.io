@@ -25,7 +25,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-pT9Gh9rGNmGJ3KvD6jSXOT+hijNbJx7gyX+V1ThlUBU=",
+      "hash": "sha256-06Lfm+ly7zH5Rd+48GqjmYIgNdowVx6fCiwyz5aY+ps=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -117,7 +117,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-\/m7piv22yPVoihoDVMtteDbYjiuabg7lWnuV5+CkAgU=",
+      "hash": "sha256-uf7TkUNF3GLAV7ne5zgETvFMfeW1cdr7E7o1Lf7tZAc=",
       "url": "_framework\/MusicReleases.wasm"
     },
     {
@@ -125,7 +125,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-iwvrKu8tAeir1J8\/Gl8+SvJ0oIRXdnU1XRC5OlGutoE=",
+      "hash": "sha256-ELY5WFiMD6l3ySaIoMpfIE+APrGwnx8xLjIT5mHK5fk=",
       "url": "_framework\/SpotifyApi.wasm"
     },
     {
@@ -601,5 +601,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "+3XzyIc8"
+  "version": "Xok6rTD\/"
 };
