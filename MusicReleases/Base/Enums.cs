@@ -50,4 +50,14 @@ public static class Enums
 
 		return prefix + separator + key;
 	}
+
+	public static string GetLocalStorageKeyReleases(ServiceType serviceType, ReleasesFilters releaseFilters)
+	{
+		var prefix = serviceType.ToString();
+		var prefix2 = "filter";
+		var key = releaseFilters.ToString();
+		var separator = "_";
+
+		return prefix + separator + prefix2 + separator + key;
+	}
 }
