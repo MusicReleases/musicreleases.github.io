@@ -1,2 +1,20 @@
 ﻿@page "/"
+@using JakubKastner.MusicReleases.Controllers.BaseControllers
 @layout LayoutLogin
+
+
+@inherits LayoutComponentBase
+@inject ILoginController _loginController
+
+@* login user page (first) *@
+
+<h2>Login</h2>
+
+@if (_loading)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<Login></Login>
+}

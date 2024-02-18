@@ -1,7 +1,17 @@
 ﻿@page "/login/spotify"
-@layout LayoutLoadingLogin
-@inherits LayoutComponentBase;
+@layout LayoutLogin
+@inherits LayoutComponentBase
 
 @using JakubKastner.MusicReleases.Controllers.BaseControllers;
 @inject ILoginController _loginController;
 @inject NavigationManager _navManager;
+
+@if (_loading)
+{
+	<p>Loggin in user...</p>
+}
+else if (_error)
+{
+	<p>Login failed, try again:</p>
+	<Login></Login>
+}

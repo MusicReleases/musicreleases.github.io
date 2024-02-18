@@ -18,22 +18,9 @@ public partial class Releases
 	private SortedSet<SpotifyRelease>? _releases => _stateSpotifyReleases.Value.Releases;
 	private bool _loading => _stateSpotifyReleases.Value.Loading;
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-
-		if (!_apiLoginController.IsUserLoggedIn())
-		{
-			_navManager.NavigateTo("");
-			return;
-		}
-
-		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
-		//GetParameter();
-	}
-
 	protected override void OnParametersSet()
 	{
+		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
 		LoadReleases();
 	}
 

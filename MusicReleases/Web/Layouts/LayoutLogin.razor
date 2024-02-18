@@ -5,25 +5,12 @@
 @* login user page (first) *@
 
 <div class="body classic hide-player">
-	@if (_isUserSaved)
-	{
-		<p>Loading...</p>
-	}
-	else
-	{
-		<div class="header secondary hide-mobile">
-			<Logo></Logo>
+	<div class="header secondary hide-mobile">
+		<Logo></Logo>
+	</div>
+	<div class="main">
+		<div class="login">
+			@Body
 		</div>
-		<div class="main">
-			<div class="login">
-				<h2>Login</h2>
-				@foreach (var serviceType in Enum.GetValues<Enums.ServiceType>())
-				{
-					<div class="login list icon-text buttons-rounded-xl">
-						<Login Type=@serviceType></Login>
-					</div>
-				}
-			</div>
-		</div>
-	}
+	</div>
 </div>

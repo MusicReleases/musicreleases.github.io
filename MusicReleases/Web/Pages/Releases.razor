@@ -26,34 +26,26 @@
 	save
 </button>
 
-@if (!_apiLoginController.IsUserLoggedIn())
+@if (_loading || _releases is null)
 {
-	<p>User not logged in</p>
+	<p>Loading releases...</p>
+}
+else if (_releases.Count < 1)
+{
+	<p>0 releases</p>
 	<button @onclick=LoadReleases>Update</button>
 }
 else
 {
-	@if (_loading || _releases == null)
-	{
-		<p>Loading releases...</p>
-	}
-	else if (_releases.Count < 1)
-	{
-		<p>0 releases</p>
-		<button @onclick=LoadReleases>Update</button>
-	}
-	else
-	{
-		<div class="releases boxes">
+	<div class="releases boxes">
 
-			<InfiniteScrolling ItemsProvider="GetReleases">
-				<ItemTemplate Context="release">
-					<Release SpotifyRelease="@release" />
-				</ItemTemplate>
-				<LoadingTemplate>
-					<div>Loading more @Type...</div>
-				</LoadingTemplate>
-			</InfiniteScrolling>
-		</div>
-	}
+		<InfiniteScrolling ItemsProvider="GetReleases">
+			<ItemTemplate Context="release">
+				<Release SpotifyRelease="@release" />
+			</ItemTemplate>
+			<LoadingTemplate>
+				<div>Loading more @Type...</div>
+			</LoadingTemplate>
+		</InfiniteScrolling>
+	</div>
 }

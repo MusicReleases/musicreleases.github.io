@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Controllers.BaseControllers;
-public class LoginController(IApiLoginController baseLoginController) : ILoginController
+public class LoginController(IApiLoginController apiLoginController) : ILoginController
 {
-	private readonly IApiLoginController _apiLoginController = baseLoginController;
+	private readonly IApiLoginController _apiLoginController = apiLoginController;
 
 	public async Task LoginUser()
 	{
