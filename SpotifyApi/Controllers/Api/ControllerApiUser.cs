@@ -44,4 +44,11 @@ public class ControllerApiUser(ISpotifyApiClient client) : IControllerApiUser
 		var user = new SpotifyUser(userApi, credentials);
 		return user;
 	}
+
+	public async Task<SpotifyUserInfo> GetLoggedInUserInfo()
+	{
+		var userApi = await GetLoggedInUser();
+		var userInfo = new SpotifyUserInfo(userApi);
+		return userInfo;
+	}
 }

@@ -37,9 +37,11 @@ public class SpotifyLoginStorageController(ISpotifyControllerUser spotifyControl
 		{
 			return null;
 		}
+
 		var user = new SpotifyUser(info, credentials);
 		return user;
 	}
+
 
 	public async Task DeleteSavedUser()
 	{

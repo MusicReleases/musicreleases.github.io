@@ -53,6 +53,15 @@ public class SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser 
 		var refreshToken = await _client.RefreshClient(user.Credentials!.RefreshToken!);
 
 		user.Credentials.RefreshToken = refreshToken;
+
+
+		var lastUpdate = DateTime.Now - user.Info!.LastUpdate;
+		if (lastUpdate.Days > 0)
+		{
+			// update userinfo every day
+			user.Info = await _controllerApiUser.GetLoggedInUserInfo();
+		}
+
 		_user = user;
 	}
 
