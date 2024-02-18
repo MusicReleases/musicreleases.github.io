@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MusicReleases",
   "resources": {
-    "hash": "sha256-owlkGXopxwAo25DpfjEj+d55FsvscS7NGjkWJINngi4=",
+    "hash": "sha256-hbSatu1XMo18bqfwwpF0FMClmf0V4NX0trSuwrWSadY=",
     "jsModuleNative": {
       "dotnet.native.8.0.2.8324hx5xdp.js": "sha256-1ujnIkyQhOzbiRlzB5UFgZEsfsWTEIZ9jLXiE7j5kzg="
     },
@@ -37,9 +37,9 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-ua1wkm/TaUVHLRtctUs/Y1edQGwgGt4ABa/len7PZng=",
       "Microsoft.JSInterop.wasm": "sha256-SP3iQL8PA4iWdn8cngqX+g3gT91WXPbGX5bUlbYKhrk=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-CQVLCKiSxLN5ghyJZG3mhnMGRROdqrbNUjtAXB0nWb8=",
-      "MusicReleases.wasm": "sha256-smvT46F4an09Gx1MSN+HB4B/Y2heb15IRdJABZU31Gc=",
+      "MusicReleases.wasm": "sha256-WiTrb06ZvuRe/bC1RQ/gEufs2qZNOSw1exyLsj+RkO4=",
       "Newtonsoft.Json.wasm": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
-      "SpotifyApi.wasm": "sha256-5aYPOPK0wMnOcX1icYVWepNvkL/3dSbWpwtCllGdZcg=",
+      "SpotifyApi.wasm": "sha256-0boo/uIzAWX3vhWVNYJqtI6k/46f0Zr7VE3ph/D7EtE=",
       "SpotifyAPI.Web.wasm": "sha256-o6WMMRVXu/y+0eYtoKF0DMiIQRT3dTZEM3BzLYArCs8=",
       "System.Collections.Concurrent.wasm": "sha256-7whA1H6Ku61ouULDaD0leJk/b3gy6OhUPD8n/imBpEI=",
       "System.Collections.NonGeneric.wasm": "sha256-v3ECfNmy5lN1s3q0kPCtZZSfuU47P1ScCsHBsRBwVzA=",
