@@ -2,18 +2,23 @@
 
 <div class="release album box" data-release_type="album" data-release_id="@SpotifyRelease.Id">
 	<div class="info">
+
 		<img src="@SpotifyRelease.UrlImage" alt="Cover" class="cover">
+
 		@* target="_blank" *@
 		<a class="name icon-text" href="@SpotifyRelease.UrlApp" rel="noopener noreferrer">
 			@SpotifyRelease.Name
 		</a>
+
 		<ReleaseArtists ArtistsObj="SpotifyRelease.Artists" />
+
 		<p class="date icon-text">
 			<i class="fas fa-calendar-alt" aria-hidden="true"></i>
 			<button>
 				@SpotifyRelease.ReleaseDate
 			</button>
 		</p>
+
 		<p class="duration icon-text">
 			<i class="explicit fas fa-compact-disc" title="Album release" aria-hidden="true">
 				<span title="Explicit lyrics">E</span>
@@ -23,5 +28,6 @@
 			<span class="sr-only">New release</span>
 			<i class="far fa-clock" aria-hidden="true"></i>00:00:00
 		</p>
+
 	</div>
 </div>

@@ -4,6 +4,7 @@
 @using Fluxor
 @using Fluxor.Blazor.Web.Components
 @using JakubKastner.MusicReleases.Controllers.ApiControllers
+@using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
 @using JakubKastner.MusicReleases.Store.LoaderStore
@@ -16,9 +17,12 @@
 
 @inherits FluxorComponent;
 
-@inject IDispatcher _dispatcher
+@* @inject IDispatcher _dispatcher *@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases
-@inject IState<SpotifyArtistsState> _stateSpotifyArtists
+@* @inject IState<SpotifyArtistsState> _stateSpotifyArtists  *@
+
+@inject ISpotifyReleasesController _spotifyReleasesController
+
 @inject NavigationManager _navManager
 @inject IApiLoginController _apiLoginController
 

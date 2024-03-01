@@ -1,6 +1,4 @@
-﻿using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
-using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
-using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling;
+﻿using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
@@ -15,8 +13,8 @@ public partial class Releases
 	// TODO enable to select and display more than 1 release type
 	private ReleaseType _type;
 
-	private SortedSet<SpotifyRelease>? _releases => _stateSpotifyReleases.Value.Releases;
-	private bool _loading => _stateSpotifyReleases.Value.Loading;
+	private SortedSet<SpotifyRelease>? _releases => /*_spotifyReleasesController.Releases;*/ _stateSpotifyReleases.Value.Releases;
+	private bool _loading => /*_spotifyReleasesController.Loading; */ _stateSpotifyReleases.Value.Loading;
 
 	protected override void OnParametersSet()
 	{
@@ -50,16 +48,19 @@ public partial class Releases
 			_type = ReleaseType.Albums;
 		}
 
+		_spotifyReleasesController.LoadReleases(_type);
+
 		// TODO loading & loaded
 		/*if (_stateSpotifyReleases.Value.Initialized == false)
 		{*/
-		_dispatcher.Dispatch(new SpotifyReleasesActionLoad(_type));
-		_dispatcher.Dispatch(new SpotifyReleasesActionInitialized());
+		/*_dispatcher.Dispatch(new SpotifyReleasesActionLoad(_type));
+		_dispatcher.Dispatch(new SpotifyReleasesActionInitialized());*/
 		/*}*/
 	}
 
 	private void SaveToStorage()
 	{
-		_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
+		_spotifyReleasesController.SaveReleasesToStorage();
+		//_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
 	}
 }
