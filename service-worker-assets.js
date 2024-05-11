@@ -1,7 +1,7 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-k8NfwuwCCeOoFCP+4FuP9FeUzGyohHbIWvOxkXEPg\/w=",
+      "hash": "sha256-gvHfnndfEu1tRf0rFb5988rWq7ITIotOaE8+AMbKYbc=",
       "url": "_framework\/blazor.webassembly.js"
     },
     {
@@ -25,7 +25,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-xz125lajSwr0Vp1kc0gep89RHmnbfQJR0+\/M8q+Vo44=",
+      "hash": "sha256-b0eii\/tXdmV4zxBoBsdfYI1vo58ewgVBUSiStcv2e6o=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -53,19 +53,19 @@
       "url": "_framework\/Fluxor.wasm"
     },
     {
-      "hash": "sha256-6yhkRx6YuOzEY2Z2MIbVKGzBohVY3kJHU0kyHPCD4+8=",
+      "hash": "sha256-O7rP1+UmZ17MPjMqpGVVShk6JnPrdEXhJAmKsFMjYWI=",
       "url": "_framework\/Microsoft.AspNetCore.Components.wasm"
     },
     {
-      "hash": "sha256-0KisFlCQGsFQexOgjsJ2pZiu6mZAgVpvKoIM5ngHeD4=",
+      "hash": "sha256-o3dUFaYZ86Ri9\/f+gxNOJf4LxhqxORvIZM29feN1GHk=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.wasm"
     },
     {
-      "hash": "sha256-vOYUxJenhpqw4oK5b61FP\/mlyRZu3zgVemvtISW29fs=",
+      "hash": "sha256-1\/q8HCnkfx2cBfBoL7rb6O3Y7KIh1kZ4j9xG3A72XlU=",
       "url": "_framework\/Microsoft.AspNetCore.Components.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-yWfUzn3xxSKR4uiFqWC6PzGGG7C7GGSDlNJJ13fMNq4=",
+      "hash": "sha256-sWNlMAbA4Ayd6wmi7ojb3xO3xvK7ZIM3tFZ3zIbPaXQ=",
       "url": "_framework\/Microsoft.AspNetCore.WebUtilities.wasm"
     },
     {
@@ -85,7 +85,7 @@
       "url": "_framework\/Microsoft.Extensions.Configuration.wasm"
     },
     {
-      "hash": "sha256-uqdzVX1drbLWve9aO0\/XKf0\/U0ncA1J7nAFR6wvblJg=",
+      "hash": "sha256-iSebUAKNet0jzCmm2Mp\/jbjF1C2VYtudJ8Qqzm8SnY4=",
       "url": "_framework\/Microsoft.Extensions.DependencyInjection.Abstractions.wasm"
     },
     {
@@ -93,7 +93,7 @@
       "url": "_framework\/Microsoft.Extensions.DependencyInjection.wasm"
     },
     {
-      "hash": "sha256-x\/ani8NQOjvLtAq+Vig4UTcaBRMf6VOL+v+VfwaG3mA=",
+      "hash": "sha256-gvNu2mIT4I65cVraGtjRvly86BXv+RNvTeg6SrKeCuM=",
       "url": "_framework\/Microsoft.Extensions.Logging.Abstractions.wasm"
     },
     {
@@ -109,15 +109,15 @@
       "url": "_framework\/Microsoft.Extensions.Primitives.wasm"
     },
     {
-      "hash": "sha256-\/MTMX\/DsR1QOHVpwT2D2cxoE7e\/lR0Y6MEx+qKyQe6M=",
+      "hash": "sha256-BlVEya7d77f+wXLZ+CbwQLrwSv172GbNHfHkl5pZ+Ac=",
       "url": "_framework\/Microsoft.JSInterop.wasm"
     },
     {
-      "hash": "sha256-2qBJkLnOCr4py2S0peps0cFo0z3Ew9OVwGYodtvAVkk=",
+      "hash": "sha256-i8yLC1pzEZMAPAHK2MyunJW81S6Tpyvwka9LDZSylx8=",
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-6mju\/vgI5RGNbEoOYsNNKRTO\/+97aMumLk39XudwTbs=",
+      "hash": "sha256-eHbkxlIWHhKzXv4eJHzyOBFl2ES2g\/2LsARG5C41tGI=",
       "url": "_framework\/MusicReleases.wasm"
     },
     {
@@ -125,7 +125,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-tyj1XDeqdHzRNkmURPUXtE6J15ngjjHEmySoV7gAW0Q=",
+      "hash": "sha256-eyOBXbjHsV+MnEuDKBMi2R7gRD\/pEMEZB2MywwROM2c=",
       "url": "_framework\/SpotifyApi.wasm"
     },
     {
@@ -601,5 +601,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "SqSjkOo3"
+  "version": "PNj10SRL"
 };
