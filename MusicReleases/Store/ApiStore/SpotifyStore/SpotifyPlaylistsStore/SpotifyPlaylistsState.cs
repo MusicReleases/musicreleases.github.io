@@ -6,5 +6,5 @@ public record SpotifyPlaylistsState
 {
 	public bool Initialized { get; init; }
 	public bool Loading { get; init; }
-	public SortedSet<SpotifyPlaylist>? Playlists { get; init; }
+	public SpotifyUserList<SpotifyPlaylist>? Playlists { get; init; }
 }

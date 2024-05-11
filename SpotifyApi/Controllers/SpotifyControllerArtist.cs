@@ -12,7 +12,9 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 	public async Task<ISet<SpotifyArtist>> GetUserFollowedArtists()
 	{
 		var user = _controllerUser.GetUserRequired();
-		var artists = user.FollowedArtists ??= await _controllerApiArtist.GetUserFollowedArtistsFromApi();
+
+		user.FollowedArtists ??= new(await _controllerApiArtist.GetUserFollowedArtistsFromApi(), DateTime.Now);
+		var artists = user.FollowedArtists.List;
 
 		return artists;
 	}

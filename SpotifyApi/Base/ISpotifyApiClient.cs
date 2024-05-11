@@ -8,5 +8,5 @@ public interface ISpotifyApiClient
 	void SetClient(SpotifyClient spotifyClient);
 	void Init(string accessToken);
 	bool IsInicialized();
-	Task<string> RefreshClient(string refreshToken);
+	Task<string?> RefreshClient(string refreshToken);
 }

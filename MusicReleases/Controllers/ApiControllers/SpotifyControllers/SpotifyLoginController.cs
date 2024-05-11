@@ -105,6 +105,14 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 
 		// update access token
 		await _spotifyControllerUser.RefreshUser(spotifyUser);
+
+		if (!_spotifyControllerUser.IsLoggedIn())
+		{
+			// failed to refresh token
+			await LogoutUser();
+			return false;
+		}
+
 		await _spotifyLoginStorageController.SaveUser();
 
 		return true;

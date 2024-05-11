@@ -48,7 +48,8 @@ public partial class Releases
 			_type = ReleaseType.Albums;
 		}
 
-		_spotifyReleasesController.LoadReleases(_type);
+		// TODO 010324
+		//_spotifyReleasesController.LoadReleases(_type);
 
 		// TODO loading & loaded
 		/*if (_stateSpotifyReleases.Value.Initialized == false)

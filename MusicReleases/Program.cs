@@ -28,6 +28,9 @@ builder.Services.AddBlazoredLocalStorage(config =>
 builder.Services.AddFluxor(options =>
 {
 	options.ScanAssemblies(typeof(Program).Assembly);
+
+	// TODO
+	//options.AddMiddleware<TestMiddleware>();
 #if DEBUG
 	options.UseReduxDevTools();
 #endif

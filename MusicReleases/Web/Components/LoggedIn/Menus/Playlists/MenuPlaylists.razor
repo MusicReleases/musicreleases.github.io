@@ -3,6 +3,7 @@
 @using JakubKastner.MusicReleases.Base;
 @using JakubKastner.MusicReleases;
 @using JakubKastner.MusicReleases.Controllers.ApiControllers
+@using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
 @using JakubKastner.MusicReleases.Controllers.BaseControllers;
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 @using JakubKastner.MusicReleases.Store.LoaderStore;
@@ -11,37 +12,36 @@
 
 @inherits FluxorComponent;
 
-@inject IDispatcher _dispatcher;
 @inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
-@inject ISpotifyControllerUser _spotifyControllerUser;
 @inject IApiLoginController _apiLoginController;
+@inject ISpotifyPlaylistsController _spotifyPlaylistsController;
+
+@* @inject IDispatcher _dispatcher; *@
 
 <div class="menu playlists items scroll buttons-rounded-m">
 	@if (!_apiLoginController.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
-		<button @onclick=LoadPlaylists>
-			Update
-		</button>
 	}
 	else
 	{
-		@if (_loading || _playlists == null)
+		@if (_loading || _playlists?.List is not null)
 		{
 			<p>Loading playlists...</p>
 		}
-		else if (_playlists.Count < 1)
+		else if (_playlists!.List!.Count < 1)
 		{
 			<p>0 playlists</p>
-			<button @onclick=LoadPlaylists>
+			@* <button @onclick=LoadPlaylists>
 				Update
-			</button>
+			</button> *@
 		}
 		else
 		{
-			@foreach (var playlist in _playlists)
+			@foreach (var playlist in _playlists.List)
 			{
-				<ButtonPlaylist PlaylistId=@playlist.Id PlaylistName=@playlist.Name></ButtonPlaylist>
+				<ButtonPlaylist PlaylistId=@playlist.Id PlaylistName=@playlist.Name>
+				</ButtonPlaylist>
 			}
 		}
 	}

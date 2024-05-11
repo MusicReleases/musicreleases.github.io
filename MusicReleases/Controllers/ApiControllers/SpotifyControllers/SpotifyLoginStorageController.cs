@@ -55,7 +55,7 @@ public class SpotifyLoginStorageController(ISpotifyControllerUser spotifyControl
 		await _localStorage.SetItemAsync(_localStorageKeyVerifier, loginVerifier);
 	}
 
-	public async Task<string> GetLoginVerifier()
+	public async Task<string?> GetLoginVerifier()
 	{
 		var codeVerifier = await _localStorage.GetItemAsync<string>(_localStorageKeyVerifier);
 		return codeVerifier;

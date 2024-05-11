@@ -10,10 +10,16 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
 	// get list of user playlists
-	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylists(bool onlyEditable = false)
+	public async Task<SpotifyUserList<SpotifyPlaylist>> GetUserPlaylists(bool onlyEditable = false)
 	{
 		var user = _controllerUser.GetUserRequired();
-		var playlists = new SortedSet<SpotifyPlaylist>(user.Playlists ??= await _controllerApiPlaylist.GetUserPlaylistsFromApi());
+
+		if (user.Playlists?.List is null)
+		{
+			user.Playlists = new(await _controllerApiPlaylist.GetUserPlaylistsFromApi(), DateTime.Now);
+		}
+
+		var playlists = user.Playlists;
 
 		if (!onlyEditable)
 		{
@@ -21,7 +27,8 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 		}
 
 		// TODO settings
-		playlists = new(playlists.Where(p => p.CurrentUserOwned == true || p.Collaborative == true));
+		var editablePlaylists = playlists.List!.Where(p => p.CurrentUserOwned == true || p.Collaborative == true).ToHashSet();
+		playlists = new(editablePlaylists, playlists.LastUpdate);
 
 		return playlists;
 	}
@@ -31,7 +38,7 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 	{
 		var playlists = await GetUserPlaylists();
 
-		var playlist = playlists.FirstOrDefault(p => p.Id == playlistId);
+		var playlist = playlists.List.FirstOrDefault(p => p.Id == playlistId);
 
 		if (playlist is null)
 		{

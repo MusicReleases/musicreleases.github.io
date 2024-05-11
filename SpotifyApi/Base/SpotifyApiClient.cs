@@ -12,7 +12,9 @@ public class SpotifyApiClient : ISpotifyApiClient
 		{
 			throw new ArgumentNullException(nameof(accessToken));
 		}
-		_spotifyClient = new SpotifyClient(accessToken);
+
+		var client = new SpotifyClient(accessToken);
+		SetClient(client);
 	}
 
 	public void SetClient(SpotifyClient spotifyClient)
@@ -34,12 +36,21 @@ public class SpotifyApiClient : ISpotifyApiClient
 		return _spotifyClient!;
 	}
 
-	public async Task<string> RefreshClient(string refreshToken)
+	public async Task<string?> RefreshClient(string refreshToken)
 	{
 		// TODO app id to config file
 		const string appId = "67bbd538e581437597ae4574431682df";
 		var refreshRequest = new PKCETokenRefreshRequest(appId, refreshToken);
-		var newResponse = await new OAuthClient().RequestToken(refreshRequest);
+		PKCETokenResponse? newResponse;
+		try
+		{
+			newResponse = await new OAuthClient().RequestToken(refreshRequest);
+
+		}
+		catch (Exception)
+		{
+			return null;
+		}
 
 		var client = new SpotifyClient(newResponse.AccessToken);
 		SetClient(client);

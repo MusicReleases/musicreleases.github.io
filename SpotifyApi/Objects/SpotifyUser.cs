@@ -7,9 +7,9 @@ public class SpotifyUser
 	public SpotifyUserInfo? Info { get; set; }
 	public SpotifyUserCredentials? Credentials { get; set; }
 
-	public ISet<SpotifyPlaylist>? Playlists { get; set; }
-	public ISet<SpotifyArtist>? FollowedArtists { get; set; }
-	public ISet<SpotifyRelease> ReleasedAlbums { get; set; } = new SortedSet<SpotifyRelease>();
+	public SpotifyUserList<SpotifyPlaylist>? Playlists { get; set; }
+	public SpotifyUserList<SpotifyArtist>? FollowedArtists { get; set; }
+	public SpotifyUserList<SpotifyRelease>? ReleasedAlbums { get; set; }
 
 	public SpotifyUser() { }
 

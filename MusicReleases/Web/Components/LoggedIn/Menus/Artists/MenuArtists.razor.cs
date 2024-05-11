@@ -33,7 +33,8 @@ public partial class MenuArtists
 	private void LoadArtists()
 	{
 		// local storage
-		_dispatcher.Dispatch(new SpotifyArtistsActionStorageGet());
+		// TODO 010324
+		//_dispatcher.Dispatch(new SpotifyArtistsActionStorageGet());
 		/*if (_stateSpotifyArtists.Value.Artists?.Count < 1)
 			{
 			// spotify api
@@ -43,7 +44,8 @@ public partial class MenuArtists
 
 	private void LoadArtistsApi()
 	{
-		_dispatcher.Dispatch(new SpotifyArtistsActionLoad());
+		// TODO 010324
+		//_dispatcher.Dispatch(new SpotifyArtistsActionLoad());
 	}
 
 	private void Save()

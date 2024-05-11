@@ -51,9 +51,12 @@ public class SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser 
 	public async Task RefreshUser(SpotifyUser user)
 	{
 		var refreshToken = await _client.RefreshClient(user.Credentials!.RefreshToken!);
-
+		if (string.IsNullOrEmpty(refreshToken))
+		{
+			_user = null;
+			return;
+		}
 		user.Credentials.RefreshToken = refreshToken;
-
 
 		var lastUpdate = DateTime.Now - user.Info!.LastUpdate;
 		if (lastUpdate.Days > 0)

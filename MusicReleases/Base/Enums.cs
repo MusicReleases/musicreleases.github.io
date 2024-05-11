@@ -39,6 +39,7 @@ public static class Enums
 		UserInfo,
 		UserCredentials,
 		LoginVerifier,
+		UserPlaylists,
 	}
 
 

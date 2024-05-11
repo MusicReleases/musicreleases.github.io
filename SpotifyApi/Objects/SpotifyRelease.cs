@@ -3,10 +3,8 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyRelease : IComparable
+public class SpotifyRelease : SpotifyIdObject
 {
-	public string Id { get; private set; }
-	public string Name { get; private set; }
 	public string ReleaseDate { get; private set; }
 	public int TotalTracks { get; private set; }
 
@@ -25,10 +23,8 @@ public class SpotifyRelease : IComparable
 	// TODO artists - GetArtists
 	// TODO images (0), default
 
-	public SpotifyRelease(SimpleAlbum simpleAlbum, ReleaseType releaseType)
+	public SpotifyRelease(SimpleAlbum simpleAlbum, ReleaseType releaseType) : base(simpleAlbum.Id, simpleAlbum.Name)
 	{
-		Id = simpleAlbum.Id;
-		Name = simpleAlbum.Name;
 		ReleaseDate = simpleAlbum.ReleaseDate;
 		TotalTracks = simpleAlbum.TotalTracks;
 		Images = simpleAlbum.Images;
@@ -46,10 +42,8 @@ public class SpotifyRelease : IComparable
 		ReleaseType = releaseType;
 	}
 
-	public SpotifyRelease(FullAlbum fullAlbum, ReleaseType releaseType)
+	public SpotifyRelease(FullAlbum fullAlbum, ReleaseType releaseType) : base(fullAlbum.Id, fullAlbum.Name)
 	{
-		Id = fullAlbum.Id;
-		Name = fullAlbum.Name;
 		ReleaseDate = fullAlbum.ReleaseDate;
 		TotalTracks = fullAlbum.TotalTracks;
 		Images = fullAlbum.Images;
@@ -67,10 +61,8 @@ public class SpotifyRelease : IComparable
 		ReleaseType = releaseType;
 	}
 
-	public SpotifyRelease(SimpleShow simpleShow)
+	public SpotifyRelease(SimpleShow simpleShow) : base(simpleShow.Id, simpleShow.Name)
 	{
-		Id = simpleShow.Id;
-		Name = simpleShow.Name;
 		ReleaseDate = "0";
 		TotalTracks = 1;
 		Images = simpleShow.Images;
@@ -89,43 +81,5 @@ public class SpotifyRelease : IComparable
 			new(id: "0", name: simpleShow.Publisher)
 		];
 		ReleaseType = ReleaseType.Podcasts;
-	}
-
-	public int CompareTo(object? obj)
-	{
-		if (obj == null)
-		{
-			return -1;
-		}
-
-		var other = (SpotifyRelease)obj;
-		var releaseDateComparison = -ReleaseDate.CompareTo(other.ReleaseDate);
-
-		return (releaseDateComparison != 0) ? releaseDateComparison : Name.CompareTo(other.Name);
-	}
-
-	public override bool Equals(object? obj)
-	{
-		if (obj == null)
-		{
-			return this == null;
-		}
-
-		var other = (SpotifyRelease)obj;
-		var idEquals = string.Equals(Id, other.Id);
-		if (idEquals)
-		{
-			return true;
-		}
-
-		return false;
-		// TODO equals name and artists (and mark explicit)
-		/*var nameEquals = string.Equals(Name, other.Name) && other.Artists.Contains(Artists.First());
-		return nameEquals;*/
-	}
-
-	public override int GetHashCode()
-	{
-		return Id.GetHashCode();
 	}
 }
