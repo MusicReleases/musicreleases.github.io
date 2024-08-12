@@ -31,9 +31,9 @@ builder.Services.AddFluxor(options =>
 
 	// TODO
 	//options.AddMiddleware<TestMiddleware>();
-#if DEBUG
-	options.UseReduxDevTools();
-#endif
+	//#if DEBUG
+	//	options.UseReduxDevTools();
+	//#endif
 });
 
 await builder.Build().RunAsync();
