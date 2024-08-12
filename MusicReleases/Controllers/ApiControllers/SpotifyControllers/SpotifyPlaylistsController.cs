@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using Fluxor;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
-using JakubKastner.SpotifyApi.Objects;
 using static JakubKastner.MusicReleases.Base.Enums;
+using static JakubKastner.MusicReleases.Store.StorageStore.StorageActions;
 
 namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 
@@ -25,13 +25,21 @@ public class SpotifyPlaylistsController(IDispatcher dispatcher, IState<SpotifyPl
 			return;
 		}
 
+		if (!_stateSpotifyPlaylists.Value.Initialized)
+		{
+			_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
+		}
+
+		GetPlaylistsFromStorage();
 		GetPlaylistsFromApi();
+		SavePlaylistsToStorage();
 	}
 
-	private async Task GetPlaylistsFromStorage()
+	private void GetPlaylistsFromStorage()
 	{
 		// previously saved playlists in browser storage
-		var playlists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyPlaylist>>(_storageName);
+		_dispatcher.Dispatch(new StorageActionsGet());
+		//var playlists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyPlaylist>>(_storageName);
 	}
 
 	private void GetPlaylistsFromStore()
@@ -49,10 +57,24 @@ public class SpotifyPlaylistsController(IDispatcher dispatcher, IState<SpotifyPl
 		}
 
 		_dispatcher.Dispatch(new SpotifyPlaylistsActionLoad());
+	}
 
+	private void SavePlaylistsToStorage()
+	{
+
+		// new loading from api
+		if (_loading)
+		{
+			// action is running
+			return;
+		}
+
+		// not initialized
 		if (!_stateSpotifyPlaylists.Value.Initialized)
 		{
-			_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
+			return;
 		}
+
+		_dispatcher.Dispatch(new SpotifyPlaylistsActionStorageSet(_stateSpotifyPlaylists.Value));
 	}
 }

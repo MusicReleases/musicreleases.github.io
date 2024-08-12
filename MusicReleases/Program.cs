@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Fluxor;
+using Fluxor.Blazor.Web.ReduxDevTools;
 using JakubKastner.MusicReleases;
 using JakubKastner.SpotifyApi;
 using Microsoft.AspNetCore.Components.Web;
@@ -28,12 +29,11 @@ builder.Services.AddBlazoredLocalStorage(config =>
 builder.Services.AddFluxor(options =>
 {
 	options.ScanAssemblies(typeof(Program).Assembly);
-
 	// TODO
 	//options.AddMiddleware<TestMiddleware>();
-	//#if DEBUG
-	//	options.UseReduxDevTools();
-	//#endif
+#if DEBUG
+	options.UseReduxDevTools();
+#endif
 });
 
 await builder.Build().RunAsync();

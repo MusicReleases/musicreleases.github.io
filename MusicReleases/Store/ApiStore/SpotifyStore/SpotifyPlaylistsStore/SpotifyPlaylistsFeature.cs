@@ -1,5 +1,4 @@
 ﻿using Fluxor;
-using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 
@@ -13,7 +12,7 @@ public class SpotifyPlaylistsFeature : Feature<SpotifyPlaylistsState>
 		{
 			Initialized = false,
 			Loading = false,
-			Playlists = new SpotifyUserList<SpotifyPlaylist>(),
+			List = new(),
 		};
 	}
 }

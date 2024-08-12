@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Fluxor;
 using JakubKastner.SpotifyApi.Controllers;
-using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 
@@ -11,6 +10,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
 	private const string _localStorageName = "spotify_playlists";
+
 
 	[EffectMethod(typeof(SpotifyPlaylistsActionLoad))]
 	public async Task LoadPlaylists(IDispatcher dispatcher)
@@ -78,7 +78,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 			{
 				Initialized = false,
 				Loading = false,
-				Playlists = new SpotifyUserList<SpotifyPlaylist>(),
+				List = new(),
 			}));
 			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageClearSuccess());
 		}

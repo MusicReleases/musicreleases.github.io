@@ -4,7 +4,7 @@ using JakubKastner.SpotifyApi.Objects;
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 public partial class MenuPlaylists
 {
-	private SpotifyUserList<SpotifyPlaylist>? _playlists => _stateSpotifyPlaylists.Value.Playlists;
+	private SpotifyUserList<SpotifyPlaylist>? _playlists => _stateSpotifyPlaylists.Value.List;
 	private bool _loading => _stateSpotifyPlaylists.Value.Loading;
 
 	protected override void OnInitialized()

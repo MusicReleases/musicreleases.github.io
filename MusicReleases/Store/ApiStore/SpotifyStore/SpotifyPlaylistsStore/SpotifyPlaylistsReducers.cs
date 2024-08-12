@@ -9,7 +9,7 @@ public static class SpotifyPlaylistsReducers
 	{
 		return state with
 		{
-			Playlists = action.Playlists,
+			List = action.Playlists,
 			Loading = false,
 		};
 	}
