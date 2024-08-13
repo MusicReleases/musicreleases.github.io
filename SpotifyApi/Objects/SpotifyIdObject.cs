@@ -12,7 +12,7 @@ public class SpotifyIdObject(string id, string name) : IComparable
 			return -1;
 		}
 
-		var other = (SpotifyTrack)obj;
+		var other = (SpotifyIdObject)obj;
 		var nameComparison = Name.CompareTo(other.Name);
 
 		return (nameComparison != 0) ? nameComparison : Id.CompareTo(other.Id);
@@ -25,7 +25,7 @@ public class SpotifyIdObject(string id, string name) : IComparable
 			return this == null;
 		}
 
-		var other = (SpotifyTrack)obj;
+		var other = (SpotifyIdObject)obj;
 		return string.Equals(Id, other.Id);
 	}
 

@@ -31,7 +31,25 @@ public static class SpotifyPlaylistsReducers
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyPlaylistsActionStorageGetStateSuccess))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionStorageGet))]
+	public static SpotifyPlaylistsState OnPlaylistStorageGet(SpotifyPlaylistsState state)
+	{
+		return state with
+		{
+			LoadingStorage = true,
+		};
+	}
+
+	[ReducerMethod(typeof(SpotifyPlaylistsActionApiLoad))]
+	public static SpotifyPlaylistsState OnPlaylistApiGet(SpotifyPlaylistsState state)
+	{
+		return state with
+		{
+			LoadingApi = true,
+		};
+	}
+
+	[ReducerMethod(typeof(SpotifyPlaylistsActionStorageGetSuccess))]
 	public static SpotifyPlaylistsState OnPlaylistStorageGetSucces(SpotifyPlaylistsState state)
 	{
 		return state with

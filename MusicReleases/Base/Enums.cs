@@ -40,6 +40,7 @@ public static class Enums
 		UserCredentials,
 		LoginVerifier,
 		UserPlaylists,
+		UserPlaylistsState,
 	}
 
 
@@ -52,6 +53,20 @@ public static class Enums
 		return prefix + separator + key;
 	}
 
+	public static ISet<string> GetAllLocalStorageKeys(ServiceType serviceType)
+	{
+		var keys = EnumUtil.GetValues<LocalStorageKey>();
+		var localStorageKeys = new HashSet<string>();
+		foreach (var key in keys)
+		{
+			var localStorageKey = GetLocalStorageKey(serviceType, key);
+			localStorageKeys.Add(localStorageKey);
+		}
+		return localStorageKeys;
+	}
+
+
+
 	public static string GetLocalStorageKeyReleases(ServiceType serviceType, ReleasesFilters releaseFilters)
 	{
 		var prefix = serviceType.ToString();
@@ -60,5 +75,13 @@ public static class Enums
 		var separator = "_";
 
 		return prefix + separator + prefix2 + separator + key;
+	}
+}
+
+public static class EnumUtil
+{
+	public static IEnumerable<T> GetValues<T>()
+	{
+		return Enum.GetValues(typeof(T)).Cast<T>();
 	}
 }

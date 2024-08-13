@@ -45,9 +45,11 @@ public class SpotifyLoginStorageController(ISpotifyControllerUser spotifyControl
 
 	public async Task DeleteSavedUser()
 	{
-		await _localStorage.RemoveItemAsync(_localStorageKeyInfo);
-		await _localStorage.RemoveItemAsync(_localStorageKeyCredentials);
-		await DeleteLoginVerifier();
+		var localStorageKeys = GetAllLocalStorageKeys(serviceType);
+		foreach (var localStorageKey in localStorageKeys)
+		{
+			await _localStorage.RemoveItemAsync(localStorageKey);
+		}
 	}
 
 	public async Task SaveLoginVerifier(string loginVerifier)

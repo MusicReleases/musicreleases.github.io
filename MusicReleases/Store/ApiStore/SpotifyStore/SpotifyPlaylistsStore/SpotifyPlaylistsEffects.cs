@@ -2,16 +2,19 @@
 using Fluxor;
 using JakubKastner.SpotifyApi.Controllers;
 using JakubKastner.SpotifyApi.Objects;
+using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 
 public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControllerPlaylist, ILocalStorageService localStorageService)
 {
+	private const ServiceType serviceType = ServiceType.Spotify;
+
 	private readonly ISpotifyControllerPlaylist _spotifyControllerPlaylist = spotifyControllerPlaylist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
-	private const string _localStorageName = "Spotify_Playlists";
-	private const string _localStorageNameState = _localStorageName + "_State";
+	private readonly string _localStorageName = GetLocalStorageKey(serviceType, LocalStorageKey.UserPlaylists);
+	private readonly string _localStorageNameState = GetLocalStorageKey(serviceType, LocalStorageKey.UserPlaylistsState);
 
 
 	// LOAD
