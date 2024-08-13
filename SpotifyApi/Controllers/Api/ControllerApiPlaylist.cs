@@ -9,7 +9,7 @@ public class ControllerApiPlaylist(ISpotifyApiClient client, ISpotifyControllerU
 	private readonly ISpotifyApiClient _client = client;
 	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
-	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylistsFromApi()
+	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylistsFromApi(ISet<SpotifyPlaylist>? existingPlaylists = null)
 	{
 		var playlistsFromApi = await GetUserPlaylistsApi();
 		var playlists = new HashSet<SpotifyPlaylist>();
@@ -24,6 +24,8 @@ public class ControllerApiPlaylist(ISpotifyApiClient client, ISpotifyControllerU
 			var currentUserOwned = IsPlaylistOwnedByCurrentUser(playlistApi);
 			var playlist = new SpotifyPlaylist(playlistApi, currentUserOwned);
 			playlists.Add(playlist);
+
+			// TODO get tracks
 		}
 
 		return playlists;

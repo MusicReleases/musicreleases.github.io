@@ -10,7 +10,6 @@ public static class SpotifyPlaylistsReducers
 		return state with
 		{
 			List = action.Playlists,
-			Loading = false,
 		};
 	}
 
@@ -28,7 +27,24 @@ public static class SpotifyPlaylistsReducers
 	{
 		return state with
 		{
-			Loading = true,
+			//Loading2 = true,
+		};
+	}
+
+	[ReducerMethod(typeof(SpotifyPlaylistsActionStorageGetStateSuccess))]
+	public static SpotifyPlaylistsState OnPlaylistStorageGetSucces(SpotifyPlaylistsState state)
+	{
+		return state with
+		{
+			LoadingStorage = false,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyPlaylistsActionApiLoadSuccess))]
+	public static SpotifyPlaylistsState OnPlaylistApiGetSucces(SpotifyPlaylistsState state)
+	{
+		return state with
+		{
+			LoadingApi = false,
 		};
 	}
 }

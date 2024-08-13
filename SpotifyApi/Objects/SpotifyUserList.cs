@@ -2,8 +2,8 @@
 
 public class SpotifyUserList<T> where T : SpotifyIdObject
 {
-	public ISet<T>? List { get; private set; }
-	public DateTime LastUpdate { get; set; }
+	public ISet<T>? List { get; init; }
+	public DateTime LastUpdate { get; init; }
 
 	public SpotifyUserList() { }
 

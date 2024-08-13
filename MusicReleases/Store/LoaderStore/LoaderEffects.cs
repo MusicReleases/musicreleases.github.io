@@ -15,7 +15,8 @@ public class LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, 
 	[EffectMethod(typeof(SpotifyPlaylistsActionLoad))]
 	public async Task LoadOnSpotifyPlaylistLoading(IDispatcher dispatcher)
 	{
-		if (_spotifyPlaylistsState.Value.Loading)
+		//if (_spotifyPlaylistsState.Value.Loading2)
+		if (_spotifyPlaylistsState.Value.LoadingAny())
 		{
 			await StartLoading(dispatcher);
 		}
@@ -70,7 +71,8 @@ public class LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, 
 		// TODO must be task
 		await Task.Delay(0);
 
-		if (!_spotifyPlaylistsState.Value.Loading && !_spotifyArtistsState.Value.Loading && !_spotifyReleasesState.Value.Loading)
+		//if (!_spotifyPlaylistsState.Value.Loading2 && !_spotifyArtistsState.Value.Loading && !_spotifyReleasesState.Value.Loading)
+		if (!_spotifyPlaylistsState.Value.LoadingAny() && !_spotifyArtistsState.Value.Loading && !_spotifyReleasesState.Value.Loading)
 		{
 			dispatcher.Dispatch(new LoaderAction(false));
 		}

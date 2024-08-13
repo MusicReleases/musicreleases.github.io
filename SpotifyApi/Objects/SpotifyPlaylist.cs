@@ -4,14 +4,20 @@ namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyPlaylist : SpotifyIdObject, IComparable
 {
-	public bool CurrentUserOwned { get; private set; }
-	public bool Collaborative { get; private set; }
-	public string? SnapshotId { get; private set; }
+	public bool CurrentUserOwned { get; init; }
+	public bool Collaborative { get; init; }
+	public string? SnapshotId { get; init; }
 
-	public int? TotalTracks { get; private set; }
+	public int? TotalTracks { get; init; }
 	public HashSet<SpotifyTrack> Tracks { get; set; } = [];
 
 	// TODO playlist owner - currentuserowned
+
+	public SpotifyPlaylist() : base("json", "des")
+	{
+
+	}
+
 	public SpotifyPlaylist(FullPlaylist fullPlaylist, bool currentUserOwned = false) : base(fullPlaylist.Id ?? "", fullPlaylist.Name ?? "")
 	{
 		// TODO null

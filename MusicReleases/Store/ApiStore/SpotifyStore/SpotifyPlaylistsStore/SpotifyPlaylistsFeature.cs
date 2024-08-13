@@ -11,7 +11,8 @@ public class SpotifyPlaylistsFeature : Feature<SpotifyPlaylistsState>
 		return new()
 		{
 			Initialized = false,
-			Loading = false,
+			LoadingStorage = false,
+			LoadingApi = false,
 			List = new(),
 		};
 	}

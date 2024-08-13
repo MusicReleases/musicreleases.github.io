@@ -10,13 +10,15 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
 	// get list of user playlists
-	public async Task<SpotifyUserList<SpotifyPlaylist>> GetUserPlaylists(bool onlyEditable = false)
+
+	private async Task<SpotifyUserList<SpotifyPlaylist>> GetUserPlaylistsApi(bool onlyEditable, bool forceUpdate = false, ISet<SpotifyPlaylist>? existingPlaylists = null)
 	{
 		var user = _controllerUser.GetUserRequired();
 
-		if (user.Playlists?.List is null)
+		if (user.Playlists?.List is null || forceUpdate)
 		{
-			user.Playlists = new(await _controllerApiPlaylist.GetUserPlaylistsFromApi(), DateTime.Now);
+			var playlistsApi = await _controllerApiPlaylist.GetUserPlaylistsFromApi(existingPlaylists);
+			user.Playlists = new(playlistsApi, DateTime.Now);
 		}
 
 		var playlists = user.Playlists;
@@ -33,12 +35,41 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 		return playlists;
 	}
 
+	public async Task<SpotifyUserList<SpotifyPlaylist>> GetUserPlaylists(bool onlyEditable = false, SpotifyUserList<SpotifyPlaylist>? existingPlaylists = null, bool forceUpdate = false)
+	{
+		if (existingPlaylists is null)
+		{
+			forceUpdate = true;
+		}
+		else
+		{
+			var dateTimeDifference = DateTime.Now - existingPlaylists.LastUpdate;
+
+			if (dateTimeDifference.TotalHours >= 24)
+			{
+				// force update every 24 hours
+				forceUpdate = true;
+			}
+		}
+
+		if (!forceUpdate)
+		{
+			// doesnt need update
+
+			// TODO editable playlists switch ???
+			return existingPlaylists!;
+		}
+
+		var playlists = await GetUserPlaylistsApi(onlyEditable, forceUpdate, existingPlaylists?.List);
+		return playlists;
+	}
+
 	// get user playlist (with tracks)
 	public async Task<SpotifyPlaylist?> GetUserPlaylist(string playlistId, bool getTracks = false)
 	{
 		var playlists = await GetUserPlaylists();
 
-		var playlist = playlists.List.FirstOrDefault(p => p.Id == playlistId);
+		var playlist = playlists.List?.FirstOrDefault(p => p.Id == playlistId);
 
 		if (playlist is null)
 		{

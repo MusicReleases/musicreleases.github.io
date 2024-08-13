@@ -3,8 +3,6 @@ using Fluxor;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
-using JakubKastner.SpotifyApi.Objects;
-using static JakubKastner.MusicReleases.Store.StorageStore.StorageActions;
 
 namespace JakubKastner.MusicReleases.Store.StorageStore;
 
@@ -18,7 +16,7 @@ public class StorageEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState,
 	private const string _localStorageNamePlaylists = "Spotify_Playlists";
 
 	// spotify playlists
-	[EffectMethod]
+	/*[EffectMethod]
 	public async Task SaveOnSpotifyPlalistsSet(SpotifyPlaylistsActionSet action, IDispatcher dispatcher)
 	{
 		await SaveToStorage(dispatcher, action.Playlists, _localStorageNamePlaylists);
@@ -37,5 +35,5 @@ public class StorageEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState,
 		{
 			dispatcher.Dispatch(new StorageActionsSetFailure(ex.Message));
 		}
-	}
+	}*/
 }

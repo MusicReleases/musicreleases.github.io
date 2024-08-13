@@ -2,8 +2,8 @@
 
 public class SpotifyIdObject(string id, string name) : IComparable
 {
-	public string Id { get; private set; } = id;
-	public string Name { get; private set; } = name;
+	public string Id { get; init; } = id;
+	public string Name { get; init; } = name;
 
 	public int CompareTo(object? obj)
 	{
