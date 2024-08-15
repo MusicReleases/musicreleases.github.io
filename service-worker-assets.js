@@ -25,7 +25,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-jbiF8lQ2bgz1tK4iZ5U\/CPHmRVTGBTus8a8Ufsxv6ug=",
+      "hash": "sha256-cdTd4oYURHA+U2Yf1awmAU+PFmgZcUEvWjGG7fFUo1U=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -53,11 +53,11 @@
       "url": "_framework\/Fluxor.wasm"
     },
     {
-      "hash": "sha256-Mu0jR56+yTczpxx9UvoKJ0GVho1jifyBE5WbfULWUOU=",
+      "hash": "sha256-u\/NSBuwNzsSsycAtQIR8yMPixxIguv6g+xkxZzpzvGw=",
       "url": "_framework\/Microsoft.AspNetCore.Components.wasm"
     },
     {
-      "hash": "sha256-eAD58WIY74jI8lOjIsnaDGrrlTJysrxqlXjXd\/BRO1c=",
+      "hash": "sha256-MIXSHue1tQfmrp31IJnk2CC4MjUwnxliG+E2j8Le5Ho=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.wasm"
     },
     {
@@ -117,7 +117,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-z9KbhzDhhbiWfs0tbOH7UfWZedAzSEs4Otf78QQhFYY=",
+      "hash": "sha256-xnPZy0w2B8JqzqBMC+Toekhu1L21Ahv8u19Uk8uB7QA=",
       "url": "_framework\/MusicReleases.wasm"
     },
     {
@@ -125,7 +125,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-jTkk+xgmyUzoA+CcMSov8Jo1DlumJfp4Aau8yWcb9DA=",
+      "hash": "sha256-VzrjtMUt1xnG60RMpUsbrabN1GggURGFYaTOAM1r90o=",
       "url": "_framework\/SpotifyApi.wasm"
     },
     {
@@ -533,7 +533,7 @@
       "url": "styles\/2_init\/_2_colors.scss"
     },
     {
-      "hash": "sha256-64cUAg+dKZCcQQaOD2RGhyzPhM+AjhMrgdDTkTW6iM8=",
+      "hash": "sha256-GZs6VIAku4lD5Q7nV+0FsMfLA36VZLGuXvMp3gLt3TY=",
       "url": "styles\/2_init\/_3_layout.scss"
     },
     {
@@ -565,7 +565,7 @@
       "url": "styles\/3_content\/3_footer\/_2_player.scss"
     },
     {
-      "hash": "sha256-Pbf9yoSCF++7GB3XicD0qGYJoNw9naSSk1KtZUDfLxI=",
+      "hash": "sha256-VJrQW0XMIEDRzsKQ9UPQwtvG5LyX4Bwu7ixBpbEulas=",
       "url": "styles\/4_menu\/_1_menu.scss"
     },
     {
@@ -605,5 +605,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "kKYzD4kF"
+  "version": "P7qmM2Wv"
 };

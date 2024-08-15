@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MusicReleases",
   "resources": {
-    "hash": "sha256-UZcHuEJaFQdGeJ2oOsdKbQ/eceQVd7xvfjdk3QDeHp8=",
+    "hash": "sha256-vV9rMkOBzwI2+o/TGMtHUN9vcoyjs/wldwcGnDt9+J0=",
     "jsModuleNative": {
       "dotnet.native.8.0.8.8324hx5xdp.js": "sha256-R0yxDcHdZFPj9Hu1+1GFeuZwnRKmUSR4eC8qD0Jp0Y0="
     },
@@ -21,8 +21,8 @@
       "Fluxor.Blazor.Web.ReduxDevTools.wasm": "sha256-jDE1ZNbW4Ejki3o6xiZhe09Wz3ggxn9eZ1/1cRF/I7c=",
       "Fluxor.Blazor.Web.wasm": "sha256-EQY4gKqrJmDxIMv//eRwx0R5QItoj2wrFMh9SGea6RE=",
       "Fluxor.wasm": "sha256-QxsT3q2RKCTpONQ/VtLJDj0LKq/xEGj9veYEqkI/PSI=",
-      "Microsoft.AspNetCore.Components.wasm": "sha256-Mu0jR56+yTczpxx9UvoKJ0GVho1jifyBE5WbfULWUOU=",
-      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-eAD58WIY74jI8lOjIsnaDGrrlTJysrxqlXjXd/BRO1c=",
+      "Microsoft.AspNetCore.Components.wasm": "sha256-u/NSBuwNzsSsycAtQIR8yMPixxIguv6g+xkxZzpzvGw=",
+      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-MIXSHue1tQfmrp31IJnk2CC4MjUwnxliG+E2j8Le5Ho=",
       "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-fPxnSIZZoZh3W05KUfK9pde3Pp3MKV1ZL4EXh2G5/q0=",
       "Microsoft.AspNetCore.WebUtilities.wasm": "sha256-x2zd/Ojl3PaxX1CyuhZqswNvppLjSLGIqSoTunu9GP0=",
       "Microsoft.CSharp.wasm": "sha256-XA0E1Z4IhJcopS/t3N9Eh4Bc5WcG0w/f2Vzrm0EegS8=",
@@ -37,9 +37,9 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-ua1wkm/TaUVHLRtctUs/Y1edQGwgGt4ABa/len7PZng=",
       "Microsoft.JSInterop.wasm": "sha256-uWL4ilcDL56OHoj70RPTVkwlCEIafRhH+8Y6glj0lXY=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-rhDkGvVEd5YGb2JsVk1xQC7gCF8TXNfpDfo9dGFhuyI=",
-      "MusicReleases.wasm": "sha256-z9KbhzDhhbiWfs0tbOH7UfWZedAzSEs4Otf78QQhFYY=",
+      "MusicReleases.wasm": "sha256-xnPZy0w2B8JqzqBMC+Toekhu1L21Ahv8u19Uk8uB7QA=",
       "Newtonsoft.Json.wasm": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
-      "SpotifyApi.wasm": "sha256-jTkk+xgmyUzoA+CcMSov8Jo1DlumJfp4Aau8yWcb9DA=",
+      "SpotifyApi.wasm": "sha256-VzrjtMUt1xnG60RMpUsbrabN1GggURGFYaTOAM1r90o=",
       "SpotifyAPI.Web.wasm": "sha256-HEov8aFa5woJ1+WcGsrQRw1ij0jq4mdbH2rANvzr5cI=",
       "System.Collections.Concurrent.wasm": "sha256-jKXI5FtDd1KTo1oBRZc+yln/NFF9Vu12pbCcWmTZq+E=",
       "System.Collections.Immutable.wasm": "sha256-HzmQdkweArtMFcFykvpoU/drIMyB5+Mm1owxD4Hc2r0=",
