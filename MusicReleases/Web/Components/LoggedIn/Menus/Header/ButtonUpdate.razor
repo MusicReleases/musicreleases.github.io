@@ -4,6 +4,7 @@
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore
 
 @inject IApiLoginController _apiLoginController;
+@inject ISpotifyArtistsController _spotifyArtistsController;
 @inject ISpotifyPlaylistsController _spotifyPlaylistsController;
 
 @if (!_apiLoginController.IsUserLoggedIn())
@@ -11,8 +12,7 @@
 	<p>User not logged in</p>
 }
 else
-{
-	
+{	
 	<button class="update" @onclick="Update">
 		<i class="fas fa-sync-alt" aria-hidden="true"></i>
 		@ChildContent

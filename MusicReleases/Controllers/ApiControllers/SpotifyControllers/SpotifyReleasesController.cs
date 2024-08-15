@@ -27,6 +27,6 @@ public class SpotifyReleasesController(IDispatcher dispatcher, IState<SpotifyRel
 
 	public void SaveReleasesToStorage()
 	{
-		_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
+		_dispatcher.Dispatch(new SpotifyArtistsActionSetStorageState(_stateSpotifyArtists.Value));
 	}
 }

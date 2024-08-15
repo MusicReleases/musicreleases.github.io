@@ -1,46 +1,52 @@
-﻿@inherits FluxorComponent;
-
-@using Fluxor;
+﻿@using Fluxor;
 @using Fluxor.Blazor.Web.Components;
-@using JakubKastner.MusicReleases.Base;
 @using JakubKastner.MusicReleases.Controllers.ApiControllers
-@using JakubKastner.MusicReleases.Controllers.BaseControllers;
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
-@using JakubKastner.SpotifyApi.Controllers;
-@using JakubKastner.SpotifyApi.Objects;
+@using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
+@using static JakubKastner.MusicReleases.Base.Enums
 
-@inject IDispatcher _dispatcher;
+@inherits FluxorComponent;
+
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists;
-@inject ISpotifyControllerUser _spotifyControllerUser;
 @inject IApiLoginController _apiLoginController;
+@inject ISpotifyArtistsController _spotifyArtistsController;
 
 <div class="menu artists items scroll buttons-rounded-m">
+
+
 	@if (!_apiLoginController.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
-		<button @onclick=LoadArtists>
-			Update
-		</button>
 	}
+
 	else
 	{
-		@if (_loading || _artists == null)
+		if (_loading || _artists?.List is null)
 		{
 			<p>Loading artists...</p>
 		}
-		else if (_artists.Count < 1)
+		else if (_error)
+		{
+			<p>Failed to get artists</p>
+			<ButtonUpdate Type="MenuButtonsType.Artists">
+				Update
+			</ButtonUpdate>
+		}
+		else if (_artists.List.Count < 1)
 		{
 			<p>0 artists</p>
-			<button @onclick=LoadArtistsApi>
+			<ButtonUpdate Type="MenuButtonsType.Artists">
 				Update
-			</button>
+			</ButtonUpdate>
 		}
 		else
 		{
-			<button @onclick=Save>Save</button>
-			@foreach (var artist in _artists)
+			@foreach (var artist in _artists.List)
 			{
-				<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name></ButtonArtist>
+				<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name>
+
+				</ButtonArtist>
 			}
 		}
 	}

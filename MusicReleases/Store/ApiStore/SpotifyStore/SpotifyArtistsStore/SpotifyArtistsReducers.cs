@@ -4,38 +4,74 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsS
 
 public static class SpotifyArtistsReducers
 {
-	[ReducerMethod]
-	public static SpotifyArtistsState OnSetArtists(SpotifyArtistsState state, SpotifyArtistsActionSet action)
+	// get storage
+	[ReducerMethod(typeof(SpotifyArtistsActionGetStorage))]
+	public static SpotifyArtistsState OnPlaylistGetStorage(SpotifyArtistsState state)
 	{
 		return state with
 		{
-			Artists = new(action.Artists),
-			Loading = false,
-			Initialized = true,
+			LoadingStorage = true,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyArtistsActionGetStorageSuccess))]
+	public static SpotifyArtistsState OnPlaylistGetStorageSuccess(SpotifyArtistsState state)
+	{
+		return state with
+		{
+			LoadingStorage = false,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyArtistsActionGetStorageFailure))]
+	public static SpotifyArtistsState OnPlaylistGetStorageFailure(SpotifyArtistsState state)
+	{
+		return state with
+		{
+			Error = true,
+			LoadingStorage = false,
 		};
 	}
 
+	// get api
+	[ReducerMethod(typeof(SpotifyArtistsActionGetApi))]
+	public static SpotifyArtistsState OnPlaylistGetApi(SpotifyArtistsState state)
+	{
+		return state with
+		{
+			LoadingApi = true,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyArtistsActionGetApiSuccess))]
+	public static SpotifyArtistsState OnPlaylistApiGetSucces(SpotifyArtistsState state)
+	{
+		return state with
+		{
+			LoadingApi = false,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyArtistsActionGetApiFailure))]
+	public static SpotifyArtistsState OnPlaylistGetApiFailure(SpotifyArtistsState state)
+	{
+		return state with
+		{
+			Error = true,
+			LoadingApi = false,
+		};
+	}
+
+	// set
 	[ReducerMethod]
-	public static SpotifyArtistsState OnSetArtistsFromStorage(SpotifyArtistsState state, SpotifyArtistsActionStorageSet action)
+	public static SpotifyArtistsState OnSetPlaylists(SpotifyArtistsState state, SpotifyArtistsActionSet action)
+	{
+		return state with
+		{
+			List = action.Artists,
+		};
+	}
+
+	// TODO persist state
+	[ReducerMethod]
+	public static SpotifyArtistsState OnSetArtistsFromStorage(SpotifyArtistsState state, SpotifyArtistsActionSetStorageState action)
 	{
 		return action.ArtistsState;
-	}
-
-	/*[ReducerMethod(typeof(SpotifyArtistsActionInitialized))]
-	public static SpotifyArtistsState OnSetInitialized(SpotifyArtistsState state)
-	{
-		return state with
-		{
-			Initialized = true,
-		};
-	}*/
-
-	[ReducerMethod(typeof(SpotifyArtistsActionLoad))]
-	public static SpotifyArtistsState OnLoadArtists(SpotifyArtistsState state)
-	{
-		return state with
-		{
-			Loading = true,
-		};
 	}
 }

@@ -25,6 +25,7 @@ public partial class ButtonUpdate
 			switch (Type)
 			{
 				case MenuButtonsType.Artists:
+					_spotifyArtistsController.GetArtists(true);
 					break;
 				case MenuButtonsType.Releases:
 					break;

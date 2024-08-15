@@ -1,102 +1,89 @@
 ﻿using Blazored.LocalStorage;
 using Fluxor;
 using JakubKastner.SpotifyApi.Controllers;
+using JakubKastner.SpotifyApi.Objects;
+using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
 public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IState<SpotifyArtistsState> artistsState)
 {
+	private const ServiceType serviceType = ServiceType.Spotify;
+
+	private readonly string _localStorageName = GetLocalStorageKey(serviceType, LocalStorageKey.UserArtists);
+	private readonly string _localStorageStateName = GetLocalStorageKey(serviceType, LocalStorageKey.UserArtistsState);
+
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
-	private readonly IState<SpotifyArtistsState> _artistsState = artistsState;
 
-	private const string _localStorageName = "spotify_artists";
 
-	[EffectMethod(typeof(SpotifyArtistsActionLoad))]
-	public async Task LoadArtists(IDispatcher dispatcher)
+	// GET
+	[EffectMethod]
+	public async Task Get(SpotifyArtistsActionGet action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		dispatcher.Dispatch(new SpotifyArtistsActionGetStorage(action.ForceUpdate));
+	}
+
+	[EffectMethod]
+	public async Task GetStorage(SpotifyArtistsActionGetStorage action, IDispatcher dispatcher)
 	{
 		try
 		{
-			var artists = await _spotifyControllerArtist.GetUserFollowedArtists();
-			dispatcher.Dispatch(new SpotifyArtistsActionSet(artists));
-			dispatcher.Dispatch(new SpotifyArtistsActionLoadSuccess());
+			// get item from storage
+			var artists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyArtist>>(_localStorageName);
+
+			if (artists is not null)
+			{
+				dispatcher.Dispatch(new SpotifyArtistsActionSet(artists));
+			}
+			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageSuccess());
+			dispatcher.Dispatch(new SpotifyArtistsActionGetApi(artists, action.ForceUpdate));
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyArtistsActionLoadFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageFailure(ex.Message));
 		}
 	}
 
-	/* --> TODO from another
-	 * 
-	 * [EffectMethod(typeof(CounterIncrementAction))]
-	public async Task LoadForecastsOnIncrement(IDispatcher dispatcher)
-	{
-		await Task.Delay(0);
-		if (CounterState.Value.CurrentCount % 10 == 0)
-		{
-			dispatcher.Dispatch(new WeatherLoadForecastsAction());
-		}
-	}*/
-
-	// local storage:
-
-	// PersistState
 	[EffectMethod]
-	public async Task SetStorage(SpotifyArtistsActionStorageSet action, IDispatcher dispatcher)
+	public async Task GetApi(SpotifyArtistsActionGetApi action, IDispatcher dispatcher)
+	{
+		try
+		{
+			// get item from api
+			var playlistsStorage = action.Artists;
+			var playlists = await _spotifyControllerArtist.GetUserFollowedArtists(playlistsStorage, action.ForceUpdate);
+			dispatcher.Dispatch(new SpotifyArtistsActionGetApiSuccess());
+
+			dispatcher.Dispatch(new SpotifyArtistsActionSet(playlists));
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(playlists));
+		}
+		catch (Exception ex)
+		{
+			dispatcher.Dispatch(new SpotifyArtistsActionGetApiFailure(ex.Message));
+		}
+	}
+
+	// SET
+	[EffectMethod]
+	public async Task SetStorage(SpotifyArtistsActionSetStorage action, IDispatcher dispatcher)
 	{
 		try
 		{
 			// set item
-			await _localStorageService.SetItemAsync(_localStorageName, action.ArtistsState);
+			await _localStorageService.SetItemAsync(_localStorageName, action.Artists);
 
-			dispatcher.Dispatch(new SpotifyArtistsActionStorageSetSuccess());
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyArtistsActionStorageSetFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageFailure(ex.Message));
 		}
 	}
 
-	[EffectMethod(typeof(SpotifyArtistsActionStorageGet))]
-	public async Task LoadStorage(IDispatcher dispatcher)
-	{
-		try
-		{
-			// get item
-			var artistsState = await _localStorageService.GetItemAsync<SpotifyArtistsState>(_localStorageName);
 
-			if (artistsState is not null)
-			{
-				dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(artistsState));
-				dispatcher.Dispatch(new SpotifyArtistsActionStorageGetSuccess());
-			}
-		}
-		catch (Exception ex)
-		{
-			dispatcher.Dispatch(new SpotifyArtistsActionStorageGetFailure(ex.Message));
-		}
-	}
-
-	[EffectMethod(typeof(SpotifyArtistsActionStorageClear))]
-	public async Task ClearStorage(IDispatcher dispatcher)
-	{
-		try
-		{
-			// remove item
-			await _localStorageService.RemoveItemAsync(_localStorageName);
-
-			dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(new()
-			{
-				Initialized = false,
-				Loading = false,
-				Artists = [],
-			}));
-			dispatcher.Dispatch(new SpotifyArtistsActionStorageClearSuccess());
-		}
-		catch (Exception ex)
-		{
-			dispatcher.Dispatch(new SpotifyArtistsActionStorageClearFailure(ex.Message));
-		}
-	}
+	// TODO PERSIST STATE (copy from playlists)
 }

@@ -10,10 +10,10 @@ public class ControllerApiArtist(ISpotifyApiClient client) : IControllerApiArtis
 
 	public async Task<ISet<SpotifyArtist>> GetUserFollowedArtistsFromApi()
 	{
-		var artists = new SortedSet<SpotifyArtist>();
 		var artistsFromApi = await GetUserFollowedArtistsApi();
+		var artists = new SortedSet<SpotifyArtist>();
 
-		if (artistsFromApi == null)
+		if (artistsFromApi is null)
 		{
 			return artists;
 		}

@@ -27,10 +27,11 @@ public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease
 			throw new NotSupportedException(nameof(releaseType));
 		}
 
+		// TODO provide saved artists
 		var artists = await _controllerArtist.GetUserFollowedArtists();
 		SortedSet<SpotifyRelease> releases = [];
 
-		foreach (var artist in artists)
+		foreach (var artist in artists.List)
 		{
 			var artistReleases = await GetArtistReleases(artist, releaseType);
 			releases.UnionWith(artistReleases);

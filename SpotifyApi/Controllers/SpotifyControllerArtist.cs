@@ -8,15 +8,44 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 	private readonly IControllerApiArtist _controllerApiArtist = controllerApiArtist;
 	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
-	// get list of user followed artists
-	public async Task<ISet<SpotifyArtist>> GetUserFollowedArtists()
+	public async Task<SpotifyUserList<SpotifyArtist>> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist>? existingArtists = null, bool forceUpdate = false)
+	{
+		if (existingArtists is null)
+		{
+			forceUpdate = true;
+		}
+		else
+		{
+			var dateTimeDifference = DateTime.Now - existingArtists.LastUpdate;
+
+			if (dateTimeDifference.TotalHours >= 24)
+			{
+				// force update every 24 hours
+				forceUpdate = true;
+			}
+		}
+
+		if (!forceUpdate)
+		{
+			// doesnt need update
+			return existingArtists!;
+		}
+
+		var artists = await GetUserArtistsApi(forceUpdate);
+		return artists;
+	}
+
+	private async Task<SpotifyUserList<SpotifyArtist>> GetUserArtistsApi(bool forceUpdate = false)
 	{
 		var user = _controllerUser.GetUserRequired();
-		var artistsApi = await _controllerApiArtist.GetUserFollowedArtistsFromApi();
 
-		user.FollowedArtists ??= new(artistsApi, DateTime.Now);
-		var artists = user.FollowedArtists.List;
+		if (user.FollowedArtists?.List is null || forceUpdate)
+		{
+			var artistsApi = await _controllerApiArtist.GetUserFollowedArtistsFromApi();
+			user.FollowedArtists = new(artistsApi, DateTime.Now);
+		}
 
+		var artists = user.FollowedArtists;
 		return artists;
 	}
 }

@@ -4,26 +4,45 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsS
 
 // init
 public record SpotifyArtistsActionInitialized();
-
-// get artists
-public record SpotifyArtistsActionLoad();
 public record SpotifyArtistsActionLoadSuccess();
 public record SpotifyArtistsActionLoadFailure(string ErrorMessage);
 
-// set artists
-public record SpotifyArtistsActionSet(ISet<SpotifyArtist> Artists);
 
+// get artists
+public record SpotifyArtistsActionGet(bool ForceUpdate);
+
+// get api
+public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist>? Artists, bool ForceUpdate);
+public record SpotifyArtistsActionGetApiSuccess();
+public record SpotifyArtistsActionGetApiFailure(string ErrorMessage);
+
+// get local storage
+public record SpotifyArtistsActionGetStorage(bool ForceUpdate);
+public record SpotifyArtistsActionGetStorageSuccess();
+public record SpotifyArtistsActionGetStorageFailure(string ErrorMessage);
+
+// set artists
+public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist> Artists);
+
+// set local storage
+public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist> Artists);
+public record SpotifyArtistsActionSetStorageSuccess();
+public record SpotifyArtistsActionSetStorageFailure(string ErrorMessage);
+
+
+
+// TODO persist state
 // local storage -> set
-public record SpotifyArtistsActionStorageSet(SpotifyArtistsState ArtistsState); // persists state
-public record SpotifyArtistsActionStorageSetSuccess();
-public record SpotifyArtistsActionStorageSetFailure(string ErrorMessage);
+public record SpotifyArtistsActionSetStorageState(SpotifyArtistsState ArtistsState); // persists state
+public record SpotifyArtistsActionSetStorageStateSuccess();
+public record SpotifyArtistsActionSetStorageStateFailure(string ErrorMessage);
 
 // local storage -> get
-public record SpotifyArtistsActionStorageGet();
-public record SpotifyArtistsActionStorageGetSuccess();
-public record SpotifyArtistsActionStorageGetFailure(string ErrorMessage);
+public record SpotifyArtistsActionGetStorageState();
+public record SpotifyArtistsActionGetStorageStateSuccess();
+public record SpotifyArtistsActionGetStorageStateFailure(string ErrorMessage);
 
 // local storage -> clear
-public record SpotifyArtistsActionStorageClear();
-public record SpotifyArtistsActionStorageClearSuccess();
-public record SpotifyArtistsActionStorageClearFailure(string ErrorMessage);
+public record SpotifyArtistsActionClearStorageState();
+public record SpotifyArtistsActionClearStorageStateSuccess();
+public record SpotifyArtistsActionClearStorageStateFailure(string ErrorMessage);

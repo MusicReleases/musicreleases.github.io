@@ -41,6 +41,8 @@ public static class Enums
 		LoginVerifier,
 		UserPlaylists,
 		UserPlaylistsState,
+		UserArtists,
+		UserArtistsState,
 	}
 
 	public enum MenuButtonsType

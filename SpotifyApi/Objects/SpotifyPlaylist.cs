@@ -13,9 +13,9 @@ public class SpotifyPlaylist : SpotifyIdObject, IComparable
 
 	// TODO playlist owner - currentuserowned
 
-	public SpotifyPlaylist() : base("json", "des")
+	public SpotifyPlaylist() : base("json", "init")
 	{
-
+		// TODO ctor for json
 	}
 
 	public SpotifyPlaylist(FullPlaylist fullPlaylist, bool currentUserOwned = false) : base(fullPlaylist.Id ?? "", fullPlaylist.Name ?? "")

@@ -8,11 +8,6 @@ public class SpotifyArtistsFeature : Feature<SpotifyArtistsState>
 
 	protected override SpotifyArtistsState GetInitialState()
 	{
-		return new()
-		{
-			Initialized = false,
-			Loading = false,
-			Artists = [],
-		};
+		return new();
 	}
 }

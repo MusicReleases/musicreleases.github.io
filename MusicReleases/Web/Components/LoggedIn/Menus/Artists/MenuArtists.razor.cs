@@ -1,19 +1,21 @@
 using JakubKastner.MusicReleases.Base;
-using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Artists;
 
 public partial class MenuArtists
 {
-	private SortedSet<SpotifyArtist>? _artists => _stateSpotifyArtists.Value.Artists;
-	private bool _loading => _stateSpotifyArtists.Value.Loading;
+	private SpotifyUserList<SpotifyArtist>? _artists => _stateSpotifyArtists.Value.List;
+	private bool _error => _stateSpotifyArtists.Value.Error;
+	private bool _loading => _stateSpotifyArtists.Value.LoadingAny();
 
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
 
-		if (!_apiLoginController.IsUserLoggedIn())
+		var userLoggedIn = _apiLoginController.IsUserLoggedIn();
+
+		if (!userLoggedIn)
 		{
 			return;
 		}
@@ -22,34 +24,7 @@ public partial class MenuArtists
 
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
-			if (_stateSpotifyArtists.Value.Initialized == false)
-			{
-				LoadArtists();
-				_dispatcher.Dispatch(new SpotifyArtistsActionInitialized());
-			}
+			_spotifyArtistsController.GetArtists();
 		}
-	}
-
-	private void LoadArtists()
-	{
-		// local storage
-		// TODO 010324
-		//_dispatcher.Dispatch(new SpotifyArtistsActionStorageGet());
-		/*if (_stateSpotifyArtists.Value.Artists?.Count < 1)
-			{
-			// spotify api
-			_dispatcher.Dispatch(new SpotifyArtistsActionLoad());
-		}*/
-	}
-
-	private void LoadArtistsApi()
-	{
-		// TODO 010324
-		//_dispatcher.Dispatch(new SpotifyArtistsActionLoad());
-	}
-
-	private void Save()
-	{
-		_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
 	}
 }

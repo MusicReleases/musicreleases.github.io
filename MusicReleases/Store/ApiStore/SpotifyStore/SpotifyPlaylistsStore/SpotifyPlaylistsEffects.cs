@@ -16,6 +16,8 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	private readonly ISpotifyControllerPlaylist _spotifyControllerPlaylist = spotifyControllerPlaylist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
+	//private readonly IState<SpotifyArtistsState> _artistsState = artistsState;
+
 	// GET
 	[EffectMethod]
 	public async Task Get(SpotifyPlaylistsActionGet action, IDispatcher dispatcher)

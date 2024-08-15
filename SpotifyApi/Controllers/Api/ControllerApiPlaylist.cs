@@ -14,7 +14,7 @@ public class ControllerApiPlaylist(ISpotifyApiClient client, ISpotifyControllerU
 		var playlistsFromApi = await GetUserPlaylistsApi();
 		var playlists = new HashSet<SpotifyPlaylist>();
 
-		if (playlistsFromApi == null)
+		if (playlistsFromApi is null)
 		{
 			return playlists;
 		}
@@ -25,7 +25,7 @@ public class ControllerApiPlaylist(ISpotifyApiClient client, ISpotifyControllerU
 			var playlist = new SpotifyPlaylist(playlistApi, currentUserOwned);
 			playlists.Add(playlist);
 
-			// TODO get tracks
+			// TODO get tracks -> existing playlists
 		}
 
 		return playlists;
