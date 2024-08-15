@@ -43,6 +43,13 @@ public static class Enums
 		UserPlaylistsState,
 	}
 
+	public enum UpdateType
+	{
+		Artists,
+		Releases,
+		Playlists,
+	}
+
 
 	public static string GetLocalStorageKey(ServiceType serviceType, LocalStorageKey localStorageKey)
 	{

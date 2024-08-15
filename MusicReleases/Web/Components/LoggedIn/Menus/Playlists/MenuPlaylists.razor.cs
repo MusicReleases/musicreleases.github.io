@@ -5,7 +5,6 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 public partial class MenuPlaylists
 {
 	private SpotifyUserList<SpotifyPlaylist>? _playlists => _stateSpotifyPlaylists.Value.List;
-	//private bool _loading => _stateSpotifyPlaylists.Value.Loading2;
 	private bool _loading => _stateSpotifyPlaylists.Value.LoadingAny();
 
 	protected override void OnInitialized()
@@ -24,17 +23,6 @@ public partial class MenuPlaylists
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
 			_spotifyPlaylistsController.GetPlaylists();
-
-			/*if (_stateSpotifyPlaylists.Value.Initialized == false)
-			{
-				LoadPlaylists();
-				_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
-			}*/
 		}
 	}
-
-	/*private void LoadPlaylists()
-	{
-		_dispatcher.Dispatch(new SpotifyPlaylistsActionLoad());
-	}*/
 }

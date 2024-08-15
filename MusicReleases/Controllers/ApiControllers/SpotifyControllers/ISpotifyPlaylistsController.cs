@@ -2,5 +2,5 @@
 
 public interface ISpotifyPlaylistsController
 {
-	void GetPlaylists();
+	void GetPlaylists(bool forceUpdate = false);
 }

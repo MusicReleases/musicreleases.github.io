@@ -22,7 +22,7 @@ public static class SpotifyPlaylistsReducers
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyPlaylistsActionLoad))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGet))]
 	public static SpotifyPlaylistsState OnLoadPlaylists(SpotifyPlaylistsState state)
 	{
 		return state with
@@ -31,7 +31,7 @@ public static class SpotifyPlaylistsReducers
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyPlaylistsActionStorageGet))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetStorage))]
 	public static SpotifyPlaylistsState OnPlaylistStorageGet(SpotifyPlaylistsState state)
 	{
 		return state with
@@ -40,7 +40,7 @@ public static class SpotifyPlaylistsReducers
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyPlaylistsActionApiLoad))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetApi))]
 	public static SpotifyPlaylistsState OnPlaylistApiGet(SpotifyPlaylistsState state)
 	{
 		return state with
@@ -49,7 +49,7 @@ public static class SpotifyPlaylistsReducers
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyPlaylistsActionStorageGetSuccess))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetStorageSuccess))]
 	public static SpotifyPlaylistsState OnPlaylistStorageGetSucces(SpotifyPlaylistsState state)
 	{
 		return state with
@@ -57,7 +57,7 @@ public static class SpotifyPlaylistsReducers
 			LoadingStorage = false,
 		};
 	}
-	[ReducerMethod(typeof(SpotifyPlaylistsActionApiLoadSuccess))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetApiSuccess))]
 	public static SpotifyPlaylistsState OnPlaylistApiGetSucces(SpotifyPlaylistsState state)
 	{
 		return state with

@@ -1,4 +1,5 @@
-﻿<div class="menu artists buttons-rounded-l">
+﻿@using static JakubKastner.MusicReleases.Base.Enums
+<div class="menu artists buttons-rounded-l">
 	<button class="show-hide icon-text">
 		<i class="fas fa-users" aria-hidden="true"></i>
 		Artists
@@ -10,6 +11,7 @@
 	<button class="search">
 		<i class="fas fa-search" aria-hidden="true"></i>
 	</button>
+	<ButtonUpdate Type="UpdateType.Artists"></ButtonUpdate>
 	<button class="close">
 		<i class="fas fa-times" aria-hidden="true"></i>
 	</button>

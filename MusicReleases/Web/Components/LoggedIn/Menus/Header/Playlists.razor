@@ -1,4 +1,5 @@
-﻿<div class="menu playlists buttons-rounded-l">
+﻿@using static JakubKastner.MusicReleases.Base.Enums
+<div class="menu playlists buttons-rounded-l">
 	<button class="show-hide icon-text left">
 		<i class="fas fa-bars" aria-hidden="true"></i>
 		Playlists
@@ -7,6 +8,7 @@
 	<button class="search">
 		<i class="fas fa-search" aria-hidden="true"></i>
 	</button>
+	<ButtonUpdate Type="UpdateType.Playlists"></ButtonUpdate>
 	<button class="new">
 		<i class="fas fa-plus" aria-hidden="true"></i>
 	</button>

@@ -16,8 +16,6 @@
 @inject IApiLoginController _apiLoginController;
 @inject ISpotifyPlaylistsController _spotifyPlaylistsController;
 
-@* @inject IDispatcher _dispatcher; *@
-
 <div class="menu playlists items scroll buttons-rounded-m">
 	@if (!_apiLoginController.IsUserLoggedIn())
 	{
@@ -29,7 +27,7 @@
 		{
 			<p>Loading playlists...</p>
 		}
-		else if (_playlists!.List!.Count < 1)
+		else if (_playlists.List.Count < 1)
 		{
 			<p>0 playlists</p>
 			@* <button @onclick=LoadPlaylists>
