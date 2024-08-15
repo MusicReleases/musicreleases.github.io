@@ -21,12 +21,6 @@ public class SpotifyPlaylistsController(IDispatcher dispatcher, IState<SpotifyPl
 			return;
 		}
 
-		// init
-		if (!_stateSpotifyPlaylists.Value.Initialized)
-		{
-			_dispatcher.Dispatch(new SpotifyPlaylistsActionInitialized());
-		}
-
 		_dispatcher.Dispatch(new SpotifyPlaylistsActionGet(forceUpdate));
 	}
 }

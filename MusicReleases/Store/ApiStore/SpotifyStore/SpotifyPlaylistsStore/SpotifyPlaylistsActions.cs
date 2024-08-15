@@ -2,17 +2,14 @@
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 
-// init
-public record SpotifyPlaylistsActionInitialized();
-
 // get
 public record SpotifyPlaylistsActionGet(bool ForceUpdate);
-public record SpotifyPlaylistsActionGetSuccess();
-public record SpotifyPlaylistsActionGetFailure(string ErrorMessage);
+
 // get api
 public record SpotifyPlaylistsActionGetApi(SpotifyUserList<SpotifyPlaylist>? Playlists, bool ForceUpdate);
 public record SpotifyPlaylistsActionGetApiSuccess();
 public record SpotifyPlaylistsActionGetApiFailure(string ErrorMessage);
+
 // get local storage
 public record SpotifyPlaylistsActionGetStorage(bool ForceUpdate);
 public record SpotifyPlaylistsActionGetStorageSuccess();
@@ -20,6 +17,7 @@ public record SpotifyPlaylistsActionGetStorageFailure(string ErrorMessage);
 
 // set
 public record SpotifyPlaylistsActionSet(SpotifyUserList<SpotifyPlaylist> Playlists);
+
 // set local storage
 public record SpotifyPlaylistsActionSetStorage(SpotifyUserList<SpotifyPlaylist> Playlists);
 public record SpotifyPlaylistsActionSetStorageSuccess();

@@ -8,12 +8,6 @@ public class SpotifyPlaylistsFeature : Feature<SpotifyPlaylistsState>
 
 	protected override SpotifyPlaylistsState GetInitialState()
 	{
-		return new()
-		{
-			Initialized = false,
-			LoadingStorage = false,
-			LoadingApi = false,
-			List = new(),
-		};
+		return new();
 	}
 }

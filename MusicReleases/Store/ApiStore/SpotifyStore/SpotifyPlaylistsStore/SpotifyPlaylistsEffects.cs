@@ -23,14 +23,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		// TODO must be task
 		await Task.Delay(0);
 
-		try
-		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorage(action.ForceUpdate));
-		}
-		catch (Exception ex)
-		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetFailure(ex.Message));
-		}
+		dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorage(action.ForceUpdate));
 	}
 
 	[EffectMethod]
@@ -62,14 +55,9 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 			// get item from api
 			var playlistsStorage = action.Playlists;
 			var playlists = await _spotifyControllerPlaylist.GetUserPlaylists(true, playlistsStorage, action.ForceUpdate);
-
-			dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
-
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApiSuccess());
 
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetSuccess());
-
-
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorage(playlists));
 		}
 		catch (Exception ex)
@@ -141,13 +129,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 			// remove item
 			await _localStorageService.RemoveItemAsync(_localStorageStateName);
 
-			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageState(new()
-			{
-				Initialized = false,
-				LoadingStorage = false,
-				LoadingApi = false,
-				List = new(),
-			}));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageState(new()));
 			dispatcher.Dispatch(new SpotifyPlaylistsActionClearStorageStateSuccess());
 		}
 		catch (Exception ex)

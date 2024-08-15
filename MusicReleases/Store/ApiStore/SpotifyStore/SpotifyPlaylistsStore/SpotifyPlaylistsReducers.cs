@@ -4,17 +4,6 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylist
 
 public static class SpotifyPlaylistsReducers
 {
-	// init
-	[ReducerMethod(typeof(SpotifyPlaylistsActionInitialized))]
-	public static SpotifyPlaylistsState OnSetInitialized(SpotifyPlaylistsState state)
-	{
-		return state with
-		{
-			Initialized = true,
-		};
-	}
-
-
 	// get storage
 	[ReducerMethod(typeof(SpotifyPlaylistsActionGetStorage))]
 	public static SpotifyPlaylistsState OnPlaylistGetStorage(SpotifyPlaylistsState state)
@@ -79,7 +68,7 @@ public static class SpotifyPlaylistsReducers
 		};
 	}
 
-	// persist state
+	// TODO persist state
 	[ReducerMethod]
 	public static SpotifyPlaylistsState OnSetArtistsFromStorage(SpotifyPlaylistsState state, SpotifyPlaylistsActionSetStorageState action)
 	{
