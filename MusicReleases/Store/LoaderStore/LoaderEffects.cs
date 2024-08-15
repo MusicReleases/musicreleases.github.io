@@ -17,17 +17,6 @@ public class LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, 
 	{
 		await SpotifyPlaylistLoading(dispatcher);
 	}
-	[EffectMethod(typeof(SpotifyPlaylistsActionGetApi))]
-	public async Task LoadOnSpotifyPlaylistLoadingApiLoad(IDispatcher dispatcher)
-	{
-		await SpotifyPlaylistLoading(dispatcher);
-	}
-	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorage))]
-	public async Task LoadOnSpotifyPlaylistLoadingStorageGet(IDispatcher dispatcher)
-	{
-		await SpotifyPlaylistLoading(dispatcher);
-	}
-
 	private async Task SpotifyPlaylistLoading(IDispatcher dispatcher)
 	{
 		if (_spotifyPlaylistsState.Value.LoadingAny())
@@ -37,21 +26,47 @@ public class LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, 
 	}
 
 
+	// -> set
 	[EffectMethod(typeof(SpotifyPlaylistsActionSet))]
-	public async Task LoadOnSpotifyPlaylistLoaded(IDispatcher dispatcher)
+	public async Task LoadOnSpotifyPlaylistSet(IDispatcher dispatcher)
 	{
 		await StopLoading(dispatcher);
+	}
+
+	// -> storage
+	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorage))]
+	public async Task LoadOnSpotifyPlaylistGetStorage(IDispatcher dispatcher)
+	{
+		await SpotifyPlaylistLoading(dispatcher);
 	}
 	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorageSuccess))]
-	public async Task LoadOnSpotifyPlaylistStorageGetSuccess(IDispatcher dispatcher)
+	public async Task LoadOnSpotifyPlaylistGetStorageSuccess(IDispatcher dispatcher)
 	{
 		await StopLoading(dispatcher);
 	}
-	[EffectMethod(typeof(SpotifyPlaylistsActionApiGetSuccess))]
-	public async Task LoadOnSpotifyPlaylistApiLoadSuccess(IDispatcher dispatcher)
+	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorageFailure))]
+	public async Task LoadOnSpotifyPlaylistGetStorageFailure(IDispatcher dispatcher)
 	{
 		await StopLoading(dispatcher);
 	}
+
+	// -> api
+	[EffectMethod(typeof(SpotifyPlaylistsActionGetApi))]
+	public async Task LoadOnSpotifyPlaylistGetApi(IDispatcher dispatcher)
+	{
+		await SpotifyPlaylistLoading(dispatcher);
+	}
+	[EffectMethod(typeof(SpotifyPlaylistsActionGetApiSuccess))]
+	public async Task LoadOnSpotifyPlaylistGetApiSuccess(IDispatcher dispatcher)
+	{
+		await StopLoading(dispatcher);
+	}
+	[EffectMethod(typeof(SpotifyPlaylistsActionGetApiFailure))]
+	public async Task LoadOnSpotifyPlaylistGetApiFailure(IDispatcher dispatcher)
+	{
+		await StopLoading(dispatcher);
+	}
+
 
 	// spotify artists
 	[EffectMethod(typeof(SpotifyArtistsActionLoad))]
@@ -82,6 +97,7 @@ public class LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, 
 	{
 		await StopLoading(dispatcher);
 	}
+
 
 
 	private async Task StartLoading(IDispatcher dispatcher)

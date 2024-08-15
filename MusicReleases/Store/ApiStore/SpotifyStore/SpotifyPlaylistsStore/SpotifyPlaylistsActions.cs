@@ -11,7 +11,7 @@ public record SpotifyPlaylistsActionGetSuccess();
 public record SpotifyPlaylistsActionGetFailure(string ErrorMessage);
 // get api
 public record SpotifyPlaylistsActionGetApi(SpotifyUserList<SpotifyPlaylist>? Playlists, bool ForceUpdate);
-public record SpotifyPlaylistsActionApiGetSuccess();
+public record SpotifyPlaylistsActionGetApiSuccess();
 public record SpotifyPlaylistsActionGetApiFailure(string ErrorMessage);
 // get local storage
 public record SpotifyPlaylistsActionGetStorage(bool ForceUpdate);
@@ -28,16 +28,16 @@ public record SpotifyPlaylistsActionSetStorageFailure(string ErrorMessage);
 
 // TODO persist state
 // local storage -> set
-public record SpotifyPlaylistsActionStorageStateSet(SpotifyPlaylistsState PlaylistsState);
-public record SpotifyPlaylistsActionStorageSetStateSuccess();
-public record SpotifyPlaylistsActionStorageSetStateFailure(string ErrorMessage);
+public record SpotifyPlaylistsActionSetStorageState(SpotifyPlaylistsState PlaylistsState);
+public record SpotifyPlaylistsActionSetStorageStateSuccess();
+public record SpotifyPlaylistsActionSetStorageStateFailure(string ErrorMessage);
 
 // local storage -> get
-public record SpotifyPlaylistsActionStorageGetState();
-public record SpotifyPlaylistsActionStorageGetStateSuccess();
-public record SpotifyPlaylistsActionStorageGetStateFailure(string ErrorMessage);
+public record SpotifyPlaylistsActionGetStorageState();
+public record SpotifyPlaylistsActionGetStorageStateSuccess();
+public record SpotifyPlaylistsActionGetStorageStateFailure(string ErrorMessage);
 
 // local storage -> clear
-public record SpotifyPlaylistsActionStorageStateClear();
-public record SpotifyPlaylistsActionStorageClearStateSuccess();
-public record SpotifyPlaylistsActionStorageClearStateFailure(string ErrorMessage);
+public record SpotifyPlaylistsActionClearStorageState();
+public record SpotifyPlaylistsActionClearStorageStateSuccess();
+public record SpotifyPlaylistsActionClearStorageStateFailure(string ErrorMessage);

@@ -25,16 +25,16 @@
 	}
 	else
 	{
-		@if (_error)
+		if (_loading || _playlists?.List is null)
+		{
+			<p>Loading playlists...</p>
+		}
+		else if (_error)
 		{
 			<p>Failed to get playlists</p>
 			<ButtonUpdate Type="MenuButtonsType.Playlists">
 				Update
 			</ButtonUpdate>
-		}
-		else if (_loading || _playlists?.List is null)
-		{
-			<p>Loading playlists...</p>
 		}
 		else if (_playlists.List.Count < 1)
 		{

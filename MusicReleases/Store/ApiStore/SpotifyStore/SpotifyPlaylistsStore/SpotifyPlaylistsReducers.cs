@@ -51,7 +51,7 @@ public static class SpotifyPlaylistsReducers
 			LoadingApi = true,
 		};
 	}
-	[ReducerMethod(typeof(SpotifyPlaylistsActionApiGetSuccess))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetApiSuccess))]
 	public static SpotifyPlaylistsState OnPlaylistApiGetSucces(SpotifyPlaylistsState state)
 	{
 		return state with
@@ -77,5 +77,12 @@ public static class SpotifyPlaylistsReducers
 		{
 			List = action.Playlists,
 		};
+	}
+
+	// persist state
+	[ReducerMethod]
+	public static SpotifyPlaylistsState OnSetArtistsFromStorage(SpotifyPlaylistsState state, SpotifyPlaylistsActionSetStorageState action)
+	{
+		return action.PlaylistsState;
 	}
 }

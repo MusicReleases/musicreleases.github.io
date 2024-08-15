@@ -65,7 +65,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
 
-			dispatcher.Dispatch(new SpotifyPlaylistsActionApiGetSuccess());
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApiSuccess());
 
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetSuccess());
 
@@ -78,6 +78,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 	}
 
+	// SET
 	[EffectMethod]
 	public async Task SetStorage(SpotifyPlaylistsActionSetStorage action, IDispatcher dispatcher)
 	{
@@ -95,26 +96,9 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	}
 
 
-
-
-	// TODO PersistState
-	[EffectMethod]
-	public async Task SetStorageState(SpotifyPlaylistsActionStorageStateSet action, IDispatcher dispatcher)
-	{
-		try
-		{
-			// set item
-			await _localStorageService.SetItemAsync(_localStorageStateName, action.PlaylistsState);
-
-			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageSetStateSuccess());
-		}
-		catch (Exception ex)
-		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageSetStateFailure(ex.Message));
-		}
-	}
-	[EffectMethod(typeof(SpotifyPlaylistsActionStorageGetState))]
-	public async Task LoadStorageState(IDispatcher dispatcher)
+	// TODO PERSIST STATE
+	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorageState))]
+	public async Task GetStorageState(IDispatcher dispatcher)
 	{
 		try
 		{
@@ -123,16 +107,33 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 
 			if (playlistsState is not null)
 			{
-				dispatcher.Dispatch(new SpotifyPlaylistsActionStorageStateSet(playlistsState));
-				dispatcher.Dispatch(new SpotifyPlaylistsActionStorageGetStateSuccess());
+				dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageState(playlistsState));
+				dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageStateSuccess());
 			}
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageGetStateFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageStateFailure(ex.Message));
 		}
 	}
-	[EffectMethod(typeof(SpotifyPlaylistsActionStorageStateClear))]
+
+	[EffectMethod]
+	public async Task SetStorageState(SpotifyPlaylistsActionSetStorageState action, IDispatcher dispatcher)
+	{
+		try
+		{
+			// set item
+			await _localStorageService.SetItemAsync(_localStorageStateName, action.PlaylistsState);
+
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageStateSuccess());
+		}
+		catch (Exception ex)
+		{
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageStateFailure(ex.Message));
+		}
+	}
+
+	[EffectMethod(typeof(SpotifyPlaylistsActionClearStorageState))]
 	public async Task ClearStorageState(IDispatcher dispatcher)
 	{
 		try
@@ -140,18 +141,18 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 			// remove item
 			await _localStorageService.RemoveItemAsync(_localStorageStateName);
 
-			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageStateSet(new()
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageState(new()
 			{
 				Initialized = false,
 				LoadingStorage = false,
 				LoadingApi = false,
 				List = new(),
 			}));
-			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageClearStateSuccess());
+			dispatcher.Dispatch(new SpotifyPlaylistsActionClearStorageStateSuccess());
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageClearStateFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionClearStorageStateFailure(ex.Message));
 		}
 	}
 }
