@@ -43,11 +43,12 @@ public static class Enums
 		UserPlaylistsState,
 	}
 
-	public enum UpdateType
+	public enum MenuButtonsType
 	{
 		Artists,
 		Releases,
 		Playlists,
+		Date,
 	}
 
 

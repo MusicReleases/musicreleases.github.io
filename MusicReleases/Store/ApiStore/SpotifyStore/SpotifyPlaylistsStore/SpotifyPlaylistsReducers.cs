@@ -4,15 +4,7 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylist
 
 public static class SpotifyPlaylistsReducers
 {
-	[ReducerMethod]
-	public static SpotifyPlaylistsState OnSetPlaylists(SpotifyPlaylistsState state, SpotifyPlaylistsActionSet action)
-	{
-		return state with
-		{
-			List = action.Playlists,
-		};
-	}
-
+	// init
 	[ReducerMethod(typeof(SpotifyPlaylistsActionInitialized))]
 	public static SpotifyPlaylistsState OnSetInitialized(SpotifyPlaylistsState state)
 	{
@@ -22,47 +14,68 @@ public static class SpotifyPlaylistsReducers
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyPlaylistsActionGet))]
-	public static SpotifyPlaylistsState OnLoadPlaylists(SpotifyPlaylistsState state)
-	{
-		return state with
-		{
-			//Loading2 = true,
-		};
-	}
 
+	// get storage
 	[ReducerMethod(typeof(SpotifyPlaylistsActionGetStorage))]
-	public static SpotifyPlaylistsState OnPlaylistStorageGet(SpotifyPlaylistsState state)
+	public static SpotifyPlaylistsState OnPlaylistGetStorage(SpotifyPlaylistsState state)
 	{
 		return state with
 		{
 			LoadingStorage = true,
 		};
 	}
-
-	[ReducerMethod(typeof(SpotifyPlaylistsActionGetApi))]
-	public static SpotifyPlaylistsState OnPlaylistApiGet(SpotifyPlaylistsState state)
-	{
-		return state with
-		{
-			LoadingApi = true,
-		};
-	}
-
 	[ReducerMethod(typeof(SpotifyPlaylistsActionGetStorageSuccess))]
-	public static SpotifyPlaylistsState OnPlaylistStorageGetSucces(SpotifyPlaylistsState state)
+	public static SpotifyPlaylistsState OnPlaylistGetStorageSuccess(SpotifyPlaylistsState state)
 	{
 		return state with
 		{
 			LoadingStorage = false,
 		};
 	}
-	[ReducerMethod(typeof(SpotifyPlaylistsActionGetApiSuccess))]
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetStorageFailure))]
+	public static SpotifyPlaylistsState OnPlaylistGetStorageFailure(SpotifyPlaylistsState state)
+	{
+		return state with
+		{
+			Error = true,
+			LoadingStorage = false,
+		};
+	}
+
+	// get api
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetApi))]
+	public static SpotifyPlaylistsState OnPlaylistGetApi(SpotifyPlaylistsState state)
+	{
+		return state with
+		{
+			LoadingApi = true,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyPlaylistsActionApiGetSuccess))]
 	public static SpotifyPlaylistsState OnPlaylistApiGetSucces(SpotifyPlaylistsState state)
 	{
 		return state with
 		{
 			LoadingApi = false,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyPlaylistsActionGetApiFailure))]
+	public static SpotifyPlaylistsState OnPlaylistGetApiFailure(SpotifyPlaylistsState state)
+	{
+		return state with
+		{
+			Error = true,
+			LoadingApi = false,
+		};
+	}
+
+	// set
+	[ReducerMethod]
+	public static SpotifyPlaylistsState OnSetPlaylists(SpotifyPlaylistsState state, SpotifyPlaylistsActionSet action)
+	{
+		return state with
+		{
+			List = action.Playlists,
 		};
 	}
 }

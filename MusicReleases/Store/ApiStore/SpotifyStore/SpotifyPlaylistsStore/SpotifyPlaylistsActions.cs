@@ -11,7 +11,7 @@ public record SpotifyPlaylistsActionGetSuccess();
 public record SpotifyPlaylistsActionGetFailure(string ErrorMessage);
 // get api
 public record SpotifyPlaylistsActionGetApi(SpotifyUserList<SpotifyPlaylist>? Playlists, bool ForceUpdate);
-public record SpotifyPlaylistsActionGetApiSuccess();
+public record SpotifyPlaylistsActionApiGetSuccess();
 public record SpotifyPlaylistsActionGetApiFailure(string ErrorMessage);
 // get local storage
 public record SpotifyPlaylistsActionGetStorage(bool ForceUpdate);
@@ -28,7 +28,7 @@ public record SpotifyPlaylistsActionSetStorageFailure(string ErrorMessage);
 
 // TODO persist state
 // local storage -> set
-public record SpotifyPlaylistsActionStorageStateSet(SpotifyPlaylistsState PlaylistsState); // persists state
+public record SpotifyPlaylistsActionStorageStateSet(SpotifyPlaylistsState PlaylistsState);
 public record SpotifyPlaylistsActionStorageSetStateSuccess();
 public record SpotifyPlaylistsActionStorageSetStateFailure(string ErrorMessage);
 

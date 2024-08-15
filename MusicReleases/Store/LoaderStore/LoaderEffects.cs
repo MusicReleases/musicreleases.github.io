@@ -47,7 +47,7 @@ public class LoaderEffects(IState<SpotifyPlaylistsState> spotifyPlaylistsState, 
 	{
 		await StopLoading(dispatcher);
 	}
-	[EffectMethod(typeof(SpotifyPlaylistsActionGetApiSuccess))]
+	[EffectMethod(typeof(SpotifyPlaylistsActionApiGetSuccess))]
 	public async Task LoadOnSpotifyPlaylistApiLoadSuccess(IDispatcher dispatcher)
 	{
 		await StopLoading(dispatcher);

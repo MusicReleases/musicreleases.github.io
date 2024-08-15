@@ -1,10 +1,8 @@
 ﻿@using Fluxor
 @using JakubKastner.MusicReleases.Controllers.ApiControllers
 @using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore
 
 @inject IApiLoginController _apiLoginController;
-@inject ISpotifyPlaylistsController _spotifyPlaylistsController;
 
 @if (!_apiLoginController.IsUserLoggedIn())
 {
@@ -12,9 +10,11 @@
 }
 else
 {
-	
-	<button class="update" @onclick="Update">
-		<i class="fas fa-sync-alt" aria-hidden="true"></i>
+	<button class="show-hide icon-text left">
 		@ChildContent
+		@if (DisplayTitle)
+		{
+			@_title
+		}
 	</button>
 }

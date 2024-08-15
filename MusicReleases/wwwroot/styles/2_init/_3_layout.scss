@@ -9,9 +9,9 @@ $margin_right_icon: 5px;
 
 // page width
 $width_menu_releases: 130px;
-$width_menu_playlist: 240px; // 1
-$width_menu_date: 160px; // 3
-$width_menu_artists: 190px; // 4
+$width_menu_playlist: 280px; // 1
+$width_menu_date: 170px; // 3
+$width_menu_artists: 230px; // 4
 $width_main: calc(100vw - #{$width_menu_releases} - #{$width_menu_playlist} - #{$width_menu_date} - #{$width_menu_artists}); // 2
 
 // page height

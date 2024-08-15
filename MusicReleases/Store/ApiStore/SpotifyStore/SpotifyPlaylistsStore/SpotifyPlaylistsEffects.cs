@@ -16,9 +16,9 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	private readonly ISpotifyControllerPlaylist _spotifyControllerPlaylist = spotifyControllerPlaylist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
-	// LOAD
+	// GET
 	[EffectMethod]
-	public async Task Load(SpotifyPlaylistsActionGet action, IDispatcher dispatcher)
+	public async Task Get(SpotifyPlaylistsActionGet action, IDispatcher dispatcher)
 	{
 		// TODO must be task
 		await Task.Delay(0);
@@ -34,11 +34,11 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	}
 
 	[EffectMethod]
-	public async Task LoadStorage(SpotifyPlaylistsActionGetStorage action, IDispatcher dispatcher)
+	public async Task GetStorage(SpotifyPlaylistsActionGetStorage action, IDispatcher dispatcher)
 	{
 		try
 		{
-			// get item
+			// get item from storage
 			var playlists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyPlaylist>>(_localStorageName);
 
 			if (playlists is not null)
@@ -54,18 +54,18 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 	}
 
-
 	[EffectMethod]
-	public async Task LoadApi(SpotifyPlaylistsActionGetApi action, IDispatcher dispatcher)
+	public async Task GetApi(SpotifyPlaylistsActionGetApi action, IDispatcher dispatcher)
 	{
 		try
 		{
+			// get item from api
 			var playlistsStorage = action.Playlists;
 			var playlists = await _spotifyControllerPlaylist.GetUserPlaylists(true, playlistsStorage, action.ForceUpdate);
 
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
 
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApiSuccess());
+			dispatcher.Dispatch(new SpotifyPlaylistsActionApiGetSuccess());
 
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetSuccess());
 
@@ -94,7 +94,8 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 	}
 
-	// local storage:
+
+
 
 	// TODO PersistState
 	[EffectMethod]
@@ -112,8 +113,6 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageSetStateFailure(ex.Message));
 		}
 	}
-
-
 	[EffectMethod(typeof(SpotifyPlaylistsActionStorageGetState))]
 	public async Task LoadStorageState(IDispatcher dispatcher)
 	{
@@ -133,7 +132,6 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 			dispatcher.Dispatch(new SpotifyPlaylistsActionStorageGetStateFailure(ex.Message));
 		}
 	}
-
 	[EffectMethod(typeof(SpotifyPlaylistsActionStorageStateClear))]
 	public async Task ClearStorageState(IDispatcher dispatcher)
 	{

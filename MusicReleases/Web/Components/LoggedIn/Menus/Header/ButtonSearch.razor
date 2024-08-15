@@ -12,9 +12,18 @@
 }
 else
 {
-	
-	<button class="update" @onclick="Update">
-		<i class="fas fa-sync-alt" aria-hidden="true"></i>
+	@* TODO searching *@
+	@* if (_searching)
+	{
+		<InputText class="search" placeholder="@_searchText" @bind-Value="_searchValue" @ref="_inputTextSearchValue" />
+
+		<button class="clear" title="Clear search" @onclick="SearchStop">
+			<i class="fas fa-times" aria-hidden="true"></i>
+		</button>
+	}
+
+	<button class="search" @onclick="SearchStart">
+		<i class="fas fa-search" aria-hidden="true"></i>
 		@ChildContent
-	</button>
+	</button> *@
 }

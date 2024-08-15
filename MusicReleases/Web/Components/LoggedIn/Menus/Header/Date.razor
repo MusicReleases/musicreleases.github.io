@@ -1,15 +1,14 @@
-﻿<div class="menu date buttons-rounded-l">
-	<button class="show-hide icon-text">
+﻿@using static JakubKastner.MusicReleases.Base.Enums
+
+<div class="menu date buttons-rounded-l">
+
+	<ButtonTitle Type="_type" DisplayTitle="_displayTitle">
 		<i class="fas fa-calendar-alt" aria-hidden="true"></i>
-		Date
-	</button>
-	<button class="clear" title="Clear filter" style="display: none;">
-		<i class="fas fa-times" aria-hidden="true"></i>
-	</button>
-	<input type="text" class="search" placeholder="Search date">
-	<button class="search">
-		<i class="fas fa-search" aria-hidden="true"></i>
-	</button>
+	</ButtonTitle>
+
+	<ButtonSearch Type="_type" OnSearching="DisplayTitle"></ButtonSearch>
+	<ButtonSort Type="_type"></ButtonSort>
+
 	<button class="close">
 		<i class="fas fa-times" aria-hidden="true"></i>
 	</button>

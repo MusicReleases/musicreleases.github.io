@@ -6,7 +6,13 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
 public partial class ButtonUpdate
 {
 	[Parameter, EditorRequired]
-	public UpdateType Type { get; set; }
+	public MenuButtonsType Type { get; set; }
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter, EditorRequired]
+	public EventCallback<bool> OnUpdating { get; set; }
 
 	private void Update()
 	{
@@ -14,13 +20,15 @@ public partial class ButtonUpdate
 
 		if (serviceType == ServiceType.Spotify)
 		{
+			OnUpdating.InvokeAsync(true);
+
 			switch (Type)
 			{
-				case UpdateType.Artists:
+				case MenuButtonsType.Artists:
 					break;
-				case UpdateType.Releases:
+				case MenuButtonsType.Releases:
 					break;
-				case UpdateType.Playlists:
+				case MenuButtonsType.Playlists:
 					_spotifyPlaylistsController.GetPlaylists(true);
 					break;
 				default:
