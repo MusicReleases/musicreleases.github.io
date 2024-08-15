@@ -6,7 +6,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 
-public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControllerPlaylist, ILocalStorageService localStorageService)
+public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControllerPlaylist, ILocalStorageService localStorageService, IState<SpotifyPlaylistsState> playlistsState)
 {
 	private const ServiceType serviceType = ServiceType.Spotify;
 
@@ -16,7 +16,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	private readonly ISpotifyControllerPlaylist _spotifyControllerPlaylist = spotifyControllerPlaylist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
-	//private readonly IState<SpotifyArtistsState> _artistsState = artistsState;
+	private readonly IState<SpotifyPlaylistsState> _playlistsState = playlistsState;
 
 	// GET
 	[EffectMethod]
@@ -68,6 +68,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 	}
 
+
 	// SET
 	[EffectMethod]
 	public async Task SetStorage(SpotifyPlaylistsActionSetStorage action, IDispatcher dispatcher)
@@ -87,6 +88,17 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 
 
 	// TODO PERSIST STATE
+
+	// TODO persist state when failed ??
+	[EffectMethod(typeof(SpotifyPlaylistsActionGetApiFailure))]
+	public async Task GetApiFailure(IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageState(_playlistsState.Value));
+	}
+
 	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorageState))]
 	public async Task GetStorageState(IDispatcher dispatcher)
 	{

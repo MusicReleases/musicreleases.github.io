@@ -1,13 +1,25 @@
-﻿@using static JakubKastner.MusicReleases.Base.Enums
+﻿@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
+@using static JakubKastner.MusicReleases.Base.Enums
+
+@inherits FluxorComponent
+
+@inject IState<SpotifyArtistsState> _stateSpotifyArtists
+
+
 <div class="menu artists buttons-rounded-l">
 
 	<ButtonTitle Type="_type" DisplayTitle="_displayTitle">
 		<i class="fas fa-users" aria-hidden="true"></i>
 	</ButtonTitle>
-
-	<ButtonSearch Type="_type" OnSearching="DisplayTitle"></ButtonSearch>
-	<ButtonSort Type="_type"></ButtonSort>
-	<ButtonUpdate Type="_type" OnUpdating="DisplayTitle"></ButtonUpdate>
+	
+	@if (!_stateSpotifyArtists.Value.LoadingAny())
+	{
+		<ButtonSearch Type="_type" OnSearching="DisplayTitle"></ButtonSearch>
+		<ButtonSort Type="_type"></ButtonSort>
+		<ButtonUpdate Type="_type" OnUpdating="DisplayTitle"></ButtonUpdate>
+	}
 
 	<button class="close">
 		<i class="fas fa-times" aria-hidden="true"></i>

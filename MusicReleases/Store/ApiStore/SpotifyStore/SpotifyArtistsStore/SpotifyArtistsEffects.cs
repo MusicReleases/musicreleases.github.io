@@ -6,7 +6,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IState<SpotifyArtistsState> artistsState)
+public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService)
 {
 	private const ServiceType serviceType = ServiceType.Spotify;
 

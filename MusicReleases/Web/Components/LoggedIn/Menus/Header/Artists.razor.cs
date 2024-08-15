@@ -8,8 +8,8 @@ public partial class Artists
 	private readonly MenuButtonsType _type = MenuButtonsType.Artists;
 
 
-	private void DisplayTitle(bool displaTitle)
+	private void DisplayTitle(bool displayTitle)
 	{
-		_displayTitle = displaTitle;
+		_displayTitle = displayTitle;
 	}
 }
