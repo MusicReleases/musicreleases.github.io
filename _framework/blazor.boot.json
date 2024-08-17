@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MusicReleases",
   "resources": {
-    "hash": "sha256-sau9xy8sdPLLJ2kF0ISJnlUj7FpqbMgXNhCj2OViyyw=",
+    "hash": "sha256-oSqRhZoQc9nR5ClzIu1mr/Q+PJ1OgGk8IMN8PpaWS9w=",
     "jsModuleNative": {
       "dotnet.native.8.0.8.8324hx5xdp.js": "sha256-R0yxDcHdZFPj9Hu1+1GFeuZwnRKmUSR4eC8qD0Jp0Y0="
     },
@@ -22,7 +22,7 @@
       "Fluxor.Blazor.Web.wasm": "sha256-EQY4gKqrJmDxIMv//eRwx0R5QItoj2wrFMh9SGea6RE=",
       "Fluxor.wasm": "sha256-QxsT3q2RKCTpONQ/VtLJDj0LKq/xEGj9veYEqkI/PSI=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-u/NSBuwNzsSsycAtQIR8yMPixxIguv6g+xkxZzpzvGw=",
-      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-MIXSHue1tQfmrp31IJnk2CC4MjUwnxliG+E2j8Le5Ho=",
+      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-eAD58WIY74jI8lOjIsnaDGrrlTJysrxqlXjXd/BRO1c=",
       "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-fPxnSIZZoZh3W05KUfK9pde3Pp3MKV1ZL4EXh2G5/q0=",
       "Microsoft.AspNetCore.WebUtilities.wasm": "sha256-x2zd/Ojl3PaxX1CyuhZqswNvppLjSLGIqSoTunu9GP0=",
       "Microsoft.CSharp.wasm": "sha256-XA0E1Z4IhJcopS/t3N9Eh4Bc5WcG0w/f2Vzrm0EegS8=",
@@ -37,9 +37,9 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-ua1wkm/TaUVHLRtctUs/Y1edQGwgGt4ABa/len7PZng=",
       "Microsoft.JSInterop.wasm": "sha256-uWL4ilcDL56OHoj70RPTVkwlCEIafRhH+8Y6glj0lXY=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-rhDkGvVEd5YGb2JsVk1xQC7gCF8TXNfpDfo9dGFhuyI=",
-      "MusicReleases.wasm": "sha256-HeEomHuxR/V0hv21g4Y46/Xly3c8I+OHWIigaixuhNw=",
+      "MusicReleases.wasm": "sha256-9gV+604Ou7N45kMVt0oK1X2sTtt6xYIy8JOqDVv4d+E=",
       "Newtonsoft.Json.wasm": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
-      "SpotifyApi.wasm": "sha256-6oaNObPK3gzGGoKxb/FAX+KkNit7botNf85gpJCv414=",
+      "SpotifyApi.wasm": "sha256-qbbzpJTxZd3Sy5TkHfXnQeW9dBk0FiDr/JUaPS0UaiI=",
       "SpotifyAPI.Web.wasm": "sha256-HEov8aFa5woJ1+WcGsrQRw1ij0jq4mdbH2rANvzr5cI=",
       "System.Collections.Concurrent.wasm": "sha256-jKXI5FtDd1KTo1oBRZc+yln/NFF9Vu12pbCcWmTZq+E=",
       "System.Collections.Immutable.wasm": "sha256-HzmQdkweArtMFcFykvpoU/drIMyB5+Mm1owxD4Hc2r0=",
