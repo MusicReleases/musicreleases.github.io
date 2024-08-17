@@ -6,13 +6,14 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService)
+public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser, ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService)
 {
 	private const ServiceType serviceType = ServiceType.Spotify;
 
 	private readonly string _localStorageName = GetLocalStorageKey(serviceType, LocalStorageKey.UserArtists);
 	private readonly string _localStorageStateName = GetLocalStorageKey(serviceType, LocalStorageKey.UserArtistsState);
 
+	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
@@ -32,6 +33,9 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 	{
 		try
 		{
+			// clear new aritsts
+			dispatcher.Dispatch(new SpotifyArtistsNewActionClear());
+
 			// get item from storage
 			var artists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyArtist>>(_localStorageName);
 
@@ -54,12 +58,19 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 		try
 		{
 			// get item from api
-			var playlistsStorage = action.Artists;
-			var playlists = await _spotifyControllerArtist.GetUserFollowedArtists(playlistsStorage, action.ForceUpdate);
+			var artistsStorage = action.Artists;
+			var artists = await _spotifyControllerArtist.GetUserFollowedArtists(artistsStorage, action.ForceUpdate);
+
+			var newArtists = new HashSet<SpotifyArtist>();
+			if (artistsStorage?.List is not null && artists.List is not null)
+			{
+				newArtists = artists.List.Except(artistsStorage.List).ToHashSet();
+			}
+
 			dispatcher.Dispatch(new SpotifyArtistsActionGetApiSuccess());
 
-			dispatcher.Dispatch(new SpotifyArtistsActionSet(playlists));
-			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(playlists, action.ForceUpdate));
+			dispatcher.Dispatch(new SpotifyArtistsActionSet(artists, newArtists));
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(artists, action.ForceUpdate));
 		}
 		catch (Exception ex)
 		{

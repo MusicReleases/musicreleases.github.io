@@ -23,7 +23,8 @@ public record SpotifyArtistsActionGetStorageSuccess();
 public record SpotifyArtistsActionGetStorageFailure(string ErrorMessage);
 
 // set artists
-public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist> Artists);
+public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist> Artists, ISet<SpotifyArtist> NewArtists);
+public record SpotifyArtistsNewActionClear();
 
 // set local storage
 public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist> Artists, bool ForceUpdate);

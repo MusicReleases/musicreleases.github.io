@@ -21,7 +21,6 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IControllerApiArtist, ControllerApiArtist>();
 		services.AddScoped<IControllerApiPlaylist, ControllerApiPlaylist>();
 		services.AddScoped<IControllerApiRelease, ControllerApiRelease>();
-		services.AddScoped<IControllerApiTrack, ControllerApiTrack>();
 		services.AddScoped<IControllerApiUser, ControllerApiUser>();
 
 		// controllers

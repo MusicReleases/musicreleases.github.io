@@ -31,21 +31,27 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 			return existingArtists!;
 		}
 
-		var artists = await GetUserArtistsApi(forceUpdate);
+		var artists = await GetUserArtistsApi(existingArtists, forceUpdate);
 		return artists;
 	}
 
-	private async Task<SpotifyUserList<SpotifyArtist>> GetUserArtistsApi(bool forceUpdate = false)
+	private async Task<SpotifyUserList<SpotifyArtist>> GetUserArtistsApi(SpotifyUserList<SpotifyArtist>? existingArtists, bool forceUpdate)
 	{
+		SpotifyUserList<SpotifyArtist>? artists;
 		var user = _controllerUser.GetUserRequired();
 
-		if (user.FollowedArtists?.List is null || forceUpdate)
+		if (existingArtists?.List is null || forceUpdate)
 		{
 			var artistsApi = await _controllerApiArtist.GetUserFollowedArtistsFromApi();
-			user.FollowedArtists = new(artistsApi, DateTime.Now);
+			artists = new(artistsApi, DateTime.Now);
+		}
+		else
+		{
+			artists = existingArtists;
 		}
 
-		var artists = user.FollowedArtists;
+		user.FollowedArtists = artists;
+
 		return artists;
 	}
 }

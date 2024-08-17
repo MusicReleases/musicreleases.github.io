@@ -9,7 +9,6 @@ public class SpotifyUser
 
 	public SpotifyUserList<SpotifyPlaylist>? Playlists { get; set; }
 	public SpotifyUserList<SpotifyArtist>? FollowedArtists { get; set; }
-	public SpotifyUserList<SpotifyRelease>? ReleasedAlbums { get; set; }
 
 	public SpotifyUser() { }
 

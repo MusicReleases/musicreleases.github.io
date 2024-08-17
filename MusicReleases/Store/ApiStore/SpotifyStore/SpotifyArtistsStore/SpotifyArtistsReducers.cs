@@ -1,4 +1,5 @@
 ﻿using Fluxor;
+using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
@@ -60,11 +61,22 @@ public static class SpotifyArtistsReducers
 
 	// set
 	[ReducerMethod]
-	public static SpotifyArtistsState OnSetPlaylists(SpotifyArtistsState state, SpotifyArtistsActionSet action)
+	public static SpotifyArtistsState OnSetArtists(SpotifyArtistsState state, SpotifyArtistsActionSet action)
 	{
 		return state with
 		{
 			List = action.Artists,
+			NewArtists = action.NewArtists,
+		};
+	}
+
+	// clear
+	[ReducerMethod]
+	public static SpotifyArtistsState OnClearArtistsNew(SpotifyArtistsState state, SpotifyArtistsNewActionClear action)
+	{
+		return state with
+		{
+			NewArtists = new HashSet<SpotifyArtist>(),
 		};
 	}
 

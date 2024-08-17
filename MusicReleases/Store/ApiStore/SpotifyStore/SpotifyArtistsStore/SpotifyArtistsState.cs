@@ -4,4 +4,5 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsS
 
 public record SpotifyArtistsState : SpotifyObjectState<SpotifyArtist>
 {
+	public ISet<SpotifyArtist> NewArtists { get; init; } = new HashSet<SpotifyArtist>();
 }

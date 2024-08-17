@@ -3,10 +3,9 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlaylist, IControllerApiTrack controllerApiTrack, ISpotifyControllerUser controllerUser) : ISpotifyControllerPlaylist
+public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlaylist, ISpotifyControllerUser controllerUser) : ISpotifyControllerPlaylist
 {
 	private readonly IControllerApiPlaylist _controllerApiPlaylist = controllerApiPlaylist;
-	private readonly IControllerApiTrack _controllerApiTrack = controllerApiTrack;
 	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
 	// get list of user playlists
@@ -134,7 +133,7 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 
 	private async Task<SpotifyUserList<SpotifyPlaylist>> GetPlaylistsTracksApi(ISet<SpotifyPlaylist> playlistsSaved, bool forceUpdate, DateTime lastUpdateMain)
 	{
-		var playlists = await _controllerApiPlaylist.GetUserPlaylistsTracksFromApi(playlistsSaved, forceUpdate);
+		var playlists = await _controllerApiPlaylist.GetPlaylistsTracksFromApi(playlistsSaved, forceUpdate);
 		var playlistStorage = new SpotifyUserList<SpotifyPlaylist>(playlists, lastUpdateMain, DateTime.Now);
 		return playlistStorage;
 	}
