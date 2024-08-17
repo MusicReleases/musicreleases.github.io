@@ -16,7 +16,7 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 		}
 		else
 		{
-			var dateTimeDifference = DateTime.Now - existingArtists.LastUpdate;
+			var dateTimeDifference = DateTime.Now - existingArtists.LastUpdateMain;
 
 			if (dateTimeDifference.TotalHours >= 24)
 			{

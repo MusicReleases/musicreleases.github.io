@@ -10,37 +10,84 @@ public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease
 	private readonly ISpotifyControllerArtist _controllerArtist = controllerArtist;
 
 	// get all releases for user followed artists
-	public async Task<ISet<SpotifyRelease>> GetAllReleasesFromUserFollowed(ReleaseType releaseType = ReleaseType.Albums)
+	public async Task<SpotifyUserListReleases<SpotifyRelease>> GetAllReleasesFromUserFollowed(ReleaseType releaseType = ReleaseType.Albums, SpotifyUserListReleases<SpotifyRelease>? existingReleases = null, bool forceUpdate = false)
+	{
+		var otherType = false;
+
+		if (existingReleases is null)
+		{
+			forceUpdate = true;
+		}
+		else if (!existingReleases.List!.Any(x => x.ReleaseType == releaseType))
+		{
+			// not found any reqired release type
+			forceUpdate = true;
+			otherType = true;
+		}
+		else
+		{
+			var dateTimeDifference = DateTime.Now - existingReleases.LastUpdateMain;
+
+			if (dateTimeDifference.TotalHours >= 24)
+			{
+				// force update every 24 hours
+				forceUpdate = true;
+			}
+		}
+
+		if (!forceUpdate)
+		{
+			// doesnt need update
+
+			// TODO editable playlists switch ???
+			return existingReleases!;
+		}
+
+		var releases = await GetAllReleasesApi(releaseType, existingReleases, forceUpdate);
+		if (otherType)
+		{
+			//releases
+		}
+		return releases;
+	}
+
+	public async Task<SpotifyUserListReleases<SpotifyRelease>> GetAllReleasesApi(ReleaseType releaseType = ReleaseType.Albums, SpotifyUserListReleases<SpotifyRelease>? existingReleases = null, bool forceUpdate = false)
 	{
 		if (releaseType == ReleaseType.Podcasts)
 		{
-			return await GetAllReleasesFromUserFollowedPodcasts();
+			return await GetAllReleasesFromUserFollowedPodcasts(existingReleases, forceUpdate);
 		}
 
-		return await GetAllReleasesFromUserFollowedArtists(releaseType);
+		return await GetAllReleasesFromUserFollowedArtists(releaseType, existingReleases, forceUpdate);
 	}
 
-	private async Task<ISet<SpotifyRelease>> GetAllReleasesFromUserFollowedArtists(ReleaseType releaseType)
+	private async Task<SpotifyUserListReleases<SpotifyRelease>> GetAllReleasesFromUserFollowedArtists(ReleaseType releaseType, SpotifyUserListReleases<SpotifyRelease>? existingReleases = null, bool forceUpdate = false)
 	{
 		if (releaseType == ReleaseType.Podcasts)
 		{
 			throw new NotSupportedException(nameof(releaseType));
 		}
 
-		// TODO provide saved artists
-		var artists = await _controllerArtist.GetUserFollowedArtists();
-		SortedSet<SpotifyRelease> releases = [];
+		// TODO provide saved artists && force update
+		var artists = await _controllerArtist.GetUserFollowedArtists(null, false);
 
+		if (artists.List is null)
+		{
+			throw new NullReferenceException(nameof(artists.List));
+		}
+
+		var releases = existingReleases?.List ?? new SortedSet<SpotifyRelease>();
 		foreach (var artist in artists.List)
 		{
 			var artistReleases = await GetArtistReleases(artist, releaseType);
 			releases.UnionWith(artistReleases);
 		}
 
-		return releases;
+		var releasesList = new SpotifyUserListReleases<SpotifyRelease>(releases, DateTime.Now, releaseType);
+		return releasesList;
 	}
 
-	private async Task<ISet<SpotifyRelease>> GetAllReleasesFromUserFollowedPodcasts()
+	private async Task<SpotifyUserListReleases<SpotifyRelease>> GetAllReleasesFromUserFollowedPodcasts(SpotifyUserListReleases<SpotifyRelease>? existingReleases = null, bool forceUpdate = false)
 	{
 		// TODO podcasts
 		throw new NotImplementedException(nameof(GetAllReleasesFromUserFollowedPodcasts));

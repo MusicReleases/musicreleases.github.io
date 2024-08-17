@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.MusicReleases.Base.Enums;
+using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
 
@@ -25,12 +26,15 @@ public partial class ButtonUpdate
 			switch (Type)
 			{
 				case MenuButtonsType.Artists:
-					_spotifyArtistsController.GetArtists(true);
+					// TODO releases type
+					_workflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
 					break;
 				case MenuButtonsType.Releases:
+					// TODO releases type
+					_workflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
 					break;
 				case MenuButtonsType.Playlists:
-					_spotifyPlaylistsController.GetPlaylists(true);
+					_workflowController.StartLoadingPlaylistsWithTracks(true);
 					break;
 				default:
 					throw new NotSupportedException(nameof(Type));

@@ -24,7 +24,7 @@ public partial class MenuArtists
 
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
-			_spotifyArtistsController.GetArtists();
+			//_spotifyArtistsController.GetArtists();
 		}
 	}
 }

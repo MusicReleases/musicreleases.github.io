@@ -5,5 +5,5 @@ namespace JakubKastner.SpotifyApi.Controllers;
 
 public interface ISpotifyControllerRelease
 {
-	Task<ISet<SpotifyRelease>> GetAllReleasesFromUserFollowed(SpotifyEnums.ReleaseType releaseType = SpotifyEnums.ReleaseType.Albums);
+	Task<SpotifyUserListReleases<SpotifyRelease>> GetAllReleasesFromUserFollowed(SpotifyEnums.ReleaseType releaseType = SpotifyEnums.ReleaseType.Albums, SpotifyUserListReleases<SpotifyRelease>? existingReleases = null, bool forceUpdate = false);
 }

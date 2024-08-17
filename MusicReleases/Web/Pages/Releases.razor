@@ -15,7 +15,9 @@
 @using JakubKastner.SpotifyApi.Objects
 @using static JakubKastner.SpotifyApi.Base.SpotifyEnums
 
-@inherits FluxorComponent;
+@inherits FluxorComponent
+
+@inject ISpotifyWorkflowController _spotifyWorkflowController
 
 @* @inject IDispatcher _dispatcher *@
 @inject IState<SpotifyReleasesState> _stateSpotifyReleases
@@ -26,7 +28,9 @@
 @inject NavigationManager _navManager
 @inject IApiLoginController _apiLoginController
 
-<button type="button" @onclick="SaveToStorage">
+<p>Releases TODO</p>
+
+@* <button type="button" @onclick="SaveToStorage">
 	save
 </button>
 
@@ -52,4 +56,4 @@ else
 			</LoadingTemplate>
 		</InfiniteScrolling>
 	</div>
-}
+} *@

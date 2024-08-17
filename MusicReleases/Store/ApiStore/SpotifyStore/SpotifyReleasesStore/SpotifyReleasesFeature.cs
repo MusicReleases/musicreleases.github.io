@@ -4,18 +4,10 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleases
 
 public class SpotifyReleasesFeature : Feature<SpotifyReleasesState>
 {
-	public override string GetName()
-	{
-		return "ApiSpotifyReleases";
-	}
+	public override string GetName() => "ApiSpotifyReleases";
 
 	protected override SpotifyReleasesState GetInitialState()
 	{
-		return new()
-		{
-			Initialized = false,
-			Loading = false,
-			Releases = [],
-		};
+		return new();
 	}
 }

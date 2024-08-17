@@ -1,30 +1,16 @@
-﻿/*using Fluxor;
+﻿using Fluxor;
+using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-namespace JakubKastner.MusicReleases.Store;
-
-public class TestMiddleware : Middleware
+public class TestMiddleware(IDispatcher dispatcher) : Middleware
 {
-	// TODO https://code-maze.com/fluxor-for-state-management-in-blazor/
-	public Task InitializeAsync(IStore store)
-	{
-		return Task.CompletedTask;
-	}
+	private readonly IDispatcher _dispatcher = dispatcher;
 
-	public override void AfterInitializeAllMiddlewares()
-	{
-
-	}
-
-	public override bool MayDispatchAction(object action)
-	{
-		return true;
-	}
-	public override void BeforeDispatch(object action)
-	{
-
-	}
 	public override void AfterDispatch(object action)
 	{
-
+		var actionType = action.GetType();
+		if (actionType == typeof(SpotifyArtistsActionGetSuccess))
+		{
+			Console.WriteLine("aa");
+		}
 	}
-}*/
+}

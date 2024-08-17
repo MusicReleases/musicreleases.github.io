@@ -1,8 +1,9 @@
 ﻿namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyIdObject(string id) : IComparable
+public class SpotifyIdNameObject(string id, string name) : IComparable
 {
 	public string Id { get; init; } = id;
+	public string Name { get; init; } = name;
 
 	public int CompareTo(object? obj)
 	{
@@ -11,8 +12,10 @@ public class SpotifyIdObject(string id) : IComparable
 			return -1;
 		}
 
-		var other = (SpotifyIdObject)obj;
-		return Id.CompareTo(other.Id);
+		var other = (SpotifyIdNameObject)obj;
+		var nameComparison = Name.CompareTo(other.Name);
+
+		return (nameComparison != 0) ? nameComparison : Id.CompareTo(other.Id);
 	}
 
 	public override bool Equals(object? obj)

@@ -25,7 +25,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		// TODO must be task
 		await Task.Delay(0);
 
-		dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorage(action.ForceUpdate));
+		dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorage(action.ForceUpdate) { CompletionSource = action.CompletionSource });
 	}
 
 	[EffectMethod]
@@ -41,11 +41,12 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 				dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
 			}
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageSuccess());
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApi(playlists, action.ForceUpdate));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApi(playlists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageFailure(ex.Message));
+			action.CompletionSource.SetResult(false);
 		}
 	}
 
@@ -61,10 +62,12 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorage(playlists));
+			action.CompletionSource.SetResult(true);
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApiFailure(ex.Message));
+			action.CompletionSource.SetResult(false);
 		}
 	}
 

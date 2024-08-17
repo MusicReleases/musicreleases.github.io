@@ -7,7 +7,6 @@ public partial class Playlists
 	private bool _displayTitle = true;
 	private readonly MenuButtonsType _type = MenuButtonsType.Playlists;
 
-
 	private void DisplayTitle(bool displayTitle)
 	{
 		_displayTitle = displayTitle;

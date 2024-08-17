@@ -2,9 +2,6 @@
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
 
-public record SpotifyReleasesState
+public record SpotifyReleasesState : SpotifyObjectState<SpotifyRelease>
 {
-	public bool Initialized { get; init; }
-	public bool Loading { get; init; }
-	public SortedSet<SpotifyRelease>? Releases { get; init; }
 }

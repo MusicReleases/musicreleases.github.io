@@ -59,7 +59,7 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 			dispatcher.Dispatch(new SpotifyArtistsActionGetApiSuccess());
 
 			dispatcher.Dispatch(new SpotifyArtistsActionSet(playlists));
-			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(playlists));
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(playlists, action.ForceUpdate));
 		}
 		catch (Exception ex)
 		{
@@ -76,12 +76,21 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 			// set item
 			await _localStorageService.SetItemAsync(_localStorageName, action.Artists);
 
-			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess(action.ForceUpdate));
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageFailure(ex.Message));
 		}
+	}
+
+	[EffectMethod]
+	public async Task SetStorage(SpotifyArtistsActionSetStorageSuccess action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		dispatcher.Dispatch(new SpotifyArtistsActionGetSuccess(action.ForceUpdate));
 	}
 
 

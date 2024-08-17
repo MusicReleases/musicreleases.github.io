@@ -23,7 +23,7 @@ public partial class MenuPlaylists
 
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
-			_spotifyPlaylistsController.GetPlaylists();
+			//_spotifyPlaylistsController.GetPlaylists();
 		}
 	}
 }

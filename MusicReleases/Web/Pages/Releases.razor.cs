@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.MusicReleases.Base;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
@@ -10,11 +9,51 @@ public partial class Releases
 	[Parameter]
 	public string? Type { get; set; }
 
-	// TODO enable to select and display more than 1 release type
 	private ReleaseType _type;
 
-	private SortedSet<SpotifyRelease>? _releases => /*_spotifyReleasesController.Releases;*/ _stateSpotifyReleases.Value.Releases;
-	private bool _loading => /*_spotifyReleasesController.Loading; */ _stateSpotifyReleases.Value.Loading;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		LoadReleases();
+
+		var userLoggedIn = _apiLoginController.IsUserLoggedIn();
+
+		if (!userLoggedIn)
+		{
+			return;
+		}
+
+		var serviceType = _apiLoginController.GetServiceType();
+
+		if (serviceType == Enums.ServiceType.Spotify)
+		{
+			_spotifyWorkflowController.StartLoadingAll(false, _type);
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// TODO enable to select and display more than 1 release type
+
+	//private SortedSet<SpotifyRelease>? _releases => /*_spotifyReleasesController.Releases;*/ _stateSpotifyReleases.Value.Releases;
+	//private bool _loading => /*_spotifyReleasesController.Loading; */ _stateSpotifyReleases.Value.Loading;
 
 	protected override void OnParametersSet()
 	{
@@ -22,7 +61,7 @@ public partial class Releases
 		LoadReleases();
 	}
 
-	private async Task<IEnumerable<SpotifyRelease>> GetReleases(InfiniteScrollingItemsProviderRequest request)
+	/*private async Task<IEnumerable<SpotifyRelease>> GetReleases(InfiniteScrollingItemsProviderRequest request)
 	{
 		await Task.Delay(0);
 		if (_releases == null)
@@ -30,7 +69,7 @@ public partial class Releases
 			return new SortedSet<SpotifyRelease>();
 		}
 		return _releases.Skip(request.StartIndex).Take(15);
-	}
+	}*/
 
 	private void LoadReleases()
 	{
@@ -61,7 +100,7 @@ public partial class Releases
 
 	private void SaveToStorage()
 	{
-		_spotifyReleasesController.SaveReleasesToStorage();
+		//_spotifyReleasesController.SaveReleasesToStorage();
 		//_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
 	}
 }

@@ -3,7 +3,7 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyTrack : SpotifyIdObject
+public class SpotifyTrack : SpotifyIdNameObject
 {
 	public SpotifyRelease? Album { get; private set; }
 

@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IApiLoginController, SpotifyLoginController>();
 		services.AddScoped<ISpotifyLoginController, SpotifyLoginController>();
 		services.AddScoped<ISpotifyLoginStorageController, SpotifyLoginStorageController>();
+		services.AddScoped<ISpotifyWorkflowController, SpotifyWorkflowController>();
 
 		services.AddScoped<ISpotifyArtistsController, SpotifyArtistsController>();
 		services.AddScoped<ISpotifyPlaylistsController, SpotifyPlaylistsController>();

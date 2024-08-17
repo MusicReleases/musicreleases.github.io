@@ -19,7 +19,7 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 		}
 		else
 		{
-			var dateTimeDifference = DateTime.Now - existingPlaylists.LastUpdate;
+			var dateTimeDifference = DateTime.Now - existingPlaylists.LastUpdateMain;
 
 			if (dateTimeDifference.TotalHours >= 24)
 			{
@@ -59,7 +59,7 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 
 		// TODO settings
 		var editablePlaylists = playlists.List!.Where(p => p.CurrentUserOwned == true || p.Collaborative == true).ToHashSet();
-		playlists = new(editablePlaylists, playlists.LastUpdate);
+		playlists = new(editablePlaylists, playlists.LastUpdateMain);
 
 		return playlists;
 	}
@@ -78,10 +78,65 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 
 		if (getTracks)
 		{
-			var tracks = await _controllerApiTrack.GetPlaylistTracksFromApi(playlistId);
-			playlist.Tracks = [.. tracks];
+			// TODO get tracks
+			/*var tracks = await _controllerApiTrack.GetPlaylistTracksFromApi(playlistId);
+			playlist.Tracks = [.. tracks];*/
 		}
 
 		return playlist;
 	}
+
+	public async Task<SpotifyUserList<SpotifyPlaylist>> GetPlaylistsTracks(SpotifyUserList<SpotifyPlaylist>? playlistsStorage = null, bool forceUpdate = false)
+	{
+
+		// TODO editable
+		var playlists = await GetUserPlaylists(true, playlistsStorage, forceUpdate);
+		if (playlists is null)
+		{
+			// 0 playlists
+			throw new NullReferenceException(nameof(playlists));
+		}
+		if (playlists.List is null)
+		{
+			// 0 playlists
+			return playlists;
+		}
+
+		var dateTimeDifference = DateTime.Now - playlists.LastUpdateSecond;
+
+		if (dateTimeDifference.TotalHours >= 24)
+		{
+			// force update every 24 hours
+			forceUpdate = true;
+		}
+
+
+		if (!forceUpdate)
+		{
+			var existingPlaylistsWithTracks = playlists.List!.Any(x => x.Tracks.Count > 0);
+			if (!existingPlaylistsWithTracks)
+			{
+				forceUpdate = true;
+			}
+		}
+
+		if (!forceUpdate)
+		{
+			// doesnt need update
+
+			// TODO editable playlists switch ???
+			return playlists;
+		}
+
+		var playlistsWithTracks = await GetPlaylistsTracksApi(playlists.List, forceUpdate, playlists.LastUpdateMain);
+		return playlistsWithTracks;
+	}
+
+	private async Task<SpotifyUserList<SpotifyPlaylist>> GetPlaylistsTracksApi(ISet<SpotifyPlaylist> playlistsSaved, bool forceUpdate, DateTime lastUpdateMain)
+	{
+		var playlists = await _controllerApiPlaylist.GetUserPlaylistsTracksFromApi(playlistsSaved, forceUpdate);
+		var playlistStorage = new SpotifyUserList<SpotifyPlaylist>(playlists, lastUpdateMain, DateTime.Now);
+		return playlistStorage;
+	}
+
 }

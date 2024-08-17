@@ -10,6 +10,7 @@ public record SpotifyArtistsActionLoadFailure(string ErrorMessage);
 
 // get artists
 public record SpotifyArtistsActionGet(bool ForceUpdate);
+public record SpotifyArtistsActionGetSuccess(bool ForceUpdate);
 
 // get api
 public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist>? Artists, bool ForceUpdate);
@@ -25,8 +26,8 @@ public record SpotifyArtistsActionGetStorageFailure(string ErrorMessage);
 public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist> Artists);
 
 // set local storage
-public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist> Artists);
-public record SpotifyArtistsActionSetStorageSuccess();
+public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist> Artists, bool ForceUpdate);
+public record SpotifyArtistsActionSetStorageSuccess(bool ForceUpdate);
 public record SpotifyArtistsActionSetStorageFailure(string ErrorMessage);
 
 

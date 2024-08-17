@@ -4,37 +4,69 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleases
 
 public class SpotifyReleasesReducers
 {
+	// get storage
+	[ReducerMethod(typeof(SpotifyReleasesActionGetStorage))]
+	public static SpotifyReleasesState OnPlaylistGetStorage(SpotifyReleasesState state)
+	{
+		return state with
+		{
+			LoadingStorage = true,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyReleasesActionGetStorageSuccess))]
+	public static SpotifyReleasesState OnPlaylistGetStorageSuccess(SpotifyReleasesState state)
+	{
+		return state with
+		{
+			LoadingStorage = false,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyReleasesActionGetStorageFailure))]
+	public static SpotifyReleasesState OnPlaylistGetStorageFailure(SpotifyReleasesState state)
+	{
+		return state with
+		{
+			Error = true,
+			LoadingStorage = false,
+		};
+	}
+
+	// get api
+	[ReducerMethod(typeof(SpotifyReleasesActionGetApi))]
+	public static SpotifyReleasesState OnPlaylistGetApi(SpotifyReleasesState state)
+	{
+		return state with
+		{
+			LoadingApi = true,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyReleasesActionGetApiSuccess))]
+	public static SpotifyReleasesState OnPlaylistApiGetSucces(SpotifyReleasesState state)
+	{
+		return state with
+		{
+			LoadingApi = false,
+		};
+	}
+	[ReducerMethod(typeof(SpotifyReleasesActionGetApiFailure))]
+	public static SpotifyReleasesState OnPlaylistGetApiFailure(SpotifyReleasesState state)
+	{
+		return state with
+		{
+			Error = true,
+			LoadingApi = false,
+		};
+	}
+
+	// set
 	[ReducerMethod]
-	public static SpotifyReleasesState OnSetReleases(SpotifyReleasesState state, SpotifyReleasesActionSet action)
+	public static SpotifyReleasesState OnSetPlaylists(SpotifyReleasesState state, SpotifyReleasesActionSet action)
 	{
 		return state with
 		{
-			Releases = new(action.Releases),
-			Loading = false,
+			List = action.Releases,
 		};
 	}
 
-	[ReducerMethod(typeof(SpotifyReleasesActionInitialized))]
-	public static SpotifyReleasesState OnSetInitialized(SpotifyReleasesState state)
-	{
-		return state with
-		{
-			Initialized = true,
-		};
-	}
-
-	[ReducerMethod(typeof(SpotifyReleasesActionLoad))]
-	public static SpotifyReleasesState OnLoadReleases(SpotifyReleasesState state)
-	{
-		return state with
-		{
-			Loading = true,
-		};
-	}
-
-	[ReducerMethod]
-	public static SpotifyReleasesState OnSetReleasesFromStorage(SpotifyReleasesState state, SpotifyReleasesActionStorageSet action)
-	{
-		return action.ReleasesState;
-	}
+	// TODO persist state
 }

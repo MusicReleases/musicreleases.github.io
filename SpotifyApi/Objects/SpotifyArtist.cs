@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyArtist : SpotifyIdObject
+public class SpotifyArtist : SpotifyIdNameObject
 {
 	public SortedSet<SpotifyRelease>? Releases { get; set; }
 
