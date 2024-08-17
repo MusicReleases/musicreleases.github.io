@@ -25,7 +25,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-FBcRslur8mHvRtD1WPLBTfGpAatWGjy8lavQZn+InmA=",
+      "hash": "sha256-V6RN4fuZmBC6E01KvAwsyli9eKjVJhBxdwl+071JVpM=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -33,7 +33,7 @@
       "url": "_framework\/dotnet.native.8.0.8.8324hx5xdp.js"
     },
     {
-      "hash": "sha256-0CDX6tuaFH1C29XDpnYM2UMF5fKQd\/grwapAs5aVwRo=",
+      "hash": "sha256-Sg4vNQc+0+npRwU7j1Snvb3hNI8X1GrcBjenjGBnv7I=",
       "url": "_framework\/dotnet.native.wasm"
     },
     {
@@ -117,7 +117,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-sZyCP1WzZnzdHfDvRKlODS8e5zOqif6TXaWr\/2TdTaM=",
+      "hash": "sha256-HeEomHuxR\/V0hv21g4Y46\/Xly3c8I+OHWIigaixuhNw=",
       "url": "_framework\/MusicReleases.wasm"
     },
     {
@@ -125,7 +125,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-3cdM1qSRaWRjQJIPUKIgPKLrwwE+onjCk38K6bWXOwM=",
+      "hash": "sha256-6oaNObPK3gzGGoKxb\/FAX+KkNit7botNf85gpJCv414=",
       "url": "_framework\/SpotifyApi.wasm"
     },
     {
@@ -149,7 +149,7 @@
       "url": "_framework\/System.Collections.Specialized.wasm"
     },
     {
-      "hash": "sha256-T+y65Qt2\/vyqcoWV7tDg6\/5mB9K0TP6N0h5TNDWgdMQ=",
+      "hash": "sha256-RE1aPFNudmquzdiN68Vxdx9IfMpA5NKBSKn82VcODrE=",
       "url": "_framework\/System.Collections.wasm"
     },
     {
@@ -197,7 +197,7 @@
       "url": "_framework\/System.Linq.Expressions.wasm"
     },
     {
-      "hash": "sha256-L8FazoIB7Uwh7XE55KidKuM5iajdrA0Rq+VdkjgPnYs=",
+      "hash": "sha256-H64j7ZTrmKVDY+IlX4Dk318ppSkAAi0jToXbPR5spuY=",
       "url": "_framework\/System.Linq.wasm"
     },
     {
@@ -221,7 +221,7 @@
       "url": "_framework\/System.ObjectModel.wasm"
     },
     {
-      "hash": "sha256-sIw+S3udh\/xngRMDReZNjB72OCg9WrU2SF81cERTIok=",
+      "hash": "sha256-o5UuVf6PYAgRVG9D\/kE\/12Z5SDvOX2DKN1QUw06dEHA=",
       "url": "_framework\/System.Private.CoreLib.wasm"
     },
     {
@@ -605,5 +605,5 @@
       "url": "styles\/x_temp\/_2_testing.scss"
     }
   ],
-  "version": "Zki\/zB+3"
+  "version": "9XwbTY4Q"
 };
