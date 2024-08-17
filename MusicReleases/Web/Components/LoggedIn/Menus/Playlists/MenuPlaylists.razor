@@ -1,16 +1,14 @@
-﻿@using Fluxor;
-@using Fluxor.Blazor.Web.Components;
+﻿@using Fluxor
+@using Fluxor.Blazor.Web.Components
 @using JakubKastner.MusicReleases.Controllers.ApiControllers
-@using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 @using static JakubKastner.MusicReleases.Base.Enums
 
-@inherits FluxorComponent;
+@inherits FluxorComponent
 
 @inject IState<SpotifyPlaylistsState> _stateSpotifyPlaylists;
 @inject IApiLoginController _apiLoginController;
-@inject ISpotifyPlaylistsController _spotifyPlaylistsController;
 
 <div class="menu playlists items scroll buttons-rounded-m">
 

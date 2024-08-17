@@ -1,4 +1,3 @@
-using JakubKastner.MusicReleases.Base;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Artists;
@@ -18,13 +17,6 @@ public partial class MenuArtists
 		if (!userLoggedIn)
 		{
 			return;
-		}
-
-		var serviceType = _apiLoginController.GetServiceType();
-
-		if (serviceType == Enums.ServiceType.Spotify)
-		{
-			//_spotifyArtistsController.GetArtists();
 		}
 	}
 }

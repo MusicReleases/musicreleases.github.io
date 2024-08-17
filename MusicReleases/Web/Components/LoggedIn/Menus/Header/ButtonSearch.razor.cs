@@ -1,6 +1,5 @@
 using JakubKastner.MusicReleases.Base;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
@@ -16,7 +15,7 @@ public partial class ButtonSearch
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
-	private InputText? _inputTextSearchValue;
+	//private InputText? _inputTextSearchValue;
 	private string? _searchValue;
 
 	private string? _searchText;

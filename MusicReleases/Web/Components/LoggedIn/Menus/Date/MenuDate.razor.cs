@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Base;
+﻿using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
 
@@ -16,7 +16,7 @@ public partial class MenuDate
 		}
 
 		var serviceType = _apiLoginController.GetServiceType();
-		if (serviceType == Enums.ServiceType.Spotify)
+		if (serviceType == ServiceType.Spotify)
 		{
 			// TODO show loader
 			// display playlists

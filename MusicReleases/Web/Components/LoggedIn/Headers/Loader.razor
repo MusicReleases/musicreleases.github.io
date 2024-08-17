@@ -1,8 +1,8 @@
-﻿@inherits FluxorComponent;
+﻿@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using JakubKastner.MusicReleases.Store.LoaderStore
 
-@using Fluxor;
-@using Fluxor.Blazor.Web.Components;
-@using JakubKastner.MusicReleases.Store.LoaderStore;
+@inherits FluxorComponent
 
 @inject IState<LoaderState> _stateLoader;
 

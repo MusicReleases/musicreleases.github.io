@@ -19,12 +19,13 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 	public async Task StartLoadingAll(bool forceUpdate, ReleaseType releasesType)
 	{
 		var playlists = await StartLoadingPlaylists(forceUpdate);
+
 		await StartLoadingArtistsWithReleases(forceUpdate, releasesType);
-		if (playlists is null)
+
+		if (playlists is not null)
 		{
-			return;
+			await StartLoadingPlaylistsTracks(forceUpdate, playlists);
 		}
-		await StartLoadingPlaylistsTracks(forceUpdate, playlists);
 	}
 
 
@@ -41,6 +42,11 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 
 	private async Task<SpotifyUserList<SpotifyPlaylist>?> StartLoadingPlaylists(bool forceUpdate)
 	{
+		if (_stateSpotifyPlaylists.Value.LoadingAny() || _stateSpotifyPlaylistsTracks.Value.LoadingAny())
+		{
+			return null;
+		}
+
 		var spotifyPlaylistsAction = new SpotifyPlaylistsActionGet(forceUpdate);
 		_dispatcher.Dispatch(spotifyPlaylistsAction);
 		await spotifyPlaylistsAction.CompletionSource.Task;
@@ -50,6 +56,11 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 
 	private async Task StartLoadingPlaylistsTracks(bool forceUpdate, SpotifyUserList<SpotifyPlaylist> playlists)
 	{
+		if (_stateSpotifyPlaylists.Value.LoadingAny() || _stateSpotifyPlaylistsTracks.Value.LoadingAny())
+		{
+			return;
+		}
+
 		var spotifyPlaylistsTracksAction = new SpotifyPlaylistsTracksActionGet(forceUpdate, playlists);
 		_dispatcher.Dispatch(spotifyPlaylistsTracksAction);
 		await spotifyPlaylistsTracksAction.CompletionSource.Task;
@@ -65,6 +76,11 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 
 	private async Task StartLoadingArtists(bool forceUpdate)
 	{
+		if (_stateSpotifyArtists.Value.LoadingAny())
+		{
+			return;
+		}
+
 		var spotifyArtistsAction = new SpotifyArtistsActionGet(forceUpdate);
 		_dispatcher.Dispatch(spotifyArtistsAction);
 		//await spotifyArtistsAction.CompletionSource.Task;
@@ -72,6 +88,11 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 
 	public async Task StartLoadingArtistsReleases(bool forceUpdate, ReleaseType releasesType)
 	{
+		if (_stateSpotifyArtists.Value.LoadingAny())
+		{
+			return;
+		}
+
 		var spotifyReleasesAction = new SpotifyReleasesActionGet(releasesType, forceUpdate);
 		_dispatcher.Dispatch(spotifyReleasesAction);
 		//await spotifyReleasesAction.CompletionSource.Task;
