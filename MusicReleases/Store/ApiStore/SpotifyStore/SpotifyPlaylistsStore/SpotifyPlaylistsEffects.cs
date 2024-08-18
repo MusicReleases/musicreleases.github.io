@@ -29,6 +29,23 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	}
 
 	[EffectMethod]
+	public async Task GetSuccess(SpotifyPlaylistsActionGetSuccess action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		action.CompletionSource.SetResult(true);
+	}
+	[EffectMethod]
+	public async Task GetFailure(SpotifyPlaylistsActionGetFailure action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		action.CompletionSource.SetResult(false);
+	}
+
+	[EffectMethod]
 	public async Task GetStorage(SpotifyPlaylistsActionGetStorage action, IDispatcher dispatcher)
 	{
 		try
@@ -46,7 +63,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageFailure(ex.Message));
-			action.CompletionSource.SetResult(false);
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetFailure() { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -62,12 +79,12 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlists));
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorage(playlists));
-			action.CompletionSource.SetResult(true);
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetSuccess() { CompletionSource = action.CompletionSource });
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApiFailure(ex.Message));
-			action.CompletionSource.SetResult(false);
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetFailure() { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -93,14 +110,14 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 	// TODO PERSIST STATE
 
 	// TODO persist state when failed ??
-	[EffectMethod(typeof(SpotifyPlaylistsActionGetApiFailure))]
+	/*[EffectMethod(typeof(SpotifyPlaylistsActionGetApiFailure))]
 	public async Task GetApiFailure(IDispatcher dispatcher)
 	{
 		// TODO must be task
 		await Task.Delay(0);
 
 		dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageState(_playlistsState.Value));
-	}
+	}*/
 
 	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorageState))]
 	public async Task GetStorageState(IDispatcher dispatcher)

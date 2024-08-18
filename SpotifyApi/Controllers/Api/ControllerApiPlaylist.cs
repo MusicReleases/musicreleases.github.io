@@ -121,7 +121,7 @@ public class ControllerApiPlaylist(ISpotifyApiClient client, ISpotifyControllerU
 		{
 			Limit = ApiRequestLimit.PlaylistsTracks,
 		};
-		request.Fields.Add("items(track(id, type))");
+		request.Fields.Add("items(track(id, type)), next");
 
 		var spotifyClient = _client.GetClient();
 		var response = await spotifyClient.Playlists.GetItems(playlistId, request);

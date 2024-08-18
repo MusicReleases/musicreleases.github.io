@@ -23,26 +23,42 @@ public class SpotifyPlaylistsTracksEffects(ISpotifyControllerPlaylist spotifyCon
 		}
 		dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetApi(action.Playlists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
 	}
+	[EffectMethod]
+	public async Task GetSuccess(SpotifyPlaylistsTracksActionGetSuccess action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		action.CompletionSource.SetResult(true);
+	}
+	[EffectMethod]
+	public async Task GetFailure(SpotifyPlaylistsTracksActionGetFailure action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		action.CompletionSource.SetResult(false);
+	}
 
 
 	[EffectMethod]
 	public async Task GetApi(SpotifyPlaylistsTracksActionGetApi action, IDispatcher dispatcher)
 	{
-		/*try
-		{*/
-		// get item from api
-		var playlistsStorage = action.Playlists;
-		var playlistsApi = await _spotifyControllerPlaylist.GetPlaylistsTracks(playlistsStorage, action.ForceUpdate);
-		dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetApiSuccess());
+		try
+		{
+			// get item from api
+			var playlistsStorage = action.Playlists;
+			var playlistsApi = await _spotifyControllerPlaylist.GetPlaylistsTracks(playlistsStorage, action.ForceUpdate);
+			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetApiSuccess());
 
-		dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlistsApi));
-		dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorage(playlistsApi));
-		action.CompletionSource.SetResult(true);
-		/*}
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSet(playlistsApi));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorage(playlistsApi));
+			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetSuccess());
+		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetApiFailure(ex.Message));
-			action.CompletionSource.SetResult(false);
-		}*/
+			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetFailure());
+		}
 	}
 }

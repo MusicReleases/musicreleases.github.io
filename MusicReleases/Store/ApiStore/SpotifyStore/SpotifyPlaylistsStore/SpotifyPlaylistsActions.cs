@@ -8,6 +8,14 @@ public record SpotifyPlaylistsActionGet(bool ForceUpdate)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; } = new TaskCompletionSource<bool>();
 }
+public record SpotifyPlaylistsActionGetSuccess()
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
+public record SpotifyPlaylistsActionGetFailure()
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 
 // get api
 public record SpotifyPlaylistsActionGetApi(SpotifyUserList<SpotifyPlaylist>? Playlists, bool ForceUpdate)

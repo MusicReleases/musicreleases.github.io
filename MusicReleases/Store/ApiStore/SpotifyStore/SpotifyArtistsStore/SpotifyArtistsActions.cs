@@ -2,23 +2,30 @@
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-// init
-public record SpotifyArtistsActionInitialized();
-public record SpotifyArtistsActionLoadSuccess();
-public record SpotifyArtistsActionLoadFailure(string ErrorMessage);
-
-
 // get artists
 public record SpotifyArtistsActionGet(bool ForceUpdate);
-public record SpotifyArtistsActionGetSuccess(bool ForceUpdate);
+public record SpotifyArtistsActionGetSuccess()
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
+public record SpotifyArtistsActionGetFailure()
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 
 // get api
-public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist>? Artists, bool ForceUpdate);
+public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist>? Artists, bool ForceUpdate)
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 public record SpotifyArtistsActionGetApiSuccess();
 public record SpotifyArtistsActionGetApiFailure(string ErrorMessage);
 
 // get local storage
-public record SpotifyArtistsActionGetStorage(bool ForceUpdate);
+public record SpotifyArtistsActionGetStorage(bool ForceUpdate)
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 public record SpotifyArtistsActionGetStorageSuccess();
 public record SpotifyArtistsActionGetStorageFailure(string ErrorMessage);
 

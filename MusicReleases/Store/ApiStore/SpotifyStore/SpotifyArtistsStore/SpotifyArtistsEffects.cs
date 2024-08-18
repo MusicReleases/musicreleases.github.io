@@ -41,14 +41,15 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 
 			if (artists is not null)
 			{
-				dispatcher.Dispatch(new SpotifyArtistsActionSet(artists));
+				dispatcher.Dispatch(new SpotifyArtistsActionSet(artists, new HashSet<SpotifyArtist>()));
 			}
 			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageSuccess());
-			dispatcher.Dispatch(new SpotifyArtistsActionGetApi(artists, action.ForceUpdate));
+			dispatcher.Dispatch(new SpotifyArtistsActionGetApi(artists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyArtistsActionGetFailure() { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -71,10 +72,13 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 
 			dispatcher.Dispatch(new SpotifyArtistsActionSet(artists, newArtists));
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(artists, action.ForceUpdate));
+
+			dispatcher.Dispatch(new SpotifyArtistsActionGetSuccess() { CompletionSource = action.CompletionSource });
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyArtistsActionGetApiFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyArtistsActionGetFailure() { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -93,15 +97,6 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 		{
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageFailure(ex.Message));
 		}
-	}
-
-	[EffectMethod]
-	public async Task SetStorage(SpotifyArtistsActionSetStorageSuccess action, IDispatcher dispatcher)
-	{
-		// TODO must be task
-		await Task.Delay(0);
-
-		dispatcher.Dispatch(new SpotifyArtistsActionGetSuccess(action.ForceUpdate));
 	}
 
 
