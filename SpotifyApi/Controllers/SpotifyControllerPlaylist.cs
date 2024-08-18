@@ -10,7 +10,7 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 
 	// get list of user playlists
 
-	public async Task<SpotifyUserList<SpotifyPlaylist>> GetUserPlaylists(bool onlyEditable = false, SpotifyUserList<SpotifyPlaylist>? existingPlaylists = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>> GetUserPlaylists(bool onlyEditable = false, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? existingPlaylists = null, bool forceUpdate = false)
 	{
 		if (existingPlaylists is null)
 		{
@@ -18,7 +18,12 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 		}
 		else
 		{
-			var dateTimeDifference = DateTime.Now - existingPlaylists.LastUpdateMain;
+			if (existingPlaylists.Update is null)
+			{
+				throw new NullReferenceException(nameof(existingPlaylists.Update));
+			}
+
+			var dateTimeDifference = DateTime.Now - existingPlaylists.Update.LastUpdateMain;
 
 			if (dateTimeDifference.TotalHours >= 24)
 			{
@@ -39,14 +44,14 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 		return playlists;
 	}
 
-	private async Task<SpotifyUserList<SpotifyPlaylist>> GetUserPlaylistsApi(bool onlyEditable, bool forceUpdate = false, ISet<SpotifyPlaylist>? existingPlaylists = null)
+	private async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>> GetUserPlaylistsApi(bool onlyEditable, bool forceUpdate = false, ISet<SpotifyPlaylist>? existingPlaylists = null)
 	{
 		var user = _controllerUser.GetUserRequired();
 
 		if (user.Playlists?.List is null || forceUpdate)
 		{
 			var playlistsApi = await _controllerApiPlaylist.GetUserPlaylistsFromApi(existingPlaylists);
-			user.Playlists = new(playlistsApi, DateTime.Now);
+			user.Playlists = new(playlistsApi, new SpotifyUserListUpdatePlaylists(DateTime.Now));
 		}
 
 		var playlists = user.Playlists;
@@ -58,7 +63,7 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 
 		// TODO settings
 		var editablePlaylists = playlists.List!.Where(p => p.CurrentUserOwned == true || p.Collaborative == true).ToHashSet();
-		playlists = new(editablePlaylists, playlists.LastUpdateMain);
+		playlists = new SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>(editablePlaylists, new SpotifyUserListUpdatePlaylists(playlists.Update!.LastUpdateMain));
 
 		return playlists;
 	}
@@ -85,7 +90,7 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 		return playlist;
 	}
 
-	public async Task<SpotifyUserList<SpotifyPlaylist>> GetPlaylistsTracks(SpotifyUserList<SpotifyPlaylist>? playlistsStorage = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>> GetPlaylistsTracks(SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? playlistsStorage = null, bool forceUpdate = false)
 	{
 
 		// TODO editable
@@ -101,7 +106,14 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 			return playlists;
 		}
 
-		var dateTimeDifference = DateTime.Now - playlists.LastUpdateSecond;
+
+		if (playlists.Update is not SpotifyUserListUpdatePlaylists)
+		{
+			throw new NotSupportedException(nameof(playlists.Update));
+		}
+		var lastUpdateList = (playlists.Update as SpotifyUserListUpdatePlaylists)!;
+
+		var dateTimeDifference = DateTime.Now - lastUpdateList.LastUpdateTracks;
 
 		if (dateTimeDifference.TotalHours >= 24)
 		{
@@ -127,14 +139,15 @@ public class SpotifyControllerPlaylist(IControllerApiPlaylist controllerApiPlayl
 			return playlists;
 		}
 
-		var playlistsWithTracks = await GetPlaylistsTracksApi(playlists.List, forceUpdate, playlists.LastUpdateMain);
+		var playlistsWithTracks = await GetPlaylistsTracksApi(playlists.List, forceUpdate, lastUpdateList);
 		return playlistsWithTracks;
 	}
 
-	private async Task<SpotifyUserList<SpotifyPlaylist>> GetPlaylistsTracksApi(ISet<SpotifyPlaylist> playlistsSaved, bool forceUpdate, DateTime lastUpdateMain)
+	private async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>> GetPlaylistsTracksApi(ISet<SpotifyPlaylist> playlistsSaved, bool forceUpdate, SpotifyUserListUpdatePlaylists lastUpdate)
 	{
 		var playlists = await _controllerApiPlaylist.GetPlaylistsTracksFromApi(playlistsSaved, forceUpdate);
-		var playlistStorage = new SpotifyUserList<SpotifyPlaylist>(playlists, lastUpdateMain, DateTime.Now);
+		lastUpdate.LastUpdateTracks = DateTime.Now;
+		var playlistStorage = new SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>(playlists, lastUpdate);
 		return playlistStorage;
 	}
 

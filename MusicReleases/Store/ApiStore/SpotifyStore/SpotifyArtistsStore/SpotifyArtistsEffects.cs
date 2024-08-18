@@ -25,7 +25,23 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 		// TODO must be task
 		await Task.Delay(0);
 
-		dispatcher.Dispatch(new SpotifyArtistsActionGetStorage(action.ForceUpdate));
+		dispatcher.Dispatch(new SpotifyArtistsActionGetStorage(action.ForceUpdate) { CompletionSource = action.CompletionSource });
+	}
+	[EffectMethod]
+	public async Task GetSuccess(SpotifyArtistsActionGetSuccess action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		action.CompletionSource.SetResult(true);
+	}
+	[EffectMethod]
+	public async Task GetFailure(SpotifyArtistsActionGetFailure action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		action.CompletionSource.SetResult(false);
 	}
 
 	[EffectMethod]
@@ -37,11 +53,11 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 			dispatcher.Dispatch(new SpotifyArtistsNewActionClear());
 
 			// get item from storage
-			var artists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyArtist>>(_localStorageName);
+			var artists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>>(_localStorageName);
 
 			if (artists is not null)
 			{
-				dispatcher.Dispatch(new SpotifyArtistsActionSet(artists, new HashSet<SpotifyArtist>()));
+				dispatcher.Dispatch(new SpotifyArtistsActionSet(artists));
 			}
 			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageSuccess());
 			dispatcher.Dispatch(new SpotifyArtistsActionGetApi(artists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
@@ -70,8 +86,8 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 
 			dispatcher.Dispatch(new SpotifyArtistsActionGetApiSuccess());
 
-			dispatcher.Dispatch(new SpotifyArtistsActionSet(artists, newArtists));
-			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(artists, action.ForceUpdate));
+			dispatcher.Dispatch(new SpotifyArtistsActionSet(artists) { NewArtists = newArtists });
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(artists));
 
 			dispatcher.Dispatch(new SpotifyArtistsActionGetSuccess() { CompletionSource = action.CompletionSource });
 		}
@@ -91,7 +107,7 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 			// set item
 			await _localStorageService.SetItemAsync(_localStorageName, action.Artists);
 
-			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess(action.ForceUpdate));
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());
 		}
 		catch (Exception ex)
 		{

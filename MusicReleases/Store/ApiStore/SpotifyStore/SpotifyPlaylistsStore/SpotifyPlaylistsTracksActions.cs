@@ -4,7 +4,7 @@ namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylist
 
 
 // get
-public record SpotifyPlaylistsTracksActionGet(bool ForceUpdate, SpotifyUserList<SpotifyPlaylist>? Playlists)
+public record SpotifyPlaylistsTracksActionGet(bool ForceUpdate, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? Playlists)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; } = new TaskCompletionSource<bool>();
 }
@@ -18,7 +18,7 @@ public record SpotifyPlaylistsTracksActionGetFailure()
 }
 
 // get api
-public record SpotifyPlaylistsTracksActionGetApi(SpotifyUserList<SpotifyPlaylist>? Playlists, bool ForceUpdate)
+public record SpotifyPlaylistsTracksActionGetApi(SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? Playlists, bool ForceUpdate)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }

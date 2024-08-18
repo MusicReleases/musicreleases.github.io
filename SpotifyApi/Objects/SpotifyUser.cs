@@ -7,8 +7,8 @@ public class SpotifyUser
 	public SpotifyUserInfo? Info { get; set; }
 	public SpotifyUserCredentials? Credentials { get; set; }
 
-	public SpotifyUserList<SpotifyPlaylist>? Playlists { get; set; }
-	public SpotifyUserList<SpotifyArtist>? FollowedArtists { get; set; }
+	public SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? Playlists { get; set; }
+	public SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? FollowedArtists { get; set; }
 
 	public SpotifyUser() { }
 

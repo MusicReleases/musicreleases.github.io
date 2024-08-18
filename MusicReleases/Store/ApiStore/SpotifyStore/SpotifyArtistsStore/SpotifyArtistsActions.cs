@@ -3,7 +3,10 @@
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
 // get artists
-public record SpotifyArtistsActionGet(bool ForceUpdate);
+public record SpotifyArtistsActionGet(bool ForceUpdate)
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 public record SpotifyArtistsActionGetSuccess()
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
@@ -14,7 +17,7 @@ public record SpotifyArtistsActionGetFailure()
 }
 
 // get api
-public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist>? Artists, bool ForceUpdate)
+public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? Artists, bool ForceUpdate)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
@@ -30,12 +33,15 @@ public record SpotifyArtistsActionGetStorageSuccess();
 public record SpotifyArtistsActionGetStorageFailure(string ErrorMessage);
 
 // set artists
-public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist> Artists, ISet<SpotifyArtist> NewArtists);
+public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> Artists)
+{
+	public ISet<SpotifyArtist> NewArtists { get; set; } = new HashSet<SpotifyArtist>();
+}
 public record SpotifyArtistsNewActionClear();
 
 // set local storage
-public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist> Artists, bool ForceUpdate);
-public record SpotifyArtistsActionSetStorageSuccess(bool ForceUpdate);
+public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> Artists);
+public record SpotifyArtistsActionSetStorageSuccess();
 public record SpotifyArtistsActionSetStorageFailure(string ErrorMessage);
 
 

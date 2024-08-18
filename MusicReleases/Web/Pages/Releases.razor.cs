@@ -16,7 +16,10 @@ public partial class Releases
 	{
 		base.OnInitialized();
 		LoadReleases();
+	}
 
+	private void GetReleases()
+	{
 		var userLoggedIn = _apiLoginController.IsUserLoggedIn();
 
 		if (!userLoggedIn)
@@ -31,8 +34,6 @@ public partial class Releases
 			_spotifyWorkflowController.StartLoadingAll(false, _type);
 		}
 	}
-
-
 
 
 
@@ -86,6 +87,8 @@ public partial class Releases
 		{
 			_type = ReleaseType.Albums;
 		}
+
+		GetReleases();
 
 		// TODO 010324
 		//_spotifyReleasesController.LoadReleases(_type);

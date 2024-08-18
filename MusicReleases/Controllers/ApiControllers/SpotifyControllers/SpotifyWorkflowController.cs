@@ -16,11 +16,11 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 	private readonly IState<SpotifyArtistsState> _stateSpotifyArtists = stateSpotifyArtists;
 	private readonly IState<SpotifyReleasesState> _stateSpotifyReleases = stateSpotifyReleases;
 
-	public async Task StartLoadingAll(bool forceUpdate, ReleaseType releasesType)
+	public async Task StartLoadingAll(bool forceUpdate, ReleaseType releaseType)
 	{
 		var playlists = await StartLoadingPlaylists(forceUpdate);
 
-		await StartLoadingArtistsWithReleases(forceUpdate, releasesType);
+		await StartLoadingArtistsWithReleases(forceUpdate, releaseType);
 
 		if (playlists is not null)
 		{
@@ -40,7 +40,7 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 		await StartLoadingPlaylistsTracks(forceUpdate, playlists);
 	}
 
-	private async Task<SpotifyUserList<SpotifyPlaylist>?> StartLoadingPlaylists(bool forceUpdate)
+	private async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>?> StartLoadingPlaylists(bool forceUpdate)
 	{
 		if (_stateSpotifyPlaylists.Value.LoadingAny() || _stateSpotifyPlaylistsTracks.Value.LoadingAny())
 		{
@@ -50,11 +50,12 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 		var spotifyPlaylistsAction = new SpotifyPlaylistsActionGet(forceUpdate);
 		_dispatcher.Dispatch(spotifyPlaylistsAction);
 		await spotifyPlaylistsAction.CompletionSource.Task;
+
 		var playlists = _stateSpotifyPlaylists.Value.Error ? null : _stateSpotifyPlaylists.Value.List;
 		return playlists;
 	}
 
-	private async Task StartLoadingPlaylistsTracks(bool forceUpdate, SpotifyUserList<SpotifyPlaylist> playlists)
+	private async Task StartLoadingPlaylistsTracks(bool forceUpdate, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists> playlists)
 	{
 		if (_stateSpotifyPlaylists.Value.LoadingAny() || _stateSpotifyPlaylistsTracks.Value.LoadingAny())
 		{
@@ -68,33 +69,42 @@ public class SpotifyWorkflowController(IDispatcher dispatcher, IState<SpotifyPla
 
 
 	// artists
-	public async Task StartLoadingArtistsWithReleases(bool forceUpdate, ReleaseType releasesType)
+	public async Task StartLoadingArtistsWithReleases(bool forceUpdate, ReleaseType releaseType)
 	{
-		await StartLoadingArtists(forceUpdate);
-		//await StartLoadingArtistsReleases(forceUpdate, releasesType);
-	}
-
-	private async Task StartLoadingArtists(bool forceUpdate)
-	{
-		if (_stateSpotifyArtists.Value.LoadingAny())
+		var artists = await StartLoadingArtists(forceUpdate);
+		if (artists is null)
 		{
 			return;
+		}
+		await StartLoadingArtistsReleases(forceUpdate, releaseType, artists);
+	}
+
+	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> StartLoadingArtists(bool forceUpdate)
+	{
+		if (_stateSpotifyArtists.Value.LoadingAny() || _stateSpotifyReleases.Value.LoadingAny())
+		{
+			return null;
 		}
 
 		var spotifyArtistsAction = new SpotifyArtistsActionGet(forceUpdate);
 		_dispatcher.Dispatch(spotifyArtistsAction);
-		//await spotifyArtistsAction.CompletionSource.Task;
+
+		await spotifyArtistsAction.CompletionSource.Task;
+
+		var artists = _stateSpotifyArtists.Value.Error ? null : _stateSpotifyArtists.Value.List;
+		return artists;
 	}
 
-	public async Task StartLoadingArtistsReleases(bool forceUpdate, ReleaseType releasesType)
+	public async Task StartLoadingArtistsReleases(bool forceUpdate, ReleaseType releaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> artists)
 	{
-		if (_stateSpotifyArtists.Value.LoadingAny())
+		if (_stateSpotifyArtists.Value.LoadingAny() || _stateSpotifyReleases.Value.LoadingAny())
 		{
 			return;
 		}
 
-		var spotifyReleasesAction = new SpotifyReleasesActionGet(releasesType, forceUpdate);
+		var spotifyReleasesAction = new SpotifyReleasesActionGet(releaseType, forceUpdate, artists);
 		_dispatcher.Dispatch(spotifyReleasesAction);
-		//await spotifyReleasesAction.CompletionSource.Task;
+
+		await spotifyReleasesAction.CompletionSource.Task;
 	}
 }

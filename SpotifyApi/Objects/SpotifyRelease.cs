@@ -5,23 +5,27 @@ namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyRelease : SpotifyIdNameObject
 {
-	public string ReleaseDate { get; private set; }
-	public int TotalTracks { get; private set; }
+	public string ReleaseDate { get; init; }
+	public int TotalTracks { get; init; }
 
-	public string UrlApp { get; private set; }
-	public string UrlWeb { get; private set; }
-	public string UrlImage { get; private set; }
+	public string UrlApp { get; init; }
+	public string UrlWeb { get; init; }
+	public string UrlImage { get; init; }
 
-	public List<Image> Images { get; private set; }
+	public List<Image> Images { get; init; }
 
-	public HashSet<SpotifyArtist> Artists { get; private set; }
+	public HashSet<SpotifyArtist> Artists { get; init; }
 
-	public SortedSet<SpotifyTrack>? Tracks { get; private set; }
+	public SortedSet<SpotifyTrack>? Tracks { get; init; }
 
-	public ReleaseType ReleaseType { get; private set; }
+	public ReleaseType ReleaseType { get; init; }
 
 	// TODO artists - GetArtists
 	// TODO images (0), default
+	public SpotifyRelease() : base("json", "init")
+	{
+		// TODO ctor for json
+	}
 
 	public SpotifyRelease(SimpleAlbum simpleAlbum, ReleaseType releaseType) : base(simpleAlbum.Id, simpleAlbum.Name)
 	{

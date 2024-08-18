@@ -51,7 +51,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		try
 		{
 			// get item from storage
-			var playlists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyPlaylist>>(_localStorageName);
+			var playlists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>>(_localStorageName);
 
 			if (playlists is not null)
 			{

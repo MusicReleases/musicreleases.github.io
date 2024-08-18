@@ -24,7 +24,7 @@ public partial class LoaderEffects
 	[EffectMethod(typeof(SpotifyPlaylistsTracksActionGetApi))]
 	public async Task LoadOnSpotifyPlaylistsTracksGetApi(IDispatcher dispatcher)
 	{
-		await SpotifyPlaylistLoading(dispatcher);
+		await SpotifyPlaylistTracksLoading(dispatcher);
 	}
 	[EffectMethod(typeof(SpotifyPlaylistsTracksActionGetApiSuccess))]
 	public async Task LoadOnSpotifyPlaylistsTracksGetApiSuccess(IDispatcher dispatcher)

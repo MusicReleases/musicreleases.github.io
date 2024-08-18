@@ -3,18 +3,25 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
 
-// init
-public record SpotifyReleasesActionInitialized();
-public record SpotifyReleasesActionLoadSuccess();
-public record SpotifyReleasesActionLoadFailure(string ErrorMessage);
-
-
 // get releases
-public record SpotifyReleasesActionGet(ReleaseType ReleaseType, bool ForceUpdate);
-public record SpotifyReleasesActionGetSuccess();
+public record SpotifyReleasesActionGet(ReleaseType ReleaseType, bool ForceUpdate, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? Artists)
+{
+	public TaskCompletionSource<bool> CompletionSource { get; } = new TaskCompletionSource<bool>();
+}
+public record SpotifyReleasesActionGetSuccess()
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
+public record SpotifyReleasesActionGetFailure()
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 
 // get api
-public record SpotifyReleasesActionGetApi(ReleaseType ReleaseType, SpotifyUserListReleases<SpotifyRelease>? Releases, bool ForceUpdate);
+public record SpotifyReleasesActionGetApi(ReleaseType ReleaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? Artists, bool ForceUpdate)
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 public record SpotifyReleasesActionGetApiSuccess();
 public record SpotifyReleasesActionGetApiFailure(string ErrorMessage);
 
@@ -22,14 +29,6 @@ public record SpotifyReleasesActionGetApiFailure(string ErrorMessage);
 public record SpotifyReleasesActionGetStorage(ReleaseType ReleaseType, bool ForceUpdate);
 public record SpotifyReleasesActionGetStorageSuccess();
 public record SpotifyReleasesActionGetStorageFailure(string ErrorMessage);
-
-// set releases
-public record SpotifyReleasesActionSet(SpotifyUserListReleases<SpotifyRelease> Releases);
-
-// set local storage
-public record SpotifyReleasesActionSetStorage(SpotifyUserListReleases<SpotifyRelease> Releases);
-public record SpotifyReleasesActionSetStorageSuccess();
-public record SpotifyReleasesActionSetStorageFailure(string ErrorMessage);
 
 
 

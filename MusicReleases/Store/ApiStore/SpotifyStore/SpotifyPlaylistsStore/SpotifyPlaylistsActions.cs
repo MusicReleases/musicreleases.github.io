@@ -18,7 +18,7 @@ public record SpotifyPlaylistsActionGetFailure()
 }
 
 // get api
-public record SpotifyPlaylistsActionGetApi(SpotifyUserList<SpotifyPlaylist>? Playlists, bool ForceUpdate)
+public record SpotifyPlaylistsActionGetApi(SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? Playlists, bool ForceUpdate)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
@@ -34,10 +34,10 @@ public record SpotifyPlaylistsActionGetStorageSuccess();
 public record SpotifyPlaylistsActionGetStorageFailure(string ErrorMessage);
 
 // set
-public record SpotifyPlaylistsActionSet(SpotifyUserList<SpotifyPlaylist> Playlists);
+public record SpotifyPlaylistsActionSet(SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists> Playlists);
 
 // set local storage
-public record SpotifyPlaylistsActionSetStorage(SpotifyUserList<SpotifyPlaylist> Playlists);
+public record SpotifyPlaylistsActionSetStorage(SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists> Playlists);
 public record SpotifyPlaylistsActionSetStorageSuccess();
 public record SpotifyPlaylistsActionSetStorageFailure(string ErrorMessage);
 

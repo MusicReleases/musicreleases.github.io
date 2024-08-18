@@ -1,4 +1,5 @@
 ﻿using Fluxor;
+using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
 using JakubKastner.SpotifyApi.Controllers;
 
@@ -8,15 +9,6 @@ public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerR
 {
 	private readonly ISpotifyControllerRelease _spotifyControllerRelease = spotifyControllerRelease;
 
-	// START - spotify artists success
-	/*[EffectMethod]
-	public async Task GetFromReleases(SpotifyArtistsActionGetSuccess action, IDispatcher dispatcher)
-	{
-		// TODO must be task
-		await Task.Delay(0);
-		dispatcher.Dispatch(new SpotifyReleasesActionGet(action.ForceUpdate));
-	}*/
-
 	// GET
 	[EffectMethod]
 	public async Task Get(SpotifyReleasesActionGet action, IDispatcher dispatcher)
@@ -24,9 +16,30 @@ public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerR
 		// TODO must be task
 		await Task.Delay(0);
 
-		//dispatcher.Dispatch(new SpotifyReleasesActionGetStorage(action.ReleaseType, action.ForceUpdate));
+		if (action.Artists is null)
+		{
+			// provided artists
+			dispatcher.Dispatch(new SpotifyArtistsActionGetStorage(action.ForceUpdate) { CompletionSource = action.CompletionSource });
+			return;
+		}
+		dispatcher.Dispatch(new SpotifyReleasesActionGetApi(action.ReleaseType, action.Artists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
 	}
+	[EffectMethod]
+	public async Task GetSuccess(SpotifyReleasesActionGetSuccess action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
 
+		action.CompletionSource.SetResult(true);
+	}
+	[EffectMethod]
+	public async Task GetFailure(SpotifyReleasesActionGetFailure action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+		action.CompletionSource.SetResult(false);
+	}
 
 	[EffectMethod]
 	public async Task GetApi(SpotifyReleasesActionGetApi action, IDispatcher dispatcher)
@@ -34,16 +47,18 @@ public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerR
 		try
 		{
 			// get item from api
-			var releasesStorage = action.Releases;
-			var releases = await _spotifyControllerRelease.GetAllReleasesFromUserFollowed(action.ReleaseType, releasesStorage, action.ForceUpdate);
+			var artistsStorage = action.Artists;
+			var artistsApi = await _spotifyControllerRelease.GetReleasesFromArtist(action.ReleaseType, artistsStorage, action.ForceUpdate);
 			dispatcher.Dispatch(new SpotifyReleasesActionGetApiSuccess());
 
-			dispatcher.Dispatch(new SpotifyReleasesActionSet(releases));
-			dispatcher.Dispatch(new SpotifyReleasesActionSetStorage(releases));
+			dispatcher.Dispatch(new SpotifyArtistsActionSet(artistsApi));
+			dispatcher.Dispatch(new SpotifyArtistsActionSetStorage(artistsApi));
+			dispatcher.Dispatch(new SpotifyReleasesActionGetSuccess());
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyReleasesActionGetApiFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyReleasesActionGetFailure());
 		}
 	}
 

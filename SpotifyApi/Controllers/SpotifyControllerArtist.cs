@@ -8,7 +8,7 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 	private readonly IControllerApiArtist _controllerApiArtist = controllerApiArtist;
 	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
-	public async Task<SpotifyUserList<SpotifyArtist>> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist>? existingArtists = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? existingArtists = null, bool forceUpdate = false)
 	{
 		if (existingArtists is null)
 		{
@@ -16,7 +16,12 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 		}
 		else
 		{
-			var dateTimeDifference = DateTime.Now - existingArtists.LastUpdateMain;
+			if (existingArtists.Update is null)
+			{
+				throw new NullReferenceException(nameof(existingArtists.Update));
+			}
+
+			var dateTimeDifference = DateTime.Now - existingArtists.Update.LastUpdateMain;
 
 			if (dateTimeDifference.TotalHours >= 24)
 			{
@@ -35,15 +40,15 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 		return artists;
 	}
 
-	private async Task<SpotifyUserList<SpotifyArtist>> GetUserArtistsApi(SpotifyUserList<SpotifyArtist>? existingArtists, bool forceUpdate)
+	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetUserArtistsApi(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? existingArtists, bool forceUpdate)
 	{
-		SpotifyUserList<SpotifyArtist>? artists;
+		SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? artists;
 		var user = _controllerUser.GetUserRequired();
 
 		if (existingArtists?.List is null || forceUpdate)
 		{
 			var artistsApi = await _controllerApiArtist.GetUserFollowedArtistsFromApi();
-			artists = new(artistsApi, DateTime.Now);
+			artists = new SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>(artistsApi, new SpotifyUserListUpdateArtists(DateTime.Now));
 		}
 		else
 		{
