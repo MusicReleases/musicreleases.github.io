@@ -39,6 +39,7 @@ public class ControllerApiRelease(ISpotifyApiClient client) : IControllerApiRele
 			var newReleases = await GetArtistReleases(artist, forceUpdate, releaseType) ?? [];
 			if (forceUpdate)
 			{
+				// delete all releases - because force update - when loading unloaded release type, force update will be true and rewrite all othe release types
 				artist.Releases = newReleases;
 			}
 			else

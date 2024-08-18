@@ -7,30 +7,16 @@
 @using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
-@using JakubKastner.MusicReleases.Store.LoaderStore
-@using JakubKastner.MusicReleases.Web.Components.InfiniteScrolling
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
-@using JakubKastner.SpotifyApi
-@using JakubKastner.SpotifyApi.Controllers
-@using JakubKastner.SpotifyApi.Objects
-@using static JakubKastner.SpotifyApi.Base.SpotifyEnums
+@using Meziantou.AspNetCore.Components
 
 @inherits FluxorComponent
 
 @inject ISpotifyWorkflowController _spotifyWorkflowController
-
-@* @inject IDispatcher _dispatcher *@
-@inject IState<SpotifyReleasesState> _stateSpotifyReleases
-@* @inject IState<SpotifyArtistsState> _stateSpotifyArtists  *@
-
-@inject NavigationManager _navManager
 @inject IApiLoginController _apiLoginController
+@inject IState<SpotifyReleasesState> _stateSpotifyReleases
+@inject IState<SpotifyArtistsState> _stateSpotifyArtists
 
-<p>Releases TODO</p>
-
-@* <button type="button" @onclick="SaveToStorage">
-	save
-</button>
 
 @if (_loading || _releases is null)
 {
@@ -39,19 +25,25 @@
 else if (_releases.Count < 1)
 {
 	<p>0 releases</p>
-	<button @onclick=LoadReleases>Update</button>
 }
 else
 {
 	<div class="releases boxes">
+		@foreach (var release in _releases)
+		{
+			<Release SpotifyRelease="@release" />
+		}
+	</div>
 
-		<InfiniteScrolling ItemsProvider="GetReleases">
+	@* TODO infinite scrolling - failing here when using fluxor - removing "if" fixes it, but switching between releases failed *@
+	@* <div class="releases boxes">
+		<InfiniteScrolling ItemsProvider="ProvideReleases">
 			<ItemTemplate Context="release">
 				<Release SpotifyRelease="@release" />
 			</ItemTemplate>
 			<LoadingTemplate>
-				<div>Loading more @Type...</div>
+				<div>Loading @Type...</div>
 			</LoadingTemplate>
 		</InfiniteScrolling>
-	</div>
-} *@
+	</div> *@
+}

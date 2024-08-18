@@ -3,6 +3,12 @@
 <div class="menu releases icon-text items scroll buttons-rounded-xl">
 	@foreach (var releaseType in GetAllReleaseTypes())
 	{
+		if (releaseType == ReleaseType.Podcasts)
+		{
+			// TODO podcasts
+			continue;	
+		}
+
 		<ButtonRelease ReleaseType=@releaseType></ButtonRelease>
 	}
 	<MenuSettings></MenuSettings>

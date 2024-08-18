@@ -2,6 +2,6 @@
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore;
 
-public record SpotifyReleasesState : SpotifyObjectState<SpotifyRelease, SpotifyUserListUpdatePlaylists>
+public record SpotifyReleasesState : SpotifyObjectState<SpotifyArtist, SpotifyUserListUpdateArtists>
 {
 }

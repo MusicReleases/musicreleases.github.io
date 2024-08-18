@@ -1,4 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Base;
+using JakubKastner.SpotifyApi.Objects;
+using Meziantou.AspNetCore.Components;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
@@ -11,11 +13,43 @@ public partial class Releases
 
 	private ReleaseType _type;
 
+	private SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? _artists => _stateSpotifyArtists.Value.List;
+	private IEnumerable<SpotifyArtist>? _artistWithReleaseType => _artists?.List is null ? null : _artists.List.Where(x => x.Releases is not null && x.Releases.Any(y => y.ReleaseType == _type));
+	private ISet<SpotifyRelease>? _releases => _artistWithReleaseType is null ? null : new SortedSet<SpotifyRelease>(_artistWithReleaseType.SelectMany(x => x.Releases!.Where(y => y.ReleaseType == _type)));
+	private bool _error => _stateSpotifyReleases.Value.Error;
+	private bool _loading => _stateSpotifyReleases.Value.LoadingAny();
 
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
 		LoadReleases();
+	}
+
+
+	protected override void OnParametersSet()
+	{
+		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
+		LoadReleases();
+	}
+
+	private void LoadReleases()
+	{
+		// TODO enable to select and display more than 1 release type
+		if (string.IsNullOrEmpty(Type))
+		{
+			// TODO display all releases and remember last selection
+			//navManager.NavigateTo("/releases/albums");
+			// TODO if is return here, code doesnt refresh the content
+			// TODO but if is not here, code just continue and doesnt get the right Type (for example)
+			return;
+		}
+
+		if (!Enum.TryParse(Type, true, out _type))
+		{
+			_type = ReleaseType.Albums;
+		}
+
+		GetReleases();
 	}
 
 	private void GetReleases()
@@ -35,75 +69,14 @@ public partial class Releases
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// TODO enable to select and display more than 1 release type
-
-	//private SortedSet<SpotifyRelease>? _releases => /*_spotifyReleasesController.Releases;*/ _stateSpotifyReleases.Value.Releases;
-	//private bool _loading => /*_spotifyReleasesController.Loading; */ _stateSpotifyReleases.Value.Loading;
-
-	protected override void OnParametersSet()
-	{
-		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
-		LoadReleases();
-	}
-
-	/*private async Task<IEnumerable<SpotifyRelease>> GetReleases(InfiniteScrollingItemsProviderRequest request)
+	private async Task<IEnumerable<SpotifyRelease>> ProvideReleases(InfiniteScrollingItemsProviderRequest request)
 	{
 		await Task.Delay(0);
-		if (_releases == null)
+
+		if (_releases is null)
 		{
-			return new SortedSet<SpotifyRelease>();
+			return [];
 		}
 		return _releases.Skip(request.StartIndex).Take(15);
-	}*/
-
-	private void LoadReleases()
-	{
-		if (string.IsNullOrEmpty(Type))
-		{
-			// TODO display all releases and remember last selection
-			//navManager.NavigateTo("/releases/albums");
-			// TODO if is return here, code doesnt refresh the content
-			// TODO but if is not here, code just continue and doesnt get the right Type (for example)
-			return;
-		}
-
-		if (!Enum.TryParse(Type, true, out _type))
-		{
-			_type = ReleaseType.Albums;
-		}
-
-		GetReleases();
-
-		// TODO 010324
-		//_spotifyReleasesController.LoadReleases(_type);
-
-		// TODO loading & loaded
-		/*if (_stateSpotifyReleases.Value.Initialized == false)
-		{*/
-		/*_dispatcher.Dispatch(new SpotifyReleasesActionLoad(_type));
-		_dispatcher.Dispatch(new SpotifyReleasesActionInitialized());*/
-		/*}*/
-	}
-
-	private void SaveToStorage()
-	{
-		//_spotifyReleasesController.SaveReleasesToStorage();
-		//_dispatcher.Dispatch(new SpotifyArtistsActionStorageSet(_stateSpotifyArtists.Value));
 	}
 }
