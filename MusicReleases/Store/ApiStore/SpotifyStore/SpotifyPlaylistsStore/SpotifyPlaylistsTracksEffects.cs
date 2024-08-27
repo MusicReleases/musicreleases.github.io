@@ -37,6 +37,9 @@ public class SpotifyPlaylistsTracksEffects(ISpotifyControllerPlaylist spotifyCon
 		// TODO must be task
 		await Task.Delay(0);
 
+#if DEBUG
+		Console.WriteLine(action.ErrorMessage);
+#endif
 		action.CompletionSource.SetResult(false);
 	}
 
@@ -57,8 +60,8 @@ public class SpotifyPlaylistsTracksEffects(ISpotifyControllerPlaylist spotifyCon
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetApiFailure(ex.Message));
-			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetFailure());
+			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetApiFailure());
+			dispatcher.Dispatch(new SpotifyPlaylistsTracksActionGetFailure(ex.Message));
 		}
 	}
 }

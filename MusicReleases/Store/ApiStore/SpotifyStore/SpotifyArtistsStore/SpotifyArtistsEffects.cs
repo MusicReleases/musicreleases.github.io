@@ -41,6 +41,10 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 		// TODO must be task
 		await Task.Delay(0);
 
+#if DEBUG
+		Console.WriteLine(action.ErrorMessage);
+#endif
+
 		action.CompletionSource.SetResult(false);
 	}
 
@@ -64,8 +68,8 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageFailure(ex.Message));
-			dispatcher.Dispatch(new SpotifyArtistsActionGetFailure() { CompletionSource = action.CompletionSource });
+			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageFailure());
+			dispatcher.Dispatch(new SpotifyArtistsActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -93,8 +97,8 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyArtistsActionGetApiFailure(ex.Message));
-			dispatcher.Dispatch(new SpotifyArtistsActionGetFailure() { CompletionSource = action.CompletionSource });
+			dispatcher.Dispatch(new SpotifyArtistsActionGetApiFailure());
+			dispatcher.Dispatch(new SpotifyArtistsActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -114,7 +118,16 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageFailure(ex.Message));
 		}
 	}
+	[EffectMethod]
+	public async Task SetStorageFailure(SpotifyArtistsActionSetStorageFailure action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
 
+#if DEBUG
+		Console.WriteLine(action.ErrorMessage);
+#endif
+	}
 
 	// TODO PERSIST STATE (copy from playlists)
 }

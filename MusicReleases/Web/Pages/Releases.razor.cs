@@ -15,9 +15,11 @@ public partial class Releases
 
 	private SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? _artists => _stateSpotifyArtists.Value.List;
 	private IEnumerable<SpotifyArtist>? _artistWithReleaseType => _artists?.List is null ? null : _artists.List.Where(x => x.Releases is not null && x.Releases.Any(y => y.ReleaseType == _type));
-	private ISet<SpotifyRelease>? _releases => _artistWithReleaseType is null ? null : new SortedSet<SpotifyRelease>(_artistWithReleaseType.SelectMany(x => x.Releases!.Where(y => y.ReleaseType == _type)));
+	private ISet<SpotifyRelease>? _releases => (_artistWithReleaseType is null || !_artistWithReleaseType.Any()) ? null : new SortedSet<SpotifyRelease>(_artistWithReleaseType.SelectMany(x => x.Releases!.Where(y => y.ReleaseType == _type/* && y.ReleaseDate.Year == DateTime.Now.Year*/)));
 	private bool _error => _stateSpotifyReleases.Value.Error;
 	private bool _loading => _stateSpotifyReleases.Value.LoadingAny();
+	private bool _errorArtists => _stateSpotifyArtists.Value.Error;
+	private bool _loadingArtists => _stateSpotifyArtists.Value.LoadingAny();
 
 	protected override void OnInitialized()
 	{

@@ -12,7 +12,7 @@ public record SpotifyReleasesActionGetSuccess()
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
-public record SpotifyReleasesActionGetFailure()
+public record SpotifyReleasesActionGetFailure(string ErrorMessage)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
@@ -23,12 +23,12 @@ public record SpotifyReleasesActionGetApi(ReleaseType ReleaseType, SpotifyUserLi
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
 public record SpotifyReleasesActionGetApiSuccess();
-public record SpotifyReleasesActionGetApiFailure(string ErrorMessage);
+public record SpotifyReleasesActionGetApiFailure();
 
 // get local storage
 public record SpotifyReleasesActionGetStorage(ReleaseType ReleaseType, bool ForceUpdate);
 public record SpotifyReleasesActionGetStorageSuccess();
-public record SpotifyReleasesActionGetStorageFailure(string ErrorMessage);
+public record SpotifyReleasesActionGetStorageFailure();
 
 
 
@@ -36,14 +36,14 @@ public record SpotifyReleasesActionGetStorageFailure(string ErrorMessage);
 // local storage -> set
 public record SpotifyReleasesActionSetStorageState(SpotifyReleasesState ArtistsState); // persists state
 public record SpotifyReleasesActionSetStorageStateSuccess();
-public record SpotifyReleasesActionSetStorageStateFailure(string ErrorMessage);
+public record SpotifyReleasesActionSetStorageStateFailure();
 
 // local storage -> get
 public record SpotifyReleasesActionGetStorageState();
 public record SpotifyReleasesActionGetStorageStateSuccess();
-public record SpotifyReleasesActionGetStorageStateFailure(string ErrorMessage);
+public record SpotifyReleasesActionGetStorageStateFailure();
 
 // local storage -> clear
 public record SpotifyReleasesActionClearStorageState();
 public record SpotifyReleasesActionClearStorageStateSuccess();
-public record SpotifyReleasesActionClearStorageStateFailure(string ErrorMessage);
+public record SpotifyReleasesActionClearStorageStateFailure();

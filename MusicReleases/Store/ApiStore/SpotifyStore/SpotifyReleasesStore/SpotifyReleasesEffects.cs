@@ -38,6 +38,9 @@ public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerR
 		// TODO must be task
 		await Task.Delay(0);
 
+#if DEBUG
+		Console.WriteLine(action.ErrorMessage);
+#endif
 		action.CompletionSource.SetResult(false);
 	}
 
@@ -57,8 +60,8 @@ public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerR
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyReleasesActionGetApiFailure(ex.Message));
-			dispatcher.Dispatch(new SpotifyReleasesActionGetFailure());
+			dispatcher.Dispatch(new SpotifyReleasesActionGetApiFailure());
+			dispatcher.Dispatch(new SpotifyReleasesActionGetFailure(ex.Message));
 		}
 	}
 

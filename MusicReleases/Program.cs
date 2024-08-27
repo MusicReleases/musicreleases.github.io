@@ -34,4 +34,6 @@ builder.Services.AddFluxor(options =>
 #endif
 });
 
+//builder.Services.AddMudServices();
+
 await builder.Build().RunAsync();

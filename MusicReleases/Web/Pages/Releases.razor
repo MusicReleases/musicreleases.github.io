@@ -8,7 +8,9 @@
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
+@using JakubKastner.SpotifyApi.Objects
 @using Meziantou.AspNetCore.Components
+@using MudBlazor
 
 @inherits FluxorComponent
 
@@ -18,7 +20,7 @@
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists
 
 
-@if (_loading || _releases is null)
+@if (_loading || _loadingArtists || _releases is null || _artists is null)
 {
 	<p>Loading releases...</p>
 }
@@ -28,6 +30,42 @@ else if (_releases.Count < 1)
 }
 else
 {
+	@* <MudDataGrid Items="@_releases" Virtualize="true" FixedHeader="true">
+		<Columns>
+			<HierarchyColumn T="SpotifyRelease" />
+			<PropertyColumn Property="x => x.Name" />
+			<PropertyColumn Property="x => x.ArtistString" Title="Artists" />
+			<PropertyColumn Property="x => x.TotalTracks" />
+			<PropertyColumn Property="x => x.ReleaseDateString" Title="Release date" />
+		</Columns>
+		<ChildRowContent>
+			<MudCard>
+				<MudCardHeader>
+					<CardHeaderContent>
+						<MudText Typo="Typo.h6">@context.Item.Name</MudText>
+					</CardHeaderContent>
+				</MudCardHeader>
+				<MudCardContent>
+					<MudDataGrid Items="@context.Item.Tracks" ReadOnly="true">
+						<Columns>
+							<HierarchyColumn T="SpotifyTrack" />
+							<PropertyColumn Property="x => x.Name" />
+							<PropertyColumn Property="x => x.ArtistsString" Title="Artists" />
+						</Columns>
+						<PagerContent>
+							<MudDataGridPager T="SpotifyTrack" />
+						</PagerContent>
+					</MudDataGrid>
+				</MudCardContent>
+			</MudCard>
+		</ChildRowContent>
+		@* <PagerContent>
+			<MudDataGridPager T="SpotifyRelease" />
+		</PagerContent> *@
+	@*</MudDataGrid> *@
+
+
+
 	<div class="releases boxes">
 		@foreach (var release in _releases)
 		{

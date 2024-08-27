@@ -12,7 +12,7 @@ public record SpotifyPlaylistsTracksActionGetSuccess()
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
-public record SpotifyPlaylistsTracksActionGetFailure()
+public record SpotifyPlaylistsTracksActionGetFailure(string ErrorMessage)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
@@ -23,7 +23,7 @@ public record SpotifyPlaylistsTracksActionGetApi(SpotifyUserList<SpotifyPlaylist
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
 public record SpotifyPlaylistsTracksActionGetApiSuccess();
-public record SpotifyPlaylistsTracksActionGetApiFailure(string ErrorMessage);
+public record SpotifyPlaylistsTracksActionGetApiFailure();
 
 
 
@@ -31,14 +31,14 @@ public record SpotifyPlaylistsTracksActionGetApiFailure(string ErrorMessage);
 // local storage -> set
 public record SpotifyPlaylistsTracksActionSetStorageState(SpotifyPlaylistsTracksState PlaylistsTracksState);
 public record SpotifyPlaylistsTracksActionSetStorageStateSuccess();
-public record SpotifyPlaylistsTracksActionSetStorageStateFailure(string ErrorMessage);
+public record SpotifyPlaylistsTracksActionSetStorageStateFailure();
 
 // local storage -> get
 public record SpotifyPlaylistsTracksActionGetStorageState();
 public record SpotifyPlaylistsTracksActionGetStorageStateSuccess();
-public record SpotifyPlaylistsTracksActionGetStorageStateFailure(string ErrorMessage);
+public record SpotifyPlaylistsTracksActionGetStorageStateFailure();
 
 // local storage -> clear
 public record SpotifyPlaylistsTracksActionClearStorageState();
 public record SpotifyPlaylistsTracksActionClearStorageStateSuccess();
-public record SpotifyPlaylistsTracksActionClearStorageStateFailure(string ErrorMessage);
+public record SpotifyPlaylistsTracksActionClearStorageStateFailure();

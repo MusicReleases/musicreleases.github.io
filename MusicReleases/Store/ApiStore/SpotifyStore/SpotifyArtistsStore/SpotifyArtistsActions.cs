@@ -11,7 +11,7 @@ public record SpotifyArtistsActionGetSuccess()
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
-public record SpotifyArtistsActionGetFailure()
+public record SpotifyArtistsActionGetFailure(string ErrorMessage)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
@@ -22,7 +22,7 @@ public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist, SpotifyU
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
 public record SpotifyArtistsActionGetApiSuccess();
-public record SpotifyArtistsActionGetApiFailure(string ErrorMessage);
+public record SpotifyArtistsActionGetApiFailure();
 
 // get local storage
 public record SpotifyArtistsActionGetStorage(bool ForceUpdate)
@@ -30,7 +30,7 @@ public record SpotifyArtistsActionGetStorage(bool ForceUpdate)
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
 public record SpotifyArtistsActionGetStorageSuccess();
-public record SpotifyArtistsActionGetStorageFailure(string ErrorMessage);
+public record SpotifyArtistsActionGetStorageFailure();
 
 // set artists
 public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> Artists)
@@ -50,14 +50,14 @@ public record SpotifyArtistsActionSetStorageFailure(string ErrorMessage);
 // local storage -> set
 public record SpotifyArtistsActionSetStorageState(SpotifyArtistsState ArtistsState); // persists state
 public record SpotifyArtistsActionSetStorageStateSuccess();
-public record SpotifyArtistsActionSetStorageStateFailure(string ErrorMessage);
+public record SpotifyArtistsActionSetStorageStateFailure();
 
 // local storage -> get
 public record SpotifyArtistsActionGetStorageState();
 public record SpotifyArtistsActionGetStorageStateSuccess();
-public record SpotifyArtistsActionGetStorageStateFailure(string ErrorMessage);
+public record SpotifyArtistsActionGetStorageStateFailure();
 
 // local storage -> clear
 public record SpotifyArtistsActionClearStorageState();
 public record SpotifyArtistsActionClearStorageStateSuccess();
-public record SpotifyArtistsActionClearStorageStateFailure(string ErrorMessage);
+public record SpotifyArtistsActionClearStorageStateFailure();

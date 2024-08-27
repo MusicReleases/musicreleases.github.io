@@ -42,6 +42,9 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		// TODO must be task
 		await Task.Delay(0);
 
+#if DEBUG
+		Console.WriteLine(action.ErrorMessage);
+#endif
 		action.CompletionSource.SetResult(false);
 	}
 
@@ -62,8 +65,8 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageFailure(ex.Message));
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetFailure() { CompletionSource = action.CompletionSource });
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageFailure());
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -83,8 +86,8 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApiFailure(ex.Message));
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetFailure() { CompletionSource = action.CompletionSource });
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetApiFailure());
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
 		}
 	}
 
@@ -104,6 +107,16 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		{
 			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageFailure(ex.Message));
 		}
+	}
+	[EffectMethod]
+	public async Task SetStorageFailure(SpotifyPlaylistsActionSetStorageFailure action, IDispatcher dispatcher)
+	{
+		// TODO must be task
+		await Task.Delay(0);
+
+#if DEBUG
+		Console.WriteLine(action.ErrorMessage);
+#endif
 	}
 
 
@@ -135,7 +148,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageStateFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionGetStorageStateFailure());
 		}
 	}
 
@@ -151,7 +164,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageStateFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageStateFailure());
 		}
 	}
 
@@ -168,7 +181,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyPlaylistsActionClearStorageStateFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyPlaylistsActionClearStorageStateFailure());
 		}
 	}
 }

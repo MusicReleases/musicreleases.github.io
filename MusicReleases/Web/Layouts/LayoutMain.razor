@@ -1,9 +1,13 @@
 ﻿@using JakubKastner.MusicReleases.Controllers.ApiControllers
+@using MudBlazor
 
 @inherits LayoutComponentBase;
 
 @inject IApiLoginController _apiLoginController;
 @inject NavigationManager _navManager;
+
+@* <MudThemeProvider />
+<MudPopoverProvider /> *@
 
 @* main layout - user is sucessfully logged in *@
 

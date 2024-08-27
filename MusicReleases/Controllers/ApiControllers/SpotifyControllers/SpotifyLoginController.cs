@@ -146,6 +146,8 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 
 	public async Task LogoutUser()
 	{
+		// TODO logout - stop loading data from api
+
 		// remove user
 		await _spotifyLoginStorageController.DeleteSavedUser();
 
