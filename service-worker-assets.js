@@ -165,7 +165,7 @@
       "url": "images\/no-cover.png"
     },
     {
-      "hash": "sha256-jnnprCun9tYhJ4JiCgc216TCTPvljGphUaOYrJlEKmQ=",
+      "hash": "sha256-roD9VydgOwGH2+3LtZSmmGAGnbXOh++MmN68pL2GlrE=",
       "url": "index.html"
     },
     {
@@ -309,7 +309,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-vvpkl4dawQGsJluTxc6VZrfQFrONsHV7I14MEfEt5H0=",
+      "hash": "sha256-O0GVLgjLTuINOMg4va4UoAuPt01mlVs8DfVa5WBj4jM=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -421,7 +421,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-coiZUzb\/35Ax04VWyLkre9Y11uaWw5HBMd\/1bbLq84o=",
+      "hash": "sha256-zN5BADe8A6qTGkSEqakm\/BEs9X5eRElOPjLeLufvIZw=",
       "url": "_framework\/MusicReleases.wasm"
     },
     {
@@ -433,7 +433,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-V26G8Kj1dndFk3fZzEYXUFxHw1uM\/1FO86AWjmKv318=",
+      "hash": "sha256-ZMSwkZRdHrkT2fq70YK0y6955PwKqmFfSPZRN1cI+SE=",
       "url": "_framework\/SpotifyApi.wasm"
     },
     {
@@ -461,7 +461,7 @@
       "url": "_framework\/System.Collections.wasm"
     },
     {
-      "hash": "sha256-bF7+cNzL3bDZzwDmMZ9+5e8QZkXlVGzkjkWOfOZKf+o=",
+      "hash": "sha256-8pXvyIAKE7XnBF54trzZVq\/Rs1ao1qH\/FFnXw2ScPFo=",
       "url": "_framework\/System.ComponentModel.Annotations.wasm"
     },
     {
@@ -509,7 +509,7 @@
       "url": "_framework\/System.Linq.Expressions.wasm"
     },
     {
-      "hash": "sha256-xoMSPSqVuHEGz2wVr1PXE5YS\/C9z8w8ZFZVPjTDkCS0=",
+      "hash": "sha256-UlK3zZzGFT8TCrVUgt\/wiJrB9okN7C6xQI9glwlw\/pQ=",
       "url": "_framework\/System.Linq.wasm"
     },
     {
@@ -661,5 +661,5 @@
       "url": "_content\/TG.Blazor.IndexedDB\/indexedDb.Blazor.js"
     }
   ],
-  "version": "djeGwylv"
+  "version": "GGIuAnYY"
 };
