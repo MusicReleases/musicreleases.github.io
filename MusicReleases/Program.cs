@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Fluxor;
 using Fluxor.Blazor.Web.ReduxDevTools;
+using IndexedDB.Blazor;
 using JakubKastner.MusicReleases;
 using JakubKastner.SpotifyApi;
 using Microsoft.AspNetCore.Components.Web;
@@ -33,6 +34,8 @@ builder.Services.AddFluxor(options =>
 	options.UseReduxDevTools();
 #endif
 });
+
+builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();
 
 //builder.Services.AddMudServices();
 

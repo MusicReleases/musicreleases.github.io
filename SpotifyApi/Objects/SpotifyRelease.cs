@@ -8,6 +8,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 {
 	public DateTime ReleaseDate { get; init; }
 	public int TotalTracks { get; init; }
+	public bool New { get; init; } = false;
 
 	public string UrlApp { get; init; }
 	public string UrlWeb { get; init; }
@@ -18,6 +19,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 
 	public List<Image> Images { get; init; }
 
+	// TODO not null - after implementation of saving to db
 	public HashSet<SpotifyArtist> Artists { get; init; }
 
 	public SortedSet<SpotifyTrack>? Tracks { get; init; }
@@ -48,6 +50,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		UrlWeb = simpleAlbum.Href;
 		Artists = simpleAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
 		ReleaseType = releaseType;
+		New = true;
 	}
 
 	public SpotifyRelease(FullAlbum fullAlbum, ReleaseType releaseType) : base(fullAlbum.Id, fullAlbum.Name)
@@ -67,6 +70,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		UrlWeb = fullAlbum.Href;
 		Artists = fullAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
 		ReleaseType = releaseType;
+		New = true;
 	}
 
 	public SpotifyRelease(SimpleShow simpleShow) : base(simpleShow.Id, simpleShow.Name)
@@ -90,6 +94,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 			new("0", simpleShow.Publisher)
 		];
 		ReleaseType = ReleaseType.Podcasts;
+		New = true;
 	}
 
 	public new int CompareTo(object? obj)

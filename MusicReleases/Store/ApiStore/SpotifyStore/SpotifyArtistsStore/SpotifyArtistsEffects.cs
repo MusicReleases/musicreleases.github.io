@@ -1,12 +1,13 @@
 ﻿using Blazored.LocalStorage;
 using Fluxor;
+using JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 using JakubKastner.SpotifyApi.Controllers;
 using JakubKastner.SpotifyApi.Objects;
 using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser, ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService)
+public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser, ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IDatabaseController databaseController)
 {
 	private const ServiceType serviceType = ServiceType.Spotify;
 
@@ -17,6 +18,7 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
+	private readonly IDatabaseController _databaseController = databaseController;
 
 	// GET
 	[EffectMethod]
@@ -41,9 +43,9 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 		// TODO must be task
 		await Task.Delay(0);
 
-#if DEBUG
+		//#if DEBUG
 		Console.WriteLine(action.ErrorMessage);
-#endif
+		//#endif
 
 		action.CompletionSource.SetResult(false);
 	}
@@ -51,26 +53,28 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 	[EffectMethod]
 	public async Task GetStorage(SpotifyArtistsActionGetStorage action, IDispatcher dispatcher)
 	{
-		try
+		/*try
+		{*/
+		// clear new artists
+		dispatcher.Dispatch(new SpotifyArtistsNewActionClear());
+
+		// get item from storage
+		//var artists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>>(_localStorageName);
+
+		var artists = await _databaseController.GetArtists();
+
+		if (artists is not null)
 		{
-			// clear new aritsts
-			dispatcher.Dispatch(new SpotifyArtistsNewActionClear());
-
-			// get item from storage
-			var artists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>>(_localStorageName);
-
-			if (artists is not null)
-			{
-				dispatcher.Dispatch(new SpotifyArtistsActionSet(artists));
-			}
-			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageSuccess());
-			dispatcher.Dispatch(new SpotifyArtistsActionGetApi(artists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
+			dispatcher.Dispatch(new SpotifyArtistsActionSet(artists));
 		}
+		dispatcher.Dispatch(new SpotifyArtistsActionGetStorageSuccess());
+		dispatcher.Dispatch(new SpotifyArtistsActionGetApi(artists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
+		/*}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyArtistsActionGetStorageFailure());
 			dispatcher.Dispatch(new SpotifyArtistsActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
-		}
+		}*/
 	}
 
 	[EffectMethod]
@@ -106,17 +110,18 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 	[EffectMethod]
 	public async Task SetStorage(SpotifyArtistsActionSetStorage action, IDispatcher dispatcher)
 	{
-		try
+		/*try
 		{
 			// set item
-			await _localStorageService.SetItemAsync(_localStorageName, action.Artists);
+			//await _localStorageService.SetItemAsync(_localStorageName, action.Artists);*/
+		await _databaseController.SaveArtists(action.Artists);
 
-			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());
-		}
+		dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());
+		/*}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageFailure(ex.Message));
-		}
+		}*/
 	}
 	[EffectMethod]
 	public async Task SetStorageFailure(SpotifyArtistsActionSetStorageFailure action, IDispatcher dispatcher)

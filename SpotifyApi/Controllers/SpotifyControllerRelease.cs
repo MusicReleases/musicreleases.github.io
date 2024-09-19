@@ -32,14 +32,20 @@ public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease
 		}
 
 		var lastUpdate = GetLastTimeUpdate(artists.Update, releaseType);
-		var dateTimeDifference = DateTime.Now - lastUpdate;
-
-		if (dateTimeDifference.TotalHours >= 24)
+		if (lastUpdate.HasValue)
 		{
-			// force update every 24 hours
+			var dateTimeDifference = DateTime.Now - lastUpdate;
+
+			if (dateTimeDifference.Value.TotalHours >= 24)
+			{
+				// force update every 24 hours
+				forceUpdate = true;
+			}
+		}
+		else
+		{
 			forceUpdate = true;
 		}
-
 
 		// TODO force update - this will replace all existing releases from another release type - fixed down - need check
 		/*if (!forceUpdate)
@@ -97,7 +103,7 @@ public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease
 		return artistStorage;
 	}
 
-	private DateTime GetLastTimeUpdate(SpotifyUserListUpdateArtists lastUpdateList, ReleaseType releaseType)
+	private DateTime? GetLastTimeUpdate(SpotifyUserListUpdateArtists lastUpdateList, ReleaseType releaseType)
 	{
 		return releaseType switch
 		{

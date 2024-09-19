@@ -11,9 +11,7 @@ public class ControllerApiUser(ISpotifyApiClient client) : IControllerApiUser
 	public async Task<SpotifyUser?> LoginUser(string code, string loginVerifier, string redirectUrl)
 	{
 		// TODO app id to config file
-		//const string appId = "67bbd538e581437597ae4574431682df";
-
-		const string appId = "d1c9a91ea65443af90946fde02fdda64";
+		const string appId = "67bbd538e581437597ae4574431682df";
 
 		var redirectUri = new Uri(redirectUrl);
 

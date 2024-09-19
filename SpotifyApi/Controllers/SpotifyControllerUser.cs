@@ -22,8 +22,7 @@ public class SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser 
 			Scopes.UserFollowRead,
 		};
 		// TODO app id to config file
-		//const string appId = "67bbd538e581437597ae4574431682df";
-		const string appId = "d1c9a91ea65443af90946fde02fdda64";
+		const string appId = "67bbd538e581437597ae4574431682df";
 
 		var (verifier, challenge) = PKCEUtil.GenerateCodes(120);
 		var responseType = LoginRequest.ResponseType.Code;
