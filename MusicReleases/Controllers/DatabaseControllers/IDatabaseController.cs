@@ -1,8 +1,7 @@
 ﻿
-namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers
+namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
+
+public interface IDatabaseController
 {
-	public interface IDatabaseController
-	{
-		Task DeleteAll();
-	}
+	Task DeleteAll();
 }

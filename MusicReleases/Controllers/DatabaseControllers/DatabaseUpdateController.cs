@@ -1,5 +1,5 @@
 ﻿using IndexedDB.Blazor;
-using JakubKastner.MusicReleases.Entities.Api.Spotify;
+using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 

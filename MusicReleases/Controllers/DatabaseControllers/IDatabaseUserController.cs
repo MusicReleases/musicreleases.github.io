@@ -1,12 +1,11 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers
+namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
+
+public interface IDatabaseUserController
 {
-	public interface IDatabaseUserController
-	{
-		Task Delete(string userId);
-		Task DeleteAllDatabases(string userId);
-		Task<SpotifyUser?> Get(string userId);
-		Task Save(SpotifyUser user);
-	}
+	Task Delete(string userId);
+	Task DeleteAllDatabases(string userId);
+	Task<SpotifyUser?> Get(string userId);
+	Task Save(SpotifyUser user);
 }

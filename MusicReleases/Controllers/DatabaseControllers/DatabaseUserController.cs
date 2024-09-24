@@ -1,6 +1,6 @@
 ﻿using IndexedDB.Blazor;
-using JakubKastner.MusicReleases.Entities.Api.Spotify;
 using JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
+using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;

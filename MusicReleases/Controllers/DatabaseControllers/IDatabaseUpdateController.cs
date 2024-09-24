@@ -1,11 +1,10 @@
-﻿using JakubKastner.MusicReleases.Entities.Api.Spotify;
+﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
-namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers
+namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
+
+public interface IDatabaseUpdateController
 {
-	public interface IDatabaseUpdateController
-	{
-		Task Delete(string userId);
-		SpotifyLastUpdateEntity? Get(string userId, SpotifyReleasesDb db);
-		SpotifyLastUpdateEntity GetOrCreate(string userId, SpotifyReleasesDb db);
-	}
+	Task Delete(string userId);
+	SpotifyLastUpdateEntity? Get(string userId, SpotifyReleasesDb db);
+	SpotifyLastUpdateEntity GetOrCreate(string userId, SpotifyReleasesDb db);
 }

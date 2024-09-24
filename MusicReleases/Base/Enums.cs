@@ -37,13 +37,8 @@ public static class Enums
 	public enum LocalStorageKey
 	{
 		LoggedInUser,
-		UserInfo,
-		UserCredentials,
 		LoginVerifier,
 		UserPlaylists,
-		UserPlaylistsState,
-		UserArtists,
-		UserArtistsState,
 	}
 
 	public enum MenuButtonsType

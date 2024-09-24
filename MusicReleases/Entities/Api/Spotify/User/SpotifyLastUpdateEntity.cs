@@ -1,8 +1,10 @@
-﻿namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
+﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
+
+namespace JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
 public class SpotifyLastUpdateEntity : SpotifyGuidEntity
 {
-	public string UserId { get; set; }
+	public string? UserId { get; set; }
 
 	public DateTime? User { get; set; }
 

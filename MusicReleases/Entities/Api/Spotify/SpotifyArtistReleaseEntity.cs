@@ -1,8 +1,10 @@
-﻿namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
+﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
+
+namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
 public class SpotifyArtistReleaseEntity : SpotifyGuidEntity
 {
-	public string ReleaseId { get; set; }
+	public string? ReleaseId { get; set; }
 
-	public string ArtistId { get; set; }
+	public string? ArtistId { get; set; }
 }

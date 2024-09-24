@@ -1,5 +1,6 @@
 ﻿using IndexedDB.Blazor;
 using JakubKastner.MusicReleases.Entities.Api.Spotify;
+using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 using Microsoft.JSInterop;
 
 public class SpotifyReleasesDb : IndexedDb

@@ -6,17 +6,16 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsStore;
 
-public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControllerPlaylist, ILocalStorageService localStorageService, IState<SpotifyPlaylistsState> playlistsState)
+public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControllerPlaylist, ILocalStorageService localStorageService/*, IState<SpotifyPlaylistsState> playlistsState*/)
 {
 	private const ServiceType serviceType = ServiceType.Spotify;
 
 	private readonly string _localStorageName = GetLocalStorageKey(serviceType, LocalStorageKey.UserPlaylists);
-	private readonly string _localStorageStateName = GetLocalStorageKey(serviceType, LocalStorageKey.UserPlaylistsState);
 
 	private readonly ISpotifyControllerPlaylist _spotifyControllerPlaylist = spotifyControllerPlaylist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
-	private readonly IState<SpotifyPlaylistsState> _playlistsState = playlistsState;
+	//private readonly IState<SpotifyPlaylistsState> _playlistsState = playlistsState;
 
 	// GET
 	[EffectMethod]
@@ -132,7 +131,7 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		dispatcher.Dispatch(new SpotifyPlaylistsActionSetStorageState(_playlistsState.Value));
 	}*/
 
-	[EffectMethod(typeof(SpotifyPlaylistsActionGetStorageState))]
+	/*[EffectMethod(typeof(SpotifyPlaylistsActionGetStorageState))]
 	public async Task GetStorageState(IDispatcher dispatcher)
 	{
 		try
@@ -183,5 +182,5 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		{
 			dispatcher.Dispatch(new SpotifyPlaylistsActionClearStorageStateFailure());
 		}
-	}
+	}*/
 }
