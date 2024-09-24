@@ -45,7 +45,7 @@ public class DatabaseUserController(IIndexedDbFactory dbFactory, IDatabaseUpdate
 		}
 
 		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
-		var updateDb = _databaseUpdateController.Get(userId, db);
+		var updateDb = _databaseUpdateController.Get(db, userId);
 		var userUpdateDb = updateDb?.User;
 
 		if (!userUpdateDb.HasValue)
@@ -74,22 +74,16 @@ public class DatabaseUserController(IIndexedDbFactory dbFactory, IDatabaseUpdate
 			throw new NullReferenceException(nameof(user));
 		}
 
-		var userDb = new SpotifyUserEntity()
-		{
-			Id = user.Info.Id,
-			Name = user.Info.Name,
-			Country = user.Info.Country,
-			ProfilePictureUrl = user.Info.ProfilePictureUrl,
-			RefreshToken = user.Credentials.RefreshToken,
-		};
+		// old user
+		await Delete(user.Info.Id);
 
 		// user db
-		await Delete(user.Info.Id);
+		var userDb = new SpotifyUserEntity(user.Info, user.Credentials.RefreshToken);
 		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
 		db.Users.Add(userDb);
 
 		// update db
-		var updateDb = _databaseUpdateController.GetOrCreate(user.Info.Id, db);
+		var updateDb = _databaseUpdateController.GetOrCreate(db, user.Info.Id);
 		updateDb.User = user.Info.LastUpdate;
 
 		await db.SaveChanges();

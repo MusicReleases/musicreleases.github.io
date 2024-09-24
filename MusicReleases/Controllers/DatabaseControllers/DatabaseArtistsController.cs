@@ -42,7 +42,7 @@ public class DatabaseArtistsController(IIndexedDbFactory dbFactory, IDatabaseUpd
 
 		// TODO
 		var user = _spotifyControllerUser.GetUserRequired();
-		var updateDb = _databaseUpdateController.Get(user.Info.Id, db);
+		var updateDb = _databaseUpdateController.Get(db, user.Info.Id);
 
 		if (updateDb?.Artists is null)
 		{
@@ -116,7 +116,7 @@ public class DatabaseArtistsController(IIndexedDbFactory dbFactory, IDatabaseUpd
 
 			// TODO
 			var user = _spotifyControllerUser.GetUserRequired();
-			var updateDb = _databaseUpdateController.Get(user.Info.Id, db);
+			var updateDb = _databaseUpdateController.Get(db, user.Info.Id);
 
 			// update - update times
 			updateDb!.Artists = artists.Update!.LastUpdateMain;

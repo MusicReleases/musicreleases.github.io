@@ -7,9 +7,9 @@ public class DatabaseUpdateController(IIndexedDbFactory dbFactory) : IDatabaseUp
 {
 	private readonly IIndexedDbFactory _dbFactory = dbFactory;
 
-	public SpotifyLastUpdateEntity GetOrCreate(string userId, SpotifyReleasesDb db)
+	public SpotifyLastUpdateEntity GetOrCreate(SpotifyReleasesDb db, string userId)
 	{
-		var userUpdate = Get(userId, db);
+		var userUpdate = Get(db, userId);
 
 		if (userUpdate is not null)
 		{
@@ -26,10 +26,9 @@ public class DatabaseUpdateController(IIndexedDbFactory dbFactory) : IDatabaseUp
 		return userUpdate;
 	}
 
-	public SpotifyLastUpdateEntity? Get(string userId, SpotifyReleasesDb db)
+	public SpotifyLastUpdateEntity? Get(SpotifyReleasesDb db, string userId)
 	{
 		var userUpdate = db.Updates.SingleOrDefault(x => x.UserId == userId);
-
 		return userUpdate;
 	}
 
@@ -37,7 +36,7 @@ public class DatabaseUpdateController(IIndexedDbFactory dbFactory) : IDatabaseUp
 	{
 		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
 
-		var userUpdateDb = Get(userId, db);
+		var userUpdateDb = Get(db, userId);
 
 		if (userUpdateDb is null)
 		{

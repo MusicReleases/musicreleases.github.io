@@ -2,9 +2,7 @@
 
 public class SpotifyUserCredentials
 {
-	public string? RefreshToken { get; set; }
-
-	public SpotifyUserCredentials() { }
+	public string RefreshToken { get; set; }
 
 	public SpotifyUserCredentials(string refreshToken)
 	{
