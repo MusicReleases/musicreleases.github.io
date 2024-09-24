@@ -8,11 +8,11 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 
-public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser, NavigationManager navManager, ISpotifyLoginStorageController spotifyLoginStorageController, IDatabaseArtistsController databaseController, IDatabaseUserController databaseUserController) : ISpotifyLoginController
+public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser, NavigationManager navManager, ISpotifyLoginStorageController spotifyLoginStorageController, IDatabaseArtistsControllerOld databaseController, IDatabaseUserController databaseUserController) : ISpotifyLoginController
 {
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 	private readonly ISpotifyLoginStorageController _spotifyLoginStorageController = spotifyLoginStorageController;
-	private readonly IDatabaseArtistsController _databaseController = databaseController;
+	private readonly IDatabaseArtistsControllerOld _databaseController = databaseController;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDatabaseUserController _databaseUserController = databaseUserController;
 

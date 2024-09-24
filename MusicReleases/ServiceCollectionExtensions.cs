@@ -16,9 +16,11 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ILoginController, LoginController>();
 
 		// db controllers
-		services.AddScoped<IDatabaseArtistsController, DatabaseArtistsController>();
+		services.AddScoped<IDatabaseArtistsControllerOld, DatabaseArtistsControllerOld>();
 		services.AddScoped<IDatabaseUpdateController, DatabaseUpdateController>();
 		services.AddScoped<IDatabaseUserController, DatabaseUserController>();
+		services.AddScoped<IDatabaseArtistsController, DatabaseArtistsController>();
+		services.AddScoped<IDatabaseArtistReleasesController, DatabaseArtistReleasesController>();
 
 		// spotify controllers
 		services.AddScoped<IApiLoginController, SpotifyLoginController>();

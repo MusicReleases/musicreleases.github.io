@@ -1,4 +1,5 @@
 ﻿using SpotifyAPI.Web;
+using System.Diagnostics.CodeAnalysis;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
@@ -19,21 +20,30 @@ public class SpotifyTrack : SpotifyIdNameObject
 	}
 
 	// TODO artists - GetArtists
-	public SpotifyTrack(SimpleTrack simpleTrack) : base(simpleTrack.Id, simpleTrack.Name)
+	[SetsRequiredMembers]
+	public SpotifyTrack(SimpleTrack simpleTrack)
 	{
+		Id = simpleTrack.Id;
+		Name = simpleTrack.Name;
 		// TODO empty??
 		Album = null;
 		_artists = [];
 		//_artists = Controller.GetArtists(simpleTrack.Artists);
 	}
-	public SpotifyTrack(FullTrack fullTrack) : base(fullTrack.Id, fullTrack.Name)
+	[SetsRequiredMembers]
+	public SpotifyTrack(FullTrack fullTrack)
 	{
+		Id = fullTrack.Id;
+		Name = fullTrack.Name;
 		Album = new(fullTrack.Album, ReleaseType.Tracks);
 		_artists = [];
 		//_artists = Controller.GetArtists(fullTrack.Artists);
 	}
-	public SpotifyTrack(FullEpisode fullEpisode) : base(fullEpisode.Id, fullEpisode.Name)
+	[SetsRequiredMembers]
+	public SpotifyTrack(FullEpisode fullEpisode)
 	{
+		Id = fullEpisode.Id;
+		Name = fullEpisode.Name;
 		Album = new(fullEpisode.Show);
 		_artists =
 		[

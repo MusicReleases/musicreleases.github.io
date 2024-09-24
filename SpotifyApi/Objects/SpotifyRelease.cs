@@ -1,26 +1,27 @@
 ﻿using JakubKastner.Extensions;
 using SpotifyAPI.Web;
+using System.Diagnostics.CodeAnalysis;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyRelease : SpotifyIdNameObject, IComparable
 {
-	public DateTime ReleaseDate { get; init; }
-	public int TotalTracks { get; init; }
+	public required DateTime ReleaseDate { get; init; }
+	public required int TotalTracks { get; init; }
 	public bool New { get; init; } = false;
 
-	public string UrlApp { get; init; }
-	public string UrlWeb { get; init; }
-	public string UrlImage { get; init; }
+	public required string UrlApp { get; init; }
+	public required string UrlWeb { get; init; }
+	public required string UrlImage { get; init; }
 
 	public string ArtistString => string.Join(", ", Artists.Select(x => x.Name));
 	public string ReleaseDateString => ReleaseDate.ToString("dd.MM.yyyy");
 
-	public List<Image> Images { get; init; }
+	//public List<Image> Images { get; init; }
 
 	// TODO not null - after implementation of saving to db
-	public HashSet<SpotifyArtist> Artists { get; init; }
+	public required HashSet<SpotifyArtist> Artists { get; init; }
 
 	public SortedSet<SpotifyTrack>? Tracks { get; init; }
 
@@ -28,16 +29,20 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 
 	// TODO artists - GetArtists
 	// TODO images (0), default
-	public SpotifyRelease() : base("json", "init")
+	public SpotifyRelease()
 	{
 		// TODO ctor for json
 	}
 
-	public SpotifyRelease(SimpleAlbum simpleAlbum, ReleaseType releaseType) : base(simpleAlbum.Id, simpleAlbum.Name)
+
+	[SetsRequiredMembers]
+	public SpotifyRelease(SimpleAlbum simpleAlbum, ReleaseType releaseType)
 	{
+		Id = simpleAlbum.Id;
+		Name = simpleAlbum.Name;
 		ReleaseDate = simpleAlbum.ReleaseDate.ToDateTime();
 		TotalTracks = simpleAlbum.TotalTracks;
-		Images = simpleAlbum.Images;
+		//Images = simpleAlbum.Images;
 		if (simpleAlbum.Images.Count > 0)
 		{
 			UrlImage = simpleAlbum.Images.First().Url;
@@ -53,11 +58,14 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		New = true;
 	}
 
-	public SpotifyRelease(FullAlbum fullAlbum, ReleaseType releaseType) : base(fullAlbum.Id, fullAlbum.Name)
+	[SetsRequiredMembers]
+	public SpotifyRelease(FullAlbum fullAlbum, ReleaseType releaseType)
 	{
+		Id = fullAlbum.Id;
+		Name = fullAlbum.Name;
 		ReleaseDate = fullAlbum.ReleaseDate.ToDateTime();
 		TotalTracks = fullAlbum.TotalTracks;
-		Images = fullAlbum.Images;
+		//Images = fullAlbum.Images;
 		if (fullAlbum.Images.Count > 0)
 		{
 			UrlImage = fullAlbum.Images.First().Url;
@@ -73,12 +81,15 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		New = true;
 	}
 
-	public SpotifyRelease(SimpleShow simpleShow) : base(simpleShow.Id, simpleShow.Name)
+	[SetsRequiredMembers]
+	public SpotifyRelease(SimpleShow simpleShow)
 	{
+		Id = simpleShow.Id;
+		Name = simpleShow.Name;
 		// TODO podcast release date
 		//ReleaseDate = null; 
 		TotalTracks = 1;
-		Images = simpleShow.Images;
+		//Images = simpleShow.Images;
 		if (simpleShow.Images.Count > 0)
 		{
 			UrlImage = simpleShow.Images.First().Url;

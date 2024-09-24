@@ -8,4 +8,8 @@ public static class DateTimeExtensions
 	{
 		return string.IsNullOrEmpty(value?.Trim());
 	}
+	public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? value)
+	{
+		return !IsNullOrEmpty(value);
+	}
 }

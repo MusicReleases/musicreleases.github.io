@@ -1,9 +1,9 @@
 ﻿namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyIdNameObject(string id, string name) : IComparable
+public class SpotifyIdNameObject : IComparable
 {
-	public string Id { get; init; } = id;
-	public string Name { get; init; } = name;
+	public required string Id { get; init; }
+	public required string Name { get; init; }
 
 	public int CompareTo(object? obj)
 	{

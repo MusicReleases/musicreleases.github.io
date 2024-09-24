@@ -1,4 +1,5 @@
 ﻿using SpotifyAPI.Web;
+using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
@@ -7,23 +8,32 @@ public class SpotifyArtist : SpotifyIdNameObject
 	public SortedSet<SpotifyRelease>? Releases { get; set; }
 	public bool New { get; init; } = false;
 
-	public SpotifyArtist() : base("json", "init")
+	public SpotifyArtist()
 	{
 		// TODO ctor for json
 	}
 
-	public SpotifyArtist(SimpleArtist simpleArtist) : base(simpleArtist.Id, simpleArtist.Name)
+	[SetsRequiredMembers]
+	public SpotifyArtist(SimpleArtist simpleArtist)
 	{
+		Id = simpleArtist.Id;
+		Name = simpleArtist.Name;
 		New = true;
 	}
 
-	public SpotifyArtist(FullArtist fullArtist) : base(fullArtist.Id, fullArtist.Name)
+	[SetsRequiredMembers]
+	public SpotifyArtist(FullArtist fullArtist)
 	{
+		Id = fullArtist.Id;
+		Name = fullArtist.Name;
 		New = true;
 	}
 
-	public SpotifyArtist(string id, string name) : base(id, name)
+	[SetsRequiredMembers]
+	public SpotifyArtist(string id, string name)
 	{
+		Id = id;
+		Name = name;
 		New = true;
 	}
 }

@@ -1,11 +1,12 @@
 ﻿using SpotifyAPI.Web;
+using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyPlaylist : SpotifyIdNameObject, IComparable
 {
-	public bool CurrentUserOwned { get; init; }
-	public bool Collaborative { get; init; }
+	public required bool CurrentUserOwned { get; init; }
+	public required bool Collaborative { get; init; }
 	public string? SnapshotId { get; init; }
 
 	public int? TotalTracks { get; init; }
@@ -13,14 +14,17 @@ public class SpotifyPlaylist : SpotifyIdNameObject, IComparable
 
 	// TODO playlist owner - currentuserowned
 
-	public SpotifyPlaylist() : base("json", "init")
+	public SpotifyPlaylist()
 	{
 		// TODO ctor for json
 	}
 
-	public SpotifyPlaylist(FullPlaylist fullPlaylist, HashSet<string> tracks, bool currentUserOwned = false) : base(fullPlaylist.Id ?? "", fullPlaylist.Name ?? "")
+	[SetsRequiredMembers]
+	public SpotifyPlaylist(FullPlaylist fullPlaylist, HashSet<string> tracks, bool currentUserOwned = false)
 	{
 		// TODO null
+		Id = fullPlaylist.Id ?? "";
+		Name = fullPlaylist.Name ?? "";
 		TotalTracks = fullPlaylist.Tracks?.Total;
 		Collaborative = fullPlaylist.Collaborative ?? false;
 		CurrentUserOwned = currentUserOwned;
