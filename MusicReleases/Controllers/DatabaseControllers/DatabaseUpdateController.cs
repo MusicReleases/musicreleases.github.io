@@ -21,14 +21,14 @@ public class DatabaseUpdateController(IIndexedDbFactory dbFactory) : IDatabaseUp
 			UserId = userId,
 		};
 
-		db.Update.Add(userUpdate);
+		db.Updates.Add(userUpdate);
 
 		return userUpdate;
 	}
 
 	public SpotifyLastUpdateEntity? Get(string userId, SpotifyReleasesDb db)
 	{
-		var userUpdate = db.Update.SingleOrDefault(x => x.UserId == userId);
+		var userUpdate = db.Updates.SingleOrDefault(x => x.UserId == userId);
 
 		return userUpdate;
 	}
@@ -44,7 +44,7 @@ public class DatabaseUpdateController(IIndexedDbFactory dbFactory) : IDatabaseUp
 			return;
 		}
 
-		db.Update.Remove(userUpdateDb);
+		db.Updates.Remove(userUpdateDb);
 
 		await db.SaveChanges();
 	}

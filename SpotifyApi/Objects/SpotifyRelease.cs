@@ -1,4 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Base;
+﻿using JakubKastner.Extensions;
 using SpotifyAPI.Web;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 

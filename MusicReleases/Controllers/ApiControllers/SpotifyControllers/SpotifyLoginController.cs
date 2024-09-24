@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Base;
+﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 using JakubKastner.SpotifyApi.Controllers;
 using JakubKastner.SpotifyApi.Objects;

@@ -27,6 +27,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+		<ProjectReference Include="..\Extensions\Extensions.csproj" />
 		<ProjectReference Include="..\SpotifyApi\SpotifyApi.csproj" />
 	</ItemGroup>
 

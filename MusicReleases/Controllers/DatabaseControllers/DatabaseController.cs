@@ -8,16 +8,18 @@ public class DatabaseController(IIndexedDbFactory dbFactory) : IDatabaseControll
 
 	public async Task DeleteAll()
 	{
-		using (var db = await _dbFactory.Create<SpotifyReleasesDb>())
-		{
-			db.Artists.Clear();
-			db.ArtistsReleases.Clear();
-			db.Releases.Clear();
+		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
 
-			db.Update.Clear();
-			db.Users.Clear();
+		db.Users.Clear();
+		db.Updates.Clear();
 
-			await db.SaveChanges();
-		}
+		db.UsersArtists.Clear();
+		db.ArtistsReleases.Clear();
+
+		db.Artists.Clear();
+		db.Releases.Clear();
+		db.Tracks.Clear();
+
+		await db.SaveChanges();
 	}
 }

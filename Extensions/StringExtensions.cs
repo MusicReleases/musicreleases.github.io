@@ -1,12 +1,7 @@
-﻿namespace JakubKastner.MusicReleases.Base;
+﻿namespace JakubKastner.Extensions;
 
-public static class Extensions
+public static class StringExtensions
 {
-	public static bool IsNullOrEmpty(this string? value)
-	{
-		return string.IsNullOrEmpty(value?.Trim());
-	}
-
 	public static DateTime ToDateTime(this string value, string format = "yyyy-MM-dd")
 	{
 		if (DateTime.TryParseExact(value, format, null, System.Globalization.DateTimeStyles.None, out DateTime dateTime))

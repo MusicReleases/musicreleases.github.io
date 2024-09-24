@@ -1,4 +1,5 @@
 ﻿using IndexedDB.Blazor;
+using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
 using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 using JakubKastner.SpotifyApi.Objects;
@@ -13,7 +14,7 @@ public class DatabaseUserController(IIndexedDbFactory dbFactory, IDatabaseUpdate
 	public async Task<SpotifyUser?> Get(string userId)
 	{
 		var dbEntity = await GetDb(userId);
-		if (dbEntity is null)
+		if (dbEntity is null || dbEntity.Entity.Id.IsNullOrEmpty() || dbEntity.Entity.Name.IsNullOrEmpty() || dbEntity.Entity.Country.IsNullOrEmpty() || dbEntity.Entity.RefreshToken.IsNullOrEmpty())
 		{
 			return null;
 		}

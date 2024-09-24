@@ -1,4 +1,4 @@
-using JakubKastner.MusicReleases.Base;
+using JakubKastner.Extensions;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.MusicReleases.Base.Enums;
 
