@@ -1,4 +1,6 @@
-﻿using JakubKastner.SpotifyApi.Controllers;
+﻿using JakubKastner.MusicReleases.Base;
+using JakubKastner.MusicReleases.Controllers.DatabaseControllers;
+using JakubKastner.SpotifyApi.Controllers;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Primitives;
@@ -6,11 +8,13 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 
-public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser, NavigationManager navManager, ISpotifyLoginStorageController spotifyLoginStorageController) : ISpotifyLoginController
+public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser, NavigationManager navManager, ISpotifyLoginStorageController spotifyLoginStorageController, IDatabaseArtistsController databaseController, IDatabaseUserController databaseUserController) : ISpotifyLoginController
 {
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 	private readonly ISpotifyLoginStorageController _spotifyLoginStorageController = spotifyLoginStorageController;
+	private readonly IDatabaseArtistsController _databaseController = databaseController;
 	private readonly NavigationManager _navManager = navManager;
+	private readonly IDatabaseUserController _databaseUserController = databaseUserController;
 
 	public ServiceType GetServiceType()
 	{
@@ -19,15 +23,15 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 
 	public async Task<bool> IsUserSaved()
 	{
-		var user = await _spotifyLoginStorageController.GetSavedUser();
+		var user = await GetUserFromDatabase();
 
 		return user is not null;
 	}
 
 	public async Task LoginUser()
 	{
-		// get user from local storage
-		var user = await _spotifyLoginStorageController.GetSavedUser();
+		// get user from db
+		var user = await GetUserFromDatabase();
 
 		if (user is not null)
 		{
@@ -42,7 +46,7 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 					// TODO change release type
 					if (!localStorageUser)
 					{
-						await _spotifyLoginStorageController.SaveUser();
+						await SaveUser();
 					}
 					_navManager.NavigateTo("releases/albums");
 				}
@@ -81,7 +85,7 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 			// TODO change release type
 			if (!localStorageUser)
 			{
-				await _spotifyLoginStorageController.SaveUser();
+				await SaveUser();
 			}
 			_navManager.NavigateTo("releases/albums");
 		}
@@ -95,8 +99,8 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 
 	private async Task<bool> SetUserFromStorage(SpotifyUser? spotifyUser = null)
 	{
-		// get user from local storage
-		spotifyUser ??= await _spotifyLoginStorageController.GetSavedUser();
+		// get user from database
+		spotifyUser ??= await GetUserFromDatabase();
 
 		if (string.IsNullOrEmpty(spotifyUser?.Credentials?.RefreshToken))
 		{
@@ -113,7 +117,7 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 			return false;
 		}
 
-		await _spotifyLoginStorageController.SaveUser();
+		await SaveUser();
 
 		return true;
 	}
@@ -149,8 +153,39 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 		// TODO logout - stop loading data from api
 
 		// remove user
+		var user = _spotifyControllerUser.GetUser();
+		if (user?.Info is null || user.Credentials is null)
+		{
+			return;
+		}
+
+		await _databaseUserController.DeleteAllDatabases(user.Info.Id);
 		await _spotifyLoginStorageController.DeleteSavedUser();
 
 		_navManager.NavigateTo(_navManager.BaseUri);
+	}
+
+	private async Task SaveUser()
+	{
+		var user = _spotifyControllerUser.GetUser();
+		if (user?.Info is null || user.Credentials is null)
+		{
+			return;
+		}
+
+		await _spotifyLoginStorageController.SaveUserId(user.Info.Id);
+		await _databaseUserController.Save(user);
+	}
+
+	private async Task<SpotifyUser?> GetUserFromDatabase()
+	{
+		var userId = await _spotifyLoginStorageController.GetSavedUserId();
+		if (userId.IsNullOrEmpty())
+		{
+			return null;
+		}
+
+		var user = await _databaseUserController.Get(userId!);
+		return user;
 	}
 }

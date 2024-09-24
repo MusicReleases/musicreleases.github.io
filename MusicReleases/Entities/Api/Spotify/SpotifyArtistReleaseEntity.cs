@@ -1,12 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
-
-public class SpotifyArtistReleaseEntity
+public class SpotifyArtistReleaseEntity : SpotifyGuidEntity
 {
-	[Key]
-	public Guid Id { get; set; }
-
 	public string ReleaseId { get; set; }
 
 	public string ArtistId { get; set; }

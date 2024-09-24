@@ -1,23 +1,25 @@
 ﻿using SpotifyAPI.Web;
+using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyUserInfo
 {
-	public string? Id { get; set; }
-	public string? Name { get; set; }
-	public string? Country { get; set; }
-	public Image? ProfilePicture { get; set; }
-	public DateTime LastUpdate { get; set; }
+	public required string Id { get; set; }
+	public required string Name { get; set; }
+	public required string Country { get; set; }
+	public required string? ProfilePictureUrl { get; set; }
+	public required DateTime LastUpdate { get; set; }
 
 	public SpotifyUserInfo() { }
 
+	[SetsRequiredMembers]
 	public SpotifyUserInfo(PrivateUser userApi)
 	{
 		Id = userApi.Id;
 		Name = userApi.DisplayName;
 		Country = userApi.Country;
-		ProfilePicture = userApi.Images?.FirstOrDefault();
+		ProfilePictureUrl = userApi.Images?.FirstOrDefault()?.Url;
 		LastUpdate = DateTime.Now;
 	}
 }

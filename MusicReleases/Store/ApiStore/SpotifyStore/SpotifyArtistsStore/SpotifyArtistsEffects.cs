@@ -7,7 +7,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser, ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IDatabaseController databaseController)
+public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser, ISpotifyControllerArtist spotifyControllerArtist, ILocalStorageService localStorageService, IDatabaseArtistsController databaseController)
 {
 	private const ServiceType serviceType = ServiceType.Spotify;
 
@@ -18,7 +18,7 @@ public class SpotifyArtistsEffects(ISpotifyControllerUser spotifyControllerUser,
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
-	private readonly IDatabaseController _databaseController = databaseController;
+	private readonly IDatabaseArtistsController _databaseController = databaseController;
 
 	// GET
 	[EffectMethod]

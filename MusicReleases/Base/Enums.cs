@@ -36,6 +36,7 @@ public static class Enums
 
 	public enum LocalStorageKey
 	{
+		LoggedInUser,
 		UserInfo,
 		UserCredentials,
 		LoginVerifier,

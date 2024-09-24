@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="Fluxor.Blazor.Web" Version="6.0.0" />
 		<PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="6.0.0" />

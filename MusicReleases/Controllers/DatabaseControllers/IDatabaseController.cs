@@ -1,9 +1,8 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-
-namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
-
-public interface IDatabaseController
+﻿
+namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers
 {
-	Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> GetArtists();
-	Task SaveArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> artists);
+	public interface IDatabaseController
+	{
+		Task DeleteAll();
+	}
 }

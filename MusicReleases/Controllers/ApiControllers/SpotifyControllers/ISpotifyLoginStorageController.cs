@@ -1,13 +1,13 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-
-namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
-
-public interface ISpotifyLoginStorageController
+﻿
+namespace JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
 {
-	Task DeleteLoginVerifier();
-	Task DeleteSavedUser();
-	Task<string?> GetLoginVerifier();
-	Task<SpotifyUser?> GetSavedUser();
-	Task SaveLoginVerifier(string codeVerifier);
-	Task SaveUser();
+	public interface ISpotifyLoginStorageController
+	{
+		Task DeleteLoginVerifier();
+		Task DeleteSavedUser();
+		Task<string?> GetLoginVerifier();
+		Task<string?> GetSavedUserId();
+		Task SaveLoginVerifier(string loginVerifier);
+		Task SaveUserId(string userId);
+	}
 }

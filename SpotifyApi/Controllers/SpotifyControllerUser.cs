@@ -20,6 +20,7 @@ public class SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser 
 			Scopes.PlaylistReadPrivate,
 			Scopes.PlaylistReadCollaborative,
 			Scopes.UserFollowRead,
+			Scopes.UserReadPrivate, // user country
 		};
 		// TODO app id to config file
 		const string appId = "67bbd538e581437597ae4574431682df";

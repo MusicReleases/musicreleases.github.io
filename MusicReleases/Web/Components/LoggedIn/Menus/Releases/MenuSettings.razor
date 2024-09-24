@@ -10,9 +10,9 @@
 	<button class="user">
 		@if (_spotifyUser is not null)
 		{
-			@if (_spotifyUser?.ProfilePicture is not null)
+			@if (_spotifyUser?.ProfilePictureUrl is not null)
 			{
-				<img src="@_spotifyUser.ProfilePicture.Url" title="Profile picture" />
+				<img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" />
 			}
 			else
 			{

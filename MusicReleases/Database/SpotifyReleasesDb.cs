@@ -6,10 +6,11 @@ public class SpotifyReleasesDb : IndexedDb
 {
 	public SpotifyReleasesDb(IJSRuntime jSRuntime, string name, int version) : base(jSRuntime, name, version) { }
 
-	public IndexedSet<SpotifyReleaseEntity> Releases { get; set; }
+	public required IndexedSet<SpotifyReleaseEntity> Releases { get; set; }
 	public IndexedSet<SpotifyArtistEntity> Artists { get; set; }
 	public IndexedSet<SpotifyArtistReleaseEntity> ArtistsReleases { get; set; }
 	//public IndexedSet<SpotifyTrackEntity> Tracks { get; set; }
 
-	//public SpotifyLastUpdateEntity Update { get; set; }
+	public IndexedSet<SpotifyLastUpdateEntity> Update { get; set; }
+	public IndexedSet<SpotifyUserEntity> Users { get; set; }
 }

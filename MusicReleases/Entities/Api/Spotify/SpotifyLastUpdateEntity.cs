@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
-
-public class SpotifyLastUpdateEntity
+public class SpotifyLastUpdateEntity : SpotifyGuidEntity
 {
-	[Key]
-	public Guid Id { get; set; }
+	public string UserId { get; set; }
+
+	public DateTime? User { get; set; }
 
 	public DateTime? Playlists { get; set; }
 	public DateTime? Artists { get; set; }
@@ -15,9 +14,4 @@ public class SpotifyLastUpdateEntity
 	public DateTime? ReleasesAppears { get; set; }
 	public DateTime? ReleasesCompilations { get; set; }
 	public DateTime? ReleasesPodcasts { get; set; }
-
-	public SpotifyLastUpdateEntity(Guid id)
-	{
-		Id = id;
-	}
 }
