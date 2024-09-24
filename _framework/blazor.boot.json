@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MusicReleases",
   "resources": {
-    "hash": "sha256-2bMKUJPsnXcae/fcgRJ6m/Pyfc9mAfWLQQF1/0m2oAw=",
+    "hash": "sha256-TR2MQMffAWK4RZ9bkWtyd/vAoxeETL+ZE5tY/E7qcDg=",
     "jsModuleNative": {
       "dotnet.native.8.0.8.8324hx5xdp.js": "sha256-R0yxDcHdZFPj9Hu1+1GFeuZwnRKmUSR4eC8qD0Jp0Y0="
     },
@@ -19,6 +19,7 @@
     "assembly": {
       "AutoMapper.wasm": "sha256-pQ4Xf706xSWYtP4HFejje/2xeMx82yLD1hKlKL3JR1I=",
       "Blazored.LocalStorage.wasm": "sha256-OaMAAd5n7ORfyur5e3QIyEVKJ76MKIvwbg7/icnnYcU=",
+      "Extensions.wasm": "sha256-Ha/F256LIykjZb6c9iqW3SEgRDrGcCx4qvGzEwxpHdo=",
       "Fluxor.Blazor.Web.ReduxDevTools.wasm": "sha256-jDE1ZNbW4Ejki3o6xiZhe09Wz3ggxn9eZ1/1cRF/I7c=",
       "Fluxor.Blazor.Web.wasm": "sha256-EQY4gKqrJmDxIMv//eRwx0R5QItoj2wrFMh9SGea6RE=",
       "Fluxor.wasm": "sha256-QxsT3q2RKCTpONQ/VtLJDj0LKq/xEGj9veYEqkI/PSI=",
@@ -43,10 +44,10 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-ua1wkm/TaUVHLRtctUs/Y1edQGwgGt4ABa/len7PZng=",
       "Microsoft.JSInterop.wasm": "sha256-IKHZ1GXQz2xLZwlShOvp/o9K79Iycr1X+y/SuIk9o0c=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-rhDkGvVEd5YGb2JsVk1xQC7gCF8TXNfpDfo9dGFhuyI=",
-      "MusicReleases.wasm": "sha256-rzmFEzi2ti9eOvkI7PeIqntWaOZEqsKKNVzNYZWFhS8=",
+      "MusicReleases.wasm": "sha256-9wvyvmwVNP1vc9xFcobeOa4WQ+7k4DXCNA2HALGyI3M=",
       "netstandard.wasm": "sha256-Tk9PZtYlwU2BW357gtkUL0hpSqEY65nfOfXty2VgbOc=",
       "Newtonsoft.Json.wasm": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
-      "SpotifyApi.wasm": "sha256-ErevWrRzvQUxu0OVfmurZnstJqy4POXLSc9jfDMQR1s=",
+      "SpotifyApi.wasm": "sha256-/MDRnvRjpiJ7J+Nq/bOHZIFa34vemofyRFKbUK5qWmw=",
       "SpotifyAPI.Web.wasm": "sha256-HEov8aFa5woJ1+WcGsrQRw1ij0jq4mdbH2rANvzr5cI=",
       "System.Collections.Concurrent.wasm": "sha256-jKXI5FtDd1KTo1oBRZc+yln/NFF9Vu12pbCcWmTZq+E=",
       "System.Collections.Immutable.wasm": "sha256-HzmQdkweArtMFcFykvpoU/drIMyB5+Mm1owxD4Hc2r0=",

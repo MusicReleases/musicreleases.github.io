@@ -309,7 +309,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-teaZCTDsaHvhhth1Ho0IOx20rQT0j1WSeVAFhDn8o4c=",
+      "hash": "sha256-ZU60u5hCItKksqMh1AJuNpXjMilciXYKcrucHMuqoBg=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -327,6 +327,10 @@
     {
       "hash": "sha256-OaMAAd5n7ORfyur5e3QIyEVKJ76MKIvwbg7\/icnnYcU=",
       "url": "_framework\/Blazored.LocalStorage.wasm"
+    },
+    {
+      "hash": "sha256-Ha\/F256LIykjZb6c9iqW3SEgRDrGcCx4qvGzEwxpHdo=",
+      "url": "_framework\/Extensions.wasm"
     },
     {
       "hash": "sha256-jDE1ZNbW4Ejki3o6xiZhe09Wz3ggxn9eZ1\/1cRF\/I7c=",
@@ -425,7 +429,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-rzmFEzi2ti9eOvkI7PeIqntWaOZEqsKKNVzNYZWFhS8=",
+      "hash": "sha256-9wvyvmwVNP1vc9xFcobeOa4WQ+7k4DXCNA2HALGyI3M=",
       "url": "_framework\/MusicReleases.wasm"
     },
     {
@@ -437,7 +441,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-ErevWrRzvQUxu0OVfmurZnstJqy4POXLSc9jfDMQR1s=",
+      "hash": "sha256-\/MDRnvRjpiJ7J+Nq\/bOHZIFa34vemofyRFKbUK5qWmw=",
       "url": "_framework\/SpotifyApi.wasm"
     },
     {
@@ -673,5 +677,5 @@
       "url": "_content\/TG.Blazor.IndexedDB\/indexedDb.Blazor.js"
     }
   ],
-  "version": "Yi73IHmQ"
+  "version": "VJG5jKZR"
 };
