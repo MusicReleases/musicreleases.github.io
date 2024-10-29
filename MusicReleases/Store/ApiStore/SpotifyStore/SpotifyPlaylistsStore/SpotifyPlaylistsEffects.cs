@@ -41,9 +41,9 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		// TODO must be task
 		await Task.Delay(0);
 
-#if DEBUG
+		//#if DEBUG
 		Console.WriteLine(action.ErrorMessage);
-#endif
+		//#endif
 		action.CompletionSource.SetResult(false);
 	}
 
@@ -113,9 +113,9 @@ public class SpotifyPlaylistsEffects(ISpotifyControllerPlaylist spotifyControlle
 		// TODO must be task
 		await Task.Delay(0);
 
-#if DEBUG
+		//#if DEBUG
 		Console.WriteLine(action.ErrorMessage);
-#endif
+		//#endif
 	}
 
 

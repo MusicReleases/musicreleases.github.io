@@ -124,9 +124,9 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 		// TODO must be task
 		await Task.Delay(0);
 
-#if DEBUG
+		//#if DEBUG
 		Console.WriteLine(action.ErrorMessage);
-#endif
+		//#endif
 	}
 
 	// TODO PERSIST STATE (copy from playlists)
