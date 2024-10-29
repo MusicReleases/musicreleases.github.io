@@ -23,7 +23,10 @@ public record SpotifyReleasesActionGetApi(ReleaseType ReleaseType, SpotifyUserLi
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
 public record SpotifyReleasesActionGetApiSuccess();
-public record SpotifyReleasesActionGetApiFailure();
+public record SpotifyReleasesActionGetApiFailure(string ErrorMessage)
+{
+	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
+}
 
 // get local storage
 public record SpotifyReleasesActionGetStorage(ReleaseType ReleaseType, bool ForceUpdate);
