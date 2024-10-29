@@ -9,5 +9,6 @@ public interface ISpotifyControllerUser
 	Task<bool> LoginUser(string code, string loginVerifier, string redirectUrl);
 	SpotifyUser? GetUser();
 	SpotifyUser GetUserRequired();
+	string GetUserIdRequired();
 	Task RefreshUser(SpotifyUser user);
 }

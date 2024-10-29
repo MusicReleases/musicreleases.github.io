@@ -1,16 +1,15 @@
-﻿namespace JakubKastner.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace JakubKastner.Extensions;
 
 public static class StringExtensions
 {
-	public static DateTime ToDateTime(this string value, string format = "yyyy-MM-dd")
+	public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
 	{
-		if (DateTime.TryParseExact(value, format, null, System.Globalization.DateTimeStyles.None, out DateTime dateTime))
-		{
-			return dateTime;
-		}
-		else
-		{
-			throw new NullReferenceException(nameof(DateTime));
-		}
+		return string.IsNullOrEmpty(value?.Trim());
+	}
+	public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? value)
+	{
+		return !IsNullOrEmpty(value);
 	}
 }

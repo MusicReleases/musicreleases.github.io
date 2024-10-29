@@ -19,10 +19,19 @@ public class SpotifyReleasesEffects(ISpotifyControllerRelease spotifyControllerR
 		if (action.Artists is null)
 		{
 			// provided artists
-			dispatcher.Dispatch(new SpotifyArtistsActionGetStorage(action.ForceUpdate) { CompletionSource = action.CompletionSource });
+			var getStorageAction = new SpotifyArtistsActionGetStorage(action.ForceUpdate)
+			{
+				CompletionSource = action.CompletionSource,
+			};
+			dispatcher.Dispatch(getStorageAction);
 			return;
 		}
-		dispatcher.Dispatch(new SpotifyReleasesActionGetApi(action.ReleaseType, action.Artists, action.ForceUpdate) { CompletionSource = action.CompletionSource });
+
+		var getApiAction = new SpotifyReleasesActionGetApi(action.ReleaseType, action.Artists, action.ForceUpdate)
+		{
+			CompletionSource = action.CompletionSource,
+		};
+		dispatcher.Dispatch(getApiAction);
 	}
 	[EffectMethod]
 	public async Task GetSuccess(SpotifyReleasesActionGetSuccess action, IDispatcher dispatcher)

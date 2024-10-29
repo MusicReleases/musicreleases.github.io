@@ -11,19 +11,21 @@ public class DatabaseArtistsController(IIndexedDbFactory dbFactory, IDatabaseUpd
 	private readonly IIndexedDbFactory _dbFactory = dbFactory;
 	private readonly IDatabaseUpdateController _databaseUpdateController = databaseUpdateController;
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
-	IDatabaseArtistReleasesController _databaseArtistReleasesController = databaseArtistReleasesController;
+	private readonly IDatabaseArtistReleasesController _databaseArtistReleasesController = databaseArtistReleasesController;
 
-	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> Get(string userId, bool getReleases)
+	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> GetFollowed(string userId, bool getReleases)
 	{
+		// create db
 		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
 
-		if (db.Artists.Count < 1)
+		// artists
+		var artists = GetFollowedDb(db, userId, getReleases);
+		if (artists.Count < 1)
 		{
 			return null;
 		}
 
-		var artists = GetArtistsDb(db, userId, getReleases);
-
+		// update
 		var update = GetUpdateDb(db, userId);
 		if (update is null)
 		{
@@ -35,22 +37,25 @@ public class DatabaseArtistsController(IIndexedDbFactory dbFactory, IDatabaseUpd
 		return artistUpdate;
 	}
 
-	private ISet<SpotifyArtist> GetArtistsDb(SpotifyReleasesDb db, string userId, bool getReleases)
+	private ISet<SpotifyArtist> GetFollowedDb(SpotifyReleasesDb db, string userId, bool getReleases)
 	{
+		// get artists from db
+		var followedArtistsDb = db.Artists.Where(x => x.Following);
 		var artists = new SortedSet<SpotifyArtist>();
 
-		foreach (var artistEntity in db.Artists.Where(x => x.Following))
+		foreach (var artistDb in followedArtistsDb)
 		{
-			if (artistEntity.Id.IsNullOrEmpty() || artistEntity.Name.IsNullOrEmpty())
+			if (artistDb.Id.IsNullOrEmpty() || artistDb.Name.IsNullOrEmpty())
 			{
 				continue;
 			}
 
-			var artist = new SpotifyArtist(artistEntity.Id, artistEntity.Name);
+			var artist = new SpotifyArtist(artistDb.Id, artistDb.Name);
 
 			if (getReleases)
 			{
-				artist.Releases = _databaseArtistReleasesController.GetReleasesDb(db, artistEntity.Id);
+				// get saved releases in db for current artist
+				artist.Releases = _databaseArtistReleasesController.GetReleasesDb(db, artistDb.Id);
 			}
 
 			artists.Add(artist);
@@ -97,34 +102,17 @@ public class DatabaseArtistsController(IIndexedDbFactory dbFactory, IDatabaseUpd
 
 		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
 
+		// update db
 		SaveUpdateDb(db, userId, artists.Update);
 
-		// update - lists
-		var newArtists = SaveArtistsDb(artists.List);
-		foreach (var newArtist in newArtists)
-		{
-			db.Artists.Add(newArtist);
-		}
+		// artists db
+		SaveArtistsDb(db, artists.List);
 
-		var newReleases = _databaseArtistReleasesController.SaveReleasesDb(artists.List);
-		foreach (var newRelease in newReleases)
-		{
-			db.Releases.Add(newRelease);
-		}
+		// releases db
+		_databaseArtistReleasesController.SaveReleasesDb(db, artists.List);
 
-		var artistsAndReleases = _databaseArtistReleasesController.SaveArtistsReleasesDb(artists.List);
-
-		var newArtistsNotFollowed = artistsAndReleases.artists;
-		foreach (var newArtistNotFollowed in newArtistsNotFollowed)
-		{
-			db.Artists.Add(newArtistNotFollowed);
-		}
-
-		var newArtistsReleases = artistsAndReleases.artistReleases;
-		foreach (var newArtistsRelease in newArtistsReleases)
-		{
-			db.ArtistsReleases.Add(newArtistsRelease);
-		}
+		// artist releases db
+		_databaseArtistReleasesController.SaveArtistsReleasesDb(db, artists.List);
 
 		await db.SaveChanges();
 	}
@@ -148,18 +136,15 @@ public class DatabaseArtistsController(IIndexedDbFactory dbFactory, IDatabaseUpd
 		updateDb.ReleasesTracks = update.LastUpdateTracks;
 	}
 
-	private ISet<SpotifyArtistEntity> SaveArtistsDb(ISet<SpotifyArtist> artists)
+	private void SaveArtistsDb(SpotifyReleasesDb db, ISet<SpotifyArtist> artists)
 	{
 		var newArtists = artists.Where(x => x.New);
-		var artistsEntity = new HashSet<SpotifyArtistEntity>();
 
 		foreach (var artist in newArtists)
 		{
 			var artistEntity = new SpotifyArtistEntity(artist, true);
 
-			artistsEntity.Add(artistEntity);
+			db.Artists.Add(artistEntity);
 		}
-
-		return artistsEntity;
 	}
 }

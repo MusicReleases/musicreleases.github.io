@@ -30,9 +30,9 @@ builder.Services.AddBlazoredLocalStorage(config =>
 builder.Services.AddFluxor(options =>
 {
 	options.ScanAssemblies(typeof(Program).Assembly);
-#if DEBUG
+	//#if DEBUG
 	options.UseReduxDevTools();
-#endif
+	//#endif
 });
 
 builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();

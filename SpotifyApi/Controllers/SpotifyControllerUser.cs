@@ -83,4 +83,16 @@ public class SpotifyControllerUser(ISpotifyApiClient client, IControllerApiUser 
 
 		return _user;
 	}
+
+	public string GetUserIdRequired()
+	{
+		var user = GetUserRequired();
+		var userId = user.Info?.Id;
+		if (string.IsNullOrEmpty(userId))
+		{
+			throw new UnauthorizedAccessException(nameof(GetUserRequired));
+		}
+
+		return userId;
+	}
 }

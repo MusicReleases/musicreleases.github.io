@@ -5,11 +5,11 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseArtistsControllerOld databaseController)
+public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseArtistsController databaseController, ISpotifyControllerUser spotifyControllerUser)
 {
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
-
-	private readonly IDatabaseArtistsControllerOld _databaseController = databaseController;
+	private readonly IDatabaseArtistsController _databaseController = databaseController;
+	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 
 	// GET
 	[EffectMethod]
@@ -52,7 +52,9 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 			// get item from storage
 			//var artists = await _localStorageService.GetItemAsync<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>>(_localStorageName);
 
-			var artists = await _databaseController.GetArtists();
+			//var artists = await _databaseController.GetArtists();
+			var userId = _spotifyControllerUser.GetUserIdRequired();
+			var artists = await _databaseController.GetFollowed(userId, true);
 
 			if (artists is not null)
 			{
@@ -105,7 +107,9 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 		{
 			// set item
 			//await _localStorageService.SetItemAsync(_localStorageName, action.Artists);*/
-			await _databaseController.SaveArtists(action.Artists);
+			//await _databaseController.SaveArtists(action.Artists);
+			var userId = _spotifyControllerUser.GetUserIdRequired();
+			await _databaseController.SaveArtists(userId, action.Artists);
 
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());
 		}
