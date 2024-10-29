@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "MusicReleases",
   "resources": {
-    "hash": "sha256-UCwD7MKn6yrirl3NCDMCX5cInZhSNfDLahIQnxLLouc=",
+    "hash": "sha256-3A11kLJGuIyMmbDziyJay+HvSArST+cHEJ7m/jCAMGo=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.8324hx5xdp.js": "sha256-u5bObA7rWkqIBrvxxwqeMX88lrzYOx8lVd80kQX47BQ="
     },
@@ -19,7 +19,7 @@
     "assembly": {
       "AutoMapper.wasm": "sha256-pQ4Xf706xSWYtP4HFejje/2xeMx82yLD1hKlKL3JR1I=",
       "Blazored.LocalStorage.wasm": "sha256-OaMAAd5n7ORfyur5e3QIyEVKJ76MKIvwbg7/icnnYcU=",
-      "Extensions.wasm": "sha256-KxQLLlIrG1cDW/bF6Reyxp4c82hhBTHhQj/JZeMbvtY=",
+      "Extensions.wasm": "sha256-4TKZfQmkeevihskp7Q8zK5HpJNzflLnVI82bewXroPo=",
       "Fluxor.Blazor.Web.ReduxDevTools.wasm": "sha256-v85mpcu11GLWS2Qm6wt1Rtjgb4ZH9lGG0i7cJ6wGTqM=",
       "Fluxor.Blazor.Web.wasm": "sha256-/ZqiwT7hb6GTqksr2pTtYqO+V5AvzhDBupj5OPsnf4w=",
       "Fluxor.wasm": "sha256-cTMOqow7ngqpc23qYtgFQlOi2XXl4cRGy55X42SuT8U=",
@@ -44,10 +44,10 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-ua1wkm/TaUVHLRtctUs/Y1edQGwgGt4ABa/len7PZng=",
       "Microsoft.JSInterop.wasm": "sha256-vvgbFWtcsbLRjdcxejPr54DtvMbiWP2uLwXXmzKH6Eo=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-r/+bWAAxKn2+Wu3MRYDXvKEbHjLNuptflgNuNhQdK6w=",
-      "MusicReleases.wasm": "sha256-ij1L4nQ0WZlcGRfOm7P6wxMDtifLSjaj7ko8q6u7Os8=",
+      "MusicReleases.wasm": "sha256-1S68aE0uPin2OjU/IJ6ZFrRnQ2PKim0JFQ0vBHisIus=",
       "netstandard.wasm": "sha256-n+HD++T8Do89ohIEwDQiJ1FdFx31Z3JbdSbfF7cisgE=",
       "Newtonsoft.Json.wasm": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
-      "SpotifyApi.wasm": "sha256-1pgedOphzZ5d4oAI1JfayjMtwSWVzhnGp3N4eeWusvI=",
+      "SpotifyApi.wasm": "sha256-A8VDwOF3FoNsHK2Y6uLopxRAokTsD/JC9iO2IPZTlMI=",
       "SpotifyAPI.Web.wasm": "sha256-f0bvMefyX47jOehl9H9hGwtvB8g91B8tP//cJyLX71o=",
       "System.Collections.Concurrent.wasm": "sha256-o6Kuqg1IxxC2BudYH2pFTJvVJvUVIselEAICkQGU+IQ=",
       "System.Collections.Immutable.wasm": "sha256-WaBOcqYb8XaD4/r7uk7EWbca+ATZz9DhNPDqvM1h9I4=",
