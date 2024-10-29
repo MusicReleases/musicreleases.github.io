@@ -40,7 +40,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 	{
 		Id = simpleAlbum.Id;
 		Name = simpleAlbum.Name;
-		ReleaseDate = simpleAlbum.ReleaseDate.ToDateTime();
+		ReleaseDate = simpleAlbum.ReleaseDate.ToDateTimeNullable() ?? new(1900, 1, 1);
 		TotalTracks = simpleAlbum.TotalTracks;
 		//Images = simpleAlbum.Images;
 		if (simpleAlbum.Images.Count > 0)
@@ -63,7 +63,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 	{
 		Id = fullAlbum.Id;
 		Name = fullAlbum.Name;
-		ReleaseDate = fullAlbum.ReleaseDate.ToDateTime();
+		ReleaseDate = fullAlbum.ReleaseDate.ToDateTimeNullable() ?? new(1900, 1, 1);
 		TotalTracks = fullAlbum.TotalTracks;
 		//Images = fullAlbum.Images;
 		if (fullAlbum.Images.Count > 0)
