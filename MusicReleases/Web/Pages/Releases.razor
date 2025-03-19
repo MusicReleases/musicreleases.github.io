@@ -30,58 +30,12 @@ else if (_releases.Count < 1)
 }
 else
 {
-	@* <MudDataGrid Items="@_releases" Virtualize="true" FixedHeader="true">
-		<Columns>
-			<HierarchyColumn T="SpotifyRelease" />
-			<PropertyColumn Property="x => x.Name" />
-			<PropertyColumn Property="x => x.ArtistString" Title="Artists" />
-			<PropertyColumn Property="x => x.TotalTracks" />
-			<PropertyColumn Property="x => x.ReleaseDateString" Title="Release date" />
-		</Columns>
-		<ChildRowContent>
-			<MudCard>
-				<MudCardHeader>
-					<CardHeaderContent>
-						<MudText Typo="Typo.h6">@context.Item.Name</MudText>
-					</CardHeaderContent>
-				</MudCardHeader>
-				<MudCardContent>
-					<MudDataGrid Items="@context.Item.Tracks" ReadOnly="true">
-						<Columns>
-							<HierarchyColumn T="SpotifyTrack" />
-							<PropertyColumn Property="x => x.Name" />
-							<PropertyColumn Property="x => x.ArtistsString" Title="Artists" />
-						</Columns>
-						<PagerContent>
-							<MudDataGridPager T="SpotifyTrack" />
-						</PagerContent>
-					</MudDataGrid>
-				</MudCardContent>
-			</MudCard>
-		</ChildRowContent>
-		@* <PagerContent>
-			<MudDataGridPager T="SpotifyRelease" />
-		</PagerContent> *@
-	@*</MudDataGrid> *@
 
+	<div class="releases boxes infinite-scroll">
 
-
-	<div class="releases boxes">
-		@foreach (var release in _releases)
-		{
-			<Release SpotifyRelease="@release" />
-		}
-	</div>
-
-	@* TODO infinite scrolling - failing here when using fluxor - removing "if" fixes it, but switching between releases failed *@
-	@* <div class="releases boxes">
-		<InfiniteScrolling ItemsProvider="ProvideReleases">
-			<ItemTemplate Context="release">
+		<Virtualize Items="@_releases" Context="release">
 				<Release SpotifyRelease="@release" />
-			</ItemTemplate>
-			<LoadingTemplate>
-				<div>Loading @Type...</div>
-			</LoadingTemplate>
-		</InfiniteScrolling>
-	</div> *@
+		</Virtualize>
+
+	</div>
 }

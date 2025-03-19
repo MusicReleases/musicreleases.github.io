@@ -1,6 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Base;
 using JakubKastner.SpotifyApi.Objects;
-using Meziantou.AspNetCore.Components;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
@@ -69,16 +68,5 @@ public partial class Releases
 		{
 			_spotifyWorkflowController.StartLoadingAll(false, _type);
 		}
-	}
-
-	private async Task<IEnumerable<SpotifyRelease>> ProvideReleases(InfiniteScrollingItemsProviderRequest request)
-	{
-		await Task.Delay(0);
-
-		if (_releases is null)
-		{
-			return [];
-		}
-		return _releases.Skip(request.StartIndex).Take(15);
 	}
 }

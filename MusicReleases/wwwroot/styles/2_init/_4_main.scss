@@ -83,6 +83,10 @@ input {
     }
 }
 
+.infinite-scroll {
+    position: relative
+}
+
 // responsive styles (hide / show content on pc / mobile)
 @include respond(pc) {
     .hide-pc {
