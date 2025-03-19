@@ -1,14 +1,18 @@
 ﻿@using JakubKastner.SpotifyApi.Objects
 
 <div class="artists icon-text">
-	@foreach (var artist in ArtistsObj)
+	@for (int i = 0; i < ArtistsObj.Count; i++)
 	{
+		var artist = ArtistsObj.ElementAt(i);
+
 		<button class="artist" data-menu_type="artist" data-menu_artist="@artist.Id">
 			@artist.Name
 		</button>
-		@if (++_index != ArtistsObj.Count)
+
+		@if (i < ArtistsObj.Count - 1)
 		{
 			<span>•</span>
 		}
+
 	}
 </div>

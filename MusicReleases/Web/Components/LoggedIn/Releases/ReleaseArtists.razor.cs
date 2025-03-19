@@ -7,6 +7,4 @@ public partial class ReleaseArtists
 {
 	[Parameter, EditorRequired]
 	public required HashSet<SpotifyArtist> ArtistsObj { get; set; }
-
-	private int _index = 0;
 }
