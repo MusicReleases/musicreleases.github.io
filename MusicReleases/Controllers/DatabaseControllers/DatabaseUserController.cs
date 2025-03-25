@@ -61,7 +61,7 @@ public class DatabaseUserController(IDatabaseController dbController, IDatabaseU
 
 	private async Task<SpotifyUserEntity?> GetDbBase(IndexedDb db, string userId)
 	{
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Users);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUser);
 		var userDb = await table.GetItemAsync<SpotifyUserEntity>(userId);
 		return userDb;
 	}
@@ -81,14 +81,14 @@ public class DatabaseUserController(IDatabaseController dbController, IDatabaseU
 		// user db
 		Console.WriteLine("save user");
 		var userDb = new SpotifyUserEntity(user.Info, user.Credentials.RefreshToken);
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Users);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUser);
 		await table.StoreItemAsync(userDb);
 
 		// update db
 		Console.WriteLine("save update");
 		var updateDb = await _databaseUpdateController.GetOrCreate(db, user.Info.Id);
 		updateDb.User = user.Info.LastUpdate;
-		var tableUpdate = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+		var tableUpdate = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUpdate);
 		await tableUpdate.StoreItemAsync(updateDb);
 	}
 
@@ -96,7 +96,7 @@ public class DatabaseUserController(IDatabaseController dbController, IDatabaseU
 	{
 		Console.WriteLine("delete user");
 		var db = _dbController.GetDb();
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Users);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUser);
 		await table.RemoveItemAsync(userId);
 	}
 

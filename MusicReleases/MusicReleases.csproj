@@ -36,4 +36,8 @@
 		</Content>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Controllers\DatabaseControllers\SpotifyControllers\" />
+	</ItemGroup>
+
 </Project>

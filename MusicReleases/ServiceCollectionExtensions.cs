@@ -15,13 +15,6 @@ public static class ServiceCollectionExtensions
 		// base controllers
 		services.AddScoped<ILoginController, LoginController>();
 
-		// db controllers
-		services.AddScoped<IDatabaseArtistsControllerOld2, DatabaseArtistsControllerOld2>();
-		services.AddScoped<IDatabaseUpdateControllerOld, DatabaseUpdateControllerOld>();
-		services.AddScoped<IDatabaseUserControllerOld, DatabaseUserControllerOld>();
-		services.AddScoped<IDatabaseArtistsControllerOld, DatabaseArtistsControllerOld>();
-		services.AddScoped<IDatabaseArtistReleasesControllerOld, DatabaseArtistReleasesControllerOld>();
-
 		// indexed db controllers
 		services.AddScoped<IDatabaseController, DatabaseController>();
 

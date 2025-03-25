@@ -52,13 +52,22 @@ public static class Enums
 
 	public enum DbStorageTablesSpotify
 	{
-		Users,
-		Updates,
-		UsersArtists,
-		ArtistsReleases,
-		Artists,
-		Releases,
-		Tracks,
+		SpotifyUpdate,
+
+		SpotifyUser,
+		SpotifyUserArtist,
+		SpotifyUserPlaylist,
+
+		SpotifyPlaylist,
+		SpotifyPlaylistTrack,
+
+		SpotifyArtist,
+		SpotifyArtistRelease,
+
+		SpotifyRelease,
+		SpotifyReleaseTrack,
+
+		SpotifyTrack,
 	}
 
 	public static string GetLocalStorageKey(ServiceType serviceType, LocalStorageKey localStorageKey)

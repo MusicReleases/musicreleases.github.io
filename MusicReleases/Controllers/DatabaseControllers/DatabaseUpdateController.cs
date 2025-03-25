@@ -25,7 +25,7 @@ public class DatabaseUpdateController(IDatabaseController dbController) : IDatab
 		};
 
 		Console.WriteLine("create update");
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUpdate);
 		await table.StoreAsync(userUpdate);
 
 		return userUpdate;
@@ -34,7 +34,7 @@ public class DatabaseUpdateController(IDatabaseController dbController) : IDatab
 	public async Task<SpotifyLastUpdateEntity?> Get(IndexedDb db, string userId)
 	{
 		Console.WriteLine(value: "get update");
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUpdate);
 
 		var userUpdatesDb = table.GetAllAsync<SpotifyLastUpdateEntity>();
 		await foreach (var userUpdateDb in userUpdatesDb)
@@ -60,7 +60,7 @@ public class DatabaseUpdateController(IDatabaseController dbController) : IDatab
 		{
 			return;
 		}
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUpdate);
 		await table.ClearAsync();
 	}
 }

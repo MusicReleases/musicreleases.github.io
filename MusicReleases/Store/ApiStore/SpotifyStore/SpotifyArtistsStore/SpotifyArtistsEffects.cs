@@ -5,11 +5,10 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseArtistsController databaseController, IDatabaseArtistsControllerOld databaseControllerOld, ISpotifyControllerUser spotifyControllerUser)
+public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseArtistsController databaseController, ISpotifyControllerUser spotifyControllerUser)
 {
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
 	private readonly IDatabaseArtistsController _databaseController = databaseController;
-	private readonly IDatabaseArtistsControllerOld _databaseControllerOld = databaseControllerOld;
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 
 	// GET

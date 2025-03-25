@@ -39,7 +39,7 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 
 	private async Task<ISet<SpotifyArtist>> GetFollowedDb(IndexedDb db, string userId, bool getReleases)
 	{
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Artists);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
 
 		// get artists from db
 		Console.WriteLine("get artists");
@@ -162,13 +162,13 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 		updateDb.ReleasesTracks = update.LastUpdateTracks;
 
 		Console.WriteLine("save update");
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUpdate);
 		await table.StoreItemAsync(updateDb);
 	}
 
 	private async Task SaveArtistsDb(IndexedDb db, ISet<SpotifyArtist> artists)
 	{
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Artists);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
 		var newArtists = artists.Where(x => x.New);
 
 		Console.WriteLine("save artists");

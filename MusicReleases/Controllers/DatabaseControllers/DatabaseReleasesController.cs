@@ -14,7 +14,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 	{
 		// artist releases table
 		Console.WriteLine("artist releases");
-		var tableArtistReleases = _dbController.GetTable(db, DbStorageTablesSpotify.ArtistsReleases);
+		var tableArtistReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtistRelease);
 		var artistReleasesDb = tableArtistReleases.GetAllAsync<SpotifyArtistReleaseEntity>();
 		var releaseIds = new HashSet<string>();
 
@@ -37,7 +37,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 
 		// releases table
 		Console.WriteLine("get releases");
-		var tableReleases = _dbController.GetTable(db, DbStorageTablesSpotify.Releases);
+		var tableReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyRelease);
 		var releasesDb = tableReleases.GetAllAsync<SpotifyReleaseEntity>();
 		var releases = new SortedSet<SpotifyRelease>();
 
@@ -100,7 +100,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 
 		// artist releases table
 		Console.WriteLine("get artist releases");
-		var tableArtistReleases = _dbController.GetTable(db, DbStorageTablesSpotify.ArtistsReleases);
+		var tableArtistReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtistRelease);
 		var artistReleasesDb = tableArtistReleases.GetAllAsync<SpotifyArtistReleaseEntity>();
 		var artistIds = new HashSet<string>();
 
@@ -120,7 +120,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 
 		// artists table
 		Console.WriteLine("get artists");
-		var tableArtists = _dbController.GetTable(db, DbStorageTablesSpotify.Artists);
+		var tableArtists = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
 		var artistsDb = tableArtists.GetAllAsync<SpotifyArtistEntity>();
 		var artists = new HashSet<SpotifyArtist>();
 
@@ -157,7 +157,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 
 	public async Task SaveArtistsReleasesDb(IndexedDb db, ISet<SpotifyArtist> artists)
 	{
-		var tableArtists = _dbController.GetTable(db, DbStorageTablesSpotify.Artists);
+		var tableArtists = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
 		var artistsDb = tableArtists.GetAllAsync<SpotifyArtist>();
 		var artistsDbIds = new HashSet<string>();
 		await foreach (var artistDb in artistsDb)
@@ -216,7 +216,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 			}
 		}
 
-		var tableArtistsReleases = _dbController.GetTable(db, DbStorageTablesSpotify.ArtistsReleases);
+		var tableArtistsReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtistRelease);
 		foreach (var artistReleaseToSave in artistsReleaseToSave)
 		{
 			Console.WriteLine("save artist release");
@@ -235,7 +235,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 		var artistsWithReleases = artists.Where(x => x.Releases is not null);
 		var releases = artistsWithReleases.SelectMany(x => x.Releases!);
 		var newReleases = releases.Where(x => x.New);
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Releases);
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyRelease);
 
 		Console.WriteLine("save releases");
 		foreach (var newRelease in newReleases)
