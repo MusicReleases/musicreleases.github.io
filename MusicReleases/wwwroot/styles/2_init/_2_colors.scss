@@ -1,3 +1,5 @@
+@use '1_mixins.scss' as mixins;
+
 /** COLORS
  *  Colors for themes (light, dark, color).
  */
@@ -42,7 +44,6 @@ $color_0: rgb(0, 0, 0);
 
         $color_text: rgb(0, 0, 0);
     }
-
     // color theme$
     @if $theme==3 {
         // https://coolors.co/293f14-386c0b-388a06-38a700-31d843-3eff8b-50ff96
@@ -54,21 +55,17 @@ $color_0: rgb(0, 0, 0);
         $color_6: rgb(62, 255, 139);
         $color_7: rgb(80, 255, 150);
     }
-
-
     // body
     color: $color_text;
     background-color: $color_1;
 
-    @include respond(mobile) {
+    @include mixins.respond(mobile) {
         background-color: $color_2;
     }
-
     // header
     h2 {
         color: $color_text_button;
     }
-
     // buttons
     button {
         color: $color_text;
@@ -77,19 +74,15 @@ $color_0: rgb(0, 0, 0);
             color: $color_text_button;
         }
     }
-
     // links
     a {
         color: $color_text;
     }
-
     // scrollbars
-
     // firefox
     .scroll {
         scrollbar-color: $color_6 transparent;
     }
-
     // chrome
     ::-webkit-scrollbar-track,
     ::-webkit-scrollbar-track:horizontal {
@@ -104,7 +97,6 @@ $color_0: rgb(0, 0, 0);
             background-color: rgb(106, 106, 106);
         }
     }
-
     // text input
     input {
         background-color: $color_1;
@@ -115,7 +107,6 @@ $color_0: rgb(0, 0, 0);
             background-color: $color_2;
         }
     }
-
     // primarary header
     .header.primary {
         background-color: $color_1;
@@ -123,8 +114,6 @@ $color_0: rgb(0, 0, 0);
         .page-name {
             color: $color_text_button;
         }
-
-
         // buttons
         button {
             background-color: $color_1;
@@ -150,8 +139,6 @@ $color_0: rgb(0, 0, 0);
             }
         }
     }
-
-
     // secondary header filter
     .header.secondary .menu.filter,
     .footer.secondary.menu.filter {
@@ -167,7 +154,6 @@ $color_0: rgb(0, 0, 0);
             }
         }
     }
-
     // menu
     .header.secondary,
     .main {
@@ -193,7 +179,6 @@ $color_0: rgb(0, 0, 0);
     .main .box {
         background-color: $color_1;
     }
-
     // releases
     .main .releases .release {
         .info {
@@ -207,7 +192,6 @@ $color_0: rgb(0, 0, 0);
             }
         }
     }
-
     // lists
     .list {
 
@@ -231,11 +215,9 @@ $color_0: rgb(0, 0, 0);
             }
         }
     }
-
-
     // footer player
     .footer.player {
-        @include respond(pctab) {
+        @include mixins.respond(pctab) {
             background-color: $color_1;
 
             button,
@@ -249,7 +231,7 @@ $color_0: rgb(0, 0, 0);
             }
         }
 
-        @include respond(mobile) {
+        @include mixins.respond(mobile) {
             background-color: $color_2;
 
             button,

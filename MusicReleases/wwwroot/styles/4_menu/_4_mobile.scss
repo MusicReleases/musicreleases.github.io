@@ -1,24 +1,26 @@
+@use '../2_init/1_mixins.scss' as mixins;
+@use '../2_init/3_layout.scss' as layout;
+
 .body.hide-player .footer.menu.mobile {
-    bottom: calc(#{$height_menu_mobile_releases} + #{$height_menu_mobile_filter});
+    bottom: calc(#{layout.$height_menu_mobile_releases} + #{layout.$height_menu_mobile_filter});
 
     .items {
-        max-height: calc(100vh - #{$height_menu_mobile_releases} - #{$height_menu_mobile_filter});
+        max-height: calc(100vh - #{layout.$height_menu_mobile_releases} - #{layout.$height_menu_mobile_filter});
     }
 }
 
 .footer.menu.mobile {
     position: fixed;
-    bottom: calc(#{$height_player_mobile} + #{$height_menu_mobile_releases} + #{$height_menu_mobile_filter});
+    bottom: calc(#{layout.$height_player_mobile} + #{layout.$height_menu_mobile_releases} + #{layout.$height_menu_mobile_filter});
     height: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-
     // button to show/hide menu
     .round {
         border-radius: 12px;
-        height: $height_menu_mobile_round_button;
+        height: layout.$height_menu_mobile_round_button;
         width: 40px;
         display: inline-flex;
         margin-right: 5px;
@@ -29,7 +31,7 @@
 
         i {
             margin: auto;
-            font-size: $height_menu_mobile_round_button;
+            font-size: layout.$height_menu_mobile_round_button;
         }
 
         &.show-hide.mobile {
@@ -43,11 +45,11 @@
             font-size: 18px;
 
             i {
-                margin-left: $margin_right_icon;
+                margin-left: layout.$margin_right_icon;
             }
         }
 
-        @include respond(watches) {
+        @include mixins.respond(watches) {
             width: 40px;
 
             span {
@@ -66,11 +68,9 @@
         bottom: 0;
         right: 0;
         z-index: 2;
-
-        min-width: $width_menu_mobile_items;
-        width: $width_menu_mobile_items;
-        max-height: calc(100vh - #{$height_player_mobile} - #{$height_menu_mobile_releases} - #{$height_menu_mobile_filter});
-
+        min-width: layout.$width_menu_mobile_items;
+        width: layout.$width_menu_mobile_items;
+        max-height: calc(100vh - #{layout.$height_player_mobile} - #{layout.$height_menu_mobile_releases} - #{layout.$height_menu_mobile_filter});
         //display: none;
         display: grid;
 
@@ -98,21 +98,21 @@
             text-align: left;
 
             &:first-child {
-                margin-top: $height_menu_mobile_round_button;
+                margin-top: layout.$height_menu_mobile_round_button;
             }
 
             &:last-child {
-                margin-bottom: $height_menu_mobile_round_button;
+                margin-bottom: layout.$height_menu_mobile_round_button;
             }
         }
 
-        @media screen and (max-width: $width_menu_mobile_items) {
+        @media screen and (max-width: layout.$width_menu_mobile_items) {
             width: 100%;
             min-width: 100%;
             word-wrap: anywhere;
         }
 
-        @include respond(watches) {
+        @include mixins.respond(watches) {
             bottom: 20px;
 
             p,

@@ -1,3 +1,7 @@
+@use '../../2_init/1_mixins.scss' as mixins;
+@use '../../2_init/3_layout.scss' as layout;
+
+
 // PRIMARY HEADER
 
 
@@ -50,35 +54,30 @@
 
 .header.primary {
     display: inline-flex;
-
     // 1.) page name
     .page-name {
         cursor: context-menu;
         padding: 4px 10px 16px 0;
         display: inline-flex;
         font-weight: 800;
-
         // text size
         span,
         .favicon {
             font-size: 28px;
         }
-
         // icon
         .favicon {
             //background: transparent;
-            height: $height_header_primary - 10px;
-            margin-left: $margin_right_icon;
+            height: layout.$height_header_primary - 10px;
+            margin-left: layout.$margin_right_icon;
         }
 
-        &:hover>.favicon {
+        &:hover > .favicon {
             animation: spin 2s linear infinite;
         }
     }
-
     // 2.) releases menu
     // -> 4_menu/_2_releases
-
     // 3.) actions menu
     .menu.actions {
         margin-left: auto;
@@ -88,10 +87,9 @@
     .menu.show-hide,
     .user {
         button {
-            height: calc(100% - 2 * #{$padding_button});
+            height: calc(100% - 2 * #{layout.$padding_button});
         }
     }
-
     // 4.) user menu
     .user {
         position: relative;
@@ -104,18 +102,15 @@
                 margin-bottom: auto;
             }
         }
-
         // button to show menu
         button.menu.hover {
             display: inline-flex;
         }
-
         // buttons in menu
         &.menu.items button {
             display: block;
             text-align: left;
         }
-
         // hover user menu
         &:hover {
             .menu.hover.items {
@@ -126,9 +121,8 @@
                 }
             }
         }
-
         // responsive styles (hide / show content on pc / mobile)
-        @include respond(text) {
+        @include mixins.respond(text) {
             .menu.hover.items {
                 width: 150px;
             }

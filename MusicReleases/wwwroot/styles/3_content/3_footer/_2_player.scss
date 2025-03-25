@@ -1,7 +1,10 @@
+@use '../../2_init/1_mixins.scss' as mixins;
+@use '../../2_init/3_layout.scss' as layout;
+
 .footer.player {
     //padding-bottom: $padding_left_right;
 
-    @include respond(mobile) {
+    @include mixins.respond(mobile) {
         padding-bottom: 0;
 
         button {
@@ -9,7 +12,7 @@
             padding-bottom: 0;
         }
 
-        &>div {
+        & > div {
             margin: auto 0;
         }
     }
@@ -21,22 +24,20 @@
         position: relative;
         top: -4px;
     }
-
     // image
     .cover {
-        max-height: $height_player;
-        max-width: $width_player_image;
-        width: $width_player_image;
-        padding-right: $padding_left_right;
+        max-height: layout.$height_player;
+        max-width: layout.$width_player_image;
+        width: layout.$width_player_image;
+        padding-right: layout.$padding_left_right;
 
         img {
             position: relative;
-            bottom: $bottom_player_image;
-            max-height: $width_player_image;
-            max-width: $width_player_image;
+            bottom: layout.$bottom_player_image;
+            max-height: layout.$width_player_image;
+            max-width: layout.$width_player_image;
         }
     }
-
     // info
     .actions.primary {
         .time {
@@ -53,7 +54,7 @@
             font-size: 20px;
         }
 
-        @include respond(mobile) {
+        @include mixins.respond(mobile) {
             font-size: 18px;
 
             button {
@@ -62,16 +63,16 @@
         }
 
         .details {
-            padding-top: $padding_button;
-            padding-bottom: $padding_button;
+            padding-top: layout.$padding_button;
+            padding-bottom: layout.$padding_button;
 
-            @include respond(mobile) {
+            @include mixins.respond(mobile) {
                 padding-top: 0;
                 padding-bottom: 0;
             }
         }
 
-        @include respond(mobile) {
+        @include mixins.respond(mobile) {
             padding-bottom: 0;
 
             .info .details,

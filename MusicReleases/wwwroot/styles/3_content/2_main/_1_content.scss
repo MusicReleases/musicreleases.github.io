@@ -1,9 +1,11 @@
+@use '../../2_init/3_layout.scss' as layout;
+
 .main .content.page {
 
     // box (fe releases box)
     .box {
-        padding: $spaces;
-        margin-bottom: $spaces;
+        padding: layout.$spaces;
+        margin-bottom: layout.$spaces;
     }
 
     width: 100%;
@@ -11,7 +13,7 @@
 
 .main .content {
     h2 {
-        margin: $padding_left_right;
+        margin: layout.$padding_left_right;
         text-transform: uppercase;
     }
 

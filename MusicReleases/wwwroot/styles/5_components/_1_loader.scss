@@ -1,12 +1,14 @@
+@use '../2_init/3_layout.scss' as layout;
+
 // LOADER
 .loader {
-    border-radius: $height_loader;
+    border-radius: layout.$height_loader;
     background-size: 20%;
     background-repeat: repeat-y;
     background-position: -25% 0;
     display: grid;
     width: 100%;
-    height: $height_loader;
+    height: layout.$height_loader;
 
     // loader - active
     &.active {

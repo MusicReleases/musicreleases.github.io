@@ -1,3 +1,5 @@
+@use '1_mixins.scss' as mixins;
+
 // PAGE LAYOUT
 
 $spaces: 30px;
@@ -37,7 +39,7 @@ $width_menu_mobile_items: 250px;
 $width_player_image: calc(#{$height_player} + 40px);
 
 body {
-    @include respond(pctab) {
+    @include mixins.respond(pctab) {
         height: 100vh;
         overflow: hidden;
     }
@@ -48,7 +50,7 @@ body {
     grid-auto-columns: 1fr;
     gap: 0px 0px;
     // pc
-    @include respond(pctab) {
+    @include mixins.respond(pctab) {
         /*height: 100vh;
         overflow: hidden;*/
 
@@ -186,7 +188,6 @@ body {
                     min-width: $width_menu_artists;
                     order: 1;
                     //order: 4;
-
                     /*button.search {
                         padding-right: $padding_left_right;
                     }*/
@@ -204,7 +205,6 @@ body {
             .content,
             .menu.items {
                 overflow: auto;
-
                 /*&.menu {
                     //overflow: hidden;
 
@@ -267,7 +267,7 @@ body {
         }
     }
     // mobile
-    @include respond(mobile) {
+    @include mixins.respond(mobile) {
         grid-template-columns: auto;
         // loader, content, player, mobile menu filer, mobile menu releases
         grid-template-rows: $height_loader 100% $height_player_mobile $height_menu_mobile_filter $height_menu_mobile_releases;

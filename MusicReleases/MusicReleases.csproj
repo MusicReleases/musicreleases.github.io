@@ -10,9 +10,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+		<PackageReference Include="DartSassBuilder" Version="1.1.0" />
 		<PackageReference Include="Fluxor.Blazor.Web" Version="6.6.0" />
 		<PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="6.6.0" />
-		<PackageReference Include="LibSassBuilder" Version="3.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.3" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.3" />
