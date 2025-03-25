@@ -1,5 +1,7 @@
-﻿namespace JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
+﻿using Tavenem.DataStorage;
 
-public class SpotifyEntity
+namespace JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
+
+public class SpotifyEntity : IdItem
 {
 }

@@ -1,19 +1,12 @@
-﻿using IndexedDB.Blazor;
-using JakubKastner.MusicReleases.Entities.Api.Spotify;
-using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
-using Microsoft.JSInterop;
+﻿using JakubKastner.MusicReleases.Base;
+using static JakubKastner.MusicReleases.Base.Enums;
 
-public class SpotifyReleasesDb(IJSRuntime jSRuntime, string name, int version) : IndexedDb(jSRuntime, name, version)
+public static class SpotifyReleasesDb
 {
-	public required IndexedSet<SpotifyUserEntity> Users { get; set; }
-	public required IndexedSet<SpotifyLastUpdateEntity> Updates { get; set; }
-
-	public required IndexedSet<SpotifyUserArtistEntity> UsersArtists { get; set; }
-	public required IndexedSet<SpotifyArtistReleaseEntity> ArtistsReleases { get; set; }
-
-	public required IndexedSet<SpotifyArtistEntity> Artists { get; set; }
-	public required IndexedSet<SpotifyReleaseEntity> Releases { get; set; }
-
-	public required IndexedSet<SpotifyTrackEntity> Tracks { get; set; }
-
+	public static readonly string Name = "MusicReleases";
+	public static readonly int Version = 1;
+	public static IEnumerable<string> GetAllTables()
+	{
+		return EnumUtil.GetNames<DbStorageTablesSpotify>();
+	}
 }

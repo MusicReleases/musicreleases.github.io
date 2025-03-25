@@ -5,10 +5,11 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseArtistsController databaseController, ISpotifyControllerUser spotifyControllerUser)
+public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseArtistsController databaseController, IDatabaseArtistsControllerOld databaseControllerOld, ISpotifyControllerUser spotifyControllerUser)
 {
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
 	private readonly IDatabaseArtistsController _databaseController = databaseController;
+	private readonly IDatabaseArtistsControllerOld _databaseControllerOld = databaseControllerOld;
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 
 	// GET
@@ -109,6 +110,7 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 			//await _localStorageService.SetItemAsync(_localStorageName, action.Artists);*/
 			//await _databaseController.SaveArtists(action.Artists);
 			var userId = _spotifyControllerUser.GetUserIdRequired();
+			//await _databaseControllerOld.SaveArtists(userId, action.Artists);
 			await _databaseController.SaveArtists(userId, action.Artists);
 
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());

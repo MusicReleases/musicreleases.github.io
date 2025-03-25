@@ -1,40 +1,58 @@
-﻿using IndexedDB.Blazor;
-using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
+﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
+using Tavenem.Blazor.IndexedDB;
+using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
-public class DatabaseUpdateController(IIndexedDbFactory dbFactory) : IDatabaseUpdateController
+public class DatabaseUpdateController(IDatabaseController dbController) : IDatabaseUpdateController
 {
-	private readonly IIndexedDbFactory _dbFactory = dbFactory;
+	private readonly IDatabaseController _dbController = dbController;
 
-	public SpotifyLastUpdateEntity GetOrCreate(SpotifyReleasesDb db, string userId)
+	public async Task<SpotifyLastUpdateEntity> GetOrCreate(IndexedDb db, string userId)
 	{
-		var userUpdate = Get(db, userId);
+		var userUpdate = await Get(db, userId);
 
+		// record existed
 		if (userUpdate is not null)
 		{
 			return userUpdate;
 		}
 
+		// 0 records - add new
 		userUpdate = new()
 		{
 			UserId = userId,
 		};
 
-		db.Updates.Add(userUpdate);
+		Console.WriteLine("create update");
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+		await table.StoreAsync(userUpdate);
 
 		return userUpdate;
 	}
 
-	public SpotifyLastUpdateEntity? Get(SpotifyReleasesDb db, string userId)
+	public async Task<SpotifyLastUpdateEntity?> Get(IndexedDb db, string userId)
 	{
-		var userUpdate = db.Updates.SingleOrDefault(x => x.UserId == userId);
-		return userUpdate;
+		Console.WriteLine(value: "get update");
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+
+		var userUpdatesDb = table.GetAllAsync<SpotifyLastUpdateEntity>();
+		await foreach (var userUpdateDb in userUpdatesDb)
+		{
+			if (userUpdateDb.UserId == userId)
+			{
+				return userUpdateDb;
+			}
+		}
+
+		/*var userUpdate = await table.Query<SpotifyLastUpdateEntity>().FirstOrDefaultAsync(x => x.UserId == userId);
+		return userUpdate;*/
+		return null;
 	}
 
 	public async Task Delete(string userId)
 	{
-		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
+		var db = _dbController.GetDb();
 
 		var userUpdateDb = Get(db, userId);
 
@@ -42,9 +60,7 @@ public class DatabaseUpdateController(IIndexedDbFactory dbFactory) : IDatabaseUp
 		{
 			return;
 		}
-
-		db.Updates.Remove(userUpdateDb);
-
-		await db.SaveChanges();
+		var table = _dbController.GetTable(db, DbStorageTablesSpotify.Updates);
+		await table.ClearAsync();
 	}
 }

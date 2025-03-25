@@ -1,51 +1,75 @@
 ﻿using IndexedDB.Blazor;
+using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Entities.Api.Spotify;
 using JakubKastner.SpotifyApi.Controllers;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
-public class DatabaseArtistsControllerOld(IIndexedDbFactory dbFactory, IDatabaseUpdateController databaseUpdateController, ISpotifyControllerUser spotifyControllerUser) : IDatabaseArtistsControllerOld
+public class DatabaseArtistsControllerOld(IIndexedDbFactory dbFactory, IDatabaseUpdateControllerOld databaseUpdateController, ISpotifyControllerUser spotifyControllerUser, IDatabaseArtistReleasesControllerOld databaseArtistReleasesController) : IDatabaseArtistsControllerOld
 {
 	private readonly IIndexedDbFactory _dbFactory = dbFactory;
-	private readonly IDatabaseUpdateController _databaseUpdateController = databaseUpdateController;
+	private readonly IDatabaseUpdateControllerOld _databaseUpdateController = databaseUpdateController;
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
+	private readonly IDatabaseArtistReleasesControllerOld _databaseArtistReleasesController = databaseArtistReleasesController;
 
-	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> GetArtists()
+	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> GetFollowed(string userId, bool getReleases)
 	{
-		using (var db = await _dbFactory.Create<SpotifyReleasesDb>())
-		{
-			return await GetArtistsDb(db);
-		}
-	}
+		// create db
+		using var db = await _dbFactory.Create<SpotifyReleasesDbOld>();
 
-	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> GetArtistsDb(SpotifyReleasesDb db)
-	{
-		if (db.Artists is null || db.Artists.Count < 1)
+		// artists
+		var artists = GetFollowedDb(db, userId, getReleases);
+		if (artists.Count < 1)
 		{
 			return null;
 		}
 
+		// update
+		var update = GetUpdateDb(db, userId);
+		if (update is null)
+		{
+			return null;
+		}
+
+		var artistUpdate = new SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>(artists, update);
+
+		return artistUpdate;
+	}
+
+	private ISet<SpotifyArtist> GetFollowedDb(SpotifyReleasesDbOld db, string userId, bool getReleases)
+	{
+		// get artists from db
+		var followedArtistsDb = db.Artists.Where(x => x.Following);
 		var artists = new SortedSet<SpotifyArtist>();
 
-		foreach (var artistEntity in db.Artists.Where(x => x.Following))
+		foreach (var artistDb in followedArtistsDb)
 		{
-			var artist = new SpotifyArtist()
+			if (artistDb.Id.IsNullOrEmpty() || artistDb.Name.IsNullOrEmpty())
 			{
-				Id = artistEntity.Id,
-				Name = artistEntity.Name,
-				Releases = GetReleasesDb(artistEntity.Id, db),
-			};
+				continue;
+			}
+
+			var artist = new SpotifyArtist(artistDb.Id, artistDb.Name);
+
+			if (getReleases)
+			{
+				// get saved releases in db for current artist
+				artist.Releases = _databaseArtistReleasesController.GetReleasesDb(db, artistDb.Id);
+			}
 
 			artists.Add(artist);
 		}
+		return artists;
+	}
 
-		// TODO
-		var user = _spotifyControllerUser.GetUserRequired();
-		var updateDb = _databaseUpdateController.Get(db, user.Info.Id);
+	private SpotifyUserListUpdateArtists? GetUpdateDb(SpotifyReleasesDbOld db, string userId)
+	{
+		var updateDb = _databaseUpdateController.Get(db, userId);
 
 		if (updateDb?.Artists is null)
 		{
+			// TODO delete artists
 			return null;
 		}
 
@@ -58,209 +82,69 @@ public class DatabaseArtistsControllerOld(IIndexedDbFactory dbFactory, IDatabase
 			LastUpdatePodcasts = updateDb.ReleasesPodcasts,
 		};
 
-		var artistUpdate = new SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>(artists, update);
-
-		return artistUpdate;
+		return update;
 	}
 
-	public async Task SaveArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> artists)
+	public async Task SaveArtists(string userId, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> artists)
 	{
+		// TODO remove unfollowed artists and deleted releases
 
-		using (var db = await _dbFactory.Create<SpotifyReleasesDb>())
+		if (artists.Update is null)
 		{
-			// TODO remove unfollowed artists and deleted releases
-
 			// TODO
-			var user = _spotifyControllerUser.GetUserRequired();
-			var updateDb = _databaseUpdateController.Get(db, user.Info.Id);
-
-			// update - update times
-			updateDb!.Artists = artists.Update!.LastUpdateMain;
-
-			updateDb.ReleasesAlbums = artists.Update.LastUpdateAlbums;
-			updateDb.ReleasesAppears = artists.Update.LastUpdateAppears;
-			updateDb.ReleasesCompilations = artists.Update.LastUpdateCompilations;
-			updateDb.ReleasesPodcasts = artists.Update.LastUpdatePodcasts;
-			updateDb.ReleasesTracks = artists.Update.LastUpdateTracks;
-
-
-			// update - lists
-			var newArtists = SaveArtistsDb(artists.List!);
-			foreach (var newArtist in newArtists)
-			{
-				db.Artists.Add(newArtist);
-			}
-
-			var newReleases = SaveReleasesDb(artists.List!);
-			foreach (var newRelease in newReleases)
-			{
-				db.Releases.Add(newRelease);
-			}
-
-			var artistsAndReleases = SaveArtistsReleasesDb(artists.List!);
-
-			var newArtistsNotFollowed = artistsAndReleases.artists;
-			foreach (var newArtistNotFollowed in newArtistsNotFollowed)
-			{
-				db.Artists.Add(newArtistNotFollowed);
-			}
-
-			var newArtistsReleases = artistsAndReleases.artistReleases;
-			foreach (var newArtistsRelease in newArtistsReleases)
-			{
-				db.ArtistsReleases.Add(newArtistsRelease);
-			}
-
-			await db.SaveChanges();
+			throw new NullReferenceException(nameof(artists.Update));
 		}
+		if (artists.List is null)
+		{
+			// TODO
+			throw new NullReferenceException(nameof(artists.List));
+		}
+
+		using var db = await _dbFactory.Create<SpotifyReleasesDbOld>();
+
+		// update db
+		SaveUpdateDb(db, userId, artists.Update);
+
+		// artists db
+		SaveArtistsDb(db, artists.List);
+
+		// releases db
+		_databaseArtistReleasesController.SaveReleasesDb(db, artists.List);
+
+		// artist releases db
+		_databaseArtistReleasesController.SaveArtistsReleasesDb(db, artists.List);
+
+		await db.SaveChanges();
 	}
 
-	private ISet<SpotifyArtistEntity> SaveArtistsDb(ISet<SpotifyArtist> artists)
+	private void SaveUpdateDb(SpotifyReleasesDbOld db, string userId, SpotifyUserListUpdateArtists update)
+	{
+		var updateDb = _databaseUpdateController.Get(db, userId);
+		if (updateDb is null)
+		{
+			// TODO
+			throw new NullReferenceException(nameof(updateDb));
+		}
+
+		// update - update times
+		updateDb.Artists = update.LastUpdateMain;
+
+		updateDb.ReleasesAlbums = update.LastUpdateAlbums;
+		updateDb.ReleasesAppears = update.LastUpdateAppears;
+		updateDb.ReleasesCompilations = update.LastUpdateCompilations;
+		updateDb.ReleasesPodcasts = update.LastUpdatePodcasts;
+		updateDb.ReleasesTracks = update.LastUpdateTracks;
+	}
+
+	private void SaveArtistsDb(SpotifyReleasesDbOld db, ISet<SpotifyArtist> artists)
 	{
 		var newArtists = artists.Where(x => x.New);
-		var artistsEntity = new HashSet<SpotifyArtistEntity>();
 
 		foreach (var artist in newArtists)
 		{
-			var artistEntity = new SpotifyArtistEntity()
-			{
-				Id = artist.Id,
-				Name = artist.Name,
-				Following = true,
-			};
+			var artistEntity = new SpotifyArtistEntity(artist, true);
 
-			artistsEntity.Add(artistEntity);
+			db.Artists.Add(artistEntity);
 		}
-
-		return artistsEntity;
-	}
-
-
-	// RELEASES
-	private SortedSet<SpotifyRelease> GetReleasesDb(string artistId, SpotifyReleasesDb db)
-	{
-		var artistReleasesDb = db.ArtistsReleases.Where(x => x.ArtistId == artistId)
-				.Select(x => db.Releases.FirstOrDefault(y => y.Id == x.ReleaseId))
-				.Where(x => x is not null);
-
-		var releases = new SortedSet<SpotifyRelease>();
-
-		foreach (var releaseDb in artistReleasesDb)
-		{
-			var release = new SpotifyRelease()
-			{
-				Id = releaseDb!.Id,
-				Name = releaseDb.Name,
-				ReleaseDate = releaseDb.ReleaseDate,
-				TotalTracks = releaseDb.TotalTracks,
-				UrlApp = releaseDb.UrlApp,
-				UrlWeb = releaseDb.UrlWeb,
-				UrlImage = releaseDb.UrlImage,
-				ReleaseType = releaseDb.ReleaseType,
-				Artists = GetReleaseArtists(releaseDb.Id, db),
-			};
-
-			releases.Add(release);
-		}
-
-		return releases;
-	}
-
-	private HashSet<SpotifyArtist> GetReleaseArtists(string releaseId, SpotifyReleasesDb db)
-	{
-		var artists = db.ArtistsReleases.Where(x => x.ReleaseId == releaseId)
-											.Join(db.Artists, releases => releases.ArtistId, artists => artists.Id, (r, a) => a)
-											.Select(x => new SpotifyArtist()
-											{
-												Id = x.Id,
-												Name = x.Name,
-											})
-											.ToHashSet();
-
-		return artists;
-	}
-
-	private (ISet<SpotifyArtistReleaseEntity> artistReleases, ISet<SpotifyArtistEntity> artists) SaveArtistsReleasesDb(ISet<SpotifyArtist> artists)
-	{
-		var artistsReleasesEntity = new HashSet<SpotifyArtistReleaseEntity>();
-		var artistsEntity = new HashSet<SpotifyArtistEntity>();
-
-		// TODO save artists when release have more artists
-		foreach (var artist in artists.Where(x => x.Releases is not null))
-		{
-			foreach (var release in artist.Releases!.Where(x => x.New))
-			{
-				var artistReleaseEntity = new SpotifyArtistReleaseEntity()
-				{
-					Id = Guid.NewGuid(),
-					ArtistId = artist.Id,
-					ReleaseId = release.Id,
-				};
-
-				// save featuring artists
-				var artistsDbIds = artists.Select(x => x.Id).ToHashSet();
-				var notFollowedArtists = release.Artists.Where(x => !artistsDbIds.Contains(x.Id)).ToList();
-
-				//var notFollowedArtists = release.Artists.Where(x => !artists.Any(y => y.Id == x.Id));
-
-
-				foreach (var notFollowedArtist in notFollowedArtists)
-				{
-					var notFollowedArtistReleasesDb = new SpotifyArtistReleaseEntity()
-					{
-						Id = Guid.NewGuid(),
-						ArtistId = notFollowedArtist.Id,
-						ReleaseId = release.Id,
-					};
-					artistsReleasesEntity.Add(notFollowedArtistReleasesDb);
-
-					if (artistsEntity.Any(x => x.Id == notFollowedArtist.Id))
-					{
-						// artist allready added
-						continue;
-					}
-
-					var notFollowedArtistDb = new SpotifyArtistEntity()
-					{
-						Id = notFollowedArtist.Id,
-						Name = notFollowedArtist.Name,
-						Following = false,
-					};
-					artistsEntity.Add(notFollowedArtistDb);
-				}
-
-
-				artistsReleasesEntity.Add(artistReleaseEntity);
-			}
-		}
-
-		return (artistsReleasesEntity, artistsEntity);
-	}
-
-
-	private ISet<SpotifyReleaseEntity> SaveReleasesDb(ISet<SpotifyArtist> artists)
-	{
-		var releases = artists.Where(x => x.Releases is not null).SelectMany(x => x.Releases!);
-		var newReleases = releases.Where(x => x.New);
-		var releasesEntity = new HashSet<SpotifyReleaseEntity>();
-
-		foreach (var release in newReleases)
-		{
-			var releaseEntity = new SpotifyReleaseEntity()
-			{
-				Id = release.Id,
-				Name = release.Name,
-				ReleaseDate = release.ReleaseDate,
-				TotalTracks = release.TotalTracks,
-				UrlApp = release.UrlApp,
-				UrlWeb = release.UrlWeb,
-				UrlImage = release.UrlImage,
-				ReleaseType = release.ReleaseType,
-			};
-
-			releasesEntity.Add(releaseEntity);
-		}
-
-		return releasesEntity;
 	}
 }

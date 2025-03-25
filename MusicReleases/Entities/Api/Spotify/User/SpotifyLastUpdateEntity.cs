@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
-public class SpotifyLastUpdateEntity : SpotifyGuidEntity
+public class SpotifyLastUpdateEntity : SpotifyEntity  // : SpotifyGuidEntity
 {
 	public string? UserId { get; set; }
 

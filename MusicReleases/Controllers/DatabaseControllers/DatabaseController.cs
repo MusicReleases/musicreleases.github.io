@@ -1,25 +1,32 @@
-﻿using IndexedDB.Blazor;
+﻿using JakubKastner.MusicReleases.Base;
+using Tavenem.Blazor.IndexedDB;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
-public class DatabaseController(IIndexedDbFactory dbFactory) : IDatabaseController
+public class DatabaseController(IndexedDbService indexedDbService) : IDatabaseController
 {
-	private readonly IIndexedDbFactory _dbFactory = dbFactory;
+	private readonly IndexedDbService _indexedDbService = indexedDbService;
 
 	public async Task DeleteAll()
 	{
-		using var db = await _dbFactory.Create<SpotifyReleasesDb>();
+		await _indexedDbService.DeleteDatabaseAsync(SpotifyReleasesDb.Name);
+	}
 
-		db.Users.Clear();
-		db.Updates.Clear();
+	public IndexedDb GetDb()
+	{
+		var indexedDb = new IndexedDb(SpotifyReleasesDb.Name, _indexedDbService, SpotifyReleasesDb.GetAllTables(), SpotifyReleasesDb.Version);
+		return indexedDb;
+	}
 
-		db.UsersArtists.Clear();
-		db.ArtistsReleases.Clear();
+	public IndexedDbStore GetTable(IndexedDb db, Enums.DbStorageTablesSpotify tableName)
+	{
+		var table = db[tableName.ToString()];
 
-		db.Artists.Clear();
-		db.Releases.Clear();
-		db.Tracks.Clear();
+		if (table is null)
+		{
+			throw new NullReferenceException(nameof(table));
+		}
 
-		await db.SaveChanges();
+		return table;
 	}
 }

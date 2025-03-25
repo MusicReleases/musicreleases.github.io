@@ -4,9 +4,9 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
-public class DatabaseArtistReleasesController : IDatabaseArtistReleasesController
+public class DatabaseArtistReleasesControllerOld : IDatabaseArtistReleasesControllerOld
 {
-	public SortedSet<SpotifyRelease> GetReleasesDb(SpotifyReleasesDb db, string artistId)
+	public SortedSet<SpotifyRelease> GetReleasesDb(SpotifyReleasesDbOld db, string artistId)
 	{
 		var artistReleasesDb = db.ArtistsReleases
 				.Where(x => x.ArtistId == artistId)
@@ -41,7 +41,7 @@ public class DatabaseArtistReleasesController : IDatabaseArtistReleasesControlle
 		return releases;
 	}
 
-	private HashSet<SpotifyArtist> GetReleaseArtists(SpotifyReleasesDb db, string releaseId)
+	private HashSet<SpotifyArtist> GetReleaseArtists(SpotifyReleasesDbOld db, string releaseId)
 	{
 		var artists = db.ArtistsReleases
 			.Where(x => x.ReleaseId == releaseId)
@@ -57,7 +57,7 @@ public class DatabaseArtistReleasesController : IDatabaseArtistReleasesControlle
 		return artists;
 	}
 
-	public void SaveArtistsReleasesDb(SpotifyReleasesDb db, ISet<SpotifyArtist> artists)
+	public void SaveArtistsReleasesDb(SpotifyReleasesDbOld db, ISet<SpotifyArtist> artists)
 	{
 		// TODO save artists when release have more artists
 		foreach (var artist in artists.Where(x => x.Releases is not null))
@@ -100,7 +100,7 @@ public class DatabaseArtistReleasesController : IDatabaseArtistReleasesControlle
 	}
 
 
-	public void SaveReleasesDb(SpotifyReleasesDb db, ISet<SpotifyArtist> artists)
+	public void SaveReleasesDb(SpotifyReleasesDbOld db, ISet<SpotifyArtist> artists)
 	{
 		var artistsWithReleases = artists.Where(x => x.Releases is not null);
 		var releases = artistsWithReleases.SelectMany(x => x.Releases!);

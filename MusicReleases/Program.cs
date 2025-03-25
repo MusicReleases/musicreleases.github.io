@@ -37,6 +37,8 @@ builder.Services.AddFluxor(options =>
 
 builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();
 
-//builder.Services.AddMudServices();
+// indexed db
+builder.Services.AddIndexedDbService();
+builder.Services.AddIndexedDb(SpotifyReleasesDb.Name, SpotifyReleasesDb.GetAllTables(), SpotifyReleasesDb.Version);
 
 await builder.Build().RunAsync();

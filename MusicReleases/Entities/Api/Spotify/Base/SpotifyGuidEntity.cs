@@ -4,6 +4,6 @@ namespace JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
 
 public class SpotifyGuidEntity : SpotifyEntity
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
+	[Key]
+	public Guid Guid { get; set; } = Guid.NewGuid();
 }

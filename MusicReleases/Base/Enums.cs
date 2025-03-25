@@ -50,6 +50,17 @@ public static class Enums
 	}
 
 
+	public enum DbStorageTablesSpotify
+	{
+		Users,
+		Updates,
+		UsersArtists,
+		ArtistsReleases,
+		Artists,
+		Releases,
+		Tracks,
+	}
+
 	public static string GetLocalStorageKey(ServiceType serviceType, LocalStorageKey localStorageKey)
 	{
 		var prefix = serviceType.ToString();
@@ -89,5 +100,9 @@ public static class EnumUtil
 	public static IEnumerable<T> GetValues<T>()
 	{
 		return Enum.GetValues(typeof(T)).Cast<T>();
+	}
+	public static IEnumerable<string> GetNames<T>()
+	{
+		return GetValues<T>().Select(x => x!.ToString()!);
 	}
 }
