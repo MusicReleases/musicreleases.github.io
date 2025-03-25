@@ -1,3 +1,6 @@
+@use '../2_init/1_mixins.scss' as mixins;
+@use '../2_init/3_layout.scss' as layout;
+
 //RELEASES MENU (PRIMARY MENU)
 
 // primary menu (releases, setting sections)
@@ -39,7 +42,6 @@
         gap: 0px 0px;
         align-items: center;
         justify-items: center;
-
         // 5 icons
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
@@ -61,7 +63,6 @@
             display: none;
         }
     }
-
     // 4 icons
     @media screen and (max-width: 80px * 5 - 1) {
         .primary {
@@ -85,7 +86,6 @@
             }
         }
     }
-
     // 3 icons
     @media screen and (max-width: 58px * 4 - 1) {
         .primary {
@@ -102,7 +102,6 @@
             }
         }
     }
-
     // 2 icons
     @media screen and (max-width: 50px * 3 - 1) {
         .primary {
@@ -119,7 +118,6 @@
             }
         }
     }
-
     // 1 icon
     @media screen and (max-width: 50px * 2- 1) {
         .primary {
@@ -136,20 +134,15 @@
             }
         }
     }
-
-
     // more (hover) menu
     //TODO proměnné změnit
     .hover {
         $width: 160px;
         min-width: $width;
         width: $width;
-
-        bottom: $height_footer_menu;
-        max-height: calc(100vh - #{$height_footer_menu});
-
+        bottom: layout.$height_footer_menu;
+        max-height: calc(100vh - #{layout.$height_footer_menu});
         position: fixed;
-
         word-wrap: anywhere;
         display: grid;
 
@@ -168,7 +161,7 @@
             word-wrap: anywhere;
         }
 
-        @include respond(watches) {
+        @include mixins.respond(watches) {
             span {
                 display: none;
             }

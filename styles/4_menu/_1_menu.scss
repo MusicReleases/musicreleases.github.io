@@ -1,10 +1,12 @@
+@use '../2_init/3_layout.scss' as layout;
+
 // menu buttons
 .main .menu {
     button {
         margin-top: 0px;
         display: block;
         text-align: left;
-        width: calc(100% - 2 * #{$padding_button});
+        width: calc(100% - 2 * #{layout.$padding_button});
     }
 }
 

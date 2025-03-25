@@ -1,3 +1,5 @@
+@use '../../2_init/3_layout.scss' as layout;
+
 .main .content.page .releases {
     &.boxes .release {
 
@@ -5,16 +7,16 @@
             padding: 0;
         }
 
-        &>div {
+        & > div {
             width: 100%;
             padding: 0;
         }
 
-        &>.info {
+        & > .info {
             .cover {
-                margin-right: $spaces;
-                max-width: $cover_width;
-                max-height: $cover_width;
+                margin-right: layout.$spaces;
+                max-width: layout.$cover_width;
+                max-height: layout.$cover_width;
                 float: left;
 
                 @media only screen and (max-width: 1099px) {
@@ -54,7 +56,7 @@
             }
         }
 
-        &>.buttons {
+        & > .buttons {
             .tracklist {
                 padding-left: 0;
 
@@ -75,12 +77,12 @@
         padding: 15px 30px;
         margin: 0px;
 
-        &>div {
+        & > div {
             //width: 100%;
             padding: 0;
         }
 
-        &>.info {
+        & > .info {
             .cover {
                 display: none;
             }
@@ -114,12 +116,12 @@
         padding: 15px 30px;
         margin-bottom: 10px;
 
-        &>div {
+        & > div {
             width: 100%;
             padding: 0;
         }
 
-        &>.info {
+        & > .info {
             .cover {
                 margin-right: 20px;
                 max-width: 70px;

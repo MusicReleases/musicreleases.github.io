@@ -1,3 +1,6 @@
+@use '1_mixins.scss' as mixins;
+@use '3_layout.scss' as layout;
+
 /** MAIN
  *  Main styles - fonts, margin, ...
  */
@@ -22,12 +25,12 @@ input {
 }
 
 .left {
-    padding-left: $padding_left_right;
+    padding-left: layout.$padding_left_right;
     //padding-left: 0;
 }
 
 .right {
-    padding-right: $padding_left_right;
+    padding-right: layout.$padding_left_right;
     //padding-right: 0;
 }
 
@@ -35,12 +38,12 @@ input {
 // icon left and right margin
 .icon-text {
     i {
-        margin-right: $margin_right_icon;
+        margin-right: layout.$margin_right_icon;
     }
 
     &-right {
         i {
-            margin-left: $margin_right_icon;
+            margin-left: layout.$margin_right_icon;
         }
     }
 }
@@ -83,20 +86,24 @@ input {
     }
 }
 
+.infinite-scroll {
+    position: relative
+}
+
 // responsive styles (hide / show content on pc / mobile)
-@include respond(pc) {
+@include mixins.respond(pc) {
     .hide-pc {
         display: none !important;
     }
 }
 
-@include respond(tablet) {
+@include mixins.respond(tablet) {
     .hide-tablet {
         display: none !important;
     }
 }
 
-@include respond(mobile) {
+@include mixins.respond(mobile) {
     .hide-mobile {
         display: none !important;
     }

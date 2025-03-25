@@ -1,11 +1,13 @@
-﻿// buttons
+﻿@use '../2_init/3_layout.scss' as layout;
+
+// buttons
 button {
     cursor: pointer;
     border: none;
     //background-color: transparent;
     box-sizing: content-box;
     font-size: 18px;
-    padding: $padding_button;
+    padding: layout.$padding_button;
     display: inline-block;
     // add to library button
     &.active {

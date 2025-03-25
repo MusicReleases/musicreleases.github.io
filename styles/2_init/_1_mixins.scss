@@ -48,6 +48,7 @@
 }
 
 
+// TODO check if need to use and move to selector
 @include respond(text) {
     .hide-text {
         &.icon-text {
