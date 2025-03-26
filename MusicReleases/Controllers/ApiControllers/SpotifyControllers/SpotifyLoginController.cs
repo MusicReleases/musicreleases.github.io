@@ -158,7 +158,7 @@ public class SpotifyLoginController(ISpotifyControllerUser spotifyControllerUser
 			return;
 		}
 
-		await _databaseUserController.DeleteAllDatabases(user.Info.Id);
+		await _databaseUserController.DeleteAllUserDatabases(user.Info.Id);
 		await _spotifyLoginStorageController.DeleteSavedUser();
 
 		_navManager.NavigateTo(_navManager.BaseUri);

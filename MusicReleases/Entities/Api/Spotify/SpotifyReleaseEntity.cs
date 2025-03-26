@@ -1,5 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
 using JakubKastner.SpotifyApi.Objects;
+using System.Diagnostics.CodeAnalysis;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
@@ -9,9 +10,9 @@ public class SpotifyReleaseEntity : SpotifyIdNameEntity
 	public DateTime ReleaseDate { get; init; }
 	public int TotalTracks { get; init; }
 
-	public string? UrlApp { get; init; }
-	public string? UrlWeb { get; init; }
-	public string? UrlImage { get; init; }
+	public required string UrlApp { get; init; }
+	public required string UrlWeb { get; init; }
+	public required string UrlImage { get; init; }
 
 
 	//public List<Image> Images { get; init; }
@@ -22,6 +23,7 @@ public class SpotifyReleaseEntity : SpotifyIdNameEntity
 
 	public SpotifyReleaseEntity() { }
 
+	[SetsRequiredMembers]
 	public SpotifyReleaseEntity(SpotifyRelease spotifyRelease)
 	{
 		Id = spotifyRelease.Id;

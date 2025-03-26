@@ -1,4 +1,5 @@
 ﻿using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 using JakubKastner.MusicReleases.Entities.Api.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 using Tavenem.Blazor.IndexedDB;
@@ -10,17 +11,20 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 {
 	private readonly IDatabaseController _dbController = dbController;
 
-	public async Task<SortedSet<SpotifyRelease>> GetReleasesDb(IndexedDb db, string artistId, bool getReleases)
+	private readonly IndexedDbStore _dbTableRelease = dbController.GetTable(DbStorageTablesSpotify.SpotifyRelease);
+	private readonly IndexedDbStore _dbTableArtistRelease = dbController.GetTable(DbStorageTablesSpotify.SpotifyArtistRelease);
+	private readonly IndexedDbStore _dbTableArtist = dbController.GetTable(DbStorageTablesSpotify.SpotifyArtist);
+
+	public async Task<SortedSet<SpotifyRelease>> GetReleasesDb(string artistId, bool getReleases)
 	{
 		// artist releases table
 		Console.WriteLine("artist releases");
-		var tableArtistReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtistRelease);
-		var artistReleasesDb = tableArtistReleases.GetAllAsync<SpotifyArtistReleaseEntity>();
+		var artistReleasesDb = _dbTableArtistRelease.GetAllAsync<SpotifyArtistReleaseEntity>();
 		var releaseIds = new HashSet<string>();
 
 		await foreach (var artistReleaseDb in artistReleasesDb)
 		{
-			if (artistReleaseDb.ArtistId != artistId || artistReleaseDb.ReleaseId.IsNullOrEmpty())
+			if (artistReleaseDb.ArtistId != artistId)
 			{
 				continue;
 			}
@@ -37,13 +41,12 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 
 		// releases table
 		Console.WriteLine("get releases");
-		var tableReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyRelease);
-		var releasesDb = tableReleases.GetAllAsync<SpotifyReleaseEntity>();
+		var releasesDb = _dbTableRelease.GetAllAsync<SpotifyReleaseEntity>();
 		var releases = new SortedSet<SpotifyRelease>();
 
 		await foreach (var releaseDb in releasesDb)
 		{
-			if (releaseDb!.Id.IsNullOrEmpty() || releaseDb.Name.IsNullOrEmpty() || releaseDb.UrlApp.IsNullOrEmpty() || releaseDb.UrlWeb.IsNullOrEmpty() || releaseDb.UrlImage.IsNullOrEmpty() || !releaseIds.Contains(releaseDb.Id))
+			if (!releaseIds.Contains(releaseDb.Id))
 			{
 				continue;
 			}
@@ -58,7 +61,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 				UrlWeb = releaseDb.UrlWeb,
 				UrlImage = releaseDb.UrlImage,
 				ReleaseType = releaseDb.ReleaseType,
-				Artists = await GetReleaseArtists(db, releaseDb.Id),
+				Artists = await GetReleaseArtists(releaseDb.Id),
 			};
 
 			releases.Add(artist);
@@ -94,19 +97,17 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 		return releases;
 	}
 
-	private async Task<HashSet<SpotifyArtist>> GetReleaseArtists(IndexedDb db2, string releaseId)
+	private async Task<HashSet<SpotifyArtist>> GetReleaseArtists(string releaseId)
 	{
-		var db = _dbController.GetDb();
 
 		// artist releases table
 		Console.WriteLine("get artist releases");
-		var tableArtistReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtistRelease);
-		var artistReleasesDb = tableArtistReleases.GetAllAsync<SpotifyArtistReleaseEntity>();
+		var artistReleasesDb = _dbTableArtistRelease.GetAllAsync<SpotifyArtistReleaseEntity>();
 		var artistIds = new HashSet<string>();
 
 		await foreach (var artistReleaseDb in artistReleasesDb)
 		{
-			if (artistReleaseDb.ReleaseId != releaseId || artistReleaseDb.ArtistId.IsNullOrEmpty())
+			if (artistReleaseDb.ReleaseId != releaseId)
 			{
 				continue;
 			}
@@ -120,8 +121,7 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 
 		// artists table
 		Console.WriteLine("get artists");
-		var tableArtists = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
-		var artistsDb = tableArtists.GetAllAsync<SpotifyArtistEntity>();
+		var artistsDb = _dbTableArtist.GetAllAsync<SpotifyArtistEntity>();
 		var artists = new HashSet<SpotifyArtist>();
 
 		await foreach (var artistDb in artistsDb)
@@ -155,16 +155,14 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 		return artists;
 	}
 
-	public async Task SaveArtistsReleasesDb(IndexedDb db, ISet<SpotifyArtist> artists)
+	public async Task SaveArtistsReleasesDb(ISet<SpotifyArtist> artists)
 	{
-		var tableArtists = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
-		var artistsDb = tableArtists.GetAllAsync<SpotifyArtist>();
+		var artistsDb = _dbTableArtist.GetAllAsync<SpotifyArtist>();
 		var artistsDbIds = new HashSet<string>();
 		await foreach (var artistDb in artistsDb)
 		{
 			artistsDbIds.Add(artistDb.Id);
 		}
-		//var tableArtistsReleases = _dbController.GetTable(db, DbStorageTablesSpotify.ArtistsReleases);
 		var artistsReleaseToSave = new HashSet<SpotifyArtistReleaseEntity>();
 		var artistsToSave = new HashSet<SpotifyArtistEntity>();
 
@@ -185,13 +183,10 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 				foreach (var notFollowedArtist in notFollowedArtists)
 				{
 					var notFollowedArtistReleasesDb = new SpotifyArtistReleaseEntity(notFollowedArtist.Id, release.Id);
-					//Console.WriteLine("save artist release (not followed)");
+					Console.WriteLine("save artist release (not followed)");
+					//artistsReleaseToSave.Add(notFollowedArtistReleasesDb);
+					await _dbTableArtistRelease.StoreItemAsync(notFollowedArtistReleasesDb);
 
-					artistsReleaseToSave.Add(notFollowedArtistReleasesDb);
-					//await tableArtistsReleases.StoreItemAsync(notFollowedArtistReleasesDb);
-
-
-					Console.WriteLine("artist check");
 					//if (await tableArtists.Query<SpotifyArtist>().AnyAsync(x => x.Id == notFollowedArtist.Id))
 					if (artistsDbIds.Any(x => x == notFollowedArtist.Id))
 					{
@@ -199,24 +194,24 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 						continue;
 					}
 
-					var notFollowedArtistDb = new SpotifyArtistEntity()
-					{
+					var notFollowedArtistDb = new SpotifyArtistEntity(notFollowedArtist, false);
+					/*{
 						Id = notFollowedArtist.Id,
 						Name = notFollowedArtist.Name,
 						Following = false,
-					};
-					artistsToSave.Add(notFollowedArtistDb);
-					//Console.WriteLine("save not followed artist");
-					//await tableArtists.StoreItemAsync(notFollowedArtistDb);
+					};*/
+					//artistsToSave.Add(notFollowedArtistDb);
+					Console.WriteLine("save not followed artist");
+					await _dbTableArtist.StoreItemAsync(notFollowedArtistDb);
 				}
 
-				//Console.WriteLine("save artist release (followed)");
-				artistsReleaseToSave.Add(artistReleaseEntity);
-				//await tableArtistsReleases.StoreItemAsync(artistReleaseEntity);
+				Console.WriteLine("save artist release (followed)");
+				//artistsReleaseToSave.Add(artistReleaseEntity);
+				await _dbTableArtistRelease.StoreItemAsync(artistReleaseEntity);
 			}
 		}
 
-		var tableArtistsReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtistRelease);
+		/*var tableArtistsReleases = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtistRelease);
 		foreach (var artistReleaseToSave in artistsReleaseToSave)
 		{
 			Console.WriteLine("save artist release");
@@ -227,21 +222,20 @@ public class DatabaseReleasesController(IDatabaseController dbController) : IDat
 		{
 			Console.WriteLine("save not followed artist");
 			await tableArtists.StoreItemAsync(artistToSave);
-		}
+		}*/
 	}
 
-	public async Task SaveReleasesDb(IndexedDb db, ISet<SpotifyArtist> artists)
+	public async Task SaveReleasesDb(ISet<SpotifyArtist> artists)
 	{
 		var artistsWithReleases = artists.Where(x => x.Releases is not null);
 		var releases = artistsWithReleases.SelectMany(x => x.Releases!);
 		var newReleases = releases.Where(x => x.New);
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyRelease);
 
 		Console.WriteLine("save releases");
 		foreach (var newRelease in newReleases)
 		{
 			var releaseEntity = new SpotifyReleaseEntity(newRelease);
-			await table.StoreItemAsync(releaseEntity);
+			await _dbTableRelease.StoreItemAsync(releaseEntity);
 		}
 	}
 }

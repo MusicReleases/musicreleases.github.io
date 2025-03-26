@@ -2,6 +2,7 @@
 using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
 using JakubKastner.MusicReleases.Controllers.BaseControllers;
 using JakubKastner.MusicReleases.Controllers.DatabaseControllers;
+using JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 
 namespace JakubKastner.MusicReleases;
 

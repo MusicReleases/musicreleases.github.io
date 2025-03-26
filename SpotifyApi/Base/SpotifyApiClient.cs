@@ -42,7 +42,7 @@ public class SpotifyApiClient : ISpotifyApiClient
 	public async Task<string?> RefreshClient(string refreshToken)
 	{
 		// TODO app id to config file
-		const string appId = "67bbd538e581437597ae4574431682df";
+		const string appId = "c63dcc19c74a4281b7edffe44b528680"; //"67bbd538e581437597ae4574431682df";
 		var refreshRequest = new PKCETokenRefreshRequest(appId, refreshToken);
 		PKCETokenResponse? newResponse;
 		try

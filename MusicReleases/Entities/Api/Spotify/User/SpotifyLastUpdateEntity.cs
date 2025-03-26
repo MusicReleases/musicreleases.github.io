@@ -1,11 +1,10 @@
 ﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
+using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
-public class SpotifyLastUpdateEntity : SpotifyEntity
+public class SpotifyLastUpdateEntity : SpotifyIdEntity
 {
-	public string? UserId { get; set; }
-
 	public DateTime? User { get; set; }
 
 	public DateTime? Playlists { get; set; }
@@ -16,4 +15,13 @@ public class SpotifyLastUpdateEntity : SpotifyEntity
 	public DateTime? ReleasesAppears { get; set; }
 	public DateTime? ReleasesCompilations { get; set; }
 	public DateTime? ReleasesPodcasts { get; set; }
+
+	public SpotifyLastUpdateEntity()
+	{ }
+
+	[SetsRequiredMembers]
+	public SpotifyLastUpdateEntity(string userId)
+	{
+		Id = userId;
+	}
 }

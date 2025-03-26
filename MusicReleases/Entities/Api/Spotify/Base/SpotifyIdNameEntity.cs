@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Entities.Api.Spotify.Base;
 
-public class SpotifyIdNameEntity : SpotifyEntity
+public class SpotifyIdNameEntity : SpotifyIdEntity
 {
-	public string? Name { get; set; }
+	public required string Name { get; set; }
 }

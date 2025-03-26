@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
 
-public class SpotifyUpdateEntity<T> where T : SpotifyEntity
+public class SpotifyUpdateEntity<T> where T : SpotifyIdEntity
 {
 	public T Entity { get; set; }
 	public DateTime Update { get; set; }

@@ -1,4 +1,4 @@
-﻿using JakubKastner.Extensions;
+﻿using JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 using JakubKastner.MusicReleases.Entities.Api.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 using Tavenem.Blazor.IndexedDB;
@@ -6,27 +6,24 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
-public class DatabaseArtistsController(IDatabaseController dbController, IDatabaseUpdateController databaseUpdateController, IDatabaseReleasesController databaseReleasesController) : IDatabaseArtistsController
+public class DatabaseArtistsController(IDatabaseController dbController, IDatabaseUpdateController dbUpdateController, IDatabaseReleasesController dbReleasesController) : IDatabaseArtistsController
 {
-	private readonly IDatabaseController _dbController = dbController;
+	private readonly IDatabaseUpdateController _dbUpdateController = dbUpdateController;
+	private readonly IDatabaseReleasesController _dbReleasesController = dbReleasesController;
 
-	private readonly IDatabaseUpdateController _databaseUpdateController = databaseUpdateController;
-	private readonly IDatabaseReleasesController _databaseReleasesController = databaseReleasesController;
+	private readonly IndexedDbStore _dbTable = dbController.GetTable(DbStorageTablesSpotify.SpotifyArtist);
 
 	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> GetFollowed(string userId, bool getReleases)
 	{
-		// create db
-		var db = _dbController.GetDb();
-
 		// artists
-		var artists = await GetFollowedDb(db, userId, getReleases);
+		var artists = await GetFollowedDb(userId, getReleases);
 		if (artists.Count < 1)
 		{
 			return null;
 		}
 
 		// update
-		var update = await GetUpdateDb(db, userId);
+		var update = await GetUpdateDb(userId);
 		if (update is null)
 		{
 			return null;
@@ -37,17 +34,18 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 		return artistUpdate;
 	}
 
-	private async Task<ISet<SpotifyArtist>> GetFollowedDb(IndexedDb db, string userId, bool getReleases)
+	private async Task<ISet<SpotifyArtist>> GetFollowedDb(string userId, bool getReleases)
 	{
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
+		// TODO user artist db table
 
-		// get artists from db
 		Console.WriteLine("get artists");
-		var artistsDb = table.GetAllAsync<SpotifyArtistEntity>();
+		// get artists from db
+		var artistsDb = _dbTable.GetAllAsync<SpotifyArtistEntity>();
 		var artists = new HashSet<SpotifyArtist>();
+
 		await foreach (var artistDb in artistsDb)
 		{
-			if (artistDb.Id.IsNullOrEmpty() || artistDb.Name.IsNullOrEmpty() || artistDb.Following)
+			if (artistDb.Following)
 			{
 				continue;
 			}
@@ -57,7 +55,7 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 			if (getReleases)
 			{
 				// get saved releases in db for current artist
-				artist.Releases = await _databaseReleasesController.GetReleasesDb(db, artistDb.Id!, getReleases);
+				artist.Releases = await _dbReleasesController.GetReleasesDb(artistDb.Id, getReleases);
 			}
 
 			artists.Add(artist);
@@ -85,9 +83,9 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 		return artists;
 	}
 
-	private async Task<SpotifyUserListUpdateArtists?> GetUpdateDb(IndexedDb db, string userId)
+	private async Task<SpotifyUserListUpdateArtists?> GetUpdateDb(string userId)
 	{
-		var updateDb = await _databaseUpdateController.Get(db, userId);
+		var updateDb = await _dbUpdateController.Get(userId);
 
 		if (updateDb?.Artists is null)
 		{
@@ -122,34 +120,31 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 			throw new NullReferenceException(nameof(artists.List));
 		}
 
-		// create db
-		var db = _dbController.GetDb();
-
 		// update db
-		await SaveUpdateDb(db, userId, artists.Update);
+		await SaveUpdateDb(userId, artists.Update);
 
 		// artists db
-		await SaveArtistsDb(db, artists.List);
+		await SaveArtistsDb(artists.List);
 
 		// releases db
-		await _databaseReleasesController.SaveReleasesDb(db, artists.List);
+		await _dbReleasesController.SaveReleasesDb(artists.List);
 
 		// artist releases db
-		await _databaseReleasesController.SaveArtistsReleasesDb(db, artists.List);
+		await _dbReleasesController.SaveArtistsReleasesDb(artists.List);
 	}
 
-	private async Task SaveUpdateDb(IndexedDb db, string userId, SpotifyUserListUpdateArtists update)
+	private async Task SaveUpdateDb(string userId, SpotifyUserListUpdateArtists update)
 	{
 		// TODO null
 		//var updateDb = await _databaseUpdateController.Get(db, userId);
 
-		var updateDb = await _databaseUpdateController.GetOrCreate(db, userId);
+		var updateDb = await _dbUpdateController.Get(userId);
 
-		/*if (updateDb is null)
+		if (updateDb is null)
 		{
 			// TODO
 			throw new NullReferenceException(nameof(updateDb));
-		}*/
+		}
 
 		// update - update times
 
@@ -161,14 +156,11 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 		updateDb.ReleasesPodcasts = update.LastUpdatePodcasts;
 		updateDb.ReleasesTracks = update.LastUpdateTracks;
 
-		Console.WriteLine("save update");
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyUpdate);
-		await table.StoreItemAsync(updateDb);
+		await _dbUpdateController.Update(updateDb);
 	}
 
-	private async Task SaveArtistsDb(IndexedDb db, ISet<SpotifyArtist> artists)
+	private async Task SaveArtistsDb(ISet<SpotifyArtist> artists)
 	{
-		var table = _dbController.GetTable(db, DbStorageTablesSpotify.SpotifyArtist);
 		var newArtists = artists.Where(x => x.New);
 
 		Console.WriteLine("save artists");
@@ -176,7 +168,7 @@ public class DatabaseArtistsController(IDatabaseController dbController, IDataba
 		{
 			var artistEntity = new SpotifyArtistEntity(artist, true);
 
-			await table.StoreAsync(artistEntity);
+			await _dbTable.StoreAsync(artistEntity);
 		}
 	}
 }
