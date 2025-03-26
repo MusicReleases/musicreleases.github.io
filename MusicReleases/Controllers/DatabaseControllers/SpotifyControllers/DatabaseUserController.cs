@@ -8,8 +8,9 @@ namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyCont
 
 public class DatabaseUserController(IDatabaseController dbController, IDatabaseUpdateController dbUpdateController) : IDatabaseUserController
 {
-	private readonly IDatabaseUpdateController _dbUpdateController = dbUpdateController;
 	private readonly IndexedDbStore _dbTable = dbController.GetTable(DbStorageTablesSpotify.SpotifyUser);
+
+	private readonly IDatabaseUpdateController _dbUpdateController = dbUpdateController;
 
 	public async Task<SpotifyUser?> Get(string userId)
 	{

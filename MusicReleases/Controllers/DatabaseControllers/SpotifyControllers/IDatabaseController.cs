@@ -7,6 +7,5 @@ public interface IDatabaseController
 {
 	Task DeleteAll();
 	IndexedDb GetDb();
-	IndexedDbStore GetTable(Enums.DbStorageTablesSpotify tableName);
-	IndexedDbStore GetTable(IndexedDb db, Enums.DbStorageTablesSpotify tableName);
+	IndexedDbStore GetTable(Enums.DbStorageTablesSpotify tableName, IndexedDb? db = null);
 }

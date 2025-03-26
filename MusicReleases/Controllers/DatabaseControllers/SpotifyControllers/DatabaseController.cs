@@ -18,14 +18,9 @@ public class DatabaseController(IndexedDbService dbService) : IDatabaseControlle
 		return indexedDb;
 	}
 
-	public IndexedDbStore GetTable(Enums.DbStorageTablesSpotify tableName)
+	public IndexedDbStore GetTable(Enums.DbStorageTablesSpotify tableName, IndexedDb? db = null)
 	{
-		var db = GetDb();
-		return GetTable(db, tableName);
-	}
-
-	public IndexedDbStore GetTable(IndexedDb db, Enums.DbStorageTablesSpotify tableName)
-	{
+		db ??= GetDb();
 		var table = db[tableName.ToString()];
 
 		if (table is null)

@@ -8,10 +8,10 @@ namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
 public class DatabaseArtistsController(IDatabaseController dbController, IDatabaseUpdateController dbUpdateController, IDatabaseReleasesController dbReleasesController) : IDatabaseArtistsController
 {
+	private readonly IndexedDbStore _dbTable = dbController.GetTable(DbStorageTablesSpotify.SpotifyArtist);
+
 	private readonly IDatabaseUpdateController _dbUpdateController = dbUpdateController;
 	private readonly IDatabaseReleasesController _dbReleasesController = dbReleasesController;
-
-	private readonly IndexedDbStore _dbTable = dbController.GetTable(DbStorageTablesSpotify.SpotifyArtist);
 
 	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>?> GetFollowed(string userId, bool getReleases)
 	{

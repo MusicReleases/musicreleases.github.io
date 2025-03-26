@@ -9,8 +9,6 @@ namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
 public class DatabaseReleasesController(IDatabaseController dbController) : IDatabaseReleasesController
 {
-	private readonly IDatabaseController _dbController = dbController;
-
 	private readonly IndexedDbStore _dbTableRelease = dbController.GetTable(DbStorageTablesSpotify.SpotifyRelease);
 	private readonly IndexedDbStore _dbTableArtistRelease = dbController.GetTable(DbStorageTablesSpotify.SpotifyArtistRelease);
 	private readonly IndexedDbStore _dbTableArtist = dbController.GetTable(DbStorageTablesSpotify.SpotifyArtist);
