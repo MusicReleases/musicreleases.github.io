@@ -17,6 +17,6 @@ public partial class Index
 	private async Task LoadPage()
 	{
 		// check if user is logged in
-		await _loginController.AutoLoginUser();
+		await LoginService.AutoLoginUser();
 	}
 }

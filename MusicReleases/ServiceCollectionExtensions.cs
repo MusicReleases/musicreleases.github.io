@@ -1,8 +1,7 @@
-﻿using JakubKastner.MusicReleases.Controllers.ApiControllers;
-using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers;
-using JakubKastner.MusicReleases.Controllers.BaseControllers;
-using JakubKastner.MusicReleases.Controllers.DatabaseControllers;
-using JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
+﻿using JakubKastner.MusicReleases.Services.ApiServices;
+using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
 namespace JakubKastner.MusicReleases;
 
@@ -14,26 +13,27 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddMusicReleases(this IServiceCollection services)
 	{
 		// base controllers
-		services.AddScoped<ILoginController, LoginController>();
+		services.AddScoped<ILoginService, LoginService>();
+		services.AddScoped<IFilterService, FilterService>();
 
 		// indexed db controllers
-		services.AddScoped<IDatabaseSpotifyController, DatabaseSpotifyController>();
+		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
 
-		services.AddScoped<IDatabaseSpotifyUpdateController, DatabaseSpotifyUpdateController>();
+		services.AddScoped<IDbSpotifyUpdateService, DbSpotifyUpdateService>();
 
-		services.AddScoped<IDatabaseSpotifyUserController, DatabaseSpotifyUserController>();
-		services.AddScoped<IDatabaseSpotifyUserArtistController, DatabaseSpotifyUserArtistController>();
+		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
+		services.AddScoped<IDbSpotifyUserArtistService, DbSpotifyUserArtistService>();
 
-		services.AddScoped<IDatabaseSpotifyArtistController, DatabaseSpotifyArtistController>();
-		services.AddScoped<IDatabaseSpotifyArtistReleaseController, DatabaseSpotifyArtistReleaseController>();
+		services.AddScoped<IDbSpotifyArtistService, DbSpotifyArtistService>();
+		services.AddScoped<IDbSpotifyArtistReleaseService, DbSpotifyArtistReleaseService>();
 
-		services.AddScoped<IDatabaseSpotifyReleaseController, DatabaseSpotifyReleaseController>();
+		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
 
 		// spotify controllers
-		services.AddScoped<IApiLoginController, SpotifyLoginController>();
-		services.AddScoped<ISpotifyLoginController, SpotifyLoginController>();
-		services.AddScoped<ISpotifyLoginStorageController, SpotifyLoginStorageController>();
-		services.AddScoped<ISpotifyWorkflowController, SpotifyWorkflowController>();
+		services.AddScoped<IApiLoginService, SpotifyLoginService>();
+		services.AddScoped<ISpotifyLoginService, SpotifyLoginService>();
+		services.AddScoped<ISpotifyLoginStorageService, SpotifyLoginStorageService>();
+		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
 
 		return services;
 	}

@@ -1,5 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Base;
 using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Objects.Base;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
@@ -12,13 +13,13 @@ public partial class Releases
 
 	private ReleaseType _type;
 
-	private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? _releases => _stateSpotifyReleases.Value.List;
-	private ISet<SpotifyRelease>? _releasesList => _releases?.List is null ? null : new SortedSet<SpotifyRelease>(_releases.List.Where(x => x.ReleaseType == _type));
+	private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? ReleasesUserList => SpotifyReleaseState.Value.List;
+	private ISet<SpotifyRelease>? ReleasesList => ReleasesUserList?.List is null ? null : new SortedSet<SpotifyRelease>(ReleasesUserList.List.Where(x => x.ReleaseType == _type));
 
-	private bool _error => _stateSpotifyReleases.Value.Error;
-	private bool _loading => _stateSpotifyReleases.Value.LoadingAny();
-	private bool _errorArtists => _stateSpotifyArtists.Value.Error;
-	private bool _loadingArtists => _stateSpotifyArtists.Value.LoadingAny();
+	private bool Error => SpotifyReleaseState.Value.Error;
+	private bool Loading => SpotifyReleaseState.Value.LoadingAny();
+	private bool ErrorArtists => SpotifyArtistState.Value.Error;
+	private bool LoadingArtists => SpotifyArtistState.Value.LoadingAny();
 
 	protected override void OnInitialized()
 	{
@@ -51,24 +52,24 @@ public partial class Releases
 		{
 			_type = ReleaseType.Albums;
 		}
-
+		FilterService.FilterReleaseType(_type);
 		GetReleases();
 	}
 
 	private void GetReleases()
 	{
-		var userLoggedIn = _apiLoginController.IsUserLoggedIn();
+		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
 
 		if (!userLoggedIn)
 		{
 			return;
 		}
 
-		var serviceType = _apiLoginController.GetServiceType();
+		var serviceType = ApiLoginService.GetServiceType();
 
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
-			_spotifyWorkflowController.StartLoadingAll(false, _type);
+			SpotifyWorkflowService.StartLoadingAll(false, _type);
 		}
 	}
 }

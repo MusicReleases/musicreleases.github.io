@@ -1,12 +1,12 @@
 ﻿@using Fluxor
 @using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
 
 @inherits FluxorComponent
 
-@inject IState<SpotifyArtistsState> _stateSpotifyArtists
-@inject IState<SpotifyReleasesState> _stateSpotifyReleases
+@inject IState<SpotifyArtistState> _stateSpotifyArtists
+@inject IState<SpotifyReleaseState> _stateSpotifyReleases
 
 
 <div class="menu artists buttons-rounded-l">	

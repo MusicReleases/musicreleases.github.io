@@ -23,7 +23,7 @@ public partial class Spotify
 	{
 		// TODO global service type
 
-		var uri = new Uri(_navManager.Uri);
+		var uri = new Uri(NavManager.Uri);
 		var uriQuery = uri.Query;
 
 		var queryParams = QueryHelpers.ParseQuery(uriQuery);
@@ -34,6 +34,6 @@ public partial class Spotify
 			return;
 		}
 
-		await _loginController.SetUser(code);
+		await LoginService.SetUser(code);
 	}
 }

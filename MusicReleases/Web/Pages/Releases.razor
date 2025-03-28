@@ -2,27 +2,28 @@
 
 @using Fluxor
 @using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Controllers.ApiControllers
-@using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
+@using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases
 
 @layout LayoutMain
 
 @inherits FluxorComponent
 
-@inject ISpotifyWorkflowController _spotifyWorkflowController
-@inject IApiLoginController _apiLoginController
-@inject IState<SpotifyReleasesState> _stateSpotifyReleases
-@inject IState<SpotifyArtistsState> _stateSpotifyArtists
+@inject ISpotifyWorkflowService SpotifyWorkflowService
+@inject IApiLoginService ApiLoginService
+@inject IState<SpotifyReleaseState> SpotifyReleaseState
+@inject IState<SpotifyArtistState> SpotifyArtistState
+@inject IFilterService FilterService
 
-
-@if (_loading || _loadingArtists || _releasesList is null)
+@if (Loading || LoadingArtists || ReleasesList is null)
 {
 	<p>Loading releases...</p>
 }
-else if (_releasesList.Count < 1)
+else if (ReleasesList.Count < 1)
 {
 	<p>0 releases</p>
 }
@@ -31,7 +32,7 @@ else
 
 	<div class="releases boxes infinite-scroll">
 
-		<Virtualize Items="@_releasesList" Context="release">
+		<Virtualize Items="@ReleasesList" Context="release">
 				<Release SpotifyRelease="@release" />
 		</Virtualize>
 

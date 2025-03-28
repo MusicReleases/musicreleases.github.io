@@ -1,0 +1,15 @@
+﻿@if (Year is null || Months is null)
+{
+	return;
+}
+
+<button type="button" class="year" data-menu_type="year" data-menu_year="year-@Year">
+	@Year
+</button>
+
+@foreach (var month in Months)
+{
+	<button type="button" class="month" data-menu_type="month" data-menu_month="month-@month">
+		@month
+	</button>
+}

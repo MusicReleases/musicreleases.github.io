@@ -1,15 +1,15 @@
-﻿@using JakubKastner.MusicReleases.Controllers.ApiControllers
+﻿@using JakubKastner.MusicReleases.Services.ApiServices
 
 @inherits LayoutComponentBase;
 
-@inject IApiLoginController _apiLoginController;
-@inject NavigationManager _navManager;
+@inject IApiLoginService ApiLoginService
+@inject NavigationManager NavManager
 
 @* main layout - user is sucessfully logged in *@
 
 <div class="body classic hide-player">
 
-	@if (!_apiLoginController.IsUserLoggedIn())
+	@if (!ApiLoginService.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
 	}

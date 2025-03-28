@@ -4,6 +4,6 @@
 
 @inherits FluxorComponent
 
-@inject IState<LoaderState> _stateLoader;
+@inject IState<LoaderState> LoaderState;
 
-<div class="header loader@_stateLoader.Value.LoadingClass()"></div>
+<div class="header loader @LoaderState.Value.LoadingClass"></div>

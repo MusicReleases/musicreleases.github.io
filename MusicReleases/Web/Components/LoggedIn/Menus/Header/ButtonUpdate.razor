@@ -1,9 +1,9 @@
 ﻿@using Fluxor
-@using JakubKastner.MusicReleases.Controllers.ApiControllers
-@using JakubKastner.MusicReleases.Controllers.ApiControllers.SpotifyControllers
+@using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 
-@inject IApiLoginController _apiLoginController;
-@inject ISpotifyWorkflowController _workflowController
+@inject IApiLoginService _apiLoginController;
+@inject ISpotifyWorkflowService _workflowController
 
 @if (!_apiLoginController.IsUserLoggedIn())
 {

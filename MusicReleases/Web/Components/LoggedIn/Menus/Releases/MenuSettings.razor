@@ -1,10 +1,10 @@
-﻿@using JakubKastner.MusicReleases.Controllers.ApiControllers
-@using JakubKastner.MusicReleases.Controllers.BaseControllers
-@using JakubKastner.SpotifyApi.Controllers
+﻿@using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.SpotifyApi.Services
 
-@inject ILoginController _loginController
-@inject ISpotifyControllerUser _spotifyControllerUser
-@inject IApiLoginController _apiLoginController
+@inject ILoginService _loginController
+@inject ISpotifyUserService _spotifyControllerUser
+@inject IApiLoginService _apiLoginController
 
 <div class="user icon-text">
 	<button class="user">

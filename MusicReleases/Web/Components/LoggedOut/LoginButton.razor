@@ -1,5 +1,6 @@
-﻿@using JakubKastner.MusicReleases.Controllers.BaseControllers;
-@inject ILoginController _loginController;
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
+
+@inject ILoginService LoginService
 
 <button type="button" class="@_type.ToLower()" @onclick="LoginUser">
 	<i class="fab fa-spotify" aria-hidden="true"></i>

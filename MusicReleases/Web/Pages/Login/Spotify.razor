@@ -2,9 +2,9 @@
 @layout LayoutLogin
 @inherits LayoutComponentBase
 
-@using JakubKastner.MusicReleases.Controllers.BaseControllers;
-@inject ILoginController _loginController;
-@inject NavigationManager _navManager;
+@using JakubKastner.MusicReleases.Services.BaseServices
+@inject ILoginService LoginService
+@inject NavigationManager NavManager
 
 @if (_loading)
 {

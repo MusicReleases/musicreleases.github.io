@@ -1,11 +1,11 @@
 ﻿@page "/"
 @layout LayoutLogin
 
-@using JakubKastner.MusicReleases.Controllers.BaseControllers
+@using JakubKastner.MusicReleases.Services.BaseServices
 
 @inherits LayoutComponentBase
 
-@inject ILoginController _loginController
+@inject ILoginService LoginService
 
 
 @* login user page (first) *@

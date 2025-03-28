@@ -1,4 +1,5 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 

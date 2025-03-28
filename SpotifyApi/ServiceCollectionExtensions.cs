@@ -1,6 +1,6 @@
 ﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Controllers;
-using JakubKastner.SpotifyApi.Controllers.Api;
+using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,17 +18,17 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<SpotifyUser>();
 
 		// api controllers
-		services.AddScoped<IControllerApiArtist, ControllerApiArtist>();
-		services.AddScoped<IControllerApiPlaylist, ControllerApiPlaylist>();
-		services.AddScoped<IControllerApiRelease, ControllerApiRelease>();
-		services.AddScoped<IControllerApiUser, ControllerApiUser>();
+		services.AddScoped<IApiArtistService, ApiArtistService>();
+		services.AddScoped<IApiPlaylistService, ApiPlaylistService>();
+		services.AddScoped<IApiReleaseService, ApiReleaseService>();
+		services.AddScoped<IApiUserService, ApiUserService>();
 
 		// controllers
-		services.AddScoped<ISpotifyControllerArtist, SpotifyControllerArtist>();
-		services.AddScoped<ISpotifyControllerPlaylist, SpotifyControllerPlaylist>();
-		services.AddScoped<ISpotifyControllerRelease, SpotifyControllerRelease>();
-		services.AddScoped<ISpotifyControllerTrack, SpotifyControllerTrack>();
-		services.AddScoped<ISpotifyControllerUser, SpotifyControllerUser>();
+		services.AddScoped<ISpotifyArtistService, SpotifyArtistService>();
+		services.AddScoped<ISpotifyPlaylistService, SpotifyPlaylistService>();
+		services.AddScoped<ISpotifyReleaseService, SpotifyReleaseService>();
+		services.AddScoped<ISpotifyTrackService, SpotifyTrackService>();
+		services.AddScoped<ISpotifyUserService, SpotifyUserService>();
 
 		return services;
 	}

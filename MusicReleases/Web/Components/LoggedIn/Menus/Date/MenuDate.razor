@@ -1,18 +1,32 @@
 ﻿@using Fluxor;
 @using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Controllers.ApiControllers
+@using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
 
 @inherits FluxorComponent
 
-@inject IApiLoginController _apiLoginController
+@inject IApiLoginService ApiLoginService
+@inject IState<SpotifyArtistState> SpotifyArtistState
+@inject IState<SpotifyReleaseState> SpotifyReleaseState
+@inject IFilterService FilterService
 
 <div class="menu date items scroll buttons-rounded-m">
-	@*@if (_stateSpotifyReleases.Value.Loaded)
+	@if (Loading)
 	{
-		<p>Loaded</p>
+		<p>Loading...</p>
+	}
+	else if (YearMonthList is null)
+	{
+		<p>0 releases</p>
 	}
 	else
 	{
-		<p>Loading...</p>
-	}*@
+		foreach (var year in YearMonthList)
+		{
+			 <ButtonDateYear Year="@year.Key" Months="@year.Value">
+			</ButtonDateYear> 
+		}
+	}
 </div>

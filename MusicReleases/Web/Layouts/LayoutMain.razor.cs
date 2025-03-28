@@ -13,9 +13,9 @@ public partial class LayoutMain
 
 	private bool CheckLoggedInUser()
 	{
-		if (!_apiLoginController.IsUserLoggedIn())
+		if (!ApiLoginService.IsUserLoggedIn())
 		{
-			_navManager.NavigateTo("");
+			NavManager.NavigateTo("");
 			return false;
 		}
 		return true;

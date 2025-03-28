@@ -1,5 +1,13 @@
-﻿using Microsoft.AspNetCore.Components; using static JakubKastner.MusicReleases.Base.Enums;  namespace JakubKastner.MusicReleases.Web.Components.LoggedOut;  public partial class LoginButton {
-	/// <summary> 	/// Service type (Spotify, Apple Music, ...) 	/// </summary>
+﻿using Microsoft.AspNetCore.Components;
+using static JakubKastner.MusicReleases.Base.Enums;
+
+namespace JakubKastner.MusicReleases.Web.Components.LoggedOut;
+
+public partial class LoginButton
+{
+	/// <summary>
+	/// Service type (Spotify, Apple Music, ...)
+	/// </summary>
 	[Parameter]
 	public ServiceType Type { get; set; }
 
@@ -15,8 +23,11 @@
 		await base.OnInitializedAsync();
 	}
 
-	/// <summary> 	/// User clicked to login button. 	/// </summary>
+	/// <summary>
+	/// User clicked to login button.
+	/// </summary>
 	private void LoginUser()
 	{
-		_loginController.LoginUser();
-	} }
+		LoginService.LoginUser();
+	}
+}

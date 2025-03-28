@@ -22,6 +22,6 @@ public partial class ButtonRelease
 
 	private void DisplayReleases()
 	{
-		_navManager.NavigateTo("releases/" + _releaseType?.ToLower());
+		NavManager.NavigateTo("releases/" + _releaseType?.ToLower());
 	}
 }

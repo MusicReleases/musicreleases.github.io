@@ -1,7 +1,7 @@
 ﻿@using Fluxor
-@using JakubKastner.MusicReleases.Controllers.ApiControllers
+@using JakubKastner.MusicReleases.Services.ApiServices
 
-@inject IApiLoginController _apiLoginController;
+@inject IApiLoginService _apiLoginController;
 
 @if (!_apiLoginController.IsUserLoggedIn())
 {
