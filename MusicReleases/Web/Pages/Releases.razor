@@ -18,11 +18,11 @@
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists
 
 
-@if (_loading || _loadingArtists || _releases is null || _artists is null)
+@if (_loading || _loadingArtists || _releasesList is null)
 {
 	<p>Loading releases...</p>
 }
-else if (_releases.Count < 1)
+else if (_releasesList.Count < 1)
 {
 	<p>0 releases</p>
 }
@@ -31,7 +31,7 @@ else
 
 	<div class="releases boxes infinite-scroll">
 
-		<Virtualize Items="@_releases" Context="release">
+		<Virtualize Items="@_releasesList" Context="release">
 				<Release SpotifyRelease="@release" />
 		</Virtualize>
 

@@ -12,9 +12,9 @@ public partial class Releases
 
 	private ReleaseType _type;
 
-	private SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? _artists => _stateSpotifyArtists.Value.List;
-	private IEnumerable<SpotifyArtist>? _artistWithReleaseType => _artists?.List is null ? null : _artists.List.Where(x => x.Releases is not null && x.Releases.Any(y => y.ReleaseType == _type));
-	private ISet<SpotifyRelease>? _releases => (_artistWithReleaseType is null || !_artistWithReleaseType.Any()) ? null : new SortedSet<SpotifyRelease>(_artistWithReleaseType.SelectMany(x => x.Releases!.Where(y => y.ReleaseType == _type/* && y.ReleaseDate.Year == DateTime.Now.Year*/)));
+	private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? _releases => _stateSpotifyReleases.Value.List;
+	private ISet<SpotifyRelease>? _releasesList => _releases?.List is null ? null : new SortedSet<SpotifyRelease>(_releases.List.Where(x => x.ReleaseType == _type));
+
 	private bool _error => _stateSpotifyReleases.Value.Error;
 	private bool _loading => _stateSpotifyReleases.Value.LoadingAny();
 	private bool _errorArtists => _stateSpotifyArtists.Value.Error;
@@ -23,13 +23,15 @@ public partial class Releases
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		LoadReleases();
+		Console.WriteLine("Releases.OnInitialized");
+		//LoadReleases();
 	}
 
 
 	protected override void OnParametersSet()
 	{
 		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
+		Console.WriteLine("Releases.OnParametersSet");
 		LoadReleases();
 	}
 

@@ -35,7 +35,7 @@ public class ControllerApiArtist(ISpotifyApiClient client) : IControllerApiArtis
 		};
 		var spotifyClient = _client.GetClient();
 		var response = await spotifyClient.Follow.OfCurrentUser(request);
-		var artistsAsync = spotifyClient.Paginate(response.Artists, (s) => s.Artists);
+		var artistsAsync = spotifyClient.Paginate(response.Artists, s => s.Artists);
 
 		var artists = new List<FullArtist>();
 

@@ -30,7 +30,7 @@ public partial class ButtonUpdate
 					_workflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
 					break;
 				case MenuButtonsType.Releases:
-					// TODO releases type
+					// TODO releases type + load only releases without artists
 					_workflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
 					break;
 				case MenuButtonsType.Playlists:

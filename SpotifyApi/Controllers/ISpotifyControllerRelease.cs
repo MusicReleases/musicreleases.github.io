@@ -1,11 +1,9 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
+using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
 public interface ISpotifyControllerRelease
 {
-	Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetReleasesFromArtist(SpotifyEnums.ReleaseType releaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? existingArtists = null, bool forceUpdate = false);
-
-	//Task<SpotifyUserListArtists<SpotifyRelease>> GetAllReleasesFromUserFollowed(SpotifyEnums.ReleaseType releaseType = SpotifyEnums.ReleaseType.Albums, SpotifyUserListArtists<SpotifyRelease>? existingReleases = null, bool forceUpdate = false);
+	Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false);
 }

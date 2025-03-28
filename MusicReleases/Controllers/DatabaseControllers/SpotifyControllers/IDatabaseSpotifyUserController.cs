@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers;
 
-public interface IDatabaseUserController
+public interface IDatabaseSpotifyUserController
 {
 	Task Delete(string userId);
 	Task DeleteAllUserDatabases(string userId);

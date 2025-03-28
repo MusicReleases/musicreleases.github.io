@@ -1,14 +1,15 @@
 ﻿using Fluxor;
-using JakubKastner.MusicReleases.Controllers.DatabaseControllers;
+using JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 using JakubKastner.SpotifyApi.Controllers;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore;
 
-public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseArtistsController databaseController, ISpotifyControllerUser spotifyControllerUser)
+public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArtist, IDatabaseSpotifyUserArtistController databaseController, ISpotifyControllerUser spotifyControllerUser)
 {
 	private readonly ISpotifyControllerArtist _spotifyControllerArtist = spotifyControllerArtist;
-	private readonly IDatabaseArtistsController _databaseController = databaseController;
+	//private readonly IDatabaseArtistsController _databaseController = databaseController;
+	private readonly IDatabaseSpotifyUserArtistController _databaseController = databaseController;
 	private readonly ISpotifyControllerUser _spotifyControllerUser = spotifyControllerUser;
 
 	// GET
@@ -18,7 +19,10 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 		// TODO must be task
 		await Task.Delay(0);
 
-		dispatcher.Dispatch(new SpotifyArtistsActionGetStorage(action.ForceUpdate) { CompletionSource = action.CompletionSource });
+		dispatcher.Dispatch(new SpotifyArtistsActionGetStorage(action.ForceUpdate)
+		{
+			CompletionSource = action.CompletionSource
+		});
 	}
 	[EffectMethod]
 	public async Task GetSuccess(SpotifyArtistsActionGetSuccess action, IDispatcher dispatcher)
@@ -54,7 +58,8 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 
 			//var artists = await _databaseController.GetArtists();
 			var userId = _spotifyControllerUser.GetUserIdRequired();
-			var artists = await _databaseController.GetFollowed(userId, true);
+			//var artists = await _databaseController.GetFollowed(userId, true);
+			var artists = await _databaseController.Get(userId);
 
 			if (artists is not null)
 			{
@@ -110,7 +115,8 @@ public class SpotifyArtistsEffects(ISpotifyControllerArtist spotifyControllerArt
 			//await _databaseController.SaveArtists(action.Artists);
 			var userId = _spotifyControllerUser.GetUserIdRequired();
 			//await _databaseControllerOld.SaveArtists(userId, action.Artists);
-			await _databaseController.SaveArtists(userId, action.Artists);
+			//await _databaseController.SaveArtists(userId, action.Artists);
+			await _databaseController.Save(userId, action.Artists);
 
 			dispatcher.Dispatch(new SpotifyArtistsActionSetStorageSuccess());
 		}

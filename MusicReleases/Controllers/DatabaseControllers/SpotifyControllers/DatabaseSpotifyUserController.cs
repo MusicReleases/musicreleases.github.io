@@ -6,36 +6,37 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 
-public class DatabaseUserController(IDatabaseController dbController, IDatabaseUpdateController dbUpdateController) : IDatabaseUserController
+public class DatabaseSpotifyUserController(IDatabaseSpotifyController dbController, IDatabaseSpotifyUpdateController dbUpdateController) : IDatabaseSpotifyUserController
 {
 	private readonly IndexedDbStore _dbTable = dbController.GetTable(DbStorageTablesSpotify.SpotifyUser);
 
-	private readonly IDatabaseUpdateController _dbUpdateController = dbUpdateController;
+	private readonly IDatabaseSpotifyUpdateController _dbUpdateController = dbUpdateController;
 
 	public async Task<SpotifyUser?> Get(string userId)
 	{
-		var dbEntity = await GetDb(userId);
-		if (dbEntity is null)
+		var updateEntity = await GetDb(userId);
+		if (updateEntity is null)
 		{
 			return null;
 		}
 
 		var info = new SpotifyUserInfo()
 		{
-			Id = dbEntity.Entity.Id,
-			Name = dbEntity.Entity.Name,
-			Country = dbEntity.Entity.Country,
-			ProfilePictureUrl = dbEntity.Entity.ProfilePictureUrl,
-			LastUpdate = dbEntity.Update,
+			Id = updateEntity.Entity.Id,
+			Name = updateEntity.Entity.Name,
+			Country = updateEntity.Entity.Country,
+			ProfilePictureUrl = updateEntity.Entity.ProfilePictureUrl,
+			LastUpdate = updateEntity.Update,
 		};
-		var credentials = new SpotifyUserCredentials(dbEntity.Entity.RefreshToken);
+		var credentials = new SpotifyUserCredentials(updateEntity.Entity.RefreshToken);
 
 		var user = new SpotifyUser(info, credentials);
 		return user;
 	}
 
-	private async Task<SpotifyUpdateEntity<SpotifyUserEntity>?> GetDb(string userId)
+	private async Task<SpotifyUpdateDbObject<SpotifyUserEntity>?> GetDb(string userId)
 	{
+		// get user db
 		var userDb = await _dbTable.GetItemAsync<SpotifyUserEntity>(userId);
 
 		if (userDb is null)
@@ -45,17 +46,20 @@ public class DatabaseUserController(IDatabaseController dbController, IDatabaseU
 			return null;
 		}
 
+		// get update db
 		var updateDb = await _dbUpdateController.Get(userId);
-		var userUpdateDb = updateDb?.User;
+		var updateDbUser = updateDb?.User;
 
-		if (!userUpdateDb.HasValue)
+		// user doesnt exist or doesnt have update time
+		if (!updateDbUser.HasValue)
 		{
 			// delete all databases with this user
 			await DeleteAllUserDatabases(userId);
 			return null;
 		}
 
-		var updateEntity = new SpotifyUpdateEntity<SpotifyUserEntity>(userDb, userUpdateDb.Value);
+		// create new update entity
+		var updateEntity = new SpotifyUpdateDbObject<SpotifyUserEntity>(userDb, updateDbUser.Value);
 		return updateEntity;
 	}
 
@@ -65,9 +69,6 @@ public class DatabaseUserController(IDatabaseController dbController, IDatabaseU
 		{
 			throw new NullReferenceException(nameof(user));
 		}
-
-		// old user
-		await Delete(user.Info.Id);
 
 		// user db
 		Console.WriteLine("save user");

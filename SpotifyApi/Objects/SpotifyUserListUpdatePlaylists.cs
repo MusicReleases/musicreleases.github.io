@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyUserListUpdatePlaylists : SpotifyUserListUpdate
+public class SpotifyUserListUpdatePlaylists : SpotifyUserListUpdateMain
 {
 	public DateTime LastUpdateTracks { get; set; }
 

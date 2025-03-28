@@ -4,106 +4,107 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Controllers;
 
-public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease, ISpotifyControllerArtist controllerArtist) : ISpotifyControllerRelease
+public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease, ISpotifyControllerArtist controllerArtist, ISpotifyControllerUser controllerUser) : ISpotifyControllerRelease
 {
 	private readonly IControllerApiRelease _controllerApiRelease = controllerApiRelease;
 	private readonly ISpotifyControllerArtist _controllerArtist = controllerArtist;
+	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
-
-	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetReleasesFromArtist(ReleaseType releaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? existingArtists = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false)
 	{
-		// TODO editable
-		var artists = await _controllerArtist.GetUserFollowedArtists(existingArtists, forceUpdate);
-		var deleteAllReleases = forceUpdate;
-
-		if (artists is null)
-		{
-			throw new NullReferenceException(nameof(artists));
-		}
-		if (artists.List is null)
-		{
-			// 0 artists
-			return artists;
-		}
-
-		if (artists.Update is null)
-		{
-			throw new NullReferenceException(nameof(artists.Update));
-		}
-
-		var lastUpdate = GetLastTimeUpdate(artists.Update, releaseType);
-		if (lastUpdate.HasValue)
-		{
-			var dateTimeDifference = DateTime.Now - lastUpdate;
-
-			if (dateTimeDifference.Value.TotalHours >= 24)
-			{
-				// force update every 24 hours
-				forceUpdate = true;
-			}
-		}
-		else
+		// doesnt force provide artists update!!!
+		if (existingReleases is null)
 		{
 			forceUpdate = true;
 		}
-
-		// TODO force update - this will replace all existing releases from another release type - fixed down - need check
-		/*if (!forceUpdate)
+		else
 		{
-			var existingArtistWithReleases = artists.List!.Any(x => x.Releases is not null && x.Releases.Any(y => y.ReleaseType == releaseType));
-			if (!existingArtistWithReleases)
+			var lastUpdate = GetLastTimeUpdate(existingReleases.Update, releaseType);
+			if (lastUpdate.HasValue)
+			{
+				var dateTimeDifference = DateTime.Now - lastUpdate;
+
+				if (dateTimeDifference.Value.TotalHours >= 24)
+				{
+					// force update every 24 hours
+					forceUpdate = true;
+				}
+			}
+			else
 			{
 				forceUpdate = true;
 			}
-		}*/
+		}
 
 		if (!forceUpdate)
 		{
-			var existingArtistWithReleases = artists.List!.Any(x => x.Releases is not null && x.Releases.Any(y => y.ReleaseType == releaseType));
-
-			if (existingArtistWithReleases)
-			{
-				// doesnt need update
-				return artists;
-			}
+			// doesnt need update
+			return existingReleases!;
 		}
 
-		var artistsWithReleases = await GetReleasesFromArtistApi(artists.List, forceUpdate, artists.Update, releaseType, deleteAllReleases);
-		return artistsWithReleases;
+		var releases = await GetReleasesFromArtistApi(artists, existingReleases, forceUpdate, releaseType);
+		return releases;
 	}
-
-	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetReleasesFromArtistApi(ISet<SpotifyArtist> artists, bool forceUpdate, SpotifyUserListUpdateArtists lastUpdateList, ReleaseType releaseType, bool deleteAllReleases)
+	private async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>> GetReleasesFromArtistApi(ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases, bool forceUpdate, ReleaseType releaseType)
 	{
 		if (releaseType == ReleaseType.Podcasts)
 		{
-			return await GetPodcastReleasesFromArtistApi(artists, forceUpdate, lastUpdateList);
+			return await GetPodcastReleasesFromArtistApi(artists, existingReleases, forceUpdate);
 		}
 
-		return await GetClassicReleasesFromArtistApi(artists, forceUpdate, lastUpdateList, releaseType, deleteAllReleases);
+		return await GetClassicReleasesFromArtistApi(artists, existingReleases, forceUpdate, releaseType);
 	}
 
-	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetPodcastReleasesFromArtistApi(ISet<SpotifyArtist> artists, bool forceUpdate, SpotifyUserListUpdateArtists lastUpdateList)
+	private async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>> GetPodcastReleasesFromArtistApi(ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases, bool forceUpdate)
 	{
 		// TODO podcasts
 		throw new NotImplementedException(nameof(GetPodcastReleasesFromArtistApi));
 	}
 
-	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetClassicReleasesFromArtistApi(ISet<SpotifyArtist> artistsSaved, bool forceUpdate, SpotifyUserListUpdateArtists lastUpdateList, ReleaseType releaseType, bool deleteAllReleases)
+	private async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>> GetClassicReleasesFromArtistApi(ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases, bool forceUpdate, ReleaseType releaseType)
 	{
 		if (releaseType == ReleaseType.Podcasts)
 		{
 			throw new NotSupportedException(nameof(releaseType));
 		}
 
-		var releases = await _controllerApiRelease.GetArtistsReleasesFromApi(artistsSaved, deleteAllReleases, releaseType);
+		SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? releases;
+		var releasesList = new HashSet<SpotifyRelease>();
+		var user = _controllerUser.GetUserRequired();
+		var createNew = existingReleases?.List is null || existingReleases.Update is null;
 
-		SetLastTimeUpdate(lastUpdateList, releaseType);
+		if (createNew || forceUpdate)
+		{
+			foreach (var artist in artists)
+			{
+				var releasesApi = await _controllerApiRelease.GetArtistReleasesFromApi(artist.Id, releaseType);
+				releasesList.UnionWith(releasesApi);
+			}
+			if (createNew)
+			{
+				// create new instance of releases
+				var update = new SpotifyUserListUpdateRelease(DateTime.Now, releaseType);
+				releases = new(releasesList, update);
+			}
+			else
+			{
+				// existing release list - append new and set last time update times
+				releases = existingReleases;
+				releases!.List!.UnionWith(releasesList);
+				SetLastTimeUpdate(releases.Update!, releaseType);
+			}
+		}
+		else
+		{
+			releases = existingReleases;
+		}
 
-		var artistStorage = new SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>(releases, lastUpdateList);
-		return artistStorage;
+		user.FollowedArtistReleases = releases;
+
+		return releases!;
 	}
 
-	private DateTime? GetLastTimeUpdate(SpotifyUserListUpdateArtists lastUpdateList, ReleaseType releaseType)
+	private DateTime? GetLastTimeUpdate(SpotifyUserListUpdateRelease lastUpdateList, ReleaseType releaseType)
 	{
 		return releaseType switch
 		{
@@ -115,8 +116,7 @@ public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease
 			_ => throw new NotSupportedException(nameof(releaseType)),
 		};
 	}
-
-	private void SetLastTimeUpdate(SpotifyUserListUpdateArtists lastUpdateList, ReleaseType releaseType)
+	private void SetLastTimeUpdate(SpotifyUserListUpdateRelease lastUpdateList, ReleaseType releaseType)
 	{
 		var lastUpdate = DateTime.Now;
 		// update last update
@@ -141,55 +141,4 @@ public class SpotifyControllerRelease(IControllerApiRelease controllerApiRelease
 				throw new NotSupportedException(nameof(releaseType));
 		}
 	}
-
-
-
-
-
-
-	/*private async Task<SpotifyUserList<SpotifyArtist><SpotifyRelease>> GetAllReleasesFromUserFollowedArtistsOld(ReleaseType releaseType, SpotifyUserList<SpotifyArtist><SpotifyRelease>? existingReleases = null, bool forceUpdate = false)
-	{
-		if (releaseType == ReleaseType.Podcasts)
-		{
-			throw new NotSupportedException(nameof(releaseType));
-		}
-
-		// TODO provide saved artists && force update
-		var artists = await _controllerArtist.GetUserFollowedArtists(null, false);
-
-		if (artists.List is null)
-		{
-			throw new NullReferenceException(nameof(artists.List));
-		}
-
-		var releases = existingReleases?.List ?? new SortedSet<SpotifyRelease>();
-		foreach (var artist in artists.List)
-		{
-			var artistReleases = await GetArtistReleasesOld(artist, releaseType);
-			releases.UnionWith(artistReleases);
-		}
-
-		var releasesList = new SpotifyUserList<SpotifyArtist><SpotifyRelease>(releases, DateTime.Now, releaseType);
-		return releasesList;
-	}
-
-
-	private async Task<ISet<SpotifyRelease>> GetArtistReleasesOld(SpotifyArtist artist, ReleaseType releaseType)
-	{
-		// get saved releases from artist
-		if (artist.Releases is null || !artist.Releases.Any(x => x.ReleaseType == releaseType))
-		{
-			var releasesFromApi = await _controllerApiRelease.GetArtistReleasesFromApi(artist.Id!, releaseType);
-			// save release to artist releases list
-			artist.Releases ??= [];
-			artist.Releases.UnionWith(releasesFromApi);
-		}
-
-		// TODO try again
-		//releasesFromApi ??= await _controllerApiRelease.GetArtistReleasesFromApi(artist.Id!, releaseType);
-
-		var artistReleases = artist.Releases.Where(x => x.ReleaseType == releaseType).ToHashSet();
-
-		return artistReleases;
-	}*/
 }

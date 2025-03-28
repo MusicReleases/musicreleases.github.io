@@ -4,7 +4,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 
-public class DatabaseUpdateController(IDatabaseController dbController) : IDatabaseUpdateController
+public class DatabaseSpotifyUpdateController(IDatabaseSpotifyController dbController) : IDatabaseSpotifyUpdateController
 {
 	private readonly IndexedDbStore _dbTable = dbController.GetTable(DbStorageTablesSpotify.SpotifyUpdate);
 

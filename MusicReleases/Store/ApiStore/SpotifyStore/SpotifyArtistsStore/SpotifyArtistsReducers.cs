@@ -7,7 +7,7 @@ public static class SpotifyArtistsReducers
 {
 	// get storage
 	[ReducerMethod(typeof(SpotifyArtistsActionGetStorage))]
-	public static SpotifyArtistsState OnPlaylistGetStorage(SpotifyArtistsState state)
+	public static SpotifyArtistsState OnArtistsGetStorage(SpotifyArtistsState state)
 	{
 		return state with
 		{
@@ -15,7 +15,7 @@ public static class SpotifyArtistsReducers
 		};
 	}
 	[ReducerMethod(typeof(SpotifyArtistsActionGetStorageSuccess))]
-	public static SpotifyArtistsState OnPlaylistGetStorageSuccess(SpotifyArtistsState state)
+	public static SpotifyArtistsState OnArtistsGetStorageSuccess(SpotifyArtistsState state)
 	{
 		return state with
 		{
@@ -23,7 +23,7 @@ public static class SpotifyArtistsReducers
 		};
 	}
 	[ReducerMethod(typeof(SpotifyArtistsActionGetStorageFailure))]
-	public static SpotifyArtistsState OnPlaylistGetStorageFailure(SpotifyArtistsState state)
+	public static SpotifyArtistsState OnArtistsGetStorageFailure(SpotifyArtistsState state)
 	{
 		return state with
 		{
@@ -34,7 +34,7 @@ public static class SpotifyArtistsReducers
 
 	// get api
 	[ReducerMethod(typeof(SpotifyArtistsActionGetApi))]
-	public static SpotifyArtistsState OnPlaylistGetApi(SpotifyArtistsState state)
+	public static SpotifyArtistsState OnArtistsGetApi(SpotifyArtistsState state)
 	{
 		return state with
 		{
@@ -42,7 +42,7 @@ public static class SpotifyArtistsReducers
 		};
 	}
 	[ReducerMethod(typeof(SpotifyArtistsActionGetApiSuccess))]
-	public static SpotifyArtistsState OnPlaylistApiGetSucces(SpotifyArtistsState state)
+	public static SpotifyArtistsState OnArtistsApiGetSucces(SpotifyArtistsState state)
 	{
 		return state with
 		{
@@ -50,7 +50,7 @@ public static class SpotifyArtistsReducers
 		};
 	}
 	[ReducerMethod(typeof(SpotifyArtistsActionGetApiFailure))]
-	public static SpotifyArtistsState OnPlaylistGetApiFailure(SpotifyArtistsState state)
+	public static SpotifyArtistsState OnArtistsGetApiFailure(SpotifyArtistsState state)
 	{
 		return state with
 		{

@@ -3,7 +3,7 @@ using Tavenem.Blazor.IndexedDB;
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 
-public class DatabaseController(IndexedDbService dbService) : IDatabaseController
+public class DatabaseSpotifyController(IndexedDbService dbService) : IDatabaseSpotifyController
 {
 	private readonly IndexedDbService _dbService = dbService;
 

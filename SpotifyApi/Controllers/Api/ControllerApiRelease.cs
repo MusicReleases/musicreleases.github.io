@@ -30,50 +30,6 @@ public class ControllerApiRelease(ISpotifyApiClient client) : IControllerApiRele
 		return albums;
 	}
 
-
-	// artist releases tracks
-	public async Task<ISet<SpotifyArtist>> GetArtistsReleasesFromApi(ISet<SpotifyArtist> artists, bool forceUpdate, ReleaseType releaseType)
-	{
-		foreach (var artist in artists)
-		{
-			var newReleases = await GetArtistReleases(artist, forceUpdate, releaseType) ?? [];
-			if (forceUpdate)
-			{
-				// delete all releases - because force update - when loading unloaded release type, force update will be true and rewrite all othe release types
-				artist.Releases = newReleases;
-			}
-			else
-			{
-				if (artist.Releases is null)
-				{
-					artist.Releases = [];
-				}
-				artist.Releases.UnionWith(newReleases);
-			}
-		}
-		return artists;
-	}
-
-	private async Task<SortedSet<SpotifyRelease>?> GetArtistReleases(SpotifyArtist artist, bool forceUpdate, ReleaseType releaseType)
-	{
-		if (artist.Releases is not null && artist.Releases.Any(x => x.ReleaseType == releaseType))
-		{
-			// TODO force update (before)
-			// doesnt need update
-			return artist.Releases;
-		}
-
-		var releasesApi = await GetArtistReleasesApi(artist.Id, releaseType);
-		if (releasesApi is null)
-		{
-			// 0 releases
-			return [];
-		}
-
-		var releases = releasesApi.Select(x => new SpotifyRelease(x, releaseType));
-		return new(releases);
-	}
-
 	private async Task<IList<SimpleAlbum>?> GetArtistReleasesApi(string artistId, ReleaseType releaseType)
 	{
 		if (releaseType == ReleaseType.Podcasts)

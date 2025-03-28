@@ -1,10 +1,12 @@
 ﻿@using Fluxor
 @using Fluxor.Blazor.Web.Components
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistsStore
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleasesStore
 
 @inherits FluxorComponent
 
 @inject IState<SpotifyArtistsState> _stateSpotifyArtists
+@inject IState<SpotifyReleasesState> _stateSpotifyReleases
 
 
 <div class="menu artists buttons-rounded-l">	
@@ -12,7 +14,7 @@
 		<i class="fas fa-users" aria-hidden="true"></i>
 	</ButtonTitle>
 	
-	@if (!_stateSpotifyArtists.Value.LoadingAny())
+	@if (!_stateSpotifyArtists.Value.LoadingAny() && !_stateSpotifyReleases.Value.LoadingAny())
 	{
 		<ButtonSearch Type="_type" OnSearching="DisplayTitle"></ButtonSearch>
 		<ButtonSort Type="_type"></ButtonSort>

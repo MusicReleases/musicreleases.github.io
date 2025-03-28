@@ -6,15 +6,12 @@ namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
 public class SpotifyArtistEntity : SpotifyIdNameEntity
 {
-	public required bool Following { get; init; }
-
 	public SpotifyArtistEntity() { }
 
 	[SetsRequiredMembers]
-	public SpotifyArtistEntity(SpotifyArtist spotifyArtist, bool following)
+	public SpotifyArtistEntity(SpotifyArtist spotifyArtist)
 	{
 		Id = spotifyArtist.Id;
 		Name = spotifyArtist.Name;
-		Following = following;
 	}
 }

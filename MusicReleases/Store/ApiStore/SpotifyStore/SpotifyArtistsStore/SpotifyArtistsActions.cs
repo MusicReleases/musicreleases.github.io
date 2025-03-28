@@ -17,7 +17,7 @@ public record SpotifyArtistsActionGetFailure(string ErrorMessage)
 }
 
 // get api
-public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? Artists, bool ForceUpdate)
+public record SpotifyArtistsActionGetApi(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? Artists, bool ForceUpdate)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
@@ -33,14 +33,14 @@ public record SpotifyArtistsActionGetStorageSuccess();
 public record SpotifyArtistsActionGetStorageFailure();
 
 // set artists
-public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> Artists)
+public record SpotifyArtistsActionSet(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain> Artists)
 {
 	public ISet<SpotifyArtist> NewArtists { get; set; } = new HashSet<SpotifyArtist>();
 }
 public record SpotifyArtistsNewActionClear();
 
 // set local storage
-public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> Artists);
+public record SpotifyArtistsActionSetStorage(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain> Artists);
 public record SpotifyArtistsActionSetStorageSuccess();
 public record SpotifyArtistsActionSetStorageFailure(string ErrorMessage);
 

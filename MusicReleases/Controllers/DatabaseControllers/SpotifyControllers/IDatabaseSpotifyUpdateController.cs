@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Controllers.DatabaseControllers.SpotifyControllers;
 
-public interface IDatabaseUpdateController
+public interface IDatabaseSpotifyUpdateController
 {
 	Task Delete(string userId);
 	Task<SpotifyLastUpdateEntity?> Get(string userId);

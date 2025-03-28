@@ -8,5 +8,5 @@ public interface ISpotifyWorkflowController
 	Task StartLoadingAll(bool forceUpdate, ReleaseType releaseType);
 	Task StartLoadingPlaylistsWithTracks(bool forceUpdate);
 	Task StartLoadingArtistsWithReleases(bool forceUpdate, ReleaseType releaseType);
-	Task StartLoadingArtistsReleases(bool forceUpdate, ReleaseType releaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists> artists);
+	Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain> artists);
 }

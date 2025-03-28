@@ -8,7 +8,7 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 	private readonly IControllerApiArtist _controllerApiArtist = controllerApiArtist;
 	private readonly ISpotifyControllerUser _controllerUser = controllerUser;
 
-	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? existingArtists = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? existingArtists = null, bool forceUpdate = false)
 	{
 		if (existingArtists is null)
 		{
@@ -40,15 +40,15 @@ public class SpotifyControllerArtist(IControllerApiArtist controllerApiArtist, I
 		return artists;
 	}
 
-	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>> GetUserArtistsApi(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? existingArtists, bool forceUpdate)
+	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>> GetUserArtistsApi(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? existingArtists, bool forceUpdate)
 	{
-		SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>? artists;
+		SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? artists;
 		var user = _controllerUser.GetUserRequired();
 
 		if (existingArtists?.List is null || forceUpdate)
 		{
 			var artistsApi = await _controllerApiArtist.GetUserFollowedArtistsFromApi();
-			artists = new SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateArtists>(artistsApi, new SpotifyUserListUpdateArtists(DateTime.Now));
+			artists = new SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>(artistsApi, new SpotifyUserListUpdateMain(DateTime.Now));
 		}
 		else
 		{
