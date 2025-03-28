@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "FLhJoK8q",
+  "version": "io7QO6P6",
   "assets": [
     {
       "hash": "sha256-LGXN/g0va7bm/ezE+vcQCxERPV/biFlibfTVqhT2+B4=",
@@ -18,8 +18,8 @@ self.assetsManifest = {
       "url": "_framework/Blazored.LocalStorage.12n6dz54qr.wasm"
     },
     {
-      "hash": "sha256-LNPyJG7maJx+gK0W0tSxiECud20A3FdJfMAkC386LiQ=",
-      "url": "_framework/Extensions.wfb9lzpkkp.wasm"
+      "hash": "sha256-GNRL8MJlJrdYEoyQ+sARTS0/0DfGO8uL/2ufrJrpOW0=",
+      "url": "_framework/Extensions.owkp6y1wvw.wasm"
     },
     {
       "hash": "sha256-5TNBYZD2gkfrLmdAn1FcUxMhGJg4ijqOEm3+68WhYBY=",
@@ -102,8 +102,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.yy1i9lbmf8.wasm"
     },
     {
-      "hash": "sha256-n+rxE2gQzxdAK0VXMgA8w+jKm0jLnV7gK679rJhJ8UU=",
-      "url": "_framework/MusicReleases.zvi0nx76e6.wasm"
+      "hash": "sha256-Cvs0bKfJXTzYR8MlVG41au/ZVeos7Eyr2fofIbpLxwc=",
+      "url": "_framework/MusicReleases.mo844rnfqu.wasm"
     },
     {
       "hash": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
@@ -114,8 +114,8 @@ self.assetsManifest = {
       "url": "_framework/SpotifyAPI.Web.dd69tlc3sa.wasm"
     },
     {
-      "hash": "sha256-7qpRiEfVe2j1c3daoAaVHCnVHlJssz573syrlp22/Zs=",
-      "url": "_framework/SpotifyApi.ux5skte9a2.wasm"
+      "hash": "sha256-V4nus23CwSnAR9nLlQrhEj4GEhXnhFtQgB5cgnNRWPU=",
+      "url": "_framework/SpotifyApi.t7l1938xzy.wasm"
     },
     {
       "hash": "sha256-7R0tE6Yfy/y0mmB8oMg0PMXhSoHphO8NwV0WvTJROm0=",
@@ -242,8 +242,8 @@ self.assetsManifest = {
       "url": "_framework/System.Reflection.Primitives.38o8i1plka.wasm"
     },
     {
-      "hash": "sha256-B3Gi4Rgidm6ncp8dWWAiUEINV7LYVouj9zCgfrz3feo=",
-      "url": "_framework/System.Runtime.1yjwmfzj9n.wasm"
+      "hash": "sha256-a8Y89W4IMB+m+UO7q/wet2qazOsuigLC+Qdm13asOpM=",
+      "url": "_framework/System.Runtime.9bk7j5bcpe.wasm"
     },
     {
       "hash": "sha256-bAbPaONHne7R1hItHoY8/SYWlDb84JZQ1cxd1Y+tJn0=",
@@ -326,7 +326,7 @@ self.assetsManifest = {
       "url": "_framework/Tavenem.DataStore.d21jns0ond.wasm"
     },
     {
-      "hash": "sha256-YhZV1QOmoYmOsiSQbm+IRidTVdFUqKDJxoH+DpXZS6I=",
+      "hash": "sha256-r1nndwH+0B9gi1CrcYDVkvffMtN8QC5/D3JULzVDEi4=",
       "url": "_framework/blazor.boot.json"
     },
     {
