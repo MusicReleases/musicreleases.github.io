@@ -17,7 +17,7 @@ public static class SpotifyEnums
 
 	public static HashSet<ReleaseType> GetAllReleaseTypes()
 	{
-		return Enum.GetValues(typeof(ReleaseType)).Cast<ReleaseType>().ToHashSet();
+		return [.. Enum.GetValues<ReleaseType>().Cast<ReleaseType>()];
 	}
 
 	public static IncludeGroups GetApiReleaseType(ReleaseType releaseType)

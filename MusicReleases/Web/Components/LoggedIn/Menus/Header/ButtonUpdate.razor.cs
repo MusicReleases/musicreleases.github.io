@@ -17,7 +17,7 @@ public partial class ButtonUpdate
 
 	private void Update()
 	{
-		var serviceType = _apiLoginController.GetServiceType();
+		var serviceType = ApiLoginService.GetServiceType();
 
 		if (serviceType == ServiceType.Spotify)
 		{
@@ -27,14 +27,14 @@ public partial class ButtonUpdate
 			{
 				case MenuButtonsType.Artists:
 					// TODO releases type
-					_workflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
+					SpotifyWorkflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
 					break;
 				case MenuButtonsType.Releases:
 					// TODO releases type + load only releases without artists
-					_workflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
+					SpotifyWorkflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
 					break;
 				case MenuButtonsType.Playlists:
-					_workflowController.StartLoadingPlaylistsWithTracks(true);
+					SpotifyWorkflowController.StartLoadingPlaylistsWithTracks(true);
 					break;
 				default:
 					throw new NotSupportedException(nameof(Type));

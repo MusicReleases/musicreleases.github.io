@@ -1,11 +1,6 @@
 ﻿@inject NavigationManager NavManager
 
-@if (string.IsNullOrEmpty(_releaseType))
-{
-    return;    
-}
-
-<button type="button" class="@_releaseType.ToLower()" title="View released @_releaseType.ToLower()" @onclick="DisplayReleases">
-    <i class="fas fa-@_icon" aria-hidden="true"></i>
-    <span>@_releaseType</span>
+<button type="button" class="@ButtonClass" title="View released @ReleaseTypeString" @onclick="DisplayReleases">
+    <i class="fas fa-@IconClass" aria-hidden="true"></i>
+    <span>@ReleaseTypeString</span>
 </button>

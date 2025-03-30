@@ -1,9 +1,9 @@
 ﻿@using Fluxor
 @using JakubKastner.MusicReleases.Services.ApiServices
 
-@inject IApiLoginService _apiLoginController;
+@inject IApiLoginService SpotifyLoginService
 
-@if (!_apiLoginController.IsUserLoggedIn())
+@if (!SpotifyLoginService.IsUserLoggedIn())
 {
 	<p>User not logged in</p>
 }

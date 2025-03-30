@@ -1,0 +1,10 @@
+﻿@if (Year is null || Months is null)
+{
+	return;
+}
+
+@foreach (var month in Months)
+{
+	<ButtonDateMonth Year="@Year" Month="@month">
+	</ButtonDateMonth>
+}

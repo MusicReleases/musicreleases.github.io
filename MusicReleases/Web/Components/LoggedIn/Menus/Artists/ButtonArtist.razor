@@ -1,8 +1,10 @@
-﻿@if (String.IsNullOrEmpty(ArtistId) || String.IsNullOrEmpty(ArtistName))
+﻿@using JakubKastner.Extensions
+
+@if (ArtistId.IsNullOrEmpty() || ArtistName.IsNullOrEmpty())
 {
 	return;
 }
 
-<button type="button" class="artist" data-menu_type="artist" data-menu_artist="playlist-id-@ArtistId">
+<button type="button" class="artist @ButtonClass" data-menu_type="artist" data-menu_artist="playlist-id-@ArtistId" @onclick="FilterArtist">
 	@ArtistName
 </button>

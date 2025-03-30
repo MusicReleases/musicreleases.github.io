@@ -5,21 +5,21 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 
 public partial class MenuSettings
 {
-    private SpotifyUserInfo? _spotifyUser;
+	private SpotifyUserInfo? _spotifyUser;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
 
-        var serviceType = _apiLoginController.GetServiceType();
-        if (serviceType == ServiceType.Spotify)
-        {
-            _spotifyUser = _spotifyControllerUser.GetUserRequired().Info;
-        }
-    }
+		var serviceType = ApiLoginService.GetServiceType();
+		if (serviceType == ServiceType.Spotify)
+		{
+			_spotifyUser = SpotifyUserService.GetUserRequired().Info;
+		}
+	}
 
-    private void LogoutUser()
-    {
-        _loginController.LogoutUser();
-    }
+	private void LogoutUser()
+	{
+		LoginService.LogoutUser();
+	}
 }

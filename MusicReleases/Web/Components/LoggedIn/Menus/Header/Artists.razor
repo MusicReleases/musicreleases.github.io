@@ -5,8 +5,8 @@
 
 @inherits FluxorComponent
 
-@inject IState<SpotifyArtistState> _stateSpotifyArtists
-@inject IState<SpotifyReleaseState> _stateSpotifyReleases
+@inject IState<SpotifyArtistState> SpotifyArtistState
+@inject IState<SpotifyReleaseState> SpotifyReleaseState
 
 
 <div class="menu artists buttons-rounded-l">	
@@ -14,7 +14,7 @@
 		<i class="fas fa-users" aria-hidden="true"></i>
 	</ButtonTitle>
 	
-	@if (!_stateSpotifyArtists.Value.LoadingAny() && !_stateSpotifyReleases.Value.LoadingAny())
+	@if (!SpotifyArtistState.Value.LoadingAny() && !SpotifyReleaseState.Value.LoadingAny())
 	{
 		<ButtonSearch Type="_type" OnSearching="DisplayTitle"></ButtonSearch>
 		<ButtonSort Type="_type"></ButtonSort>

@@ -9,19 +9,16 @@ public partial class ButtonRelease
 	[Parameter, EditorRequired]
 	public ReleaseType ReleaseType { get; set; }
 
-	private string? _releaseType;
-	private string? _icon;
+	private string ReleaseTypeString => ReleaseType.ToString();
+	private string ButtonClass => ReleaseTypeString.ToLower() + (_releaseFilter ? " active" : string.Empty);
+	private string? IconClass => Icons.GetIconForRelease(ReleaseType);
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-
-		_releaseType = ReleaseType.ToString();
-		_icon = Icons.GetIconForRelease(ReleaseType);
-	}
+	private bool _releaseFilter = false;
 
 	private void DisplayReleases()
 	{
-		NavManager.NavigateTo("releases/" + _releaseType?.ToLower());
+		_releaseFilter = !_releaseFilter;
+
+		NavManager.NavigateTo("releases/" + ReleaseTypeString.ToLower());
 	}
 }

@@ -7,23 +7,23 @@
 
 @inherits FluxorComponent
 
-@inject IState<SpotifyPlaylistState> _stateSpotifyPlaylists;
-@inject IApiLoginService _apiLoginController;
+@inject IState<SpotifyPlaylistState> StateSpotifyPlaylist;
+@inject IApiLoginService ApiLoginService;
 
 <div class="menu playlists items scroll buttons-rounded-m">
 
-	@if (!_apiLoginController.IsUserLoggedIn())
+	@if (!ApiLoginService.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
 	}
 
 	else
 	{
-		if (_loading || _playlists?.List is null)
+		if (Loading || _playlists?.List is null)
 		{
 			<p>Loading playlists...</p>
 		}
-		else if (_error)
+		else if (Error)
 		{
 			<p>Failed to get playlists</p>
 			<ButtonUpdate Type="MenuButtonsType.Playlists">

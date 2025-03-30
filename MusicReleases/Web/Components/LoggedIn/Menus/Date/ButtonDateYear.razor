@@ -3,13 +3,14 @@
 	return;
 }
 
-<button type="button" class="year" data-menu_type="year" data-menu_year="year-@Year">
-	@Year
+<button type="button" class="year icon-text-right @ButtonClass" data-menu_type="year" data-menu_year="@Year" @onclick="FilterYear">
+	@Year<i class="fas @IconClass" aria-hidden="true" @onclick="DisplayMonths" @onclick:stopPropagation="true"></i>
 </button>
 
-@foreach (var month in Months)
+@if (_renderMonths)
 {
-	<button type="button" class="month" data-menu_type="month" data-menu_month="month-@month">
-		@month
-	</button>
+	<div class="month @MonthsClass">
+		<MenuDateMonth Year="@Year" Months="@Months">
+		</MenuDateMonth>
+	</div>
 }

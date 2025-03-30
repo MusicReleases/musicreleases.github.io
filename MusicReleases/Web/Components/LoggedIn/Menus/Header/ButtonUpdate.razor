@@ -2,10 +2,10 @@
 @using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 
-@inject IApiLoginService _apiLoginController;
-@inject ISpotifyWorkflowService _workflowController
+@inject IApiLoginService ApiLoginService
+@inject ISpotifyWorkflowService SpotifyWorkflowController
 
-@if (!_apiLoginController.IsUserLoggedIn())
+@if (!ApiLoginService.IsUserLoggedIn())
 {
 	<p>User not logged in</p>
 }

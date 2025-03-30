@@ -1,8 +1,5 @@
 ﻿<Fluxor.Blazor.Web.StoreInitializer />
 
-@* <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" /> *@
-
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(LayoutEmpty)" />
@@ -15,5 +12,3 @@
         </LayoutView>
     </NotFound>
 </Router>
-  
-@* <script src="_content/MudBlazor/MudBlazor.min.js"></script>  *@
