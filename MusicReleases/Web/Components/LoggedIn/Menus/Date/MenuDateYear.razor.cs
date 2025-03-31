@@ -1,40 +1,11 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Objects.Base;
-using static JakubKastner.MusicReleases.Base.Enums;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
+﻿using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
 
 public partial class MenuDateYear
 {
 	private bool Loading => SpotifyArtistState.Value.LoadingAny() || SpotifyReleaseState.Value.LoadingAny();
-	private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? ReleasesUserList => SpotifyReleaseState.Value.List;
-
-	private ISet<SpotifyRelease>? ReleasesList =>
-	ReleasesUserList?.List is null
-		? null
-		: new SortedSet<SpotifyRelease>(ReleasesUserList.List.Where(x => x.ReleaseType == ReleaseType));
-
-	private ISet<DateTime>? DateList =>
-		ReleasesList is null
-			? null
-			: new SortedSet<DateTime>(ReleasesList.Select(x => x.ReleaseDate));
-
-	private Dictionary<int, SortedSet<int>>? YearMonthList =>
-		DateList?
-			.Select(x => x.Year)
-			.Distinct()
-			.OrderByDescending(x => x)
-			.ToDictionary(
-				year => year,
-				year => new SortedSet<int>(
-					DateList.Where(d => d.Year == year).Select(d => d.Month),
-					Comparer<int>.Create((x, y) => y.CompareTo(x))
-				)
-			);
-
-	public ReleaseType ReleaseType => SpotifyFilterState.Value.Filter.ReleaseType;
-
+	private Dictionary<int, SortedSet<int>>? FilteredYearMonth => SpotifyFilterState.Value.FilteredYearMonth;
 
 	protected override void OnInitialized()
 	{

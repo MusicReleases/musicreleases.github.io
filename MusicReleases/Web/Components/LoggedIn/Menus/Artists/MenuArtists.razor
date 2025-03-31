@@ -2,6 +2,7 @@
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
+@using JakubKastner.MusicReleases.Store.FilterStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 @using static JakubKastner.MusicReleases.Base.Enums
 
@@ -9,6 +10,7 @@
 
 @inject IState<SpotifyArtistState> SpotifyArtistState
 @inject IApiLoginService ApiLoginService
+@inject IState<SpotifyFilterState> SpotifyFilterState
 
 <div class="menu artists items scroll buttons-rounded-m">
 
@@ -20,7 +22,7 @@
 
 	else
 	{
-		if (Loading || Artists?.List is null)
+		if (Loading)
 		{
 			<p>Loading artists...</p>
 		}
@@ -31,7 +33,7 @@
 				Update
 			</ButtonUpdate>
 		}
-		else if (Artists.List.Count < 1)
+		else if (Artists.Count < 1)
 		{
 			<p>0 artists</p>
 			<ButtonUpdate Type="MenuButtonsType.Artists">
@@ -40,10 +42,9 @@
 		}
 		else
 		{
-			@foreach (var artist in Artists.List)
+			@foreach (var artist in Artists)
 			{
 				<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name>
-
 				</ButtonArtist>
 			}
 		}

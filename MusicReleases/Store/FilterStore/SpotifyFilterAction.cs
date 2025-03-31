@@ -20,5 +20,5 @@ public class SpotifyFilterAction()
 	public record ResetFiltersAction;
 	public record SetFiltersAction(SpotifyFilter Filter);
 
-	public record LoadReleasesAction(ISet<SpotifyRelease> Releases);
+	public record LoadReleasesAction(ISet<SpotifyRelease> Releases, ISet<SpotifyArtist> Artists);
 }

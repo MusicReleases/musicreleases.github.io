@@ -1,0 +1,19 @@
+﻿@using Fluxor
+@using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.BaseServices
+
+@inject IApiLoginService ApiLoginService
+@inject ISpotifyFilterService SpotifyFilterService
+@inject NavigationManager NavManager
+
+@if (!ApiLoginService.IsUserLoggedIn())
+{
+	<p>User not logged in</p>
+}
+else
+{
+	<button type="button" class="close" @onclick="ClearFilter">
+		<i class="fas fa-times" aria-hidden="true"></i>
+		@ChildContent
+	</button>
+}

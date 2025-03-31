@@ -11,9 +11,7 @@ public class SpotifyFilterReducer
 	[ReducerMethod]
 	public static SpotifyFilterState ReduceLoadReleasesAction(SpotifyFilterState state, LoadReleasesAction action)
 	{
-		var filteredReleases = FilterReleases(action.Releases, state.Filter);
-
-		return new(action.Releases, filteredReleases, state.Filter);
+		return FilterReleases(action.Releases, action.Artists, state.Filter);
 	}
 
 	[ReducerMethod]
@@ -23,9 +21,7 @@ public class SpotifyFilterReducer
 		{
 			ReleaseType = action.ReleaseType,
 		};
-		var filteredReleases = FilterReleases(state.AllReleases, filter);
-
-		return new(state.AllReleases, filteredReleases, filter);
+		return FilterReleases(state.AllReleases, state.AllArtists, filter);
 	}
 
 	[ReducerMethod]
@@ -35,9 +31,7 @@ public class SpotifyFilterReducer
 		{
 			Artist = action.ArtistId,
 		};
-		var filteredReleases = FilterReleases(state.AllReleases, filter);
-
-		return new(state.AllReleases, filteredReleases, filter);
+		return FilterReleases(state.AllReleases, state.AllArtists, filter);
 	}
 
 	[ReducerMethod]
@@ -47,9 +41,7 @@ public class SpotifyFilterReducer
 		{
 			Year = action.Year,
 		};
-		var filteredReleases = FilterReleases(state.AllReleases, filter);
-
-		return new(state.AllReleases, filteredReleases, filter);
+		return FilterReleases(state.AllReleases, state.AllArtists, filter);
 	}
 
 	[ReducerMethod]
@@ -59,44 +51,73 @@ public class SpotifyFilterReducer
 		{
 			Month = action.Month,
 		};
-		var filteredReleases = FilterReleases(state.AllReleases, filter);
-
-		return new(state.AllReleases, filteredReleases, filter);
+		return FilterReleases(state.AllReleases, state.AllArtists, filter);
 	}
 
 	[ReducerMethod]
 	public static SpotifyFilterState ReduceResetFiltersAction(SpotifyFilterState state, ResetFiltersAction action)
 	{
 		var filter = new SpotifyFilter();
-		return new(state.AllReleases, state.AllReleases, filter);
+		return FilterReleases(state.AllReleases, state.AllArtists, filter);
+		//return new(state.AllReleases, state.AllReleases, filter);
 	}
 
 	[ReducerMethod]
 	public static SpotifyFilterState ReduceSetFiltersAction(SpotifyFilterState state, SetFiltersAction action)
 	{
-		var filteredReleases = FilterReleases(state.AllReleases, action.Filter);
-		return new(state.AllReleases, filteredReleases, action.Filter);
+		return FilterReleases(state.AllReleases, state.AllArtists, action.Filter);
 	}
 
-	private static ISet<SpotifyRelease> FilterReleases(ISet<SpotifyRelease> allReleases, SpotifyFilter filter)
+	private static SpotifyFilterState FilterReleases(ISet<SpotifyRelease> allReleases, ISet<SpotifyArtist> allArtists, SpotifyFilter filter)
 	{
-		var filtered = allReleases.Where(r => r.ReleaseType == filter.ReleaseType);
-
-		if (filter.Artist.IsNotNullOrEmpty())
-		{
-			filtered = filtered.Where(r => r.Artists.Any(a => a.Id == filter.Artist));
-		}
-
+		var filteredReleases = allReleases.Where(r => r.ReleaseType == filter.ReleaseType);
+		IEnumerable<SpotifyRelease>? filteredReleases1 = null;
 		if (filter.Year.HasValue)
 		{
-			filtered = filtered.Where(r => r.ReleaseDate.Year == filter.Year.Value);
+			filteredReleases1 = filteredReleases.Where(r => r.ReleaseDate.Year == filter.Year.Value);
 		}
 
 		if (filter.Month.HasValue)
 		{
-			filtered = filtered.Where(r => r.ReleaseDate.Month == filter.Month.Value.Month && r.ReleaseDate.Year == filter.Month.Value.Year);
+			filteredReleases1 = filteredReleases.Where(r => r.ReleaseDate.Month == filter.Month.Value.Month && r.ReleaseDate.Year == filter.Month.Value.Year);
 		}
 
-		return new SortedSet<SpotifyRelease>(filtered);
+		filteredReleases1 ??= filteredReleases;
+
+		var artistIdsInFilteredReleases = filteredReleases1.SelectMany(r => r.Artists.Select(a => a.Id));
+		var filteredArtists = allArtists.Where(a => artistIdsInFilteredReleases.Contains(a.Id));
+
+
+		if (filter.Artist.IsNotNullOrEmpty())
+		{
+			filteredReleases = filteredReleases.Where(r => r.Artists.Any(a => a.Id == filter.Artist));
+		}
+
+		// year + month for date menu
+		var filteredDate = new SortedSet<DateTime>(filteredReleases.Select(x => x.ReleaseDate));
+		var filteredYearMonth = filteredDate?.Select(x => x.Year).Distinct().OrderByDescending(x => x).ToDictionary
+				(
+					year => year,
+					year => new SortedSet<int>
+					(
+						filteredDate.Where(d => d.Year == year).Select(d => d.Month),
+						Comparer<int>.Create((x, y) => y.CompareTo(x))
+					)
+				);
+
+		if (filter.Year.HasValue)
+		{
+			filteredReleases = filteredReleases.Where(r => r.ReleaseDate.Year == filter.Year.Value);
+		}
+
+		if (filter.Month.HasValue)
+		{
+			filteredReleases = filteredReleases.Where(r => r.ReleaseDate.Month == filter.Month.Value.Month && r.ReleaseDate.Year == filter.Month.Value.Year);
+		}
+
+		var filteredReleasesSet = new SortedSet<SpotifyRelease>(filteredReleases);
+		var filteredArtistsSet = new SortedSet<SpotifyArtist>(filteredArtists);
+
+		return new(allReleases, filteredReleasesSet, allArtists, filteredArtistsSet, filteredYearMonth, filter);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Fluxor;
 using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Base;
 using JakubKastner.MusicReleases.Objects;
 using JakubKastner.MusicReleases.Store.FilterStore;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
@@ -49,18 +50,20 @@ public class SpotifyFilterService(IState<SpotifyFilterState> spotifyFilterState)
 	}
 	public string GetFilterUrl(int? year)
 	{
-		var yearUrl = year?.ToString();
-		return GetFilterUrl(null, yearUrl, null, null);
+		var yearUrl = year.HasValue ? year.Value.ToString() : _urlNull;
+		var monthUrl = _urlNull;
+		return GetFilterUrl(null, yearUrl, monthUrl, null);
 	}
 	public string GetFilterUrl(int? year, int? month)
 	{
-		var yearUrl = year?.ToString();
-		var monthUrl = month?.ToString();
+		var yearUrl = year.HasValue ? year.Value.ToString() : _urlNull;
+		var monthUrl = month.HasValue ? month.Value.ToString() : _urlNull;
 		return GetFilterUrl(null, yearUrl, monthUrl, null);
 	}
 	public string GetFilterUrl(string? artist)
 	{
-		return GetFilterUrl(null, null, null, artist);
+		var artistUrl = artist.IsNotNullOrEmpty() ? artist : _urlNull;
+		return GetFilterUrl(null, null, null, artistUrl);
 	}
 
 	public SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist)
@@ -75,5 +78,16 @@ public class SpotifyFilterService(IState<SpotifyFilterState> spotifyFilterState)
 		var artistFilter = artist == _urlNull ? null : artist;
 
 		return new(type, yearFilter, monthFilter, artistFilter);
+	}
+
+	public string ClearFilter(Enums.MenuButtonsType type)
+	{
+		// TODO custom enum
+		return type switch
+		{
+			Enums.MenuButtonsType.Date => GetFilterUrl(null, null),
+			Enums.MenuButtonsType.Artists => GetFilterUrl(artist: null),
+			_ => throw new NotSupportedException(nameof(Enums.MenuButtonsType)),
+		};
 	}
 }

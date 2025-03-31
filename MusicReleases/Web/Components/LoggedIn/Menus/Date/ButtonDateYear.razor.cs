@@ -17,6 +17,14 @@ public partial class ButtonDateYear
 	private string? MonthsClass => _showMonths ? string.Empty : "hidden";
 	private bool YearFilter => SpotifyFilterState.Value.Filter.Year == Year;
 
+	protected override void OnInitialized()
+	{
+		// display active months on init
+		base.OnInitialized();
+		_renderMonths = YearFilter;
+		_showMonths = YearFilter;
+	}
+
 	private void DisplayMonths()
 	{
 		if (!_renderMonths && !_showMonths)

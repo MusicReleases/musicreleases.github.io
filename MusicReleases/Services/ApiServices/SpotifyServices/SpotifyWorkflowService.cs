@@ -117,7 +117,7 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 
 	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain> artists)
 	{
-		if (_spotifyArtistState.Value.LoadingAny() || _spotifyReleasesState.Value.LoadingAny())
+		if (_spotifyArtistState.Value.LoadingAny() || _spotifyReleasesState.Value.LoadingAny() || artists.List is null)
 		{
 			return;
 		}
@@ -140,12 +140,12 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 			return;
 		}
 
-		FilterReleases(releases);
+		FilterReleases(releases, artists.List);
 	}
 
-	private void FilterReleases(ISet<SpotifyRelease> releases)
+	private void FilterReleases(ISet<SpotifyRelease> releases, ISet<SpotifyArtist> artists)
 	{
-		_dispatcher.Dispatch(new LoadReleasesAction(releases));
+		_dispatcher.Dispatch(new LoadReleasesAction(releases, artists));
 	}
 
 	public bool ForceUpdate<T, U>(SpotifyUserList<T, U> userList, ReleaseType? releaseType = null) where T : SpotifyIdNameObject where U : SpotifyUserListUpdate
