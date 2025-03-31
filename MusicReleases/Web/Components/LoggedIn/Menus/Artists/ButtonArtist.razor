@@ -1,9 +1,14 @@
-﻿@using JakubKastner.Extensions
+﻿@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using JakubKastner.Extensions
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Store.FilterStore
 
-@if (ArtistId.IsNullOrEmpty() || ArtistName.IsNullOrEmpty())
-{
-	return;
-}
+@inherits FluxorComponent
+
+@inject NavigationManager NavManager
+@inject IState<SpotifyFilterState> SpotifyFilterState
+@inject ISpotifyFilterService SpotifyFilterService
 
 <button type="button" class="artist @ButtonClass" data-menu_type="artist" data-menu_artist="playlist-id-@ArtistId" @onclick="FilterArtist">
 	@ArtistName

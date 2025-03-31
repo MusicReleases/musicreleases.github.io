@@ -5,8 +5,8 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
 public partial class MenuDateMonth
 {
 	[Parameter, EditorRequired]
-	public int? Year { get; set; }
+	public required int Year { get; set; }
 
 	[Parameter, EditorRequired]
-	public ISet<int>? Months { get; set; }
+	public required ISet<int> Months { get; set; }
 }

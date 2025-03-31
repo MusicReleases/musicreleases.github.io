@@ -1,7 +1,13 @@
-﻿@if (Year is null || Month is null)
-{
-	return;
-}
+﻿@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Store.FilterStore
+
+@inherits FluxorComponent
+
+@inject NavigationManager NavManager
+@inject IState<SpotifyFilterState> SpotifyFilterState
+@inject ISpotifyFilterService SpotifyFilterService
 
 <button class="month @ButtonClass" data-menu_type="month" data-menu_month="@Month" @onclick="FilterMonth">
 	@Month

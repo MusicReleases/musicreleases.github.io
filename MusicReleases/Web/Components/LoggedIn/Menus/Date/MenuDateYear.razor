@@ -4,6 +4,7 @@
 @using JakubKastner.MusicReleases.Services.BaseServices
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
+@using JakubKastner.MusicReleases.Store.FilterStore
 
 @inherits FluxorComponent
 
@@ -11,6 +12,7 @@
 @inject IState<SpotifyArtistState> SpotifyArtistState
 @inject IState<SpotifyReleaseState> SpotifyReleaseState
 @inject IFilterService FilterService
+@inject IState<SpotifyFilterState> SpotifyFilterState
 
 <div class="menu date items scroll buttons-rounded-m">
 	@if (Loading)

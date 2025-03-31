@@ -59,28 +59,28 @@ public class SpotifyReleaseEffect(ISpotifyReleaseService spotifyReleaseService, 
 	[EffectMethod]
 	public async Task GetStorage(SpotifyReleaseActionGetStorage action, IDispatcher dispatcher)
 	{
-		/*try
-		{*/
-		// clear new releases
-		dispatcher.Dispatch(new SpotifyReleaseNewActionClear());
-
-		// get item from storage
-		var userId = _spotifyUserService.GetUserIdRequired();
-		// TODO list null
-		var releases = await _dbSpotifyArtistReleaseService.Get(action.Artists.List, userId);
-
-		if (releases is not null)
+		try
 		{
-			dispatcher.Dispatch(new SpotifyReleaseActionSet(releases));
+			// clear new releases
+			dispatcher.Dispatch(new SpotifyReleaseNewActionClear());
+
+			// get item from storage
+			var userId = _spotifyUserService.GetUserIdRequired();
+			// TODO list null
+			var releases = await _dbSpotifyArtistReleaseService.Get(action.Artists.List, userId);
+
+			if (releases is not null)
+			{
+				dispatcher.Dispatch(new SpotifyReleaseActionSet(releases));
+			}
+			dispatcher.Dispatch(new SpotifyReleaseActionGetStorageSuccess());
+			dispatcher.Dispatch(new SpotifyReleaseActionGetApi(action.ReleaseType, action.Artists, releases, action.ForceUpdate) { CompletionSource = action.CompletionSource });
 		}
-		dispatcher.Dispatch(new SpotifyReleaseActionGetStorageSuccess());
-		dispatcher.Dispatch(new SpotifyReleaseActionGetApi(action.ReleaseType, action.Artists, releases, action.ForceUpdate) { CompletionSource = action.CompletionSource });
-		/*}
 		catch (Exception ex)
 		{
-			dispatcher.Dispatch(new SpotifyReleasesActionGetStorageFailure());
-			dispatcher.Dispatch(new SpotifyReleasesActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
-		}*/
+			dispatcher.Dispatch(new SpotifyReleaseActionGetStorageFailure());
+			dispatcher.Dispatch(new SpotifyReleaseActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
+		}
 	}
 
 	[EffectMethod]
@@ -95,12 +95,13 @@ public class SpotifyReleaseEffect(ISpotifyReleaseService spotifyReleaseService, 
 
 			dispatcher.Dispatch(new SpotifyReleaseActionSet(releasesApi));
 			dispatcher.Dispatch(new SpotifyReleaseActionSetStorage(releasesApi));
-			dispatcher.Dispatch(new SpotifyReleaseActionGetSuccess());
+			dispatcher.Dispatch(new SpotifyReleaseActionGetSuccess() { CompletionSource = action.CompletionSource })
+			;
 		}
 		catch (Exception ex)
 		{
 			dispatcher.Dispatch(new SpotifyReleaseActionGetApiFailure());
-			dispatcher.Dispatch(new SpotifyReleaseActionGetFailure(ex.Message));
+			dispatcher.Dispatch(new SpotifyReleaseActionGetFailure(ex.Message) { CompletionSource = action.CompletionSource });
 		}
 	}
 	// SET

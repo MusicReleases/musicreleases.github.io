@@ -1,7 +1,5 @@
 ﻿using Blazored.LocalStorage;
-using JakubKastner.MusicReleases.Objects;
 using static JakubKastner.MusicReleases.Base.Enums;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
@@ -12,9 +10,9 @@ public class FilterService(ILocalStorageService localStorageService) : IFilterSe
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
 	// TODO load from db or local storage
-	private readonly SpotifyFilter _filter = new();
+	//private readonly SpotifyFilter _filter = new();
 
-	public SpotifyFilter SpotifyFilter => _filter;
+	//public SpotifyFilter SpotifyFilter => _filter;
 
 	// GetLocalStorageKeyReleases
 
@@ -50,8 +48,22 @@ public class FilterService(ILocalStorageService localStorageService) : IFilterSe
 		}
 	}
 
-	public void FilterReleaseType(ReleaseType releaseType)
+	/*public void FilterReleaseType(ReleaseType releaseType)
 	{
 		_filter.ReleaseType = releaseType;
 	}
+	public void FilterArtist(SpotifyArtist artist)
+	{
+		_filter.Artist = artist;
+	}
+	public void FilterYear(int year)
+	{
+		_filter.Year = year;
+		_filter.Month = null;
+	}
+	public void FilterMonth(int year, int month)
+	{
+		_filter.Year = null;
+		_filter.Month = new DateTime(year, month, 1);
+	}*/
 }

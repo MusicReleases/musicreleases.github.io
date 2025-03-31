@@ -10,15 +10,14 @@ public partial class ButtonRelease
 	public ReleaseType ReleaseType { get; set; }
 
 	private string ReleaseTypeString => ReleaseType.ToString();
-	private string ButtonClass => ReleaseTypeString.ToLower() + (_releaseFilter ? " active" : string.Empty);
+	private string ButtonClass => ReleaseTypeString.ToLower() + (ReleaseFilter ? " active" : string.Empty);
 	private string? IconClass => Icons.GetIconForRelease(ReleaseType);
 
-	private bool _releaseFilter = false;
+	private bool ReleaseFilter => SpotifyFilterState.Value.Filter.ReleaseType == ReleaseType;
 
 	private void DisplayReleases()
 	{
-		_releaseFilter = !_releaseFilter;
-
-		NavManager.NavigateTo("releases/" + ReleaseTypeString.ToLower());
+		var url = SpotifyFilterService.GetFilterUrl(ReleaseType);
+		NavManager.NavigateTo(url);
 	}
 }

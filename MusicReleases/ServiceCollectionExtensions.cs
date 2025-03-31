@@ -12,11 +12,11 @@ public static class ServiceCollectionExtensions
 {
 	public static IServiceCollection AddMusicReleases(this IServiceCollection services)
 	{
-		// base controllers
+		// base services
 		services.AddScoped<ILoginService, LoginService>();
 		services.AddScoped<IFilterService, FilterService>();
 
-		// indexed db controllers
+		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
 
 		services.AddScoped<IDbSpotifyUpdateService, DbSpotifyUpdateService>();
@@ -29,11 +29,13 @@ public static class ServiceCollectionExtensions
 
 		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
 
-		// spotify controllers
+		// spotify services
+		services.AddScoped<ISpotifyFilterService, SpotifyFilterService>();
+		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
+
 		services.AddScoped<IApiLoginService, SpotifyLoginService>();
 		services.AddScoped<ISpotifyLoginService, SpotifyLoginService>();
 		services.AddScoped<ISpotifyLoginStorageService, SpotifyLoginStorageService>();
-		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
 
 		return services;
 	}

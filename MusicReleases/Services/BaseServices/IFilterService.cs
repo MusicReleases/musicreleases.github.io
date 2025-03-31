@@ -1,10 +1,11 @@
-﻿using JakubKastner.MusicReleases.Objects;
-using JakubKastner.SpotifyApi.Base;
-
-namespace JakubKastner.MusicReleases.Services.BaseServices;
+﻿namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public interface IFilterService
 {
-	SpotifyFilter SpotifyFilter { get; }
+	//SpotifyFilter SpotifyFilter { get; }
+
+	/*void FilterArtist(SpotifyArtist artist);
+	void FilterMonth(int year, int month);
 	void FilterReleaseType(SpotifyEnums.ReleaseType releaseType);
+	void FilterYear(int year);*/
 }

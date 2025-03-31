@@ -5,16 +5,18 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Artists;
 public partial class ButtonArtist
 {
 	[Parameter, EditorRequired]
-	public string? ArtistId { get; set; }
+	public required string ArtistId { get; set; }
 
 	[Parameter, EditorRequired]
-	public string? ArtistName { get; set; }
-
-	private bool _artistFilter = false;
-	private string? ButtonClass => _artistFilter ? " active" : string.Empty;
+	public required string ArtistName { get; set; }
+	private string? ButtonClass => ArtistFilter ? "active" : string.Empty;
+	private bool ArtistFilter => SpotifyFilterState.Value.Filter.Artist == ArtistId;
 
 	private void FilterArtist()
 	{
-		_artistFilter = !_artistFilter;
+		string? artistFilter = ArtistFilter ? null : ArtistId;
+
+		var url = SpotifyFilterService.GetFilterUrl(artistFilter);
+		NavManager.NavigateTo(url);
 	}
 }

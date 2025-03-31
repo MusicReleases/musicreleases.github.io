@@ -22,18 +22,18 @@ public partial class MenuDateYear
 
 	private Dictionary<int, SortedSet<int>>? YearMonthList =>
 		DateList?
-			.Select(x => x.Year)  // Extrahujeme roky
-			.Distinct()  // Odstraníme duplicity roků
-			.OrderByDescending(x => x)  // Seřadíme roky od nejnovějšího k nejstaršímu
+			.Select(x => x.Year)
+			.Distinct()
+			.OrderByDescending(x => x)
 			.ToDictionary(
-				year => year,  // Klíč = rok
+				year => year,
 				year => new SortedSet<int>(
-					DateList.Where(d => d.Year == year).Select(d => d.Month),  // Měsíce pro daný rok
-					Comparer<int>.Create((x, y) => y.CompareTo(x)) // Explicitní komparátor pro sestupné seřazení měsíců
+					DateList.Where(d => d.Year == year).Select(d => d.Month),
+					Comparer<int>.Create((x, y) => y.CompareTo(x))
 				)
 			);
 
-	public ReleaseType ReleaseType => FilterService.SpotifyFilter.ReleaseType;
+	public ReleaseType ReleaseType => SpotifyFilterState.Value.Filter.ReleaseType;
 
 
 	protected override void OnInitialized()

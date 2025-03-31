@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Base;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Objects.Base;
 using Microsoft.AspNetCore.Components;
+using static JakubKastner.MusicReleases.Store.FilterStore.SpotifyFilterAction;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
@@ -10,11 +10,19 @@ public partial class Releases
 {
 	[Parameter]
 	public string? Type { get; set; }
+	[Parameter]
+	public string? Year { get; set; }
+	[Parameter]
+	public string? Month { get; set; }
+	[Parameter]
+	public string? ArtistId { get; set; }
 
 	private ReleaseType _type;
 
-	private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? ReleasesUserList => SpotifyReleaseState.Value.List;
-	private ISet<SpotifyRelease>? ReleasesList => ReleasesUserList?.List is null ? null : new SortedSet<SpotifyRelease>(ReleasesUserList.List.Where(x => x.ReleaseType == _type));
+	/*private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? ReleasesUserList => SpotifyReleaseState.Value.List;
+	private ISet<SpotifyRelease>? ReleasesList => ReleasesUserList?.List is null ? null : new SortedSet<SpotifyRelease>(ReleasesUserList.List.Where(x => x.ReleaseType == _type));*/
+
+	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterState.Value.FilteredReleases;
 
 	private bool Error => SpotifyReleaseState.Value.Error;
 	private bool Loading => SpotifyReleaseState.Value.LoadingAny();
@@ -39,20 +47,19 @@ public partial class Releases
 	private void LoadReleases()
 	{
 		// TODO enable to select and display more than 1 release type
-		if (string.IsNullOrEmpty(Type))
+		/*if (string.IsNullOrEmpty(Type))
 		{
 			// TODO display all releases and remember last selection
 			//navManager.NavigateTo("/releases/albums");
 			// TODO if is return here, code doesnt refresh the content
 			// TODO but if is not here, code just continue and doesnt get the right Type (for example)
 			return;
-		}
+		}*/
 
-		if (!Enum.TryParse(Type, true, out _type))
-		{
-			_type = ReleaseType.Albums;
-		}
-		FilterService.FilterReleaseType(_type);
+		var filter = SpotifyFilterService.ParseFilterUrl(Type, Year, Month, ArtistId);
+		_type = filter.ReleaseType;
+
+		Dispatcher.Dispatch(new SetFiltersAction(filter));
 		GetReleases();
 	}
 

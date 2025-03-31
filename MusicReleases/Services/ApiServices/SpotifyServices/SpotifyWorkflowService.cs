@@ -5,6 +5,7 @@ using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsTra
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
+using static JakubKastner.MusicReleases.Store.FilterStore.SpotifyFilterAction;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
@@ -108,5 +109,18 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 		_dispatcher.Dispatch(spotifyReleasesAction);
 
 		await spotifyReleasesAction.CompletionSource.Task;
+		var releases = _spotifyReleasesState.Value.Error ? null : _spotifyReleasesState.Value.List.List;
+
+		if (releases is null)
+		{
+			return;
+		}
+
+		FilterReleases(releases);
+	}
+
+	private void FilterReleases(ISet<SpotifyRelease> releases)
+	{
+		_dispatcher.Dispatch(new LoadReleasesAction(releases));
 	}
 }
