@@ -20,7 +20,7 @@ internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, IS
 		}
 		else
 		{
-			var lastUpdate = GetLastTimeUpdate(existingReleases.Update, releaseType);
+			var lastUpdate = ISpotifyReleaseService.GetLastTimeUpdate(existingReleases.Update, releaseType);
 			if (lastUpdate.HasValue)
 			{
 				var dateTimeDifference = DateTime.Now - lastUpdate;
@@ -105,18 +105,6 @@ internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, IS
 		return releases!;
 	}
 
-	private DateTime? GetLastTimeUpdate(SpotifyUserListUpdateRelease lastUpdateList, ReleaseType releaseType)
-	{
-		return releaseType switch
-		{
-			ReleaseType.Albums => lastUpdateList.LastUpdateAlbums,
-			ReleaseType.Tracks => lastUpdateList.LastUpdateTracks,
-			ReleaseType.Appears => lastUpdateList.LastUpdateAppears,
-			ReleaseType.Compilations => lastUpdateList.LastUpdateCompilations,
-			ReleaseType.Podcasts => lastUpdateList.LastUpdatePodcasts,
-			_ => throw new NotSupportedException(nameof(releaseType)),
-		};
-	}
 	private void SetLastTimeUpdate(SpotifyUserListUpdateRelease lastUpdateList, ReleaseType releaseType)
 	{
 		var lastUpdate = DateTime.Now;
