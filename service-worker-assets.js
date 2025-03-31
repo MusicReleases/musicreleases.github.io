@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "VMo1pdFS",
+  "version": "OMMGkyzm",
   "assets": [
     {
       "hash": "sha256-LGXN/g0va7bm/ezE+vcQCxERPV/biFlibfTVqhT2+B4=",
@@ -18,8 +18,8 @@ self.assetsManifest = {
       "url": "_framework/Blazored.LocalStorage.12n6dz54qr.wasm"
     },
     {
-      "hash": "sha256-VxWY1Aqk+S05QH7xd8IqjUQGfjIRgV2gLwGH7W3iE6E=",
-      "url": "_framework/Extensions.7ozvfwabdb.wasm"
+      "hash": "sha256-Tc4rBON2TH7jc9lQX+teypipKEIkRTbee/Fg7OhEaUo=",
+      "url": "_framework/Extensions.vx3rx9ipw4.wasm"
     },
     {
       "hash": "sha256-5TNBYZD2gkfrLmdAn1FcUxMhGJg4ijqOEm3+68WhYBY=",
@@ -102,8 +102,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.yy1i9lbmf8.wasm"
     },
     {
-      "hash": "sha256-IW2hKgR3msABOpYZWyHiaaiueTlf/ZvSZlZzF4fF3XI=",
-      "url": "_framework/MusicReleases.5jzds3vgnb.wasm"
+      "hash": "sha256-xl3B4Oye9zTNfK8LQRoNW/wB139eQBTR1cEnt3mC/Gg=",
+      "url": "_framework/MusicReleases.ii69psvery.wasm"
     },
     {
       "hash": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
@@ -114,8 +114,8 @@ self.assetsManifest = {
       "url": "_framework/SpotifyAPI.Web.dd69tlc3sa.wasm"
     },
     {
-      "hash": "sha256-Xgb8i/pHC1B8Cyxy/7hjpumfSH1467Pqk5KTFGa77b8=",
-      "url": "_framework/SpotifyApi.axn1n4p1gv.wasm"
+      "hash": "sha256-hS3nv7TrZDRiHe9SYrl+YhMvx9LwLwG3ItbK7faDlaQ=",
+      "url": "_framework/SpotifyApi.hp7mdsg1xs.wasm"
     },
     {
       "hash": "sha256-7R0tE6Yfy/y0mmB8oMg0PMXhSoHphO8NwV0WvTJROm0=",
@@ -326,7 +326,7 @@ self.assetsManifest = {
       "url": "_framework/Tavenem.DataStore.d21jns0ond.wasm"
     },
     {
-      "hash": "sha256-7p1ka5fOIhYZhR+5owbjg8K/ajenhWmw43uKnaAw0kA=",
+      "hash": "sha256-aoV3OfOQ6FgYhY1k7o3mdjDUCtrzPyhzF6TDKvMkm2s=",
       "url": "_framework/blazor.boot.json"
     },
     {
@@ -598,7 +598,7 @@ self.assetsManifest = {
       "url": "styles/3_content/3_footer/_2_player.scss"
     },
     {
-      "hash": "sha256-7CavcaRNjpRBFGVuhaD706x2f2lOTKp04O29pZi54N0=",
+      "hash": "sha256-xHQZwzffd7X+APw5PR5uTa+RbxaBTZemedggQuTPYuY=",
       "url": "styles/4_menu/_1_menu.scss"
     },
     {
