@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "EW/kNvW9",
+  "version": "VMo1pdFS",
   "assets": [
     {
       "hash": "sha256-LGXN/g0va7bm/ezE+vcQCxERPV/biFlibfTVqhT2+B4=",
@@ -18,8 +18,8 @@ self.assetsManifest = {
       "url": "_framework/Blazored.LocalStorage.12n6dz54qr.wasm"
     },
     {
-      "hash": "sha256-siwHBSWZJgUcoNBP2k/kHT3QOy6LSxA6nbGltlbPpd8=",
-      "url": "_framework/Extensions.i0qoj4ddbf.wasm"
+      "hash": "sha256-VxWY1Aqk+S05QH7xd8IqjUQGfjIRgV2gLwGH7W3iE6E=",
+      "url": "_framework/Extensions.7ozvfwabdb.wasm"
     },
     {
       "hash": "sha256-5TNBYZD2gkfrLmdAn1FcUxMhGJg4ijqOEm3+68WhYBY=",
@@ -102,8 +102,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.yy1i9lbmf8.wasm"
     },
     {
-      "hash": "sha256-CjZb43yVGdH5s9KOaTjQ/LyymAZlW6/ArU8WJkbIyAU=",
-      "url": "_framework/MusicReleases.64eyqdiy4o.wasm"
+      "hash": "sha256-IW2hKgR3msABOpYZWyHiaaiueTlf/ZvSZlZzF4fF3XI=",
+      "url": "_framework/MusicReleases.5jzds3vgnb.wasm"
     },
     {
       "hash": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
@@ -114,8 +114,8 @@ self.assetsManifest = {
       "url": "_framework/SpotifyAPI.Web.dd69tlc3sa.wasm"
     },
     {
-      "hash": "sha256-gE75mryd1cOl7muopDI1HAwMYFzPJA1ZH47iiRWAlnM=",
-      "url": "_framework/SpotifyApi.s10t42gliu.wasm"
+      "hash": "sha256-Xgb8i/pHC1B8Cyxy/7hjpumfSH1467Pqk5KTFGa77b8=",
+      "url": "_framework/SpotifyApi.axn1n4p1gv.wasm"
     },
     {
       "hash": "sha256-7R0tE6Yfy/y0mmB8oMg0PMXhSoHphO8NwV0WvTJROm0=",
@@ -326,7 +326,7 @@ self.assetsManifest = {
       "url": "_framework/Tavenem.DataStore.d21jns0ond.wasm"
     },
     {
-      "hash": "sha256-HWC084LC+RlL9qSNQgrPZxmm9TkuBXHgY2MOTAzOCKM=",
+      "hash": "sha256-7p1ka5fOIhYZhR+5owbjg8K/ajenhWmw43uKnaAw0kA=",
       "url": "_framework/blazor.boot.json"
     },
     {
