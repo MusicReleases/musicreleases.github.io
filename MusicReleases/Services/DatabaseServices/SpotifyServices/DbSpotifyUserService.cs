@@ -6,11 +6,12 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateService dbUpdateService) : IDbSpotifyUserService
+public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateService dbUpdateService, IDbSpotifyUserArtistService dbUserArtistService) : IDbSpotifyUserService
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyUser);
 
 	private readonly IDbSpotifyUpdateService _dbUpdateService = dbUpdateService;
+	private readonly IDbSpotifyUserArtistService _dbUserArtistService = dbUserArtistService;
 
 	public async Task<SpotifyUser?> Get(string userId)
 	{
@@ -93,5 +94,6 @@ public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateS
 		// delete all databases with this user id
 		await Delete(userId);
 		await _dbUpdateService.Delete(userId);
+		await _dbUserArtistService.Delete(userId);
 	}
 }

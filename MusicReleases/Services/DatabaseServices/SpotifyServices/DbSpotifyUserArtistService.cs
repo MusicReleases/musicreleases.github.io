@@ -163,4 +163,17 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 			await _dbTable.RemoveItemAsync(userArtistDb);
 		}
 	}
+
+	public async Task Delete(string userId)
+	{
+		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntity>();
+		await foreach (var userArtistDb in userArtistsDb)
+		{
+			if (userArtistDb.UserId != userId)
+			{
+				continue;
+			}
+			await _dbTable.RemoveItemAsync(userArtistDb);
+		}
+	}
 }
