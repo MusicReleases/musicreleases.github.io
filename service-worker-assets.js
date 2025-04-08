@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "OMMGkyzm",
+  "version": "vnwOg33x",
   "assets": [
     {
       "hash": "sha256-LGXN/g0va7bm/ezE+vcQCxERPV/biFlibfTVqhT2+B4=",
@@ -18,8 +18,8 @@ self.assetsManifest = {
       "url": "_framework/Blazored.LocalStorage.12n6dz54qr.wasm"
     },
     {
-      "hash": "sha256-Tc4rBON2TH7jc9lQX+teypipKEIkRTbee/Fg7OhEaUo=",
-      "url": "_framework/Extensions.vx3rx9ipw4.wasm"
+      "hash": "sha256-KFLK43tjFAwPnkvJV/XDxWHufIU/XAF8ltxRfO655M0=",
+      "url": "_framework/Extensions.sfrtion41x.wasm"
     },
     {
       "hash": "sha256-5TNBYZD2gkfrLmdAn1FcUxMhGJg4ijqOEm3+68WhYBY=",
@@ -38,16 +38,16 @@ self.assetsManifest = {
       "url": "_framework/IndexedDB.Blazor.wi4xqmzb2y.wasm"
     },
     {
-      "hash": "sha256-8eX1sIghJ251pmphN3B1e6BE5NQ5Fwf6SdKsIo5GAJI=",
-      "url": "_framework/Microsoft.AspNetCore.Components.9ii12gp3oj.wasm"
-    },
-    {
       "hash": "sha256-eYZXmZ0tsp4u6vZwPqaXTmSCbWEeIv/zY7+VoS0LRkw=",
       "url": "_framework/Microsoft.AspNetCore.Components.Web.trx6ixq2el.wasm"
     },
     {
       "hash": "sha256-K4H030gkTHmaCEJlY5dOMaLEJ7KcGQRM+DuB3mH4L1A=",
       "url": "_framework/Microsoft.AspNetCore.Components.WebAssembly.di87cb8hf5.wasm"
+    },
+    {
+      "hash": "sha256-bNV6DwcxqRd2FLw4kZycaSuuYWTxs4Z28kiyzyTpLiY=",
+      "url": "_framework/Microsoft.AspNetCore.Components.kmkg16l1za.wasm"
     },
     {
       "hash": "sha256-RwODRXEUh7AZg9ZqIkRZtjtJv127H5wBSu+ej7O857E=",
@@ -102,8 +102,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.yy1i9lbmf8.wasm"
     },
     {
-      "hash": "sha256-xl3B4Oye9zTNfK8LQRoNW/wB139eQBTR1cEnt3mC/Gg=",
-      "url": "_framework/MusicReleases.ii69psvery.wasm"
+      "hash": "sha256-4KdGsIdHUm1YgN1IjAFh+v9ChlFtasAXCEV2023m/2I=",
+      "url": "_framework/MusicReleases.cle846t2xu.wasm"
     },
     {
       "hash": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
@@ -114,8 +114,8 @@ self.assetsManifest = {
       "url": "_framework/SpotifyAPI.Web.dd69tlc3sa.wasm"
     },
     {
-      "hash": "sha256-hS3nv7TrZDRiHe9SYrl+YhMvx9LwLwG3ItbK7faDlaQ=",
-      "url": "_framework/SpotifyApi.hp7mdsg1xs.wasm"
+      "hash": "sha256-ghcemR5KSm2NHM3lsT1MtCKyRT2q3gdlB+I+7S8esbY=",
+      "url": "_framework/SpotifyApi.qt19rz531v.wasm"
     },
     {
       "hash": "sha256-7R0tE6Yfy/y0mmB8oMg0PMXhSoHphO8NwV0WvTJROm0=",
@@ -326,7 +326,7 @@ self.assetsManifest = {
       "url": "_framework/Tavenem.DataStore.d21jns0ond.wasm"
     },
     {
-      "hash": "sha256-aoV3OfOQ6FgYhY1k7o3mdjDUCtrzPyhzF6TDKvMkm2s=",
+      "hash": "sha256-WwEmadnBrrght6+ipD3bIi0A8LaetGRVjRHjvZQ033o=",
       "url": "_framework/blazor.boot.json"
     },
     {
@@ -578,7 +578,7 @@ self.assetsManifest = {
       "url": "styles/3_content/1_header/_1_header.scss"
     },
     {
-      "hash": "sha256-mhep2IdFiq8cNOKfR4WMH8/wWcwfEOL3F0rplWqzZGM=",
+      "hash": "sha256-7cpR4NDMF96Ue8ljt1bKo5/FGwKR+BITDAQPEWwq2Hk=",
       "url": "styles/3_content/1_header/_2_primary.scss"
     },
     {
