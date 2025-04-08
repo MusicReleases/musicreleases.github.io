@@ -67,7 +67,7 @@ public class SpotifyReleaseEffect(ISpotifyReleaseService spotifyReleaseService, 
 			// get item from storage
 			var userId = _spotifyUserService.GetUserIdRequired();
 			// TODO list null
-			var releases = await _dbSpotifyArtistReleaseService.Get(action.Artists.List, userId);
+			var releases = await _dbSpotifyArtistReleaseService.Get(action.Artists, userId);
 
 			if (releases is not null)
 			{
@@ -90,7 +90,7 @@ public class SpotifyReleaseEffect(ISpotifyReleaseService spotifyReleaseService, 
 		{
 			// get item from api
 			// TODO null
-			var releasesApi = await _spotifyReleaseService.GetReleases(action.ReleaseType, action.Artists.List, action.Releases, action.ForceUpdate);
+			var releasesApi = await _spotifyReleaseService.GetReleases(action.ReleaseType, action.Artists, action.Releases, action.ForceUpdate);
 			dispatcher.Dispatch(new SpotifyReleaseActionGetApiSuccess());
 
 			dispatcher.Dispatch(new SpotifyReleaseActionSet(releasesApi));

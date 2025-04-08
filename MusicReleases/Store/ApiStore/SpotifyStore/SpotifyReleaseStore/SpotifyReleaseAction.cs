@@ -5,7 +5,7 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 namespace JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore;
 
 // get releases
-public record SpotifyReleaseActionGet(ReleaseType ReleaseType, bool ForceUpdate, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? Artists)
+public record SpotifyReleaseActionGet(ReleaseType ReleaseType, bool ForceUpdate, ISet<SpotifyArtist> Artists)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; } = new TaskCompletionSource<bool>();
 }
@@ -19,7 +19,7 @@ public record SpotifyReleaseActionGetFailure(string ErrorMessage)
 }
 
 // get api
-public record SpotifyReleaseActionGetApi(ReleaseType ReleaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? Artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases, bool ForceUpdate)
+public record SpotifyReleaseActionGetApi(ReleaseType ReleaseType, ISet<SpotifyArtist> Artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases, bool ForceUpdate)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }
@@ -27,7 +27,7 @@ public record SpotifyReleaseActionGetApiSuccess();
 public record SpotifyReleaseActionGetApiFailure();
 
 // get local storage
-public record SpotifyReleaseActionGetStorage(ReleaseType ReleaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain> Artists, bool ForceUpdate)
+public record SpotifyReleaseActionGetStorage(ReleaseType ReleaseType, ISet<SpotifyArtist> Artists, bool ForceUpdate)
 {
 	public TaskCompletionSource<bool> CompletionSource { get; init; } = new TaskCompletionSource<bool>();
 }

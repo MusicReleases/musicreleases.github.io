@@ -23,7 +23,7 @@ internal class SpotifyUserService(ISpotifyApiClient client, IApiUserService cont
 			Scopes.UserReadPrivate, // user country
 		};
 		// TODO app id to config file
-		const string appId = "c63dcc19c74a4281b7edffe44b528680"; //"67bbd538e581437597ae4574431682df";
+		const string appId = /*"c63dcc19c74a4281b7edffe44b528680";*/ "67bbd538e581437597ae4574431682df";
 
 		var (verifier, challenge) = PKCEUtil.GenerateCodes(120);
 		var responseType = LoginRequest.ResponseType.Code;

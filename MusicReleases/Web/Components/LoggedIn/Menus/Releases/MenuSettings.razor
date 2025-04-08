@@ -7,12 +7,12 @@
 @inject IApiLoginService ApiLoginService
 
 <div class="user icon-text">
-	<button class="user">
+	<button class="user-button">
 		@if (_spotifyUser is not null)
 		{
 			@if (_spotifyUser?.ProfilePictureUrl is not null)
 			{
-				<img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" />
+				<img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" width="50" />
 			}
 			else
 			{

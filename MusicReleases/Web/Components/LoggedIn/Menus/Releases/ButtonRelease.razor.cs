@@ -11,7 +11,7 @@ public partial class ButtonRelease
 
 	private string ReleaseTypeString => ReleaseType.ToString();
 	private string ButtonClass => ReleaseTypeString.ToLower() + (ReleaseFilter ? " active" : string.Empty);
-	private string? IconClass => Icons.GetIconForRelease(ReleaseType);
+	private string IconClass => Icons.GetIconForRelease(ReleaseType);
 
 	private bool ReleaseFilter => SpotifyFilterState.Value.Filter.ReleaseType == ReleaseType;
 

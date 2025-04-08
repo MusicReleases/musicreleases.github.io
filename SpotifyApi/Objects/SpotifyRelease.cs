@@ -46,7 +46,14 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		//Images = simpleAlbum.Images;
 		if (simpleAlbum.Images.Count > 0)
 		{
-			UrlImage = simpleAlbum.Images.First().Url;
+			if (simpleAlbum.Images[1] is not null)
+			{
+				UrlImage = simpleAlbum.Images[1].Url;
+			}
+			else
+			{
+				UrlImage = simpleAlbum.Images.First().Url;
+			}
 		}
 		else
 		{
@@ -69,7 +76,14 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		//Images = fullAlbum.Images;
 		if (fullAlbum.Images.Count > 0)
 		{
-			UrlImage = fullAlbum.Images.First().Url;
+			if (fullAlbum.Images[1] is not null)
+			{
+				UrlImage = fullAlbum.Images[1].Url;
+			}
+			else
+			{
+				UrlImage = fullAlbum.Images.First().Url;
+			}
 		}
 		else
 		{
@@ -93,7 +107,14 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		//Images = simpleShow.Images;
 		if (simpleShow.Images.Count > 0)
 		{
-			UrlImage = simpleShow.Images.First().Url;
+			if (simpleShow.Images[1] is not null)
+			{
+				UrlImage = simpleShow.Images[1].Url;
+			}
+			else
+			{
+				UrlImage = simpleShow.Images.First().Url;
+			}
 		}
 		else
 		{

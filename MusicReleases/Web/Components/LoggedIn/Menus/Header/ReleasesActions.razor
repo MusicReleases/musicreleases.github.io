@@ -1,14 +1,24 @@
-﻿<div class="menu actions icon-text hide-text">
+﻿@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+
+
+<div class="menu actions icon-text hide-text">
+
 	<button class="playlist" title="Add all filtered releases to the playlist">
 		<i class="fas fa-plus-circle" aria-hidden="true"></i>
 		<span>Add to playlist</span>
 	</button>
+
 	<button class="play" title="Play all filtered releases">
 		<i class="fas fa-play" aria-hidden="true"></i>
 		<span>Play all</span>
 	</button>
+
 	<input type="text" class="search" placeholder="Search releases">
 	<button class="search" title="Search releases">
 		<i class="fas fa-search" aria-hidden="true"></i>
 	</button>
+
+	<ButtonUpdate Type="_type" OnUpdating="DisplayTitle">
+
+	</ButtonUpdate>
 </div>

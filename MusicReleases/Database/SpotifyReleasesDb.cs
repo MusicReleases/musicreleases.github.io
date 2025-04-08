@@ -1,6 +1,8 @@
 ﻿using JakubKastner.MusicReleases.Base;
 using static JakubKastner.MusicReleases.Base.Enums;
 
+namespace JakubKastner.MusicReleases.Database;
+
 public static class SpotifyReleasesDb
 {
 	public static readonly string Name = "SpotifyReleases";

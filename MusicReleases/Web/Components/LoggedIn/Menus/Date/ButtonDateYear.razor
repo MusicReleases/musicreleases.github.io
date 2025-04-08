@@ -10,7 +10,7 @@
 @inject ISpotifyFilterService SpotifyFilterService
 
 
-<button type="button" class="year icon-text-right @ButtonClass" data-menu_type="year" data-menu_year="@Year" @onclick="FilterYear">
+<button type="button" class="year icon-text-right @ButtonClass" @onclick="FilterYear">
 	@Year<i class="fas @IconClass" aria-hidden="true" @onclick="DisplayMonths" @onclick:stopPropagation="true"></i>
 </button>
 

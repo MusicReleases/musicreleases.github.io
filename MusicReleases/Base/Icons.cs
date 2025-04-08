@@ -4,7 +4,7 @@ namespace JakubKastner.MusicReleases.Base;
 
 public static class Icons
 {
-	public static string? GetIconForRelease(ReleaseType releaseType)
+	public static string GetIconForRelease(ReleaseType releaseType)
 	{
 		return releaseType switch
 		{
@@ -13,7 +13,7 @@ public static class Icons
 			ReleaseType.Appears => "user-friends",
 			ReleaseType.Compilations => "th-large",
 			ReleaseType.Podcasts => "podcast",
-			_ => string.Empty,
+			_ => throw new NotSupportedException(nameof(releaseType)),
 		};
 	}
 }

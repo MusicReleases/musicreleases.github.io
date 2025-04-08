@@ -1,8 +1,18 @@
-﻿<div class="menu releases logo buttons-rounded-xl">
-	<button class="show-hide icon-text left buttons-rounded-xl">
-		<img class="favicon" src="images/favicon/favicon-32x32.png" alt="">
-		<span>
-			Releases
-		</span>
-	</button>
+﻿@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
+@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
+
+@inherits FluxorComponent
+
+@inject IState<SpotifyArtistState> SpotifyArtistState
+@inject IState<SpotifyReleaseState> SpotifyReleaseState
+
+
+<div class="menu filter scroll buttons-rounded-m">
+	@if (!SpotifyArtistState.Value.LoadingAny() && !SpotifyReleaseState.Value.LoadingAny())
+	{
+		<ReleasesFilters></ReleasesFilters>
+		<ReleasesActions></ReleasesActions>
+	}
 </div>

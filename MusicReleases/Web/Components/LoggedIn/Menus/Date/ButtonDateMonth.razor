@@ -9,12 +9,6 @@
 @inject IState<SpotifyFilterState> SpotifyFilterState
 @inject ISpotifyFilterService SpotifyFilterService
 
-<button class="month @ButtonClass" data-menu_type="month" data-menu_month="@Month" @onclick="FilterMonth">
+<button class="month @ButtonClass" @onclick="FilterMonth">
 	@Month
 </button>
-
-@*
-<button class="month" data-menu_type="month" data-menu_month="07">07</button>
-<button class="month active" data-menu_type="month" data-menu_month="06">06</button>
-<button class="month" data-menu_type="month" data-menu_month="-">-</button>
-*@

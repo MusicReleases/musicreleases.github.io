@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.MusicReleases.Base.Enums;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons;
 
-public partial class ButtonSort
+public partial class ButtonNew
 {
 	[Parameter, EditorRequired]
 	public MenuButtonsType Type { get; set; }
@@ -11,7 +11,7 @@ public partial class ButtonSort
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
-	private void Sort()
+	private void New()
 	{
 	}
 }

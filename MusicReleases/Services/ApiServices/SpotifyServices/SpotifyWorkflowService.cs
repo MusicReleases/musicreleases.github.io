@@ -93,7 +93,7 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 		await StartLoadingReleases(forceUpdate, releaseType, artists);
 	}
 
-	private async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>?> StartLoadingArtists(bool forceUpdate)
+	private async Task<ISet<SpotifyArtist>?> StartLoadingArtists(bool forceUpdate)
 	{
 		if (_spotifyArtistState.Value.LoadingAny() || _spotifyReleasesState.Value.LoadingAny())
 		{
@@ -111,13 +111,19 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 			await spotifyArtistsAction.CompletionSource.Task;
 		}
 
-		var artists = _spotifyArtistState.Value.Error ? null : _spotifyArtistState.Value.List;
+		var artists = _spotifyArtistState.Value.Error ? null : _spotifyArtistState.Value.List.List;
+		if (artists is null)
+		{
+			return null;
+		}
+
+		_dispatcher.Dispatch(new LoadArtistsAction(artists));
 		return artists;
 	}
 
-	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain> artists)
+	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, ISet<SpotifyArtist> artists)
 	{
-		if (_spotifyArtistState.Value.LoadingAny() || _spotifyReleasesState.Value.LoadingAny() || artists.List is null)
+		if (_spotifyArtistState.Value.LoadingAny() || _spotifyReleasesState.Value.LoadingAny() || artists is null)
 		{
 			return;
 		}
@@ -140,12 +146,12 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 			return;
 		}
 
-		FilterReleases(releases, artists.List);
+		FilterReleases(releases);
 	}
 
-	private void FilterReleases(ISet<SpotifyRelease> releases, ISet<SpotifyArtist> artists)
+	private void FilterReleases(ISet<SpotifyRelease> releases)
 	{
-		_dispatcher.Dispatch(new LoadReleasesAction(releases, artists));
+		_dispatcher.Dispatch(new LoadReleasesAction(releases));
 	}
 
 	public bool ForceUpdate<T, U>(SpotifyUserList<T, U> userList, ReleaseType? releaseType = null) where T : SpotifyIdNameObject where U : SpotifyUserListUpdate

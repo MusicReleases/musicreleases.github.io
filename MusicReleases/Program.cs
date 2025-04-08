@@ -3,6 +3,7 @@ using Fluxor;
 using Fluxor.Blazor.Web.ReduxDevTools;
 using IndexedDB.Blazor;
 using JakubKastner.MusicReleases;
+using JakubKastner.MusicReleases.Database;
 using JakubKastner.SpotifyApi;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

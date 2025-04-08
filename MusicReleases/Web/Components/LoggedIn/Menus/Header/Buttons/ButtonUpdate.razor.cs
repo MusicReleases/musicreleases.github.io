@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using static JakubKastner.MusicReleases.Base.Enums;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons;
 
 public partial class ButtonUpdate
 {
