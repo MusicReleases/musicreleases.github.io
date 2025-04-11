@@ -38,6 +38,7 @@ public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateS
 	private async Task<SpotifyUpdateDbObject<SpotifyUserEntity>?> GetDb(string userId)
 	{
 		// get user db
+		Console.WriteLine("get user");
 		var userDb = await _dbTable.GetItemAsync<SpotifyUserEntity>(userId);
 
 		if (userDb is null)

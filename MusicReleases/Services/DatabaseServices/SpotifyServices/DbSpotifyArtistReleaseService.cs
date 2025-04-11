@@ -91,6 +91,7 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 	}
 	private async Task<ISet<SpotifyArtistReleaseEntity>> GetAllDb()
 	{
+		Console.WriteLine("get artist releases");
 		var artistReleasesDb = _dbTable.GetAllAsync<SpotifyArtistReleaseEntity>();
 		var artistReleases = new HashSet<SpotifyArtistReleaseEntity>();
 		await foreach (var artistReleaseDb in artistReleasesDb)
@@ -166,15 +167,20 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 		// save new releases
 		await _dbReleaseService.Save(newReleases);
+
+		var artistReleasesEntities = new HashSet<SpotifyArtistReleaseEntity>();
+
 		foreach (var release in newReleases)
 		{
 			foreach (var artist in release.Artists)
 			{
 				var artistReleaseEntity = new SpotifyArtistReleaseEntity(artist.Id, release.Id);
-				await _dbTable.StoreAsync(artistReleaseEntity);
+				artistReleasesEntities.Add(artistReleaseEntity);
 				newArtists.Add(artist);
 			}
 		}
+		Console.WriteLine("save artist releases");
+		await _dbTable.StoreItemsAsync(artistReleasesEntities);
 
 		// save release artists
 		await _dbArtistService.Save(newArtists);
@@ -195,6 +201,7 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 		foreach (var artistReleaseDb in artistReleasesDb)
 		{
 			// delete releases from followed artists (= probably deleted from spotify)
+			Console.WriteLine("delete artist release");
 			await _dbTable.RemoveItemAsync(artistReleaseDb);
 			await _dbReleaseService.Delete(artistReleaseDb.ReleaseId);
 		}

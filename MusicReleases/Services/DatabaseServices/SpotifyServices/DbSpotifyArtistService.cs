@@ -27,10 +27,14 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 
 	public async Task Save(ISet<SpotifyArtist> artists)
 	{
+		var artistsDb = new HashSet<SpotifyArtistEntity>();
 		foreach (var artist in artists)
 		{
 			var artistEntity = new SpotifyArtistEntity(artist);
-			await _dbTable.StoreAsync(artistEntity);
+
+			artistsDb.Add(artistEntity);
 		}
+		Console.WriteLine("save artists");
+		await _dbTable.StoreItemsAsync(artistsDb);
 	}
 }

@@ -23,6 +23,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 
 	private async Task<ISet<SpotifyRelease>> GetDb(ISet<SpotifyReleaseArtistsDbObject> releaseIdsArtists)
 	{
+		Console.WriteLine("get release");
 		var releasesDb = _dbTable.GetAllAsync<SpotifyReleaseEntity>();
 
 		var releases = new HashSet<SpotifyRelease>();
@@ -56,15 +57,20 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 
 	public async Task Save(ISet<SpotifyRelease> releases)
 	{
+		var releasesDb = new HashSet<SpotifyReleaseEntity>();
+
 		foreach (var release in releases)
 		{
 			var releaseEntity = new SpotifyReleaseEntity(release);
-			await _dbTable.StoreAsync(releaseEntity);
+			releasesDb.Add(releaseEntity);
 		}
+		Console.WriteLine("save release");
+		await _dbTable.StoreItemsAsync(releasesDb);
 	}
 
 	public async Task Delete(string releaseId)
 	{
+		Console.WriteLine("delete release");
 		await _dbTable.RemoveItemAsync(releaseId);
 	}
 }
