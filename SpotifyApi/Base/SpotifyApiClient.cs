@@ -55,9 +55,7 @@ public class SpotifyApiClient : ISpotifyApiClient
 			return null;
 		}
 
-		var client = new SpotifyClient(newResponse.AccessToken);
-		SetClient(client);
-
+		Init(newResponse.AccessToken);
 		return newResponse.RefreshToken;
 	}
 }
