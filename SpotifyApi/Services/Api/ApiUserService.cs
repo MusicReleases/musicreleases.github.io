@@ -8,18 +8,15 @@ internal class ApiUserService(ISpotifyApiClient client) : IApiUserService
 {
 	private readonly ISpotifyApiClient _client = client;
 
-	public async Task<SpotifyUser?> LoginUser(string code, string loginVerifier, string redirectUrl)
+	public async Task<SpotifyUser?> LoginUser(string clientId, string code, string loginVerifier, string redirectUrl)
 	{
-		// TODO app id to config file
-		const string appId = /*"c63dcc19c74a4281b7edffe44b528680";*/ "67bbd538e581437597ae4574431682df";
-
 		var redirectUri = new Uri(redirectUrl);
 
-		var tokenRequest = new PKCETokenRequest(appId, code, redirectUri, loginVerifier);
+		var tokenRequest = new PKCETokenRequest(clientId, code, redirectUri, loginVerifier);
 
 		var initialResponse = await new OAuthClient().RequestToken(tokenRequest);
 
-		var authenticator = new PKCEAuthenticator(appId, initialResponse);
+		var authenticator = new PKCEAuthenticator(clientId, initialResponse);
 
 		var retryHandler = new SpotifyApiRetryHandler();
 

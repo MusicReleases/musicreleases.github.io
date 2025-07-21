@@ -1,93 +1,139 @@
 ﻿using Fluxor;
 using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Base;
-using JakubKastner.MusicReleases.Objects;
 using JakubKastner.MusicReleases.Store.FilterStore;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
+using JakubKastner.SpotifyApi.Objects;
+using System.Diagnostics;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterService(IState<SpotifyFilterState> spotifyFilterState) : ISpotifyFilterService
+public class SpotifyFilterService(IState<SpotifyFilterState> filterState) : ISpotifyFilterService
 {
-	private readonly IState<SpotifyFilterState> _spotifyFilterState = spotifyFilterState;
-	private const string _urlNull = "_";
-
-	private SpotifyFilter Filter => _spotifyFilterState.Value.Filter;
+	private readonly IState<SpotifyFilterState> _filterState = filterState;
 
 
-	private string GetFilterUrl(string? releaseTypeUrl, string? yearUrl, string? monthUrl, string? artistUrl)
+	private ISet<SpotifyRelease>? _allReleases = null;
+	private ISet<SpotifyArtist>? _allArtists = null;
+
+	public SortedSet<SpotifyRelease> FilteredReleases { get; private set; } = [];
+	public SortedSet<SpotifyArtist>? FilteredArtists { get; private set; } = null;
+	public Dictionary<int, SortedSet<int>>? FilteredYearMonth { get; private set; } = null;
+
+	public event Action? OnFilterOrDataChanged;
+
+	public void SetArtists(ISet<SpotifyArtist> artists)
 	{
-		var urlParams = new List<string>();
-
-		const string urlSeparator = "/";
-		const string urlRelease = "releases";
-
-		monthUrl = yearUrl.IsNotNullOrEmpty() ? monthUrl : null;
-
-		var releaseType = releaseTypeUrl ?? Filter.ReleaseType.ToString().ToLower();
-		var year = yearUrl ?? (Filter.Year.HasValue ? Filter.Year.Value.ToString() : (Filter.Month.HasValue ? Filter.Month.Value.Year.ToString() : _urlNull));
-		var month = monthUrl ?? (Filter.Month.HasValue ? Filter.Month.Value.Month.ToString() : _urlNull);
-		var artist = artistUrl ?? Filter.Artist ?? _urlNull;
-
-		urlParams.Add(urlRelease);
-		urlParams.Add(releaseType);
-		urlParams.Add(year);
-		urlParams.Add(month);
-		urlParams.Add(artist);
-
-		var url = string.Join(urlSeparator, urlParams);
-		return url;
+		_allArtists = artists;
+		// clear releases when artists are set
+		_allReleases = null;
+		ApplyFilter();
+	}
+	public void SetReleases(ISet<SpotifyRelease> releases)
+	{
+		_allReleases = releases;
+		ApplyFilter();
 	}
 
-	public string GetFilterUrl()
+	private void ApplyFilter()
 	{
-		return GetFilterUrl(null, null, null, null);
-	}
-	public string GetFilterUrl(ReleaseType releaseType)
-	{
-		var releaseTypeUrl = releaseType.ToString().ToLower();
-		return GetFilterUrl(releaseTypeUrl, null, null, null);
-	}
-	public string GetFilterUrl(int? year)
-	{
-		var yearUrl = year.HasValue ? year.Value.ToString() : _urlNull;
-		var monthUrl = _urlNull;
-		return GetFilterUrl(null, yearUrl, monthUrl, null);
-	}
-	public string GetFilterUrl(int? year, int? month)
-	{
-		var yearUrl = year.HasValue ? year.Value.ToString() : _urlNull;
-		var monthUrl = month.HasValue ? month.Value.ToString() : _urlNull;
-		return GetFilterUrl(null, yearUrl, monthUrl, null);
-	}
-	public string GetFilterUrl(string? artist)
-	{
-		var artistUrl = artist.IsNotNullOrEmpty() ? artist : _urlNull;
-		return GetFilterUrl(null, null, null, artistUrl);
-	}
-
-	public SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist)
-	{
-		if (!Enum.TryParse(releaseType, true, out ReleaseType type))
+		if (_allReleases is null && _allArtists is null)
 		{
-			type = ReleaseType.Albums;
+			return;
 		}
-		int? yearFilter = int.TryParse(year, out var yearValue) ? yearValue : null;
-		int? monthInt = int.TryParse(month, out var monthValue) ? monthValue : null;
-		DateTime? monthFilter = yearFilter.HasValue ? (monthInt.HasValue ? new DateTime(yearFilter.Value, monthInt.Value, 1) : null) : null;
-		var artistFilter = artist == _urlNull ? null : artist;
 
-		return new(type, yearFilter, monthFilter, artistFilter);
+		if (_allReleases is null)
+		{
+			FilteredArtists = [.. _allArtists!];
+			OnFilterOrDataChanged?.Invoke();
+			return;
+		}
+
+		var sw = Stopwatch.StartNew();
+
+		var (filteredReleasesByTypeDate, filteredReleasesByTypeArtist) = FilterReleases();
+		FilterDate(filteredReleasesByTypeArtist);
+		FilterArtists(filteredReleasesByTypeDate);
+
+		OnFilterOrDataChanged?.Invoke();
+
+		sw.Stop();
+		Console.WriteLine($"Filtrace 2 - {_allReleases.Count} trvá {sw.ElapsedMilliseconds} ms");
 	}
 
-	public string ClearFilter(Enums.MenuButtonsType type)
+	private (ISet<SpotifyRelease> byTypeDate, ISet<SpotifyRelease> byTypeArtist) FilterReleases()
 	{
-		// TODO custom enum
-		return type switch
+		if (_allReleases is null)
 		{
-			Enums.MenuButtonsType.Date => GetFilterUrl(null, null),
-			Enums.MenuButtonsType.Artists => GetFilterUrl(artist: null),
-			_ => throw new NotSupportedException(nameof(Enums.MenuButtonsType)),
-		};
+			throw new NullReferenceException(nameof(_allReleases));
+		}
+
+		var filter = _filterState.Value.Filter;
+
+		// releases by type
+		var releasesByType = _allReleases.Where(r => r.ReleaseType == filter.ReleaseType);
+
+		// releases by artist
+		var releasesByTypeArtist
+			= filter.Artist.IsNullOrEmpty()
+			? releasesByType
+			: releasesByType.Where(r => r.Artists.Any(a => a.Id == filter.Artist));
+
+
+		// releases by date
+		IEnumerable<SpotifyRelease>? releasesByTypeArtistDate = null;
+		IEnumerable<SpotifyRelease>? releasesByTypeDate = null;
+
+		if (filter.Month.HasValue)
+		{
+			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Month == filter.Month.Value.Month && r.ReleaseDate.Year == filter.Month.Value.Year);
+			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Month == filter.Month.Value.Month && r.ReleaseDate.Year == filter.Month.Value.Year);
+		}
+		else if (filter.Year.HasValue)
+		{
+			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Year == filter.Year);
+			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Year == filter.Year);
+		}
+		else
+		{
+			releasesByTypeArtistDate = releasesByTypeArtist;
+			releasesByTypeDate = releasesByType;
+		}
+
+		FilteredReleases = [.. releasesByTypeArtistDate];
+
+		return (releasesByTypeDate.ToHashSet(), releasesByTypeArtist.ToHashSet());
+	}
+
+	private void FilterArtists(ISet<SpotifyRelease> releasesByTypeDate)
+	{
+		var filter = _filterState.Value.Filter;
+
+		if (_allArtists is null)
+		{
+			FilteredArtists = null;
+			return;
+		}
+
+		var artistIdsInFilteredReleases = releasesByTypeDate.SelectMany(r => r.Artists.Select(a => a.Id)).ToHashSet();
+		var filteredArtists = _allArtists.Where(a => artistIdsInFilteredReleases.Contains(a.Id));
+
+		FilteredArtists = [.. filteredArtists];
+	}
+
+	private void FilterDate(ISet<SpotifyRelease> releases)
+	{
+		var filteredYearMonth = releases
+			.Select(r => r.ReleaseDate)
+			.Distinct()
+			.GroupBy(date => date.Year)
+			.OrderByDescending(g => g.Key)
+			.ToDictionary(
+				g => g.Key, // year
+				g => new SortedSet<int>(
+					g.Select(date => date.Month).Distinct(),
+					Comparer<int>.Create((x, y) => y.CompareTo(x))
+				)
+			);
+
+		FilteredYearMonth = filteredYearMonth;
 	}
 }

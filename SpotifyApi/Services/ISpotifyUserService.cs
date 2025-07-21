@@ -4,9 +4,9 @@ namespace JakubKastner.SpotifyApi.Services;
 
 public interface ISpotifyUserService
 {
-	(Uri loginUrl, string loginVerifier) GetLoginUrl(Uri currentUrl);
+	(Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, Uri currentUrl);
 	bool IsLoggedIn();
-	Task<bool> LoginUser(string code, string loginVerifier, string redirectUrl);
+	Task<bool> LoginUser(string clientId, string code, string loginVerifier, string redirectUrl);
 	SpotifyUser? GetUser();
 	SpotifyUser GetUserRequired();
 	string GetUserIdRequired();

@@ -8,8 +8,9 @@
 
 @inject NavigationManager NavManager
 @inject IState<SpotifyFilterState> SpotifyFilterState
+@inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject ISpotifyFilterService SpotifyFilterService
 
 <button type="button" class="artist @ButtonClass" @onclick="FilterArtist">
 	@ArtistName
-</button>
+</button>	

@@ -1,25 +1,4 @@
-﻿/*using SpotifyAPI.Web.Http;
-
-namespace JakubKastner.SpotifyApi.Base;
-
-public class SpotifyApiRetryHandler : IRetryHandler
-{
-	public Task<IResponse> HandleRetry(IRequest request, IResponse response, IRetryHandler.RetryFunc retry)
-	{
-		// request is the sent request and response is the received response, obviously
-
-		// don't retry:
-		//return response;
-
-		// retry once:
-		var newResponse = retry(request);
-		return newResponse;
-
-		// use retry as often as you want, make sure to return a response
-	}
-}*/
-using SpotifyAPI.Web;
-using SpotifyAPI.Web.Http;
+﻿using SpotifyAPI.Web.Http;
 using System.Net;
 
 namespace JakubKastner.SpotifyApi.Base;
@@ -68,9 +47,9 @@ public class SpotifyApiRetryHandler : IRetryHandler
 	public SpotifyApiRetryHandler(Func<TimeSpan, CancellationToken, Task> sleepWithCancel)
 	{
 		_sleep = sleepWithCancel;
-		RetryAfter = TimeSpan.FromMilliseconds(50);
+		RetryAfter = TimeSpan.FromMilliseconds(200);
 		RetryTimes = 10;
-		TooManyRequestsConsumesARetry = false;
+		TooManyRequestsConsumesARetry = true;
 		RetryErrorCodes = [HttpStatusCode.InternalServerError, HttpStatusCode.BadGateway, HttpStatusCode.ServiceUnavailable];
 	}
 	private static TimeSpan? ParseTooManyRetries(IResponse response)
@@ -85,8 +64,9 @@ public class SpotifyApiRetryHandler : IRetryHandler
 		{
 			return TimeSpan.FromSeconds(secondsToWait);
 		}
-
-		throw new APIException("429 received, but unable to parse Retry-After Header (" + response.Headers["Retry-After"] + " | " + response.Headers["retry-after"] + "). This should not happen!");
+		// wait 0,5 minute
+		return TimeSpan.FromSeconds(30);
+		//throw new APIException("429 received, but unable to parse Retry-After Header (" + response.Headers["Retry-After"] + " | " + response.Headers["retry-after"] + "). This should not happen!");
 	}
 
 	public Task<IResponse> HandleRetry(IRequest request, IResponse response, IRetryHandler.RetryFunc retry, CancellationToken cancel = default)
@@ -102,7 +82,7 @@ public class SpotifyApiRetryHandler : IRetryHandler
 		cancel.ThrowIfCancellationRequested();
 
 		var secondsToWait = ParseTooManyRetries(response);
-		if (secondsToWait != null && (!TooManyRequestsConsumesARetry || triesLeft > 0))
+		if (secondsToWait is not null && (!TooManyRequestsConsumesARetry || triesLeft > 0))
 		{
 			await _sleep(secondsToWait.Value, cancel).ConfigureAwait(false);
 			response = await retry(request, cancel).ConfigureAwait(false);

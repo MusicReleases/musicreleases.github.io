@@ -8,8 +8,9 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(ISpotifyUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService) : ISpotifyLoginService
 {
+	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
@@ -61,8 +62,9 @@ public class SpotifyLoginService(ISpotifyUserService spotifyUserService, Navigat
 		// user is not saved in storage
 		// spotify login
 		var redirectUrl = _navManager.ToAbsoluteUri(_navManager.BaseUri + "login/spotify");
+		var clientId = _spotifyConfig.ClientId;
 
-		(var loginUrl, var loginVerifier) = _spotifyUserService.GetLoginUrl(redirectUrl);
+		(var loginUrl, var loginVerifier) = _spotifyUserService.GetLoginUrl(clientId, redirectUrl);
 
 		await _spotifyLoginStorageService.SaveLoginVerifier(loginVerifier);
 		_navManager.NavigateTo(loginUrl.AbsoluteUri);
@@ -144,7 +146,8 @@ public class SpotifyLoginService(ISpotifyUserService spotifyUserService, Navigat
 		}
 
 		var codeString = code.ToString();
-		var userLogged = await _spotifyUserService.LoginUser(codeString, loginVerifier, baseUrl + "login/spotify");
+		var clientId = _spotifyConfig.ClientId;
+		var userLogged = await _spotifyUserService.LoginUser(clientId, codeString, loginVerifier, baseUrl + "login/spotify");
 	}
 
 	public async Task LogoutUser()

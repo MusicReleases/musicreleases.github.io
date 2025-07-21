@@ -22,20 +22,28 @@ public partial class Releases
 	/*private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? ReleasesUserList => SpotifyReleaseState.Value.List;
 	private ISet<SpotifyRelease>? ReleasesList => ReleasesUserList?.List is null ? null : new SortedSet<SpotifyRelease>(ReleasesUserList.List.Where(x => x.ReleaseType == _type));*/
 
-	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterState.Value.FilteredReleases;
+	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
 
 	private bool Error => SpotifyReleaseState.Value.Error;
 	private bool Loading => SpotifyReleaseState.Value.LoadingAny();
 	private bool ErrorArtists => SpotifyArtistState.Value.Error;
 	private bool LoadingArtists => SpotifyArtistState.Value.LoadingAny();
 
+
 	protected override void OnInitialized()
 	{
+		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
+
 		base.OnInitialized();
+
 		Console.WriteLine("Releases.OnInitialized");
 		//LoadReleases();
 	}
 
+	public void Dispose()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+	}
 
 	protected override void OnParametersSet()
 	{
@@ -56,7 +64,7 @@ public partial class Releases
 			return;
 		}*/
 
-		var filter = SpotifyFilterService.ParseFilterUrl(Type, Year, Month, ArtistId);
+		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId);
 		_type = filter.ReleaseType;
 
 		Dispatcher.Dispatch(new SetFiltersAction(filter));
@@ -65,6 +73,8 @@ public partial class Releases
 
 	private void GetReleases()
 	{
+		Console.WriteLine("get releases -------------");
+
 		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
 
 		if (!userLoggedIn)
@@ -78,5 +88,10 @@ public partial class Releases
 		{
 			SpotifyWorkflowService.StartLoadingAll(false, _type);
 		}
+	}
+
+	private void OnFilterOrDataChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 }

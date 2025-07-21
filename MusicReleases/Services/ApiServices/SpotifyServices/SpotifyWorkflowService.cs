@@ -1,4 +1,5 @@
 ﻿using Fluxor;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistStore;
 using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsTracksStore;
@@ -6,18 +7,19 @@ using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
 using JakubKastner.SpotifyApi.Services;
-using static JakubKastner.MusicReleases.Store.FilterStore.SpotifyFilterAction;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlaylistState> spotifyPlaylistState, IState<SpotifyPlaylistTrackState> spotifyPlaylistTrackState, IState<SpotifyArtistState> spotifyArtistState, IState<SpotifyReleaseState> spotifyReleasesState) : ISpotifyWorkflowService
+public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlaylistState> spotifyPlaylistState, IState<SpotifyPlaylistTrackState> spotifyPlaylistTrackState, IState<SpotifyArtistState> spotifyArtistState, IState<SpotifyReleaseState> spotifyReleasesState, ISpotifyFilterService spotifyFilterService) : ISpotifyWorkflowService
 {
 	private readonly IDispatcher _dispatcher = dispatcher;
 	private readonly IState<SpotifyPlaylistState> _spotifyPlaylistState = spotifyPlaylistState;
 	private readonly IState<SpotifyPlaylistTrackState> _spotifyPlaylistTrackState = spotifyPlaylistTrackState;
 	private readonly IState<SpotifyArtistState> _spotifyArtistState = spotifyArtistState;
 	private readonly IState<SpotifyReleaseState> _spotifyReleasesState = spotifyReleasesState;
+
+	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 
 	private const int DateForceHours = 24;
 
@@ -117,7 +119,8 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 			return null;
 		}
 
-		_dispatcher.Dispatch(new LoadArtistsAction(artists));
+		_spotifyFilterService.SetArtists(artists);
+		//_dispatcher.Dispatch(new LoadArtistsAction(artists));
 		return artists;
 	}
 
@@ -146,12 +149,14 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 			return;
 		}
 
-		FilterReleases(releases);
+		FilterReleases(artists, releases);
 	}
 
-	private void FilterReleases(ISet<SpotifyRelease> releases)
+	private void FilterReleases(ISet<SpotifyArtist> artists, ISet<SpotifyRelease> releases)
 	{
-		_dispatcher.Dispatch(new LoadReleasesAction(releases));
+		Console.WriteLine("FilterReleases workflow");
+		_spotifyFilterService.SetReleases(releases);
+		//_dispatcher.Dispatch(new LoadReleasesAction(releases));
 	}
 
 	public bool ForceUpdate<T, U>(SpotifyUserList<T, U> userList, ReleaseType? releaseType = null) where T : SpotifyIdNameObject where U : SpotifyUserListUpdate

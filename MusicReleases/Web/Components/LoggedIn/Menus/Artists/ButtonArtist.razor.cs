@@ -16,7 +16,7 @@ public partial class ButtonArtist
 	{
 		string? artistFilter = ArtistFilter ? null : ArtistId;
 
-		var url = SpotifyFilterService.GetFilterUrl(artistFilter);
+		var url = SpotifyFilterUrlService.GetFilterUrl(artistFilter);
 		NavManager.NavigateTo(url);
 	}
 }

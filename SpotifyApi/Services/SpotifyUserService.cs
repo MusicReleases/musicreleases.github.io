@@ -12,7 +12,7 @@ internal class SpotifyUserService(ISpotifyApiClient client, IApiUserService cont
 
 	private SpotifyUser? _user;
 
-	public (Uri loginUrl, string loginVerifier) GetLoginUrl(Uri currentUrl)
+	public (Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, Uri currentUrl)
 	{
 		var scope = new[]
 		{
@@ -22,13 +22,11 @@ internal class SpotifyUserService(ISpotifyApiClient client, IApiUserService cont
 			Scopes.UserFollowRead,
 			Scopes.UserReadPrivate, // user country
 		};
-		// TODO app id to config file
-		const string appId = /*"c63dcc19c74a4281b7edffe44b528680";*/ "67bbd538e581437597ae4574431682df";
 
 		var (verifier, challenge) = PKCEUtil.GenerateCodes(120);
 		var responseType = LoginRequest.ResponseType.Code;
 
-		var loginRequest = new LoginRequest(currentUrl, appId, responseType)
+		var loginRequest = new LoginRequest(currentUrl, clientId, responseType)
 		{
 			Scope = scope,
 			CodeChallengeMethod = "S256",
@@ -42,9 +40,9 @@ internal class SpotifyUserService(ISpotifyApiClient client, IApiUserService cont
 		return _client.IsInicialized() && _user is not null;
 	}
 
-	public async Task<bool> LoginUser(string code, string loginVerifier, string redirectUrl)
+	public async Task<bool> LoginUser(string clientId, string code, string loginVerifier, string redirectUrl)
 	{
-		_user = await _controllerApiUser.LoginUser(code, loginVerifier, redirectUrl);
+		_user = await _controllerApiUser.LoginUser(clientId, code, loginVerifier, redirectUrl);
 
 		return _user is not null;
 	}

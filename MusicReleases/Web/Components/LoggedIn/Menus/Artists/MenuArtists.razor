@@ -1,16 +1,20 @@
 ﻿@using Fluxor;
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.BaseServices
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
 @using JakubKastner.MusicReleases.Store.FilterStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
 @using static JakubKastner.MusicReleases.Base.Enums
 
-@inherits FluxorComponent;
+@inherits FluxorComponent
+@implements IDisposable
 
 @inject IState<SpotifyArtistState> SpotifyArtistState
 @inject IApiLoginService ApiLoginService
 @inject IState<SpotifyFilterState> SpotifyFilterState
+@inject ISpotifyFilterService SpotifyFilterService
 
 <div class="menu artists items scroll buttons-rounded-m">
 

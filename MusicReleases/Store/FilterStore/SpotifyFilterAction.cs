@@ -1,5 +1,4 @@
 ﻿using JakubKastner.MusicReleases.Objects;
-using JakubKastner.SpotifyApi.Objects;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Store.FilterStore;
@@ -19,7 +18,4 @@ public class SpotifyFilterAction()
 
 	public record ResetFiltersAction;
 	public record SetFiltersAction(SpotifyFilter Filter);
-
-	public record LoadReleasesAction(ISet<SpotifyRelease> Releases);
-	public record LoadArtistsAction(ISet<SpotifyArtist> Artists);
 }

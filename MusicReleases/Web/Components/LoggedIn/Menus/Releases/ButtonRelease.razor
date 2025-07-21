@@ -8,7 +8,7 @@
 @inject NavigationManager NavManager
 @inject IFilterService FilterService
 @inject IState<SpotifyFilterState> SpotifyFilterState
-@inject ISpotifyFilterService SpotifyFilterService
+@inject ISpotifyFilterUrlService SpotifyFilterService
 
 <button type="button" class="@ButtonClass" title="View released @ReleaseTypeString" @onclick="DisplayReleases">
     <i class="fas fa-@IconClass" aria-hidden="true"></i>

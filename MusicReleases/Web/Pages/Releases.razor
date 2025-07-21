@@ -13,6 +13,7 @@
 @layout LayoutMain
 
 @inherits FluxorComponent
+@implements IDisposable
 
 @inject ISpotifyWorkflowService SpotifyWorkflowService
 @inject IApiLoginService ApiLoginService
@@ -21,6 +22,7 @@
 @inject IState<SpotifyFilterState> SpotifyFilterState
 @inject IFilterService FilterService
 @inject IDispatcher Dispatcher
+@inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject ISpotifyFilterService SpotifyFilterService
 
 @if (Loading || LoadingArtists || FilteredReleases is null)
@@ -36,9 +38,9 @@ else
 
 	<div class="releases boxes infinite-scroll">
 
-		<Virtualize Items="@FilteredReleases" Context="release">
-				<Release SpotifyRelease="@release" />
-		</Virtualize>
+		 <Virtualize Items="@FilteredReleases" Context="release">
+			<Release SpotifyRelease="@release" />
+		</Virtualize> 
 
 	</div>
 }

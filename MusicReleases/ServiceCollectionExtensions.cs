@@ -30,12 +30,15 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
 
 		// spotify services
-		services.AddScoped<ISpotifyFilterService, SpotifyFilterService>();
+		services.AddScoped<ISpotifyFilterUrlService, SpotifyFilterUrlService>();
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
 
 		services.AddScoped<IApiLoginService, SpotifyLoginService>();
 		services.AddScoped<ISpotifyLoginService, SpotifyLoginService>();
 		services.AddScoped<ISpotifyLoginStorageService, SpotifyLoginStorageService>();
+
+		services.AddScoped<ISpotifyFilterService, SpotifyFilterService>();
+
 
 		return services;
 	}

@@ -1,10 +1,12 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.Objects;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Base;
 
-public class SpotifyApiClient : ISpotifyApiClient
+public class SpotifyApiClient(SpotifyConfig spotifyConfig) : ISpotifyApiClient
 {
 	private ISpotifyClient? _spotifyClient;
+	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 
 	public void Init(string accessToken)
 	{
@@ -41,9 +43,7 @@ public class SpotifyApiClient : ISpotifyApiClient
 
 	public async Task<string?> RefreshClient(string refreshToken)
 	{
-		// TODO app id to config file
-		const string appId = /*"c63dcc19c74a4281b7edffe44b528680";*/ "67bbd538e581437597ae4574431682df";
-		var refreshRequest = new PKCETokenRefreshRequest(appId, refreshToken);
+		var refreshRequest = new PKCETokenRefreshRequest(_spotifyConfig.ClientId, refreshToken);
 		PKCETokenResponse? newResponse;
 		try
 		{
