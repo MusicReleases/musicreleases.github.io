@@ -26,10 +26,9 @@
 	}
 	else
 	{
-		foreach (var year in FilteredYearMonth)
-		{
-			 <ButtonDateYear Year="@year.Key" Months="@year.Value">
-			</ButtonDateYear> 
-		}
+		<Virtualize Items="@FilteredYearMonth" Context="year" ItemSize="30" OverscanCount="5">
+			<ButtonDateYear Year="@year.Key" Months="@year.Value">
+			</ButtonDateYear>
+		</Virtualize>
 	}
 </div>

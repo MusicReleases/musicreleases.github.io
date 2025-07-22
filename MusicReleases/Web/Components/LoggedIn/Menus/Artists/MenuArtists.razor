@@ -46,11 +46,10 @@
 		}
 		else
 		{
-			@foreach (var artist in Artists)
-			{
+			<Virtualize Items="@Artists" Context="artist" ItemSize="30" OverscanCount="5">
 				<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name>
 				</ButtonArtist>
-			}
+			</Virtualize>
 		}
 	}
 </div>
