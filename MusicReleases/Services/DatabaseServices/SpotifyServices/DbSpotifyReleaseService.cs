@@ -1,6 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Entities.Api.Spotify;
 using JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
 using JakubKastner.SpotifyApi.Objects;
+using System.Diagnostics;
 using Tavenem.Blazor.IndexedDB;
 using static JakubKastner.MusicReleases.Base.Enums;
 
@@ -23,6 +24,8 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 
 	private async Task<ISet<SpotifyRelease>> GetDb(ISet<SpotifyReleaseArtistsDbObject> releaseIdsArtists)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: get release - start");
 		var releasesDb = _dbTable.GetAllAsync<SpotifyReleaseEntity>();
 
 		var releases = new HashSet<SpotifyRelease>();
@@ -51,20 +54,30 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 			releases.Add(release);
 		}
 
+		sw.Stop();
+		Console.WriteLine("db: get release - " + sw.ElapsedMilliseconds);
 		return releases;
 	}
 
 	public async Task Save(ISet<SpotifyRelease> releases)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: save release - start");
 		foreach (var release in releases)
 		{
 			var releaseEntity = new SpotifyReleaseEntity(release);
 			await _dbTable.StoreAsync(releaseEntity);
 		}
+		sw.Stop();
+		Console.WriteLine("db: save release - " + sw.ElapsedMilliseconds);
 	}
 
 	public async Task Delete(string releaseId)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: delete release - start");
 		await _dbTable.RemoveItemAsync(releaseId);
+		sw.Stop();
+		Console.WriteLine("db: delete release - " + sw.ElapsedMilliseconds);
 	}
 }

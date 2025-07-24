@@ -1,9 +1,11 @@
 using Blazored.LocalStorage;
+using DexieNET;
 using Fluxor;
 using Fluxor.Blazor.Web.ReduxDevTools;
 using IndexedDB.Blazor;
 using JakubKastner.MusicReleases;
 using JakubKastner.MusicReleases.Database;
+using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 using JakubKastner.SpotifyApi;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components.Web;
@@ -45,10 +47,15 @@ builder.Services.AddFluxor(options =>
 	//#endif
 });
 
-builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();
-
 // indexed db
+builder.Services.AddDexieNET<SpotifyUserDb>();
+
+
+// indexed db (old)
 builder.Services.AddIndexedDbService();
 builder.Services.AddIndexedDb(SpotifyReleasesDb.Name, SpotifyReleasesDb.GetAllTables(), SpotifyReleasesDb.Version);
+
+builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();
+
 
 await builder.Build().RunAsync();

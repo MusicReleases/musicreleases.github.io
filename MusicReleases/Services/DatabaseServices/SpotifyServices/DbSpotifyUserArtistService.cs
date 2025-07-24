@@ -1,6 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Entities.Api.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
+using System.Diagnostics;
 using Tavenem.Blazor.IndexedDB;
 using static JakubKastner.MusicReleases.Base.Enums;
 
@@ -36,6 +37,8 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 	private async Task<ISet<SpotifyArtist>> GetFollowed(string userId)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: get artists followed - start");
 		// get followed artist ids
 		var followedArtistDb = await GetFollowedDb(userId);
 		var artistIdsDb = followedArtistDb.Select(x => x.ArtistId);
@@ -56,6 +59,8 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 			artists.Add(artist);
 		}
 
+		sw.Stop();
+		Console.WriteLine("db: get artists followed - " + sw.ElapsedMilliseconds);
 		return artists;
 	}
 
@@ -63,7 +68,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 	private async Task<ISet<SpotifyUserArtistEntity>> GetFollowedDb(string userId)
 	{
 		// TODO user artist db table
-		Console.WriteLine("get artists");
+		//Console.WriteLine("get artists");
 
 		// get artists from db
 		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntity>();
@@ -84,6 +89,8 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 	private async Task<SpotifyUserListUpdateMain?> GetUpdateDb(string userId)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: get artists followed update db - start");
 		var updateDb = await _dbUpdateService.Get(userId);
 		var updateDbArtists = updateDb?.Artists;
 		if (!updateDbArtists.HasValue)
@@ -93,6 +100,8 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 		}
 
 		var update = new SpotifyUserListUpdateMain(updateDbArtists.Value);
+		sw.Stop();
+		Console.WriteLine("db: get artists followed update db- " + sw.ElapsedMilliseconds);
 		return update;
 	}
 
@@ -120,6 +129,8 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 	private async Task SaveUpdateDb(string userId, SpotifyUserListUpdateMain update)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: save artists followed update db - start");
 		// TODO null
 		//var updateDb = await _databaseUpdateController.Get(db, userId);
 
@@ -134,11 +145,15 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 		// update - update times
 		updateDb.Artists = update.LastUpdateMain;
 		await _dbUpdateService.Update(updateDb);
+		sw.Stop();
+		Console.WriteLine("db: save artists followed update db- " + sw.ElapsedMilliseconds);
 	}
 
 
 	private async Task SaveDb(ISet<SpotifyArtist> artists, string userId)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: save artists followed - start");
 		var userArtistsDb = await GetFollowedDb(userId);
 
 		var newFollowedArtists = artists.Where(x => !userArtistsDb.Any(y => y.ArtistId == x.Id)).ToHashSet();
@@ -154,14 +169,20 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 		// delete not followed artists
 		await Delete(unfollowedArtists);
+		sw.Stop();
+		Console.WriteLine("db: save artists followed - " + sw.ElapsedMilliseconds);
 	}
 
 	private async Task Delete(ISet<SpotifyUserArtistEntity> userArtistsDb)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: delete artists followed - start");
 		foreach (var userArtistDb in userArtistsDb)
 		{
 			await _dbTable.RemoveItemAsync(userArtistDb);
 		}
+		sw.Stop();
+		Console.WriteLine("db: delete artists followed - " + sw.ElapsedMilliseconds);
 	}
 
 	public async Task Delete(string userId)

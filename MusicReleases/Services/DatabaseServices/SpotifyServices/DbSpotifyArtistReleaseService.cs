@@ -2,6 +2,7 @@
 using JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
+using System.Diagnostics;
 using Tavenem.Blazor.IndexedDB;
 using static JakubKastner.MusicReleases.Base.Enums;
 
@@ -17,6 +18,9 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 	public async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>?> Get(ISet<SpotifyArtist> artists, string userId)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: get artist releases - start");
+
 		// update
 		var update = await GetUpdateDb(userId);
 		if (update is null)
@@ -39,10 +43,16 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 		var releasesUpdate = new SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>(releases, update);
 
+		sw.Stop();
+		Console.WriteLine("db: get artist releases - " + sw.ElapsedMilliseconds);
+
 		return releasesUpdate;
 	}
 	private async Task<SpotifyUserListUpdateRelease?> GetUpdateDb(string userId)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: get artist releases update - start");
+
 		var updateDb = await _dbUpdateService.Get(userId);
 		if (updateDb is null)
 		{
@@ -60,12 +70,17 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 			LastUpdatePodcasts = updateDb.ReleasesPodcasts,
 		};
 
+		sw.Stop();
+		Console.WriteLine("db: get artist releases update - " + sw.ElapsedMilliseconds);
 		return update;
 	}
 
 
 	private async Task<ISet<SpotifyReleaseArtistsDbObject>> GetReleaseIds(ISet<SpotifyArtist> followedArtists)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: get artist release ids - start");
+
 		var artistReleasesDb = await GetAllDb();
 		// releases from followed artist
 		var followedArtistReleasesDb = artistReleasesDb.Where(x => followedArtists.Any(y => y.Id == x.ArtistId));
@@ -86,6 +101,8 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 			releaseArtistsDb.Add(dbObject);
 
 		}
+		sw.Stop();
+		Console.WriteLine("db: get artist releasese ids - " + sw.ElapsedMilliseconds);
 
 		return releaseArtistsDb;
 	}
@@ -117,6 +134,8 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 	public async Task Save(string userId, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease> releases)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: save artist release - start");
 		// TODO remove unfollowed artists and deleted releases
 
 		if (releases.Update is null)
@@ -135,10 +154,15 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 		// user releases db
 		await SaveDb(releases.List, userId);
+		sw.Stop();
+		Console.WriteLine("db: save artist release - " + sw.ElapsedMilliseconds);
 	}
 
 	private async Task SaveUpdateDb(string userId, SpotifyUserListUpdateRelease update)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: save artist release update - start");
+
 		var updateDb = await _dbUpdateService.Get(userId);
 
 		if (updateDb is null)
@@ -154,12 +178,17 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 		updateDb.ReleasesCompilations = update.LastUpdateCompilations;
 		updateDb.ReleasesPodcasts = update.LastUpdatePodcasts;
 
+		sw.Stop();
+		Console.WriteLine("db: save artist release update - " + sw.ElapsedMilliseconds);
 		await _dbUpdateService.Update(updateDb);
 	}
 
 
 	private async Task SaveDb(ISet<SpotifyRelease> releases, string userId)
 	{
+		var sw = Stopwatch.StartNew();
+		Console.WriteLine("db: save artist release db - start");
+
 		var artistReleasesDb = await GetAllDb();
 		var newReleases = releases.Where(x => !artistReleasesDb.Any(y => y.ReleaseId == x.Id)).ToHashSet();
 		var newArtists = new HashSet<SpotifyArtist>();
@@ -188,6 +217,8 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 		// delete releases from followed artists
 		await Delete(deletedReleases);
+		sw.Stop();
+		Console.WriteLine("db: save artist release db - " + sw.ElapsedMilliseconds);
 	}
 
 	private async Task Delete(ISet<SpotifyArtistReleaseEntity> artistReleasesDb)
