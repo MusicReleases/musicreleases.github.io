@@ -1,11 +1,5 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Store.LoaderStore
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
 
-@inherits FluxorComponent
-
-@inject IState<LoaderState> LoaderState
 @inject ILoaderService LoaderService
 
-<div class="header loader @LoaderState.Value.LoadingClass @LoaderService.LoadingClass"></div>
+<div class="header loader @LoaderService.LoadingClass"></div>
