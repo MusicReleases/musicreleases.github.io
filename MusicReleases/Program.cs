@@ -1,6 +1,4 @@
 using Blazored.LocalStorage;
-using Fluxor;
-using Fluxor.Blazor.Web.ReduxDevTools;
 using IndexedDB.Blazor;
 using JakubKastner.MusicReleases;
 using JakubKastner.MusicReleases.Database;
@@ -34,15 +32,6 @@ builder.Services.AddMusicReleases();
 builder.Services.AddBlazoredLocalStorage(config =>
 {
 	config.JsonSerializerOptions.WriteIndented = true;
-});
-
-// fluxor
-builder.Services.AddFluxor(options =>
-{
-	options.ScanAssemblies(typeof(Program).Assembly);
-	//#if DEBUG
-	options.UseReduxDevTools();
-	//#endif
 });
 
 builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();
