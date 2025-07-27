@@ -11,13 +11,16 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlaylistState> spotifyPlaylistState, IState<SpotifyPlaylistTrackState> spotifyPlaylistTrackState, IState<SpotifyArtistState> spotifyArtistState, IState<SpotifyReleaseState> spotifyReleasesState, ISpotifyFilterService spotifyFilterService) : ISpotifyWorkflowService
+public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlaylistState> spotifyPlaylistState, IState<SpotifyPlaylistTrackState> spotifyPlaylistTrackState, IState<SpotifyArtistState> spotifyArtistState, IState<SpotifyReleaseState> spotifyReleasesState, ISpotifyFilterService spotifyFilterService, ISpotifyArtistsService spotifyArtistsService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistsService spotifyPlaylistsService) : ISpotifyWorkflowService
 {
 	private readonly IDispatcher _dispatcher = dispatcher;
 	private readonly IState<SpotifyPlaylistState> _spotifyPlaylistState = spotifyPlaylistState;
 	private readonly IState<SpotifyPlaylistTrackState> _spotifyPlaylistTrackState = spotifyPlaylistTrackState;
 	private readonly IState<SpotifyArtistState> _spotifyArtistState = spotifyArtistState;
 	private readonly IState<SpotifyReleaseState> _spotifyReleasesState = spotifyReleasesState;
+	private readonly ISpotifyArtistsService _spotifyArtistsService = spotifyArtistsService;
+	private readonly ISpotifyReleasesService _spotifyReleasesService = spotifyReleasesService;
+	private readonly ISpotifyPlaylistsService _spotifyPlaylistsService = spotifyPlaylistsService;
 
 	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 
@@ -56,12 +59,14 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 
 		if (forceUpdate || forceUpdateAuto)
 		{
-			var spotifyPlaylistsAction = new SpotifyPlaylistActionGet(forceUpdate);
-			_dispatcher.Dispatch(spotifyPlaylistsAction);
-			await spotifyPlaylistsAction.CompletionSource.Task;
-		}
+			await _spotifyPlaylistsService.Get(forceUpdate);
 
-		var playlists = _spotifyPlaylistState.Value.Error ? null : _spotifyPlaylistState.Value.List;
+			/*var spotifyPlaylistsAction = new SpotifyPlaylistActionGet(forceUpdate);
+			_dispatcher.Dispatch(spotifyPlaylistsAction);
+			await spotifyPlaylistsAction.CompletionSource.Task;*/
+		}
+		var playlists = _spotifyPlaylistsService.Playlists;
+		//var playlists = _spotifyPlaylistState.Value.Error ? null : _spotifyPlaylistState.Value.List;
 		return playlists;
 	}
 
@@ -114,13 +119,15 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 		}
 		if (forceUpdate || forceUpdateAuto)
 		{
-			//var spotifyArtistsAction = new SpotifyArtistActionGet(forceUpdate);
-			var spotifyArtistsAction = new SpotifyArtistActionGet(forceUpdate);
-			_dispatcher.Dispatch(spotifyArtistsAction);
-			await spotifyArtistsAction.CompletionSource.Task;
-		}
+			await _spotifyArtistsService.Get(forceUpdate);
 
-		var artists = _spotifyArtistState.Value.Error ? null : _spotifyArtistState.Value.List.List;
+			//var spotifyArtistsAction = new SpotifyArtistActionGet(forceUpdate);
+			/*var spotifyArtistsAction = new SpotifyArtistActionGet(forceUpdate);
+			_dispatcher.Dispatch(spotifyArtistsAction);
+			await spotifyArtistsAction.CompletionSource.Task;*/
+		}
+		var artists = _spotifyArtistsService.Artists?.List;
+		//var artists = _spotifyArtistState.Value.Error ? null : _spotifyArtistState.Value.List.List;
 		if (artists is null)
 		{
 			return null;
@@ -146,12 +153,14 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 
 		if (forceUpdate || forceUpdateAuto)
 		{
-			var spotifyReleasesAction = new SpotifyReleaseActionGet(releaseType, forceUpdate, artists);
+			await _spotifyReleasesService.Get(releaseType, artists, forceUpdate);
+			/*var spotifyReleasesAction = new SpotifyReleaseActionGet(releaseType, forceUpdate, artists);
 			_dispatcher.Dispatch(spotifyReleasesAction);
-			await spotifyReleasesAction.CompletionSource.Task;
-		}
 
-		var releases = _spotifyReleasesState.Value.Error ? null : _spotifyReleasesState.Value.List.List;
+			await spotifyReleasesAction.CompletionSource.Task;*/
+		}
+		var releases = _spotifyReleasesService.Releases?.List;
+		//var releases = _spotifyReleasesState.Value.Error ? null : _spotifyReleasesState.Value.List.List;
 		if (releases is null)
 		{
 			return;

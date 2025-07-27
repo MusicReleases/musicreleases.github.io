@@ -1,14 +1,18 @@
 ﻿@using Fluxor
 @using Fluxor.Blazor.Web.Components
 @using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+@using JakubKastner.MusicReleases.Services.BaseServices
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 @using static JakubKastner.MusicReleases.Base.Enums
 
 @inherits FluxorComponent
 
-@inject IState<SpotifyPlaylistState> StateSpotifyPlaylist;
-@inject IApiLoginService ApiLoginService;
+@inject IState<SpotifyPlaylistState> StateSpotifyPlaylist
+@inject IApiLoginService ApiLoginService
+@inject ISpotifyPlaylistsService SpotifyPlaylistsService
+@inject ILoaderService LoaderService
 
 <div class="menu playlists items scroll buttons-rounded-m">
 
@@ -23,13 +27,13 @@
 		{
 			<p>Loading playlists...</p>
 		}
-		else if (Error)
+		@* else if (Error)
 		{
 			<p>Failed to get playlists</p>
 			<ButtonUpdate Type="MenuButtonsType.Playlists">
 				Update
 			</ButtonUpdate>
-		}
+		} *@
 		else if (_playlists.List.Count < 1)
 		{
 			<p>0 playlists</p>

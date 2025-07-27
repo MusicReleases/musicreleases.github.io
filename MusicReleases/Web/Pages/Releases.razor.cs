@@ -24,14 +24,15 @@ public partial class Releases
 
 	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
 
-	private bool Error => SpotifyReleaseState.Value.Error;
-	private bool Loading => SpotifyReleaseState.Value.LoadingAny();
-	private bool ErrorArtists => SpotifyArtistState.Value.Error;
-	private bool LoadingArtists => SpotifyArtistState.Value.LoadingAny();
+	//private bool Error => SpotifyReleaseState.Value.Error;
+	private bool Loading => LoaderService.IsLoading(Enums.LoadingType.Releases);
+	//private bool ErrorArtists => SpotifyArtistState.Value.Error;
+	private bool LoadingArtists => LoaderService.IsLoading(Enums.LoadingType.Artists);
 
 
 	protected override void OnInitialized()
 	{
+		LoaderService.LoadingStateChanged += LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
 
 		base.OnInitialized();
@@ -42,7 +43,18 @@ public partial class Releases
 
 	public void Dispose()
 	{
+		LoaderService.LoadingStateChanged -= LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		//GC.SuppressFinalize(this);
+	}
+
+	private void LoadingStateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
+	private void OnFilterOrDataChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 
 	protected override void OnParametersSet()
@@ -88,10 +100,5 @@ public partial class Releases
 		{
 			SpotifyWorkflowService.StartLoadingAll(false, _type);
 		}
-	}
-
-	private void OnFilterOrDataChanged()
-	{
-		InvokeAsync(StateHasChanged);
 	}
 }

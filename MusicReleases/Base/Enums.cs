@@ -70,6 +70,20 @@ public static class Enums
 		SpotifyTrack,
 	}
 
+	public enum LoadingType
+	{
+		Releases,
+		Artists,
+		Playlists,
+	}
+	public enum LoadingCategory
+	{
+		GetDb,
+		GetApi,
+		SaveDb,
+	}
+
+
 	public static string GetLocalStorageKey(ServiceType serviceType, LocalStorageKey localStorageKey)
 	{
 		var prefix = serviceType.ToString();

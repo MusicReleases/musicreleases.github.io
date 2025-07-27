@@ -5,11 +5,11 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Artists;
 public partial class MenuArtists
 {
 	private ISet<SpotifyArtist>? Artists => SpotifyFilterService.FilteredArtists;
-	private bool Error => SpotifyArtistState.Value.Error;
-	private bool Loading => SpotifyArtistState.Value.LoadingAny();
+	private bool Loading => LoaderService.IsLoading(MusicReleases.Base.Enums.LoadingType.Artists);
 
 	protected override void OnInitialized()
 	{
+		LoaderService.LoadingStateChanged += LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
 		base.OnInitialized();
 
@@ -20,13 +20,18 @@ public partial class MenuArtists
 			return;
 		}
 	}
-	private void OnFilterOrDataChanged()
+	public void Dispose()
+	{
+		LoaderService.LoadingStateChanged -= LoadingStateChanged;
+		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+	}
+
+	private void LoadingStateChanged()
 	{
 		InvokeAsync(StateHasChanged);
 	}
-
-	public void Dispose()
+	private void OnFilterOrDataChanged()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		InvokeAsync(StateHasChanged);
 	}
 }

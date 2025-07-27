@@ -1,6 +1,7 @@
 ﻿@using Fluxor;
 @using Fluxor.Blazor.Web.Components;
 @using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 @using JakubKastner.MusicReleases.Services.BaseServices
 @using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
 @using JakubKastner.MusicReleases.Store.FilterStore
@@ -15,6 +16,7 @@
 @inject IApiLoginService ApiLoginService
 @inject IState<SpotifyFilterState> SpotifyFilterState
 @inject ISpotifyFilterService SpotifyFilterService
+@inject ILoaderService LoaderService
 
 <div class="menu artists items scroll buttons-rounded-m">
 
@@ -30,13 +32,13 @@
 		{
 			<p>Loading artists...</p>
 		}
-		else if (Error)
+		@* else if (Error)
 		{
 			<p>Failed to get artists</p>
 			<ButtonUpdate Type="MenuButtonsType.Artists">
 				Update
 			</ButtonUpdate>
-		}
+		} *@
 		else if (Artists.Count < 1)
 		{
 			<p>0 artists</p>

@@ -29,6 +29,9 @@ public static class ServiceCollectionExtensions
 
 		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
 
+		services.AddScoped<IDbSpotifyPlaylistService, DbSpotifyPlaylistService>();
+		services.AddScoped<IDbSpotifyUserPlaylistService, DbSpotifyUserPlaylistService>();
+
 		// spotify services
 		services.AddScoped<ISpotifyFilterUrlService, SpotifyFilterUrlService>();
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
@@ -38,7 +41,11 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyLoginStorageService, SpotifyLoginStorageService>();
 
 		services.AddScoped<ISpotifyFilterService, SpotifyFilterService>();
+		services.AddScoped<ILoaderService, LoaderService>();
 
+		services.AddScoped<ISpotifyReleasesService, SpotifyReleasesService>();
+		services.AddScoped<ISpotifyArtistsService, SpotifyArtistsService>();
+		services.AddScoped<ISpotifyPlaylistsService, SpotifyPlaylistsService>();
 
 		return services;
 	}

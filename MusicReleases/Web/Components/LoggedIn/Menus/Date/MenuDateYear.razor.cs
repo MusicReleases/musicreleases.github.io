@@ -4,11 +4,12 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
 
 public partial class MenuDateYear
 {
-	private bool Loading => SpotifyArtistState.Value.LoadingAny() || SpotifyReleaseState.Value.LoadingAny();
+	private bool Loading => LoaderService.IsLoading(LoadingType.Artists) || LoaderService.IsLoading(LoadingType.Releases);
 	private Dictionary<int, SortedSet<int>>? FilteredYearMonth => SpotifyFilterService.FilteredYearMonth;
 
 	protected override void OnInitialized()
 	{
+		LoaderService.LoadingStateChanged += LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
 		base.OnInitialized();
 
@@ -25,13 +26,19 @@ public partial class MenuDateYear
 			//_artists = await _spotifyControllerArtist.GetUserFollowedArtists();
 		}
 	}
-	private void OnFilterOrDataChanged()
-	{
-		InvokeAsync(StateHasChanged);
-	}
 
 	public void Dispose()
 	{
+		LoaderService.LoadingStateChanged -= LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+	}
+
+	private void LoadingStateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
+	private void OnFilterOrDataChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 }
