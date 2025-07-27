@@ -1,15 +1,9 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Services.ApiServices
+﻿@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 @using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 @using static JakubKastner.MusicReleases.Base.Enums
 
-@inherits FluxorComponent
-
-@inject IState<SpotifyPlaylistState> StateSpotifyPlaylist
 @inject IApiLoginService ApiLoginService
 @inject ISpotifyPlaylistsService SpotifyPlaylistsService
 @inject ILoaderService LoaderService

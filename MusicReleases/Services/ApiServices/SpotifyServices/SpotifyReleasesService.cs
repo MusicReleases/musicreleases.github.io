@@ -29,24 +29,26 @@ public class SpotifyReleasesService(ISpotifyReleaseService spotifyReleaseService
 		}
 		var userId = _spotifyUserService.GetUserIdRequired();
 		var loadingType = LoadingType.Releases;
+		var loadingCategoryGetDb = LoadingCategory.GetDb;
+		var loadingCategoryGetApi = LoadingCategory.GetApi;
+		var loadingCategorySaveDb = LoadingCategory.SaveDb;
 
 		// get db
-		var loadingCategory = LoadingCategory.GetDb;
-		_loaderService.StartLoading(loadingType, loadingCategory);
+		_loaderService.StartLoading(loadingType, loadingCategoryGetDb);
 		var releasesDb = await _dbSpotifyArtistReleaseService.Get(artists, userId);
-		_loaderService.StopLoading(loadingType, loadingCategory);
+
+		_loaderService.StartLoading(loadingType, loadingCategoryGetApi);
+		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
-		loadingCategory = LoadingCategory.GetApi;
-		_loaderService.StartLoading(loadingType, loadingCategory);
 		var releases = await _spotifyReleaseService.GetReleases(releaseType, artists, releasesDb, forceUpdate);
-		_loaderService.StopLoading(loadingType, loadingCategory);
+
+		_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		_loaderService.StopLoading(loadingType, loadingCategoryGetApi);
 
 		// save db
-		loadingCategory = LoadingCategory.SaveDb;
-		_loaderService.StartLoading(loadingType, loadingCategory);
 		await _dbSpotifyArtistReleaseService.Save(userId, releases);
-		_loaderService.StopLoading(loadingType, loadingCategory);
+		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
 
 		// display
 		Releases = releases;

@@ -22,24 +22,27 @@ public class SpotifyArtistsService(ISpotifyArtistService spotifyArtistService, I
 	{
 		var userId = _spotifyUserService.GetUserIdRequired();
 		var loadingType = LoadingType.Artists;
+		var loadingCategoryGetDb = LoadingCategory.GetDb;
+		var loadingCategoryGetApi = LoadingCategory.GetApi;
+		var loadingCategorySaveDb = LoadingCategory.SaveDb;
 
 		// get db
-		var loadingCategory = LoadingCategory.GetDb;
-		_loaderService.StartLoading(loadingType, loadingCategory);
+		_loaderService.StartLoading(loadingType, loadingCategoryGetDb);
 		var artistsDb = await _dbUserArtistService.Get(userId);
-		_loaderService.StopLoading(loadingType, loadingCategory);
+
+
+		_loaderService.StartLoading(loadingType, loadingCategoryGetApi);
+		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
-		loadingCategory = LoadingCategory.GetApi;
-		_loaderService.StartLoading(loadingType, loadingCategory);
 		var artists = await _spotifyArtistService.GetUserFollowedArtists(artistsDb, forceUpdate);
-		_loaderService.StopLoading(loadingType, loadingCategory);
+
+		_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		_loaderService.StopLoading(loadingType, loadingCategoryGetApi);
 
 		// save db
-		loadingCategory = LoadingCategory.SaveDb;
-		_loaderService.StartLoading(loadingType, loadingCategory);
 		await _dbUserArtistService.Save(userId, artists);
-		_loaderService.StopLoading(loadingType, loadingCategory);
+		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
 
 		// display
 		Artists = artists;

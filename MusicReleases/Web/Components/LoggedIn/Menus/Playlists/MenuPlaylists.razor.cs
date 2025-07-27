@@ -6,9 +6,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 
 public partial class MenuPlaylists
 {
-	//private SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? _playlists => StateSpotifyPlaylist.Value.List;
 	private SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? _playlists => SpotifyPlaylistsService.Playlists;
-	//private bool Error => StateSpotifyPlaylist.Value.Error;
 	private bool Loading => LoaderService.IsLoading(LoadingType.Playlists);
 
 	protected override void OnInitialized()

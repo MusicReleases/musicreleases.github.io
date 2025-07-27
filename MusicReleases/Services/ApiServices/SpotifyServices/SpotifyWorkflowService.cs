@@ -1,28 +1,20 @@
-﻿using Fluxor;
-using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore;
-using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistStore;
-using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyPlaylistsTracksStore;
-using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore;
+﻿using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
 using JakubKastner.SpotifyApi.Services;
+using static JakubKastner.MusicReleases.Base.Enums;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlaylistState> spotifyPlaylistState, IState<SpotifyPlaylistTrackState> spotifyPlaylistTrackState, IState<SpotifyArtistState> spotifyArtistState, IState<SpotifyReleaseState> spotifyReleasesState, ISpotifyFilterService spotifyFilterService, ISpotifyArtistsService spotifyArtistsService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistsService spotifyPlaylistsService) : ISpotifyWorkflowService
+public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, ILoaderService loaderService, ISpotifyArtistsService spotifyArtistsService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistsService spotifyPlaylistsService) : ISpotifyWorkflowService
 {
-	private readonly IDispatcher _dispatcher = dispatcher;
-	private readonly IState<SpotifyPlaylistState> _spotifyPlaylistState = spotifyPlaylistState;
-	private readonly IState<SpotifyPlaylistTrackState> _spotifyPlaylistTrackState = spotifyPlaylistTrackState;
-	private readonly IState<SpotifyArtistState> _spotifyArtistState = spotifyArtistState;
-	private readonly IState<SpotifyReleaseState> _spotifyReleasesState = spotifyReleasesState;
+	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
+	private readonly ILoaderService _loaderService = loaderService;
+
 	private readonly ISpotifyArtistsService _spotifyArtistsService = spotifyArtistsService;
 	private readonly ISpotifyReleasesService _spotifyReleasesService = spotifyReleasesService;
 	private readonly ISpotifyPlaylistsService _spotifyPlaylistsService = spotifyPlaylistsService;
-
-	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 
 	private const int DateForceHours = 24;
 
@@ -48,25 +40,20 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 	{
 		var forceUpdateAuto = false;
 
-		if (_spotifyPlaylistState.Value.LoadingAny() || _spotifyPlaylistTrackState.Value.LoadingAny())
+		if (_loaderService.IsLoading(LoadingType.Playlists) || _loaderService.IsLoading(LoadingType.PlaylistTracks))
 		{
 			return null;
 		}
 		if (!forceUpdate)
 		{
-			forceUpdateAuto = ForceUpdate(_spotifyPlaylistState.Value.List);
+			forceUpdateAuto = ForceUpdate(_spotifyPlaylistsService.Playlists);
 		}
 
 		if (forceUpdate || forceUpdateAuto)
 		{
 			await _spotifyPlaylistsService.Get(forceUpdate);
-
-			/*var spotifyPlaylistsAction = new SpotifyPlaylistActionGet(forceUpdate);
-			_dispatcher.Dispatch(spotifyPlaylistsAction);
-			await spotifyPlaylistsAction.CompletionSource.Task;*/
 		}
 		var playlists = _spotifyPlaylistsService.Playlists;
-		//var playlists = _spotifyPlaylistState.Value.Error ? null : _spotifyPlaylistState.Value.List;
 		return playlists;
 	}
 
@@ -74,21 +61,18 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 	{
 		var forceUpdateAuto = false;
 
-		if (_spotifyPlaylistState.Value.LoadingAny() || _spotifyPlaylistTrackState.Value.LoadingAny())
+		if (_loaderService.IsLoading(LoadingType.Playlists) || _loaderService.IsLoading(LoadingType.PlaylistTracks))
 		{
 			return;
 		}
 		if (!forceUpdate)
 		{
-			forceUpdateAuto = ForceUpdate(_spotifyPlaylistTrackState.Value.List);
+			forceUpdateAuto = ForceUpdate(_spotifyPlaylistsService.Playlists);
 		}
 
 		if (forceUpdate || forceUpdateAuto)
 		{
 			// TODO load playlists tracks
-			/*var spotifyPlaylistsTracksAction = new SpotifyPlaylistTrackActionGet(forceUpdate, playlists);
-			_dispatcher.Dispatch(spotifyPlaylistsTracksAction);
-			await spotifyPlaylistsTracksAction.CompletionSource.Task;*/
 		}
 	}
 
@@ -108,59 +92,47 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 	{
 		var forceUpdateAuto = false;
 
-		if (_spotifyArtistState.Value.LoadingAny() || _spotifyReleasesState.Value.LoadingAny())
+		if (_loaderService.IsLoading(LoadingType.Artists) || _loaderService.IsLoading(LoadingType.Releases))
 		{
 			return null;
 		}
 
 		if (!forceUpdate)
 		{
-			forceUpdateAuto = ForceUpdate(_spotifyArtistState.Value.List);
+			forceUpdateAuto = ForceUpdate(_spotifyArtistsService.Artists);
 		}
 		if (forceUpdate || forceUpdateAuto)
 		{
 			await _spotifyArtistsService.Get(forceUpdate);
-
-			//var spotifyArtistsAction = new SpotifyArtistActionGet(forceUpdate);
-			/*var spotifyArtistsAction = new SpotifyArtistActionGet(forceUpdate);
-			_dispatcher.Dispatch(spotifyArtistsAction);
-			await spotifyArtistsAction.CompletionSource.Task;*/
 		}
 		var artists = _spotifyArtistsService.Artists?.List;
-		//var artists = _spotifyArtistState.Value.Error ? null : _spotifyArtistState.Value.List.List;
 		if (artists is null)
 		{
 			return null;
 		}
 
 		_spotifyFilterService.SetArtists(artists);
-		//_dispatcher.Dispatch(new LoadArtistsAction(artists));
 		return artists;
 	}
 
 	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, ISet<SpotifyArtist> artists)
 	{
 		var forceUpdateAuto = false;
-		if (_spotifyArtistState.Value.LoadingAny() || _spotifyReleasesState.Value.LoadingAny() || artists is null)
+		if (_loaderService.IsLoading(LoadingType.Artists) || _loaderService.IsLoading(LoadingType.Releases))
 		{
 			return;
 		}
 
 		if (!forceUpdate)
 		{
-			forceUpdateAuto = ForceUpdate(_spotifyReleasesState.Value.List, releaseType);
+			forceUpdateAuto = ForceUpdate(_spotifyReleasesService.Releases, releaseType);
 		}
 
 		if (forceUpdate || forceUpdateAuto)
 		{
 			await _spotifyReleasesService.Get(releaseType, artists, forceUpdate);
-			/*var spotifyReleasesAction = new SpotifyReleaseActionGet(releaseType, forceUpdate, artists);
-			_dispatcher.Dispatch(spotifyReleasesAction);
-
-			await spotifyReleasesAction.CompletionSource.Task;*/
 		}
 		var releases = _spotifyReleasesService.Releases?.List;
-		//var releases = _spotifyReleasesState.Value.Error ? null : _spotifyReleasesState.Value.List.List;
 		if (releases is null)
 		{
 			return;
@@ -173,12 +145,11 @@ public class SpotifyWorkflowService(IDispatcher dispatcher, IState<SpotifyPlayli
 	{
 		Console.WriteLine("FilterReleases workflow");
 		_spotifyFilterService.SetReleases(releases);
-		//_dispatcher.Dispatch(new LoadReleasesAction(releases));
 	}
 
-	public bool ForceUpdate<T, U>(SpotifyUserList<T, U> userList, ReleaseType? releaseType = null) where T : SpotifyIdNameObject where U : SpotifyUserListUpdate
+	public bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, ReleaseType? releaseType = null) where T : SpotifyIdNameObject where U : SpotifyUserListUpdate
 	{
-		if (userList.List is null || userList.Update is null || userList.List.Count < 1)
+		if (userList is null || userList.List is null || userList.Update is null || userList.List.Count < 1)
 		{
 			return true;
 		}

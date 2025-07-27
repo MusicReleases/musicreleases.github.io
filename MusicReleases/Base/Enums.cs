@@ -75,6 +75,7 @@ public static class Enums
 		Releases,
 		Artists,
 		Playlists,
+		PlaylistTracks,
 	}
 	public enum LoadingCategory
 	{
