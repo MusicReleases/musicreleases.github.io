@@ -6,7 +6,7 @@ namespace JakubKastner.SpotifyApi.Services;
 
 public interface ISpotifyReleaseService
 {
-	Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false);
+	Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>?> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false);
 	public static DateTime? GetLastTimeUpdate(SpotifyUserListUpdateRelease lastUpdateList, ReleaseType releaseType) => releaseType switch
 	{
 		ReleaseType.Albums => lastUpdateList.LastUpdateAlbums,

@@ -11,7 +11,7 @@ internal class SpotifyPlaylistService(IApiPlaylistService controllerApiPlaylist,
 
 	// get list of user playlists
 
-	public async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>> GetUserPlaylists(bool onlyEditable = false, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? existingPlaylists = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>?> GetUserPlaylists(bool onlyEditable = false, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? existingPlaylists = null, bool forceUpdate = false)
 	{
 		if (existingPlaylists is null)
 		{
@@ -38,7 +38,7 @@ internal class SpotifyPlaylistService(IApiPlaylistService controllerApiPlaylist,
 			// doesnt need update
 
 			// TODO editable playlists switch ???
-			return existingPlaylists!;
+			return null;
 		}
 
 		var playlists = await GetUserPlaylistsApi(onlyEditable, forceUpdate, existingPlaylists?.List);
@@ -73,6 +73,11 @@ internal class SpotifyPlaylistService(IApiPlaylistService controllerApiPlaylist,
 	public async Task<SpotifyPlaylist?> GetUserPlaylist(string playlistId, bool getTracks = false)
 	{
 		var playlists = await GetUserPlaylists();
+
+		if (playlists is null)
+		{
+			throw new NullReferenceException(nameof(playlists));
+		}
 
 		var playlist = playlists.List?.FirstOrDefault(p => p.Id == playlistId);
 

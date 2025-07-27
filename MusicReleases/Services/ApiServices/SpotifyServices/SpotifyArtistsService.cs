@@ -28,24 +28,30 @@ public class SpotifyArtistsService(ISpotifyArtistService spotifyArtistService, I
 
 		// get db
 		_loaderService.StartLoading(loadingType, loadingCategoryGetDb);
-		var artistsDb = await _dbUserArtistService.Get(userId);
+		var artistsDb = Artists ?? await _dbUserArtistService.Get(userId);
 
 
 		_loaderService.StartLoading(loadingType, loadingCategoryGetApi);
 		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
-		var artists = await _spotifyArtistService.GetUserFollowedArtists(artistsDb, forceUpdate);
+		var artistsApi = await _spotifyArtistService.GetUserFollowedArtists(artistsDb, forceUpdate);
 
-		_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		if (artistsApi is not null)
+		{
+			_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		}
 		_loaderService.StopLoading(loadingType, loadingCategoryGetApi);
 
 		// save db
-		await _dbUserArtistService.Save(userId, artists);
-		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
+		if (artistsApi is not null)
+		{
+			await _dbUserArtistService.Save(userId, artistsApi);
+			_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
+		}
 
 		// display
-		Artists = artists;
+		Artists = artistsApi ?? artistsDb;
 		OnArtistsDataChanged?.Invoke();
 	}
 }

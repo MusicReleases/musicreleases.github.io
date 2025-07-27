@@ -5,5 +5,5 @@ namespace JakubKastner.SpotifyApi.Services;
 
 public interface ISpotifyArtistService
 {
-	Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? existingArtists = null, bool forceUpdate = false);
+	Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>?> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? existingArtists = null, bool forceUpdate = false);
 }

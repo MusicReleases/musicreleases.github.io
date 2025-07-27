@@ -35,23 +35,29 @@ public class SpotifyReleasesService(ISpotifyReleaseService spotifyReleaseService
 
 		// get db
 		_loaderService.StartLoading(loadingType, loadingCategoryGetDb);
-		var releasesDb = await _dbSpotifyArtistReleaseService.Get(artists, userId);
+		var releasesDb = Releases ?? await _dbSpotifyArtistReleaseService.Get(artists, userId);
 
 		_loaderService.StartLoading(loadingType, loadingCategoryGetApi);
 		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
-		var releases = await _spotifyReleaseService.GetReleases(releaseType, artists, releasesDb, forceUpdate);
+		var releasesApi = await _spotifyReleaseService.GetReleases(releaseType, artists, releasesDb, forceUpdate);
 
-		_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		if (releasesApi is not null)
+		{
+			_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		}
 		_loaderService.StopLoading(loadingType, loadingCategoryGetApi);
 
 		// save db
-		await _dbSpotifyArtistReleaseService.Save(userId, releases);
-		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
+		if (releasesApi is not null)
+		{
+			await _dbSpotifyArtistReleaseService.Save(userId, releasesApi);
+			_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
+		}
 
 		// display
-		Releases = releases;
+		Releases = releasesApi ?? releasesDb;
 		OnReleasesDataChanged?.Invoke();
 	}
 }

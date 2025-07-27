@@ -28,23 +28,29 @@ public class SpotifyPlaylistsService(ISpotifyPlaylistService spotifyPlaylistServ
 
 		// get db
 		_loaderService.StartLoading(loadingType, loadingCategoryGetDb);
-		var playlistsDb = await _dbSpotifyUserPlaylistService.Get(userId);
+		var playlistsDb = Playlists ?? await _dbSpotifyUserPlaylistService.Get(userId);
 
 		_loaderService.StartLoading(loadingType, loadingCategoryGetApi);
 		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
-		var playlists = await _spotifyPlaylistService.GetUserPlaylists(true, playlistsDb, forceUpdate);
+		var playlistsApi = await _spotifyPlaylistService.GetUserPlaylists(true, playlistsDb, forceUpdate);
 
-		_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		if (playlistsApi is not null)
+		{
+			_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		}
 		_loaderService.StopLoading(loadingType, loadingCategoryGetApi);
 
 		// save db
-		await _dbSpotifyUserPlaylistService.Save(userId, playlists);
-		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
+		if (playlistsApi is not null)
+		{
+			await _dbSpotifyUserPlaylistService.Save(userId, playlistsApi);
+			_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
+		}
 
 		// display
-		Playlists = playlists;
+		Playlists = playlistsApi ?? playlistsDb;
 		OnPlaylistsDataChanged?.Invoke();
 	}
 }

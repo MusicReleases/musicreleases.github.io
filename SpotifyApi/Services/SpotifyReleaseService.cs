@@ -5,13 +5,12 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, ISpotifyArtistService controllerArtist, ISpotifyUserService controllerUser) : ISpotifyReleaseService
+internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, ISpotifyUserService controllerUser) : ISpotifyReleaseService
 {
 	private readonly IApiReleaseService _controllerApiRelease = controllerApiRelease;
-	private readonly ISpotifyArtistService _controllerArtist = controllerArtist;
 	private readonly ISpotifyUserService _controllerUser = controllerUser;
 
-	public async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>?> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false)
 	{
 		// doesnt force provide artists update!!!
 		if (existingReleases is null)
@@ -40,7 +39,7 @@ internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, IS
 		if (!forceUpdate)
 		{
 			// doesnt need update
-			return existingReleases!;
+			return null;
 		}
 
 		var releases = await GetReleasesFromArtistApi(artists, existingReleases, forceUpdate, releaseType);
