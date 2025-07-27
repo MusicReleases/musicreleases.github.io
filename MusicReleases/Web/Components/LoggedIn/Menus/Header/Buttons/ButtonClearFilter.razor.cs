@@ -13,7 +13,7 @@ public partial class ButtonClearFilter
 
 	private void ClearFilter()
 	{
-		var url = SpotifyFilterService.ClearFilter(Type);
+		var url = SpotifyFilterUrlService.ClearFilter(Type);
 		NavManager.NavigateTo(url);
 	}
 }

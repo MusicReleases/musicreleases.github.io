@@ -1,14 +1,11 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Store.FilterStore
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
 
-@inherits FluxorComponent
+@implements IDisposable
 
 @inject NavigationManager NavManager
 @inject IFilterService FilterService
-@inject IState<SpotifyFilterState> SpotifyFilterState
-@inject ISpotifyFilterUrlService SpotifyFilterService
+@inject ISpotifyFilterService SpotifyFilterService
+@inject ISpotifyFilterUrlService SpotifyFilterUrlService
 
 <button type="button" class="@ButtonClass" title="View released @ReleaseTypeString" @onclick="DisplayReleases">
     <i class="fas fa-@IconClass" aria-hidden="true"></i>

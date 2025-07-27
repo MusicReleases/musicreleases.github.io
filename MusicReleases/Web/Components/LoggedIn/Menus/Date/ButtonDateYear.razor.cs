@@ -15,14 +15,26 @@ public partial class ButtonDateYear
 	private string IconClass => _showMonths ? "fa-angle-up" : "fa-angle-down";
 	private string? ButtonClass => YearFilter ? "active" : string.Empty;
 	private string? MonthsClass => _showMonths ? string.Empty : "hidden";
-	private bool YearFilter => SpotifyFilterState.Value.Filter.Year == Year;
+	private bool YearFilter => SpotifyFilterService.Filter.Year == Year;
 
 	protected override void OnInitialized()
 	{
 		// display active months on init
+		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
 		base.OnInitialized();
+
 		_renderMonths = YearFilter;
 		_showMonths = YearFilter;
+	}
+
+	public void Dispose()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+	}
+
+	private void OnFilterOrDataChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 
 	private void DisplayMonths()
@@ -36,7 +48,7 @@ public partial class ButtonDateYear
 	private void FilterYear()
 	{
 		int? yearFilter = YearFilter ? null : Year;
-		var url = SpotifyFilterService.GetFilterUrl(yearFilter);
+		var url = SpotifyFilterUrlService.GetFilterUrl(yearFilter);
 		NavManager.NavigateTo(url);
 	}
 }

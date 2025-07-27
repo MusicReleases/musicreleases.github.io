@@ -1,18 +1,16 @@
-﻿using Fluxor;
-using JakubKastner.Extensions;
+﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Base;
 using JakubKastner.MusicReleases.Objects;
-using JakubKastner.MusicReleases.Store.FilterStore;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterUrlService(IState<SpotifyFilterState> spotifyFilterState) : ISpotifyFilterUrlService
+public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService) : ISpotifyFilterUrlService
 {
-	private readonly IState<SpotifyFilterState> _spotifyFilterState = spotifyFilterState;
+	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 	private const string _urlNull = "_";
 
-	private SpotifyFilter Filter => _spotifyFilterState.Value.Filter;
+	private SpotifyFilter Filter => _spotifyFilterService.Filter;
 
 	private string GetFilterUrl(string? releaseTypeUrl, string? yearUrl, string? monthUrl, string? artistUrl)
 	{

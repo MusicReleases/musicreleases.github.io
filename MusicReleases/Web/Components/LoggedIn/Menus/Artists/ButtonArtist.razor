@@ -1,13 +1,10 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.Extensions
+﻿@using JakubKastner.Extensions
+@using JakubKastner.MusicReleases.Objects
 @using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Store.FilterStore
 
-@inherits FluxorComponent
+@implements IDisposable
 
 @inject NavigationManager NavManager
-@inject IState<SpotifyFilterState> SpotifyFilterState
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject ISpotifyFilterService SpotifyFilterService
 

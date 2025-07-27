@@ -13,11 +13,27 @@ public partial class ButtonRelease
 	private string ButtonClass => ReleaseTypeString.ToLower() + (ReleaseFilter ? " active" : string.Empty);
 	private string IconClass => Icons.GetIconForRelease(ReleaseType);
 
-	private bool ReleaseFilter => SpotifyFilterState.Value.Filter.ReleaseType == ReleaseType;
+	private bool ReleaseFilter => SpotifyFilterService.Filter.ReleaseType == ReleaseType;
+
+	protected override void OnInitialized()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
+		base.OnInitialized();
+	}
+
+	public void Dispose()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+	}
+
+	private void OnFilterOrDataChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
 
 	private void DisplayReleases()
 	{
-		var url = SpotifyFilterService.GetFilterUrl(ReleaseType);
+		var url = SpotifyFilterUrlService.GetFilterUrl(ReleaseType);
 		NavManager.NavigateTo(url);
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Base;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
-using static JakubKastner.MusicReleases.Store.FilterStore.SpotifyFilterAction;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
@@ -72,8 +71,7 @@ public partial class Releases
 
 		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId);
 		_type = filter.ReleaseType;
-
-		Dispatcher.Dispatch(new SetFiltersAction(filter));
+		SpotifyFilterService.SetFilter(filter);
 		GetReleases();
 	}
 

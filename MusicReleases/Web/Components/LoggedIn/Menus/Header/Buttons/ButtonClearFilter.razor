@@ -1,9 +1,8 @@
-﻿@using Fluxor
-@using JakubKastner.MusicReleases.Services.ApiServices
+﻿@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.BaseServices
 
 @inject IApiLoginService ApiLoginService
-@inject ISpotifyFilterUrlService SpotifyFilterService
+@inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject NavigationManager NavManager
 
 @if (!ApiLoginService.IsUserLoggedIn())

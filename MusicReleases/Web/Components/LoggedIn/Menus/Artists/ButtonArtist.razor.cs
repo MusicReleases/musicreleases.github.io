@@ -10,7 +10,22 @@ public partial class ButtonArtist
 	[Parameter, EditorRequired]
 	public required string ArtistName { get; set; }
 	private string? ButtonClass => ArtistFilter ? "active" : string.Empty;
-	private bool ArtistFilter => SpotifyFilterState.Value.Filter.Artist == ArtistId;
+	private bool ArtistFilter => SpotifyFilterService.Filter.Artist == ArtistId;
+
+	protected override void OnInitialized()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
+		base.OnInitialized();
+	}
+	public void Dispose()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+	}
+
+	private void OnFilterOrDataChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
 
 	private void FilterArtist()
 	{

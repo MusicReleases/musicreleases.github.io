@@ -1,7 +1,5 @@
 ﻿@page "/releases/{type?}/{year?}/{month?}/{artistId?}"
 
-@using Fluxor
-@using Fluxor.Blazor.Web.Components
 @using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 @using JakubKastner.MusicReleases.Services.BaseServices
@@ -14,9 +12,7 @@
 
 @inject ISpotifyWorkflowService SpotifyWorkflowService
 @inject IApiLoginService ApiLoginService
-@inject IState<SpotifyFilterState> SpotifyFilterState
 @inject IFilterService FilterService
-@inject IDispatcher Dispatcher
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ILoaderService LoaderService

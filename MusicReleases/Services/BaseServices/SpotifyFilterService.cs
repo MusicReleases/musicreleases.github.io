@@ -1,15 +1,13 @@
-﻿using Fluxor;
-using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Store.FilterStore;
+﻿using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Objects;
 using JakubKastner.SpotifyApi.Objects;
 using System.Diagnostics;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterService(IState<SpotifyFilterState> filterState) : ISpotifyFilterService
+public class SpotifyFilterService() : ISpotifyFilterService
 {
-	private readonly IState<SpotifyFilterState> _filterState = filterState;
-
+	public SpotifyFilter Filter { get; private set; } = new();
 
 	private ISet<SpotifyRelease>? _allReleases = null;
 	private ISet<SpotifyArtist>? _allArtists = null;
@@ -66,31 +64,29 @@ public class SpotifyFilterService(IState<SpotifyFilterState> filterState) : ISpo
 			throw new NullReferenceException(nameof(_allReleases));
 		}
 
-		var filter = _filterState.Value.Filter;
-
 		// releases by type
-		var releasesByType = _allReleases.Where(r => r.ReleaseType == filter.ReleaseType);
+		var releasesByType = _allReleases.Where(r => r.ReleaseType == Filter.ReleaseType);
 
 		// releases by artist
 		var releasesByTypeArtist
-			= filter.Artist.IsNullOrEmpty()
+			= Filter.Artist.IsNullOrEmpty()
 			? releasesByType
-			: releasesByType.Where(r => r.Artists.Any(a => a.Id == filter.Artist));
+			: releasesByType.Where(r => r.Artists.Any(a => a.Id == Filter.Artist));
 
 
 		// releases by date
 		IEnumerable<SpotifyRelease>? releasesByTypeArtistDate = null;
 		IEnumerable<SpotifyRelease>? releasesByTypeDate = null;
 
-		if (filter.Month.HasValue)
+		if (Filter.Month.HasValue)
 		{
-			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Month == filter.Month.Value.Month && r.ReleaseDate.Year == filter.Month.Value.Year);
-			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Month == filter.Month.Value.Month && r.ReleaseDate.Year == filter.Month.Value.Year);
+			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Month == Filter.Month.Value.Month && r.ReleaseDate.Year == Filter.Month.Value.Year);
+			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Month == Filter.Month.Value.Month && r.ReleaseDate.Year == Filter.Month.Value.Year);
 		}
-		else if (filter.Year.HasValue)
+		else if (Filter.Year.HasValue)
 		{
-			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Year == filter.Year);
-			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Year == filter.Year);
+			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Year == Filter.Year);
+			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Year == Filter.Year);
 		}
 		else
 		{
@@ -105,8 +101,6 @@ public class SpotifyFilterService(IState<SpotifyFilterState> filterState) : ISpo
 
 	private void FilterArtists(ISet<SpotifyRelease> releasesByTypeDate)
 	{
-		var filter = _filterState.Value.Filter;
-
 		if (_allArtists is null)
 		{
 			FilteredArtists = null;
@@ -135,5 +129,10 @@ public class SpotifyFilterService(IState<SpotifyFilterState> filterState) : ISpo
 			);
 
 		FilteredYearMonth = filteredYearMonth;
+	}
+
+	public void SetFilter(SpotifyFilter filter)
+	{
+		Filter = filter;
 	}
 }

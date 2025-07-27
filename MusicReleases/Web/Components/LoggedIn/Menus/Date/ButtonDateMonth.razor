@@ -1,13 +1,10 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Store.FilterStore
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
 
-@inherits FluxorComponent
+@implements IDisposable
 
 @inject NavigationManager NavManager
-@inject IState<SpotifyFilterState> SpotifyFilterState
-@inject ISpotifyFilterUrlService SpotifyFilterService
+@inject ISpotifyFilterUrlService SpotifyFilterUrlService
+@inject ISpotifyFilterService SpotifyFilterService
 
 <button class="month @ButtonClass" @onclick="FilterMonth">
 	@Month
