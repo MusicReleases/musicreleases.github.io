@@ -1,5 +1,4 @@
 using Blazored.LocalStorage;
-using IndexedDB.Blazor;
 using JakubKastner.MusicReleases;
 using JakubKastner.MusicReleases.Database;
 using JakubKastner.SpotifyApi;
@@ -33,8 +32,6 @@ builder.Services.AddBlazoredLocalStorage(config =>
 {
 	config.JsonSerializerOptions.WriteIndented = true;
 });
-
-builder.Services.AddScoped<IIndexedDbFactory, IndexedDbFactory>();
 
 // indexed db
 builder.Services.AddIndexedDbService();
