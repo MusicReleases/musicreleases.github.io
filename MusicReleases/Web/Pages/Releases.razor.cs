@@ -19,14 +19,8 @@ public partial class Releases
 
 	private ReleaseType _type;
 
-	/*private SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? ReleasesUserList => SpotifyReleaseState.Value.List;
-	private ISet<SpotifyRelease>? ReleasesList => ReleasesUserList?.List is null ? null : new SortedSet<SpotifyRelease>(ReleasesUserList.List.Where(x => x.ReleaseType == _type));*/
-
 	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
-
-	//private bool Error => SpotifyReleaseState.Value.Error;
 	private bool Loading => LoaderService.IsLoading(Enums.LoadingType.Releases);
-	//private bool ErrorArtists => SpotifyArtistState.Value.Error;
 	private bool LoadingArtists => LoaderService.IsLoading(Enums.LoadingType.Artists);
 
 

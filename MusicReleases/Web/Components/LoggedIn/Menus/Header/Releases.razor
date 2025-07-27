@@ -1,16 +1,11 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
 
-@inherits FluxorComponent
+@implements IDisposable
 
-@inject IState<SpotifyArtistState> SpotifyArtistState
-@inject IState<SpotifyReleaseState> SpotifyReleaseState
-
+@inject ILoaderService LoaderService
 
 <div class="menu filter scroll buttons-rounded-m">
-	@if (!SpotifyArtistState.Value.LoadingAny() && !SpotifyReleaseState.Value.LoadingAny())
+	@if (!Loading)
 	{
 		<ReleasesFilters></ReleasesFilters>
 		<ReleasesActions></ReleasesActions>

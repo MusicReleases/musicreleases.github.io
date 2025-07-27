@@ -3,7 +3,6 @@
 @using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 @using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
 @using JakubKastner.MusicReleases.Store.FilterStore
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
@@ -12,7 +11,6 @@
 @inherits FluxorComponent
 @implements IDisposable
 
-@inject IState<SpotifyArtistState> SpotifyArtistState
 @inject IApiLoginService ApiLoginService
 @inject IState<SpotifyFilterState> SpotifyFilterState
 @inject ISpotifyFilterService SpotifyFilterService

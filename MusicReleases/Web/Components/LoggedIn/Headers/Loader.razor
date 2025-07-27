@@ -1,5 +1,7 @@
 ﻿@using JakubKastner.MusicReleases.Services.BaseServices
 
+@implements IDisposable
+
 @inject ILoaderService LoaderService
 
 <div class="header loader @LoaderService.LoadingClass"></div>

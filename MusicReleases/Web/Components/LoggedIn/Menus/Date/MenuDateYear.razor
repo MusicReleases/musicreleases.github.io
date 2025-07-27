@@ -1,18 +1,10 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Services.ApiServices
+﻿@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
 @using JakubKastner.MusicReleases.Store.FilterStore
 
-@inherits FluxorComponent
 @implements IDisposable
 
 @inject IApiLoginService ApiLoginService
-@inject IState<SpotifyArtistState> SpotifyArtistState
-@inject IState<SpotifyReleaseState> SpotifyReleaseState
-@inject IState<SpotifyFilterState> SpotifyFilterState
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ILoaderService LoaderService
 

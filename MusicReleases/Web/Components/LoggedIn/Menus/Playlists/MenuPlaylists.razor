@@ -4,6 +4,8 @@
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 @using static JakubKastner.MusicReleases.Base.Enums
 
+@implements IDisposable
+
 @inject IApiLoginService ApiLoginService
 @inject ISpotifyPlaylistsService SpotifyPlaylistsService
 @inject ILoaderService LoaderService

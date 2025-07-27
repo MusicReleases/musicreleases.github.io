@@ -1,21 +1,16 @@
-﻿@using Fluxor
-@using Fluxor.Blazor.Web.Components
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyArtistStore
-@using JakubKastner.MusicReleases.Store.ApiStore.SpotifyStore.SpotifyReleaseStore
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
 
-@inherits FluxorComponent
+@implements IDisposable
 
-@inject IState<SpotifyArtistState> SpotifyArtistState
-@inject IState<SpotifyReleaseState> SpotifyReleaseState
-
+@inject ILoaderService LoaderService
 
 <div class="menu artists buttons-rounded-l">
 	<ButtonTitle Type="_type" DisplayTitle="_displayTitle">
 		<i class="fas fa-users" aria-hidden="true"></i>
 	</ButtonTitle>
 
-	@if (!SpotifyArtistState.Value.LoadingAny() && !SpotifyReleaseState.Value.LoadingAny())
+	@if (!Loading)
 	{
 		<ButtonSearch Type="_type" OnSearching="DisplayTitle">
 		</ButtonSearch>

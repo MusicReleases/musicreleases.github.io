@@ -1,6 +1,8 @@
 ﻿@using JakubKastner.MusicReleases.Services.BaseServices
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
 
+@implements IDisposable
+
 @inject ILoaderService LoaderService
 
 <div class="menu playlists buttons-rounded-l">
@@ -8,7 +10,6 @@
 	<ButtonTitle Type="_type" DisplayTitle="_displayTitle">
 		<i class="fas fa-bars" aria-hidden="true"></i>
 	</ButtonTitle>
-	@Loading.ToString()
 	@if (!Loading)
 	{
 		<ButtonSearch Type="_type" OnSearching="DisplayTitle">
