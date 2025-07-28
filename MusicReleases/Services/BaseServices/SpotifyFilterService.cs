@@ -67,36 +67,77 @@ public class SpotifyFilterService() : ISpotifyFilterService
 		// releases by type
 		var releasesByType = _allReleases.Where(r => r.ReleaseType == Filter.ReleaseType);
 
-		// releases by artist
-		var releasesByTypeArtist
-			= Filter.Artist.IsNullOrEmpty()
-			? releasesByType
-			: releasesByType.Where(r => r.Artists.Any(a => a.Id == Filter.Artist));
+		// releases by advanced filter
+		var releasesByTypeAdvanced = FilterReleasesAdvanced(releasesByType);
 
+		// releases by artist
+		var releasesByTypeAdvancedArtist
+			= Filter.Artist.IsNullOrEmpty()
+			? releasesByTypeAdvanced
+			: releasesByTypeAdvanced.Where(r => r.Artists.Any(a => a.Id == Filter.Artist));
 
 		// releases by date
-		IEnumerable<SpotifyRelease>? releasesByTypeArtistDate = null;
-		IEnumerable<SpotifyRelease>? releasesByTypeDate = null;
+		IEnumerable<SpotifyRelease>? releasesByTypeAdvancedArtistDate = null;
+		IEnumerable<SpotifyRelease>? releasesByTypeAdvancedDate = null;
 
 		if (Filter.Month.HasValue)
 		{
-			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Month == Filter.Month.Value.Month && r.ReleaseDate.Year == Filter.Month.Value.Year);
-			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Month == Filter.Month.Value.Month && r.ReleaseDate.Year == Filter.Month.Value.Year);
+			releasesByTypeAdvancedArtistDate = releasesByTypeAdvancedArtist.Where(r => r.ReleaseDate.Month == Filter.Month.Value.Month && r.ReleaseDate.Year == Filter.Month.Value.Year);
+			releasesByTypeAdvancedDate = releasesByTypeAdvanced.Where(r => r.ReleaseDate.Month == Filter.Month.Value.Month && r.ReleaseDate.Year == Filter.Month.Value.Year);
 		}
 		else if (Filter.Year.HasValue)
 		{
-			releasesByTypeArtistDate = releasesByTypeArtist.Where(r => r.ReleaseDate.Year == Filter.Year);
-			releasesByTypeDate = releasesByType.Where(r => r.ReleaseDate.Year == Filter.Year);
+			releasesByTypeAdvancedArtistDate = releasesByTypeAdvancedArtist.Where(r => r.ReleaseDate.Year == Filter.Year);
+			releasesByTypeAdvancedDate = releasesByTypeAdvanced.Where(r => r.ReleaseDate.Year == Filter.Year);
 		}
 		else
 		{
-			releasesByTypeArtistDate = releasesByTypeArtist;
-			releasesByTypeDate = releasesByType;
+			releasesByTypeAdvancedArtistDate = releasesByTypeAdvancedArtist;
+			releasesByTypeAdvancedDate = releasesByTypeAdvanced;
 		}
 
-		FilteredReleases = [.. releasesByTypeArtistDate];
+		FilteredReleases = [.. releasesByTypeAdvancedArtistDate];
 
-		return (releasesByTypeDate.ToHashSet(), releasesByTypeArtist.ToHashSet());
+		return (releasesByTypeAdvancedDate.ToHashSet(), releasesByTypeAdvancedArtist.ToHashSet());
+	}
+
+	private IEnumerable<SpotifyRelease> FilterReleasesAdvanced(IEnumerable<SpotifyRelease> releasesByType)
+	{
+		var releasesByTypeAdvanced = releasesByType;
+
+		if (!Filter.Advanced.Tracks)
+		{
+			// display only eps
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.TotalTracks > 1);
+		}
+		if (!Filter.Advanced.EPs)
+		{
+			// display only tracks
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.TotalTracks == 1);
+		}
+		if (!Filter.Advanced.Remixes)
+		{
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => !r.Name.Contains("remix", StringComparison.CurrentCultureIgnoreCase));
+		}
+		// TODO filter followed artists
+		/*if (!Filter.Advanced.FollowedArtists)
+		{
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.Artists.Any(a => a.IsFollowed));
+		}*/
+		if (!Filter.Advanced.VariousArtists)
+		{
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => !r.Artists.Any(a => a.Name == "Various Artists"));
+		}
+		// TODO filter saved in library
+		/*if (Filter.Advanced.InLibrary)
+		{
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.IsInLibrary);
+		}*/
+		if (Filter.Advanced.OnlyNew)
+		{
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.New);
+		}
+		return releasesByTypeAdvanced;
 	}
 
 	private void FilterArtists(ISet<SpotifyRelease> releasesByTypeDate)

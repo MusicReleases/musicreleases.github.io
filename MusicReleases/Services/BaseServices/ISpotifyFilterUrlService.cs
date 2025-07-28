@@ -12,5 +12,6 @@ public interface ISpotifyFilterUrlService
 	string GetFilterUrl(int? year, int? month);
 	string GetFilterUrl(SpotifyEnums.ReleaseType releaseType);
 	string GetFilterUrl(string? artist);
-	SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist);
+	string GetFilterUrl(ReleasesFilters advancedFilterType, bool advancedFilterActive);
+	SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter);
 }

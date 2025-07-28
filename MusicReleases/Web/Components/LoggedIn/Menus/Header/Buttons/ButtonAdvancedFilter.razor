@@ -1,8 +1,11 @@
 ﻿@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.BaseServices
 
+@implements IDisposable
+
 @inject IApiLoginService ApiLoginService
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
+@inject ISpotifyFilterService SpotifyFilterService
 @inject NavigationManager NavManager
 
 @if (!ApiLoginService.IsUserLoggedIn())
@@ -11,8 +14,7 @@
 }
 else
 {
-	<button type="button" class="clear" title="Clear filter" @onclick="ClearFilter">
-		<i class="fas fa-times" aria-hidden="true"></i>
+	<button class="tracks @ButtonClass" title="@ButtonTitle" @onclick="ChangeFilter">
 		@ChildContent
 	</button>
 }

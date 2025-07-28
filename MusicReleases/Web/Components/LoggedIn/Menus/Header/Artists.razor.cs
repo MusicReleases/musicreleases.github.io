@@ -24,6 +24,7 @@ public partial class Artists
 	{
 		InvokeAsync(StateHasChanged);
 	}
+
 	private void DisplayTitle(bool displayTitle)
 	{
 		_displayTitle = displayTitle;

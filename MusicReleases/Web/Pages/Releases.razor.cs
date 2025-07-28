@@ -1,4 +1,6 @@
-﻿using JakubKastner.MusicReleases.Base;
+﻿using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Base;
+using JakubKastner.MusicReleases.Objects;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
@@ -9,12 +11,45 @@ public partial class Releases
 {
 	[Parameter]
 	public string? Type { get; set; }
+
 	[Parameter]
 	public string? Year { get; set; }
+
 	[Parameter]
 	public string? Month { get; set; }
+
 	[Parameter]
 	public string? ArtistId { get; set; }
+
+
+	// this names must be same as in the URL and in Enums.ReleasesFilters
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? Tracks { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? EPs { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? Remixes { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? FollowedArtists { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? VariousArtists { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? InLibrary { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? OnlyNew { get; set; }
 
 	private ReleaseType _type;
 
@@ -68,11 +103,28 @@ public partial class Releases
 			// TODO but if is not here, code just continue and doesnt get the right Type (for example)
 			return;
 		}*/
+		var tracks = IsFilterActive(Tracks);
+		var eps = IsFilterActive(EPs);
+		var remixes = IsFilterActive(Remixes);
+		var followedArtists = IsFilterActive(FollowedArtists);
+		var variousArtists = IsFilterActive(VariousArtists);
+		var inLibrary = IsFilterActive(InLibrary);
+		var onlyNew = IsFilterActive(OnlyNew);
 
-		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId);
+
+
+
+		var advancedFilter = new SpotifyFilterAdvanced(tracks, eps, remixes, followedArtists, variousArtists, inLibrary, onlyNew);
+		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId, advancedFilter);
 		_type = filter.ReleaseType;
 		SpotifyFilterService.SetFilter(filter);
 		GetReleases();
+	}
+
+	private static bool IsFilterActive(string? filter)
+	{
+		var active = filter is not null && (filter.IsNullOrEmpty() || bool.TryParse(filter, out var val) && val);
+		return active;
 	}
 
 	private void GetReleases()

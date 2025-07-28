@@ -1,31 +1,33 @@
-﻿<button class="clear" title="Clear filter">
-	<i class="fas fa-times" aria-hidden="true"></i>
-</button>
+﻿@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+@using static JakubKastner.MusicReleases.Base.Enums
 
-<button class="tracks active" title="Show released Tracks">
+<ButtonClearFilter Type="MenuButtonsType.Releases">
+</ButtonClearFilter>
+
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Tracks" Title="released tracks">
 	Tracks
-</button>
+</ButtonAdvancedFilter>
 
-<button class="eps active" title="Show released EPs">
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.EPs" Title="released EPs">
 	EPs
-</button>
+</ButtonAdvancedFilter>
 
-<button class="remixes active" title="Show released Remixes">
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Remixes" Title="released remixes">
 	Remixes
-</button>
+</ButtonAdvancedFilter>
 
-<button class="artists" title="Hide releases from the artist I am following">
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.FollowedArtists" Title="releases from the artists I am following">
 	Followed artists
-</button>
+</ButtonAdvancedFilter>
 
-<button class="various-artists active" title="Show releases from Various artists">
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.VariousArtists" Title="releases from various artists">
 	Various artists
-</button>
+</ButtonAdvancedFilter>
 
-<button class="saved" title="Show saved releases in my library">
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.InLibrary" Title="saved releases in library">
 	In library
-</button>
+</ButtonAdvancedFilter>
 
-<button class="new" title="Show only new releases">
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.OnlyNew" Title="only new releases">
 	Only new
-</button>
+</ButtonAdvancedFilter>

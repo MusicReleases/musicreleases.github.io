@@ -22,6 +22,7 @@ public static class Enums
 		Private,
 	}
 
+	// this names must be same as in the URL and in Enums.ReleasesFilters
 	public enum ReleasesFilters
 	{
 		Clear,
