@@ -11,6 +11,8 @@ public partial class ButtonClearFilter
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
+	private string ButtonTitle => Type == MenuButtonsType.Releases ? "Default filter" : "Clear filter";
+
 	private void ClearFilter()
 	{
 		var url = SpotifyFilterUrlService.ClearFilter(Type);

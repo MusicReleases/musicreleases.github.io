@@ -1,5 +1,6 @@
 ﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Objects;
+using JakubKastner.SpotifyApi.Base;
 using JakubKastner.SpotifyApi.Objects;
 using System.Diagnostics;
 
@@ -104,38 +105,57 @@ public class SpotifyFilterService() : ISpotifyFilterService
 	private IEnumerable<SpotifyRelease> FilterReleasesAdvanced(IEnumerable<SpotifyRelease> releasesByType)
 	{
 		var releasesByTypeAdvanced = releasesByType;
-
-		if (!Filter.Advanced.Tracks)
+		if (Filter.ReleaseType == SpotifyEnums.ReleaseType.Tracks || Filter.ReleaseType == SpotifyEnums.ReleaseType.Appears)
 		{
-			// display only eps
-			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.TotalTracks > 1);
+			// tracks and eps filter only for tracks and appears
+			if (!Filter.Advanced.Tracks)
+			{
+				// display only eps
+				releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.TotalTracks > 1);
+			}
+			if (!Filter.Advanced.EPs)
+			{
+				// display only tracks
+				releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.TotalTracks == 1);
+			}
 		}
-		if (!Filter.Advanced.EPs)
+		if (!Filter.Advanced.NotRemixes)
 		{
-			// display only tracks
-			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.TotalTracks == 1);
+			// display only remixes
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.Name.Contains("remix", StringComparison.CurrentCultureIgnoreCase) || r.Name.Contains("rmx", StringComparison.CurrentCultureIgnoreCase));
 		}
 		if (!Filter.Advanced.Remixes)
 		{
-			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => !r.Name.Contains("remix", StringComparison.CurrentCultureIgnoreCase));
+			// display only not remixes
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => !r.Name.Contains("remix", StringComparison.CurrentCultureIgnoreCase) && !r.Name.Contains("rmx", StringComparison.CurrentCultureIgnoreCase));
 		}
-		// TODO filter followed artists
-		/*if (!Filter.Advanced.FollowedArtists)
+		if (!Filter.Advanced.SavedReleases)
 		{
-			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.Artists.Any(a => a.IsFollowed));
-		}*/
+			// TODO display only releases from followed artists
+		}
+		if (!Filter.Advanced.FollowedArtists)
+		{
+			// TODO display only saved releases
+		}
+		if (!Filter.Advanced.NotVariousArtists)
+		{
+			// display only releases with various artists
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.Artists.Any(a => a.Name == "Various Artists"));
+		}
 		if (!Filter.Advanced.VariousArtists)
 		{
+			// display only releases without various artists
 			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => !r.Artists.Any(a => a.Name == "Various Artists"));
 		}
-		// TODO filter saved in library
-		/*if (Filter.Advanced.InLibrary)
+		if (!Filter.Advanced.OldReleases)
 		{
-			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.IsInLibrary);
-		}*/
-		if (Filter.Advanced.OnlyNew)
-		{
+			// display only new releases
 			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => r.New);
+		}
+		if (!Filter.Advanced.NewReleases)
+		{
+			// display only old releases
+			releasesByTypeAdvanced = releasesByTypeAdvanced.Where(r => !r.New);
 		}
 		return releasesByTypeAdvanced;
 	}

@@ -28,11 +28,14 @@ public static class Enums
 		Clear,
 		Tracks,
 		EPs,
+		NotRemixes,
 		Remixes,
 		FollowedArtists,
+		NotVariousArtists,
 		VariousArtists,
-		InLibrary,
-		OnlyNew,
+		SavedReleases,
+		OldReleases,
+		NewReleases,
 	}
 
 	public enum LocalStorageKey

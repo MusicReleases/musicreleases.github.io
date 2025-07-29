@@ -52,7 +52,7 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService)
 
 		if (advancedFilterType.HasValue && advancedFilterType.Value == ReleasesFilters.Clear)
 		{
-			return urlNull;
+			return GetAdvancedFilterUrlDefault();
 		}
 
 		// get url from current advanced filter
@@ -60,25 +60,57 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService)
 
 		var tracks = advancedFilterType == ReleasesFilters.Tracks ? advancedFilterActiveUrl : (Filter.Advanced.Tracks == true ? ReleasesFilters.Tracks.ToString().ToLower() : urlNull);
 		var eps = advancedFilterType == ReleasesFilters.EPs ? advancedFilterActiveUrl : (Filter.Advanced.EPs == true ? ReleasesFilters.EPs.ToString().ToLower() : urlNull);
+		var notRemixes = advancedFilterType == ReleasesFilters.NotRemixes ? advancedFilterActiveUrl : (Filter.Advanced.NotRemixes == true ? ReleasesFilters.NotRemixes.ToString().ToLower() : urlNull);
 		var remixes = advancedFilterType == ReleasesFilters.Remixes ? advancedFilterActiveUrl : (Filter.Advanced.Remixes == true ? ReleasesFilters.Remixes.ToString().ToLower() : urlNull);
 		var followedArtists = advancedFilterType == ReleasesFilters.FollowedArtists ? advancedFilterActiveUrl : (Filter.Advanced.FollowedArtists == true ? ReleasesFilters.FollowedArtists.ToString().ToLower() : urlNull);
+		var savedReleases = advancedFilterType == ReleasesFilters.SavedReleases ? advancedFilterActiveUrl : (Filter.Advanced.SavedReleases == true ? ReleasesFilters.SavedReleases.ToString().ToLower() : urlNull);
+		var notVariousArtists = advancedFilterType == ReleasesFilters.NotVariousArtists ? advancedFilterActiveUrl : (Filter.Advanced.NotVariousArtists == true ? ReleasesFilters.NotVariousArtists.ToString().ToLower() : urlNull);
 		var variousArtists = advancedFilterType == ReleasesFilters.VariousArtists ? advancedFilterActiveUrl : (Filter.Advanced.VariousArtists == true ? ReleasesFilters.VariousArtists.ToString().ToLower() : urlNull);
-		var inLibrary = advancedFilterType == ReleasesFilters.InLibrary ? advancedFilterActiveUrl : (Filter.Advanced.InLibrary == true ? ReleasesFilters.InLibrary.ToString().ToLower() : urlNull);
-		var onlyNew = advancedFilterType == ReleasesFilters.OnlyNew ? advancedFilterActiveUrl : (Filter.Advanced.OnlyNew == true ? ReleasesFilters.OnlyNew.ToString().ToLower() : urlNull);
+		var newReleases = advancedFilterType == ReleasesFilters.NewReleases ? advancedFilterActiveUrl : (Filter.Advanced.NewReleases == true ? ReleasesFilters.NewReleases.ToString().ToLower() : urlNull);
+		var oldReleases = advancedFilterType == ReleasesFilters.OldReleases ? advancedFilterActiveUrl : (Filter.Advanced.OldReleases == true ? ReleasesFilters.OldReleases.ToString().ToLower() : urlNull);
 
 		var urlParams = new List<string>
 		{
 			tracks,
 			eps,
+			notRemixes,
 			remixes,
 			followedArtists,
+			savedReleases,
+			notVariousArtists,
 			variousArtists,
-			inLibrary,
-			onlyNew,
-		};
+			newReleases,
+			oldReleases,
+		}.Where(x => x.IsNotNullOrEmpty());
 
-		var url = string.Join(urlSeparator, urlParams);
-		return $"?{url}";
+		if (urlParams.Any())
+		{
+			var url = string.Join(urlSeparator, urlParams);
+			return $"?{url}";
+		}
+
+		// empty advanced filter
+		return GetAdvancedFilterUrlDefault();
+	}
+
+	private string GetAdvancedFilterUrlDefault()
+	{
+		const string urlSeparator = "&";
+		var urlParams = new List<string>
+		{
+			ReleasesFilters.Tracks.ToString().ToLower(),
+			ReleasesFilters.EPs.ToString().ToLower(),
+			ReleasesFilters.NotRemixes.ToString().ToLower(),
+			ReleasesFilters.Remixes.ToString().ToLower(),
+			ReleasesFilters.FollowedArtists.ToString().ToLower(),
+			//ReleasesFilters.SavedReleases.ToString().ToLower(),
+			ReleasesFilters.NotVariousArtists.ToString().ToLower(),
+			ReleasesFilters.VariousArtists.ToString().ToLower(),
+			ReleasesFilters.NewReleases.ToString().ToLower(),
+			ReleasesFilters.OldReleases.ToString().ToLower(),
+		};
+		var urlDefault = string.Join(urlSeparator, urlParams);
+		return $"?{urlDefault}";
 	}
 
 	public string GetFilterUrl()

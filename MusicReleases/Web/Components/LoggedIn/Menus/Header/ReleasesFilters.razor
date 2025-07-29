@@ -1,18 +1,32 @@
-﻿@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+@using JakubKastner.SpotifyApi.Base
 @using static JakubKastner.MusicReleases.Base.Enums
+
+@implements IDisposable
+
+@inject ISpotifyFilterService SpotifyFilterService
 
 <ButtonClearFilter Type="MenuButtonsType.Releases">
 </ButtonClearFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Tracks" Title="released tracks">
-	Tracks
+@if (SpotifyFilterService.Filter.ReleaseType == SpotifyEnums.ReleaseType.Tracks || SpotifyFilterService.Filter.ReleaseType == SpotifyEnums.ReleaseType.Appears)
+{
+	<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Tracks" Title="tracks">
+		Tracks
+	</ButtonAdvancedFilter>
+
+	<ButtonAdvancedFilter Type="Enums.ReleasesFilters.EPs" Title="EPs">
+		EPs
+	</ButtonAdvancedFilter>
+}
+
+
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.NotRemixes" Title="not remixes">
+	Not remixes
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.EPs" Title="released EPs">
-	EPs
-</ButtonAdvancedFilter>
-
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Remixes" Title="released remixes">
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Remixes" Title="remixes">
 	Remixes
 </ButtonAdvancedFilter>
 
@@ -20,14 +34,22 @@
 	Followed artists
 </ButtonAdvancedFilter>
 
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.SavedReleases" Title="saved releases in library">
+	Saved releases
+</ButtonAdvancedFilter>
+
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.NotVariousArtists" Title="releases from not various artists">
+	Not various artists
+</ButtonAdvancedFilter>
+
 <ButtonAdvancedFilter Type="Enums.ReleasesFilters.VariousArtists" Title="releases from various artists">
 	Various artists
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.InLibrary" Title="saved releases in library">
-	In library
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.NewReleases" Title="new releases">
+	New releases
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.OnlyNew" Title="only new releases">
-	Only new
+<ButtonAdvancedFilter Type="Enums.ReleasesFilters.OldReleases" Title="old releases">
+	Old releases
 </ButtonAdvancedFilter>

@@ -1,4 +1,5 @@
 ﻿using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
@@ -8,13 +9,14 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyFilterUrlService filterUrlService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;
+	private readonly ISpotifyFilterUrlService _filterUrlService = filterUrlService;
 
 	public ServiceType GetServiceType()
 	{
@@ -43,12 +45,13 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserServic
 				if (userLogged)
 				{
 					// navigate to releases page
-					// TODO change release type
 					if (!localStorageUser)
 					{
 						await SaveUser();
 					}
-					_navManager.NavigateTo("releases/albums");
+
+					var url = _filterUrlService.GetFilterUrl();
+					_navManager.NavigateTo(url);
 				}
 				else
 				{
@@ -83,12 +86,13 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserServic
 		if (userLogged)
 		{
 			// navigate to releases page
-			// TODO change release type
 			if (!localStorageUser)
 			{
 				await SaveUser();
 			}
-			_navManager.NavigateTo("releases/albums");
+
+			var url = _filterUrlService.GetFilterUrl();
+			_navManager.NavigateTo(url);
 		}
 		else
 		{

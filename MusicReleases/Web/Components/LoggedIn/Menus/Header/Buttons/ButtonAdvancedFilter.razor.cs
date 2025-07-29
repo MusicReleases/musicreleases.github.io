@@ -17,7 +17,7 @@ public partial class ButtonAdvancedFilter
 
 	private bool IsActive => IsFilterActive();
 	private string ButtonClass => IsActive ? "active" : string.Empty;
-	private string ButtonTitle => IsActive ? "Disable " + Title + " filter" : "Filter " + Title;
+	private string ButtonTitle => IsActive ? "Hide " + Title : "Show " + Title;
 
 	protected override void OnInitialized()
 	{
@@ -44,6 +44,7 @@ public partial class ButtonAdvancedFilter
 	private bool IsFilterActive()
 	{
 		// this names must be same as in the URL and in Enums.ReleasesFilters
+		var name = Type.ToString();
 		var filterProperty = SpotifyFilterService.Filter.Advanced.GetType().GetProperty(Type.ToString());
 		if (filterProperty is null || filterProperty.PropertyType != typeof(bool))
 		{

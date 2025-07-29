@@ -33,6 +33,10 @@ public partial class Releases
 
 	[Parameter]
 	[SupplyParameterFromQuery]
+	public string? NotRemixes { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
 	public string? Remixes { get; set; }
 
 	[Parameter]
@@ -41,15 +45,25 @@ public partial class Releases
 
 	[Parameter]
 	[SupplyParameterFromQuery]
+	public string? SavedReleases { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? NotVariousArtists { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
 	public string? VariousArtists { get; set; }
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public string? InLibrary { get; set; }
+	public string? NewReleases { get; set; }
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public string? OnlyNew { get; set; }
+	public string? OldReleases { get; set; }
+
+
 
 	private ReleaseType _type;
 
@@ -105,16 +119,16 @@ public partial class Releases
 		}*/
 		var tracks = IsFilterActive(Tracks);
 		var eps = IsFilterActive(EPs);
+		var notRemixes = IsFilterActive(NotRemixes);
 		var remixes = IsFilterActive(Remixes);
 		var followedArtists = IsFilterActive(FollowedArtists);
+		var savedReleases = IsFilterActive(SavedReleases);
+		var notVariousArtists = IsFilterActive(NotVariousArtists);
 		var variousArtists = IsFilterActive(VariousArtists);
-		var inLibrary = IsFilterActive(InLibrary);
-		var onlyNew = IsFilterActive(OnlyNew);
+		var newReleases = IsFilterActive(NewReleases);
+		var oldReleases = IsFilterActive(OldReleases);
 
-
-
-
-		var advancedFilter = new SpotifyFilterAdvanced(tracks, eps, remixes, followedArtists, variousArtists, inLibrary, onlyNew);
+		var advancedFilter = new SpotifyFilterAdvanced(tracks, eps, notRemixes, remixes, followedArtists, savedReleases, notVariousArtists, variousArtists, newReleases, oldReleases);
 		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId, advancedFilter);
 		_type = filter.ReleaseType;
 		SpotifyFilterService.SetFilter(filter);

@@ -5,24 +5,30 @@ public class SpotifyFilterAdvanced
 	// this names must be same as in the URL and in Enums.ReleasesFilters
 	public bool Tracks { get; init; } = true;
 	public bool EPs { get; init; } = true;
-	public bool Remixes { get; init; } = false;
+	public bool NotRemixes { get; init; } = true;
+	public bool Remixes { get; init; } = true;
 	public bool FollowedArtists { get; init; } = true;
-	public bool VariousArtists { get; init; } = false;
-	public bool InLibrary { get; init; } = false;
-	public bool OnlyNew { get; init; } = false;
+	public bool SavedReleases { get; init; } = false;
+	public bool NotVariousArtists { get; init; } = true;
+	public bool VariousArtists { get; init; } = true;
+	public bool NewReleases { get; init; } = true;
+	public bool OldReleases { get; init; } = true;
 
 	public SpotifyFilterAdvanced()
 	{ }
 
 
-	public SpotifyFilterAdvanced(bool tracks, bool eps, bool remixes, bool followedArtists, bool variousArtists, bool library, bool newReleases)
+	public SpotifyFilterAdvanced(bool tracks, bool eps, bool notRemixes, bool remixes, bool followedArtists, bool savedReleases, bool notVariousArtists, bool variousArtists, bool newReleases, bool oldReleases)
 	{
 		Tracks = tracks;
 		EPs = eps;
+		NotRemixes = notRemixes;
 		Remixes = remixes;
 		FollowedArtists = followedArtists;
+		SavedReleases = savedReleases;
+		NotVariousArtists = notVariousArtists;
 		VariousArtists = variousArtists;
-		InLibrary = library;
-		OnlyNew = newReleases;
+		NewReleases = newReleases;
+		OldReleases = oldReleases;
 	}
 }
