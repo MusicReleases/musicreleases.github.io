@@ -4,7 +4,6 @@ using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Base;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
-using System.Diagnostics;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
@@ -56,18 +55,11 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 			throw new NullReferenceException(nameof(Filter));
 		}
 
-
-		var sw = Stopwatch.StartNew();
-
-
 		var (filteredReleasesByTypeDate, filteredReleasesByTypeArtist) = FilterReleases();
 		FilterDate(filteredReleasesByTypeArtist);
 		FilterArtists(filteredReleasesByTypeDate);
 
 		OnFilterOrDataChanged?.Invoke();
-
-		sw.Stop();
-		Console.WriteLine($"Filtrace 2 - {_allReleases.Count} trvá {sw.ElapsedMilliseconds} ms");
 	}
 
 	private (ISet<SpotifyRelease> byTypeDate, ISet<SpotifyRelease> byTypeArtist) FilterReleases()

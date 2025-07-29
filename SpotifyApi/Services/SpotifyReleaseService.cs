@@ -77,7 +77,7 @@ internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, IS
 		{
 			foreach (var artist in artists)
 			{
-				var releasesApi = await _controllerApiRelease.GetArtistReleasesFromApi(artist.Id, releaseType);
+				var releasesApi = await _controllerApiRelease.GetArtistReleasesFromApi(artist, releaseType);
 				releasesList.UnionWith(releasesApi);
 			}
 			if (createNew)

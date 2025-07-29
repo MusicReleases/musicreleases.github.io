@@ -5,5 +5,5 @@ namespace JakubKastner.SpotifyApi.Services.Api;
 
 internal interface IApiReleaseService
 {
-	Task<ISet<SpotifyRelease>> GetArtistReleasesFromApi(string artistId, SpotifyEnums.ReleaseType releaseType);
+	Task<ISet<SpotifyRelease>> GetArtistReleasesFromApi(SpotifyArtist artist, SpotifyEnums.ReleaseType releaseType);
 }

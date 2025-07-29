@@ -9,12 +9,12 @@ internal class ApiReleaseService(ISpotifyApiClient client) : IApiReleaseService
 {
 	private readonly ISpotifyApiClient _client = client;
 
-	public async Task<ISet<SpotifyRelease>> GetArtistReleasesFromApi(string artistId, ReleaseType releaseType)
+	public async Task<ISet<SpotifyRelease>> GetArtistReleasesFromApi(SpotifyArtist artist, ReleaseType releaseType)
 	{
 		// TODO podcasts
 
 		var albums = new SortedSet<SpotifyRelease>();
-		var releasesFromApi = await GetArtistReleasesApi(artistId, releaseType);
+		var releasesFromApi = await GetArtistReleasesApi(artist.Id, releaseType);
 
 		if (releasesFromApi == null)
 		{
@@ -24,6 +24,12 @@ internal class ApiReleaseService(ISpotifyApiClient client) : IApiReleaseService
 		foreach (var releaseApi in releasesFromApi)
 		{
 			var album = new SpotifyRelease(releaseApi, releaseType);
+
+			if (releaseType == ReleaseType.Appears)
+			{
+				// add current artist to album on appears
+				album.Artists.Add(artist);
+			}
 			albums.Add(album);
 		}
 

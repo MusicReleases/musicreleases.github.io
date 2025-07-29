@@ -17,7 +17,14 @@
 	</ButtonAdvancedFilter>
 
 	<ButtonAdvancedFilter Type="Enums.ReleasesFilters.EPs" Title="EPs">
-		EPs
+		@if (SpotifyFilterService.Filter.ReleaseType == SpotifyEnums.ReleaseType.Appears)
+		{
+			@:Albums and EPs
+		}
+		else
+		{
+			@:EPs
+		}
 	</ButtonAdvancedFilter>
 }
 
