@@ -45,10 +45,10 @@ public partial class ButtonDateYear
 		}
 		_showMonths = !_showMonths;
 	}
-	private void FilterYear()
+	private async Task FilterYear()
 	{
 		int? yearFilter = YearFilter ? null : Year;
-		var url = SpotifyFilterUrlService.GetFilterUrl(yearFilter);
+		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter);
 		NavManager.NavigateTo(url);
 	}
 }

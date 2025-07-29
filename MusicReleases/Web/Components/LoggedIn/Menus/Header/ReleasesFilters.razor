@@ -10,7 +10,7 @@
 <ButtonClearFilter Type="MenuButtonsType.Releases">
 </ButtonClearFilter>
 
-@if (SpotifyFilterService.Filter.ReleaseType == SpotifyEnums.ReleaseType.Tracks || SpotifyFilterService.Filter.ReleaseType == SpotifyEnums.ReleaseType.Appears)
+@if (SpotifyFilterService.Filter!.ReleaseType == SpotifyEnums.ReleaseType.Tracks || SpotifyFilterService.Filter.ReleaseType == SpotifyEnums.ReleaseType.Appears)
 {
 	<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Tracks" Title="tracks">
 		Tracks

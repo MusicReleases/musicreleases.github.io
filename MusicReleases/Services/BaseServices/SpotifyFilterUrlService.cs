@@ -1,28 +1,42 @@
 ﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Objects;
+using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+using JakubKastner.SpotifyApi.Services;
 using static JakubKastner.MusicReleases.Base.Enums;
 using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService) : ISpotifyFilterUrlService
+public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService, IDbSpotifyFilterService dbSpotifyFilterService, ISpotifyUserService spotifyUserService) : ISpotifyFilterUrlService
 {
 	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
+	private readonly IDbSpotifyFilterService _dbSpotifyFilterService = dbSpotifyFilterService;
+	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
+
 	private const string _urlNull = "_";
 
-	private SpotifyFilter Filter => _spotifyFilterService.Filter;
+	private SpotifyFilter? Filter => _spotifyFilterService.Filter;
 
-	private string GetFilterUrl(string? releaseTypeUrl, string? yearUrl, string? monthUrl, string? artistUrl, ReleasesFilters? advancedFilterType = null, bool advancedFilterActive = false)
+	private async Task<string> GetFilterUrl(string? releaseTypeUrl, string? yearUrl, string? monthUrl, string? artistUrl, ReleasesFilters? advancedFilterType = null, bool advancedFilterActive = false)
 	{
+		if (Filter is null)
+		{
+			var userId = _spotifyUserService.GetUserIdRequired();
+
+			// get filter from database or create new
+			var filterDb = await _dbSpotifyFilterService.Get(userId) ?? new();
+			_spotifyFilterService.SetFilter(filterDb);
+		}
+
 		const string urlSeparator = "/";
 		const string urlRelease = "releases";
 
 		monthUrl = yearUrl.IsNotNullOrEmpty() ? monthUrl : null;
 
-		var releaseType = releaseTypeUrl ?? Filter.ReleaseType.ToString().ToLower();
-		var year = yearUrl ?? (Filter.Year.HasValue ? Filter.Year.Value.ToString() : (Filter.Month.HasValue ? Filter.Month.Value.Year.ToString() : _urlNull));
-		var month = monthUrl ?? (Filter.Month.HasValue ? Filter.Month.Value.Month.ToString() : _urlNull);
-		var artist = artistUrl ?? Filter.Artist ?? _urlNull;
+		var releaseType = releaseTypeUrl ?? Filter!.ReleaseType.ToString().ToLower();
+		var year = yearUrl ?? (Filter!.Year.HasValue ? Filter.Year.Value.ToString() : (Filter.Month.HasValue ? Filter.Month.Value.Year.ToString() : _urlNull));
+		var month = monthUrl ?? (Filter!.Month.HasValue ? Filter.Month.Value.Month.ToString() : _urlNull);
+		var artist = artistUrl ?? Filter!.Artist ?? _urlNull;
 
 		var urlParams = new List<string>
 		{
@@ -47,6 +61,11 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService)
 
 	private string GetAdvancedFilterUrl(ReleasesFilters? advancedFilterType, bool advancedFilterActive)
 	{
+		if (Filter is null)
+		{
+			throw new NullReferenceException(nameof(Filter));
+		}
+
 		const string urlNull = "";
 		const string urlSeparator = "&";
 
@@ -93,7 +112,7 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService)
 		return GetAdvancedFilterUrlDefault();
 	}
 
-	private string GetAdvancedFilterUrlDefault()
+	private static string GetAdvancedFilterUrlDefault()
 	{
 		const string urlSeparator = "&";
 		var urlParams = new List<string>
@@ -113,35 +132,35 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService)
 		return $"?{urlDefault}";
 	}
 
-	public string GetFilterUrl()
+	public async Task<string> GetFilterUrl()
 	{
-		return GetFilterUrl(null, null, null, null);
+		return await GetFilterUrl(null, null, null, null);
 	}
-	public string GetFilterUrl(ReleaseType releaseType)
+	public async Task<string> GetFilterUrl(ReleaseType releaseType)
 	{
 		var releaseTypeUrl = releaseType.ToString().ToLower();
-		return GetFilterUrl(releaseTypeUrl, null, null, null);
+		return await GetFilterUrl(releaseTypeUrl, null, null, null);
 	}
-	public string GetFilterUrl(int? year)
+	public async Task<string> GetFilterUrl(int? year)
 	{
 		var yearUrl = year.HasValue ? year.Value.ToString() : _urlNull;
 		var monthUrl = _urlNull;
-		return GetFilterUrl(null, yearUrl, monthUrl, null);
+		return await GetFilterUrl(null, yearUrl, monthUrl, null);
 	}
-	public string GetFilterUrl(int? year, int? month)
+	public async Task<string> GetFilterUrl(int? year, int? month)
 	{
 		var yearUrl = year.HasValue ? year.Value.ToString() : _urlNull;
 		var monthUrl = month.HasValue ? month.Value.ToString() : _urlNull;
-		return GetFilterUrl(null, yearUrl, monthUrl, null);
+		return await GetFilterUrl(null, yearUrl, monthUrl, null);
 	}
-	public string GetFilterUrl(string? artist)
+	public async Task<string> GetFilterUrl(string? artist)
 	{
 		var artistUrl = artist.IsNotNullOrEmpty() ? artist : _urlNull;
-		return GetFilterUrl(null, null, null, artistUrl);
+		return await GetFilterUrl(null, null, null, artistUrl);
 	}
-	public string GetFilterUrl(ReleasesFilters advancedFilterType, bool advancedFilterActive)
+	public async Task<string> GetFilterUrl(ReleasesFilters advancedFilterType, bool advancedFilterActive)
 	{
-		return GetFilterUrl(null, null, null, null, advancedFilterType, advancedFilterActive);
+		return await GetFilterUrl(null, null, null, null, advancedFilterType, advancedFilterActive);
 	}
 
 	public SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter)
@@ -158,14 +177,14 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService)
 		return new(type, yearFilter, monthFilter, artistFilter, advancedFilter);
 	}
 
-	public string ClearFilter(MenuButtonsType type)
+	public async Task<string> ClearFilter(MenuButtonsType type)
 	{
 		// TODO custom enum
 		return type switch
 		{
-			MenuButtonsType.Date => GetFilterUrl(year: null, month: null),
-			MenuButtonsType.Artists => GetFilterUrl(artist: null),
-			MenuButtonsType.Releases => GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
+			MenuButtonsType.Date => await GetFilterUrl(year: null, month: null),
+			MenuButtonsType.Artists => await GetFilterUrl(artist: null),
+			MenuButtonsType.Releases => await GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
 			_ => throw new NotSupportedException(nameof(MenuButtonsType)),
 		};
 	}

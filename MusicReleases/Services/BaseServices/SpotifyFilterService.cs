@@ -1,14 +1,19 @@
 ﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Objects;
+using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Base;
 using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Services;
 using System.Diagnostics;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterService() : ISpotifyFilterService
+public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpotifyUserService spotifyUserService) : ISpotifyFilterService
 {
-	public SpotifyFilter Filter { get; private set; } = new();
+	private readonly IDbSpotifyFilterService _filterDbService = filterDbService;
+	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
+
+	public SpotifyFilter? Filter { get; private set; } = null;
 
 	private ISet<SpotifyRelease>? _allReleases = null;
 	private ISet<SpotifyArtist>? _allArtists = null;
@@ -46,7 +51,14 @@ public class SpotifyFilterService() : ISpotifyFilterService
 			return;
 		}
 
+		if (Filter is null)
+		{
+			throw new NullReferenceException(nameof(Filter));
+		}
+
+
 		var sw = Stopwatch.StartNew();
+
 
 		var (filteredReleasesByTypeDate, filteredReleasesByTypeArtist) = FilterReleases();
 		FilterDate(filteredReleasesByTypeArtist);
@@ -60,6 +72,11 @@ public class SpotifyFilterService() : ISpotifyFilterService
 
 	private (ISet<SpotifyRelease> byTypeDate, ISet<SpotifyRelease> byTypeArtist) FilterReleases()
 	{
+		if (Filter is null)
+		{
+			throw new NullReferenceException(nameof(Filter));
+		}
+
 		if (_allReleases is null)
 		{
 			throw new NullReferenceException(nameof(_allReleases));
@@ -104,6 +121,11 @@ public class SpotifyFilterService() : ISpotifyFilterService
 
 	private IEnumerable<SpotifyRelease> FilterReleasesAdvanced(IEnumerable<SpotifyRelease> releasesByType)
 	{
+		if (Filter is null)
+		{
+			throw new NullReferenceException(nameof(Filter));
+		}
+
 		var releasesByTypeAdvanced = releasesByType;
 		if (Filter.ReleaseType == SpotifyEnums.ReleaseType.Tracks || Filter.ReleaseType == SpotifyEnums.ReleaseType.Appears)
 		{
@@ -195,5 +217,12 @@ public class SpotifyFilterService() : ISpotifyFilterService
 	public void SetFilter(SpotifyFilter filter)
 	{
 		Filter = filter;
+	}
+
+	public async Task SetFilterAndSaveDb(SpotifyFilter filter)
+	{
+		var userId = _spotifyUserService.GetUserIdRequired();
+		await _filterDbService.Save(filter, userId);
+		SetFilter(filter);
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace JakubKastner.MusicReleases.Objects;
+﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
+
+namespace JakubKastner.MusicReleases.Objects;
 
 public class SpotifyFilterAdvanced
 {
@@ -30,5 +32,19 @@ public class SpotifyFilterAdvanced
 		VariousArtists = variousArtists;
 		NewReleases = newReleases;
 		OldReleases = oldReleases;
+	}
+
+	public SpotifyFilterAdvanced(SpotifyFilterEntity spotifyFilterDb)
+	{
+		Tracks = spotifyFilterDb.Tracks;
+		EPs = spotifyFilterDb.EPs;
+		NotRemixes = spotifyFilterDb.NotRemixes;
+		Remixes = spotifyFilterDb.Remixes;
+		FollowedArtists = spotifyFilterDb.FollowedArtists;
+		SavedReleases = spotifyFilterDb.SavedReleases;
+		NotVariousArtists = spotifyFilterDb.NotVariousArtists;
+		VariousArtists = spotifyFilterDb.VariousArtists;
+		NewReleases = spotifyFilterDb.NewReleases;
+		OldReleases = spotifyFilterDb.OldReleases;
 	}
 }

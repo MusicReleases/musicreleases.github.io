@@ -99,14 +99,14 @@ public partial class Releases
 		InvokeAsync(StateHasChanged);
 	}
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
 		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
 		Console.WriteLine("Releases.OnParametersSet");
-		LoadReleases();
+		await LoadReleases();
 	}
 
-	private void LoadReleases()
+	private async Task LoadReleases()
 	{
 		// TODO enable to select and display more than 1 release type
 		/*if (string.IsNullOrEmpty(Type))
@@ -131,7 +131,7 @@ public partial class Releases
 		var advancedFilter = new SpotifyFilterAdvanced(tracks, eps, notRemixes, remixes, followedArtists, savedReleases, notVariousArtists, variousArtists, newReleases, oldReleases);
 		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId, advancedFilter);
 		_type = filter.ReleaseType;
-		SpotifyFilterService.SetFilter(filter);
+		await SpotifyFilterService.SetFilterAndSaveDb(filter);
 		GetReleases();
 	}
 

@@ -6,12 +6,12 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public interface ISpotifyFilterUrlService
 {
-	string ClearFilter(MenuButtonsType type);
-	string GetFilterUrl();
-	string GetFilterUrl(int? year);
-	string GetFilterUrl(int? year, int? month);
-	string GetFilterUrl(SpotifyEnums.ReleaseType releaseType);
-	string GetFilterUrl(string? artist);
-	string GetFilterUrl(ReleasesFilters advancedFilterType, bool advancedFilterActive);
+	Task<string> ClearFilter(MenuButtonsType type);
+	Task<string> GetFilterUrl();
+	Task<string> GetFilterUrl(int? year);
+	Task<string> GetFilterUrl(int? year, int? month);
+	Task<string> GetFilterUrl(SpotifyEnums.ReleaseType releaseType);
+	Task<string> GetFilterUrl(string? artist);
+	Task<string> GetFilterUrl(ReleasesFilters advancedFilterType, bool advancedFilterActive);
 	SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter);
 }

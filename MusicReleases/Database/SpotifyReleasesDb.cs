@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Database;
 public static class SpotifyReleasesDb
 {
 	public static readonly string Name = "SpotifyReleases";
-	public static readonly int Version = 1;
+	public static readonly int Version = 2;
 	public static IEnumerable<string> GetAllTables()
 	{
 		return EnumUtil.GetNames<DbStorageTablesSpotify>();

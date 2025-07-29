@@ -35,17 +35,16 @@ public partial class ButtonAdvancedFilter
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void ChangeFilter()
+	private async Task ChangeFilter()
 	{
-		var url = SpotifyFilterUrlService.GetFilterUrl(Type, !IsActive);
+		var url = await SpotifyFilterUrlService.GetFilterUrl(Type, !IsActive);
 		NavManager.NavigateTo(url);
 	}
 
 	private bool IsFilterActive()
 	{
 		// this names must be same as in the URL and in Enums.ReleasesFilters
-		var name = Type.ToString();
-		var filterProperty = SpotifyFilterService.Filter.Advanced.GetType().GetProperty(Type.ToString());
+		var filterProperty = SpotifyFilterService.Filter!.Advanced.GetType().GetProperty(Type.ToString());
 		if (filterProperty is null || filterProperty.PropertyType != typeof(bool))
 		{
 			throw new NotSupportedException(nameof(filterProperty));

@@ -57,6 +57,7 @@ public static class Enums
 	public enum DbStorageTablesSpotify
 	{
 		SpotifyUpdate,
+		SpotifyFilter,
 
 		SpotifyUser,
 		SpotifyUserArtist,

@@ -13,9 +13,9 @@ public partial class ButtonClearFilter
 
 	private string ButtonTitle => Type == MenuButtonsType.Releases ? "Default filter" : "Clear filter";
 
-	private void ClearFilter()
+	private async Task ClearFilter()
 	{
-		var url = SpotifyFilterUrlService.ClearFilter(Type);
+		var url = await SpotifyFilterUrlService.ClearFilter(Type);
 		NavManager.NavigateTo(url);
 	}
 }

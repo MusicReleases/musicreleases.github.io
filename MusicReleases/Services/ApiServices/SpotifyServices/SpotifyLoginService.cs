@@ -50,7 +50,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserServic
 						await SaveUser();
 					}
 
-					var url = _filterUrlService.GetFilterUrl();
+					var url = await _filterUrlService.GetFilterUrl();
 					_navManager.NavigateTo(url);
 				}
 				else
@@ -91,7 +91,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserServic
 				await SaveUser();
 			}
 
-			var url = _filterUrlService.GetFilterUrl();
+			var url = await _filterUrlService.GetFilterUrl();
 			_navManager.NavigateTo(url);
 		}
 		else

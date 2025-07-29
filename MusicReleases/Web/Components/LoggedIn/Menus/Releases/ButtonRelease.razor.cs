@@ -13,7 +13,7 @@ public partial class ButtonRelease
 	private string ButtonClass => ReleaseTypeString.ToLower() + (ReleaseFilter ? " active" : string.Empty);
 	private string IconClass => Icons.GetIconForRelease(ReleaseType);
 
-	private bool ReleaseFilter => SpotifyFilterService.Filter.ReleaseType == ReleaseType;
+	private bool ReleaseFilter => SpotifyFilterService.Filter!.ReleaseType == ReleaseType;
 
 	protected override void OnInitialized()
 	{
@@ -31,9 +31,9 @@ public partial class ButtonRelease
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void DisplayReleases()
+	private async Task DisplayReleases()
 	{
-		var url = SpotifyFilterUrlService.GetFilterUrl(ReleaseType);
+		var url = await SpotifyFilterUrlService.GetFilterUrl(ReleaseType);
 		NavManager.NavigateTo(url);
 	}
 }

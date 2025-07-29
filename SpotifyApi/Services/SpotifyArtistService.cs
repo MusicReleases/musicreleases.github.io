@@ -9,7 +9,7 @@ internal class SpotifyArtistService(IApiArtistService controllerApiArtist, ISpot
 	private readonly IApiArtistService _controllerApiArtist = controllerApiArtist;
 	private readonly ISpotifyUserService _controllerUser = controllerUser;
 
-	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>>? GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? existingArtists = null, bool forceUpdate = false)
+	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>?> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? existingArtists = null, bool forceUpdate = false)
 	{
 		if (existingArtists is null)
 		{

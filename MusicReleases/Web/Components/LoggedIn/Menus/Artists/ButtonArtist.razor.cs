@@ -27,11 +27,11 @@ public partial class ButtonArtist
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void FilterArtist()
+	private async Task FilterArtist()
 	{
 		string? artistFilter = ArtistFilter ? null : ArtistId;
 
-		var url = SpotifyFilterUrlService.GetFilterUrl(artistFilter);
+		var url = await SpotifyFilterUrlService.GetFilterUrl(artistFilter);
 		NavManager.NavigateTo(url);
 	}
 }

@@ -14,12 +14,12 @@ public static class ServiceCollectionExtensions
 	{
 		// base services
 		services.AddScoped<ILoginService, LoginService>();
-		services.AddScoped<IFilterService, FilterService>();
 
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
 
 		services.AddScoped<IDbSpotifyUpdateService, DbSpotifyUpdateService>();
+		services.AddScoped<IDbSpotifyFilterService, DbSpotifyFilterService>();
 
 		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
 		services.AddScoped<IDbSpotifyUserArtistService, DbSpotifyUserArtistService>();

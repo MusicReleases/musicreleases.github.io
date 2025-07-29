@@ -5,7 +5,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public interface ISpotifyFilterService
 {
-	SpotifyFilter Filter { get; }
+	SpotifyFilter? Filter { get; }
 
 	SortedSet<SpotifyArtist>? FilteredArtists { get; }
 	SortedSet<SpotifyRelease> FilteredReleases { get; }
@@ -16,4 +16,5 @@ public interface ISpotifyFilterService
 	void SetArtists(ISet<SpotifyArtist> artists);
 	void SetReleases(ISet<SpotifyRelease> releases);
 	void SetFilter(SpotifyFilter filter);
+	Task SetFilterAndSaveDb(SpotifyFilter filter);
 }

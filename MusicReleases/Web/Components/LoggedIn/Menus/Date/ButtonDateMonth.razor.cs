@@ -28,12 +28,12 @@ public partial class ButtonDateMonth
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void FilterMonth()
+	private async Task FilterMonth()
 	{
 		int? monthFilter = MonthFilter ? null : Month;
 		int? yearFilter = MonthFilter ? null : Year;
 
-		var url = SpotifyFilterUrlService.GetFilterUrl(yearFilter, monthFilter);
+		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter, monthFilter);
 		NavManager.NavigateTo(url);
 	}
 }

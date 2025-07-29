@@ -138,12 +138,7 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 			return;
 		}
 
-		FilterReleases(artists, releases);
-	}
-
-	private void FilterReleases(ISet<SpotifyArtist> artists, ISet<SpotifyRelease> releases)
-	{
-		Console.WriteLine("FilterReleases workflow");
+		// filter releases
 		_spotifyFilterService.SetReleases(releases);
 	}
 
