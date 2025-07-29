@@ -24,6 +24,12 @@
 
 .footer.secondary.menu.filter {
     button {
+        font-size: 14px;
+        padding: 5px 10px;
+        margin: auto 3px;
+        border-radius: 16px;
+        height: 20px;
+
         &:first-child {
             margin-left: layout.$padding_left_right;
         }

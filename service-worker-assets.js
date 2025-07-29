@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "6CVdkUyC",
+  "version": "sTiFq1GE",
   "assets": [
     {
       "hash": "sha256-ALxuvS9SK3CHupkQ5SNS3bx0D0n9JGKPhXHdpMsO0QA=",
@@ -14,8 +14,8 @@ self.assetsManifest = {
       "url": "_framework/Blazored.LocalStorage.12n6dz54qr.wasm"
     },
     {
-      "hash": "sha256-uYYx/TPSJYYsBU7v7piGswcW5Sn9OufcvBT75/0PS+8=",
-      "url": "_framework/Extensions.tv8b5kt350.wasm"
+      "hash": "sha256-je3VcWY6s6UqSDNgRaXMH+j9qpha7htTHKCGPtMpujY=",
+      "url": "_framework/Extensions.5i8ezmnpq2.wasm"
     },
     {
       "hash": "sha256-79EKTr+fMYK5c0oJ1Mna0Mk5n/KSVlSc3VjFQ5Fsb6U=",
@@ -82,8 +82,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.nsmmebfrv2.wasm"
     },
     {
-      "hash": "sha256-lNRxHtJ2DxlDTHu0aCZ8AC76bYy0BlfvBveXY7anbik=",
-      "url": "_framework/MusicReleases.8rs4aw61h0.wasm"
+      "hash": "sha256-EoZX8qNCjnRmwLLla+xzdMqLsQVpMUULBP0XVbJbgIM=",
+      "url": "_framework/MusicReleases.epcrdwy14w.wasm"
     },
     {
       "hash": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
@@ -94,8 +94,8 @@ self.assetsManifest = {
       "url": "_framework/SpotifyAPI.Web.dd69tlc3sa.wasm"
     },
     {
-      "hash": "sha256-ElI+zQVMVBGfpSHPYqeTG7xgBq5qRWUrvAq72NEFi7g=",
-      "url": "_framework/SpotifyApi.yzuorwcbi9.wasm"
+      "hash": "sha256-3wqb3BVLSY4uOvhsOSRlQmNBQZV6e9KtNE136YcwR7w=",
+      "url": "_framework/SpotifyApi.zf26xy3ok6.wasm"
     },
     {
       "hash": "sha256-tXlDKdad0cFmpCJSv/wGfsH/1+Jxmdi3S5TcTle3dgs=",
@@ -290,7 +290,7 @@ self.assetsManifest = {
       "url": "_framework/Tavenem.DataStore.d21jns0ond.wasm"
     },
     {
-      "hash": "sha256-+xecJ4L/Zzo5wgvybtN+l6hXMNfx6Bkho4fBr/4wWb0=",
+      "hash": "sha256-wggr61JmYY/K9ITG9riff+LjZzMVdgJbg4jmN2FlKNA=",
       "url": "_framework/blazor.boot.json"
     },
     {
@@ -530,7 +530,7 @@ self.assetsManifest = {
       "url": "styles/2_init/_2_colors.scss"
     },
     {
-      "hash": "sha256-iGMZFyhldrbzDE0QixoA9LPMfeAwDi5l1nhGcbT2zxM=",
+      "hash": "sha256-37R2Fup6nERXA3BTa2oQdQyHH14qnUUV71mzEYMlBO8=",
       "url": "styles/2_init/_3_layout.scss"
     },
     {
@@ -570,7 +570,7 @@ self.assetsManifest = {
       "url": "styles/4_menu/_2_releases.scss"
     },
     {
-      "hash": "sha256-/f5P2w2E30+E236g685YrOmV+XnaPy8CIO8SFrQlYWg=",
+      "hash": "sha256-8Si5ft76vJC/btMSSGnrLTlYiZvQVbH3FdiJoglTELg=",
       "url": "styles/4_menu/_3_filter.scss"
     },
     {
