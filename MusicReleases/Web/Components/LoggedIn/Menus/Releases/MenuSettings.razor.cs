@@ -17,9 +17,4 @@ public partial class MenuSettings
 			_spotifyUser = SpotifyUserService.GetUserRequired().Info;
 		}
 	}
-
-	private void LogoutUser()
-	{
-		LoginService.LogoutUser();
-	}
 }

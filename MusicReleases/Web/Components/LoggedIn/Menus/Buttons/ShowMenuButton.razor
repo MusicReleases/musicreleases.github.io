@@ -1,0 +1,8 @@
+@using JakubKastner.MusicReleases.Services.UiServices
+
+@inject IMobileService MobileService
+
+<button class="@MenuTypeString" title="@Title" @onclick="ToggleMenu">
+	@ChildContent
+	<span>@Title</span>
+</button>

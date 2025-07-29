@@ -1,0 +1,8 @@
+@using JakubKastner.MusicReleases.Services.BaseServices
+
+@inject ILoginService LoginService
+
+<button class="logout" title="Logout" @onclick="LogoutUser">
+	<i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+	<span>Logout</span>
+</button>

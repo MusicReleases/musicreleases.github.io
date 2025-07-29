@@ -1,7 +1,12 @@
 ﻿@using JakubKastner.MusicReleases.Services.ApiServices
+@using JakubKastner.MusicReleases.Services.UiServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Footers
 
 @inherits LayoutComponentBase;
 
+@implements IDisposable
+
+@inject IMobileService MobileService
 @inject IApiLoginService ApiLoginService
 @inject NavigationManager NavManager
 
@@ -15,17 +20,28 @@
 	}
 	else {
 		<Header></Header>
-		<div class="main">
-			<MenuReleases></MenuReleases>
 
-			<MenuDateYear></MenuDateYear>
-			<MenuArtists></MenuArtists>
-			<MenuPlaylists></MenuPlaylists>
+		<div class="main">
+
+			<MenuReleases Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Releases)">
+			</MenuReleases>
+
+			<MenuDateYear Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Date)">
+			</MenuDateYear>
+
+			<MenuArtists Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Artists)">
+			</MenuArtists>
+
+			<MenuPlaylists>
+			</MenuPlaylists>
 
 			<div class="content page scroll">
 				@Body
 			</div>
+
 		</div>
+
+		<Footer></Footer>
 	}
 
 </div>

@@ -1,0 +1,35 @@
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Buttons
+
+<div class="hover items icon-text scroll">
+
+	<p>
+		<i class="fas fa-user-cog"></i>User
+	</p>
+
+	<SettingsButton>
+	</SettingsButton>
+
+	<LogoutButton>
+	</LogoutButton>
+
+
+	<p>
+		<i class="fas fa-eye"></i>Show or hide
+	</p>
+
+	<ShowMenuButton MenuType="@Enums.DisplayMobile.Date">
+		<i class="fas fa-calendar-alt"></i>
+	</ShowMenuButton>
+
+	<ShowMenuButton MenuType="@Enums.DisplayMobile.Artists">
+		<i class="fas fa-users"></i>
+	</ShowMenuButton>
+
+	<PlayerButton></PlayerButton>
+
+
+	@*<p><i class="fas fa-tools"></i>Actions</p>
+	<button class="playlist"><i class="fas fa-plus-circle"></i><span>Add to playlist</span></button>
+	<button class="play"><i class="fas fa-play"></i><span>Play all</span></button> *@
+
+</div>

@@ -1,0 +1,14 @@
+@using JakubKastner.SpotifyApi.Base
+
+<div class="menu hover items icon-text scroll">
+	@foreach (var releaseType in SpotifyEnums.GetAllReleaseTypes())
+	{
+		if (releaseType == SpotifyEnums.ReleaseType.Podcasts)
+		{
+			// TODO podcasts
+			continue;
+		}
+
+		<ButtonRelease ReleaseType=@releaseType></ButtonRelease>
+	}
+</div>

@@ -1,9 +1,13 @@
-﻿using static JakubKastner.MusicReleases.Base.Enums;
+﻿using Microsoft.AspNetCore.Components;
+using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
 
 public partial class MenuDateYear
 {
+	[Parameter]
+	public string? Class { get; set; }
+
 	private bool Loading => LoaderService.IsLoading(LoadingType.Artists) || LoaderService.IsLoading(LoadingType.Releases);
 	private Dictionary<int, SortedSet<int>>? FilteredYearMonth => SpotifyFilterService.FilteredYearMonth;
 

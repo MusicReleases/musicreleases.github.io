@@ -2,6 +2,7 @@
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+using JakubKastner.MusicReleases.Services.UiServices;
 
 namespace JakubKastner.MusicReleases;
 
@@ -13,6 +14,7 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddMusicReleases(this IServiceCollection services)
 	{
 		// base services
+		services.AddScoped<IMobileService, MobileService>();
 		services.AddScoped<ILoginService, LoginService>();
 
 		// indexed db services

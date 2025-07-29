@@ -1,0 +1,21 @@
+<div class="footer menu mobile hide-pc hide-tablet">
+
+	@* <button class="menu show-hide round round-text"><span>Close menu</span><i class="fas fa-times"></i></button>
+	<button class="tracklist round round-text" title="Tracklist"><span>Tracklist</span><i class="fas fa-list-ol"></i></button>
+	<button class="search round"><i class="fas fa-search"></i></button> *@
+	<button class="mobile show-hide hover round" title="@MenuTitle" @onclick="ToggleMenu">
+		@if (_displayMenu)
+		{
+			<i class="fas fa-times"></i>
+		}
+		else
+		{
+			<i class="fas fa-bars"></i>
+		}
+	</button>
+
+	@if (_displayMenu)
+	{
+		<FooterMobileMenuItems></FooterMobileMenuItems>
+	}
+</div>

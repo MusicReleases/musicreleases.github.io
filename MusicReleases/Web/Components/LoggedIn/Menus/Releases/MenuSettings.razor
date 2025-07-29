@@ -1,8 +1,8 @@
 ﻿@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Buttons
 @using JakubKastner.SpotifyApi.Services
 
-@inject ILoginService LoginService
 @inject ISpotifyUserService SpotifyUserService
 @inject IApiLoginService ApiLoginService
 
@@ -22,18 +22,7 @@
 		}
 	</button>
 
-	<button class="settings" title="Show settings">
-		<i class="fas fa-wrench" aria-hidden="true"></i>
-		<span>Settings</span>
-	</button>
-
-	<button class="logout" title="Logout" @onclick="LogoutUser">
-		<i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-		<span>Logout</span>
-	</button>
-
-	<button class="player skrejto" title="Show player">
-		<i class="fas fa-play-circle" aria-hidden="true"></i>
-	</button>
-
+	<SettingsButton></SettingsButton>
+	<LogoutButton></LogoutButton>
+	<PlayerButton></PlayerButton>
 </div>

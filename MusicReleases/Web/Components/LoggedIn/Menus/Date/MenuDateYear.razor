@@ -7,7 +7,7 @@
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ILoaderService LoaderService
 
-<div class="menu date items scroll buttons-rounded-m">
+<div class="menu date items scroll buttons-rounded-m @Class">
 	@if (Loading)
 	{
 		<p>Loading...</p>
@@ -18,7 +18,7 @@
 	}
 	else
 	{
-		<Virtualize Items="@FilteredYearMonth" Context="year" ItemSize="30" OverscanCount="5">
+		<Virtualize Items="@FilteredYearMonth" Context="year">
 			<ButtonDateYear Year="@year.Key" Months="@year.Value">
 			</ButtonDateYear>
 		</Virtualize>

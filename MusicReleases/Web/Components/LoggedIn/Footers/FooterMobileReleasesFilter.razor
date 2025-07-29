@@ -1,0 +1,23 @@
+@using JakubKastner.SpotifyApi.Base
+
+<div class="footer menu releases hide-tablet hide-pc">
+	<div class="primary">
+		@foreach (var releaseType in SpotifyEnums.GetAllReleaseTypes())
+		{
+			if (releaseType == SpotifyEnums.ReleaseType.Podcasts)
+			{
+				// TODO podcasts
+				continue;
+			}
+
+			<ButtonRelease ReleaseType=@releaseType></ButtonRelease>
+		}
+		<button class="more" title="Show more" @onclick="DisplayMore">
+			<i class="fas fa-ellipsis-h"></i><span>More</span>
+		</button>
+	</div>
+	@if (_displayMore)
+	{
+		<FooterMobileReleasesFilterMore></FooterMobileReleasesFilterMore>
+	}
+</div>

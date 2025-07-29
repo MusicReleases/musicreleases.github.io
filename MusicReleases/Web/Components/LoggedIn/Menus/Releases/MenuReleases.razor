@@ -1,6 +1,6 @@
 ﻿@using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
-<div class="menu releases icon-text items scroll buttons-rounded-xl">
+<div class="menu releases icon-text items scroll buttons-rounded-xl @Class">
 	@foreach (var releaseType in GetAllReleaseTypes())
 	{
 		if (releaseType == ReleaseType.Podcasts)

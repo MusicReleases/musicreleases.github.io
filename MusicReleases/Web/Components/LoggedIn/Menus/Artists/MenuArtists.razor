@@ -11,7 +11,7 @@
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ILoaderService LoaderService
 
-<div class="menu artists items scroll buttons-rounded-m">
+<div class="menu artists items scroll buttons-rounded-m @Class">
 
 
 	@if (!ApiLoginService.IsUserLoggedIn())
@@ -41,7 +41,7 @@
 		}
 		else
 		{
-			<Virtualize Items="@Artists" Context="artist" ItemSize="30" OverscanCount="5">
+			<Virtualize Items="@Artists" Context="artist">
 				<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name>
 				</ButtonArtist>
 			</Virtualize>

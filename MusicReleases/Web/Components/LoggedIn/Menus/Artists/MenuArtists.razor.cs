@@ -1,9 +1,13 @@
 using JakubKastner.SpotifyApi.Objects;
+using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Artists;
 
 public partial class MenuArtists
 {
+	[Parameter]
+	public string? Class { get; set; }
+
 	private ISet<SpotifyArtist>? Artists => SpotifyFilterService.FilteredArtists;
 	private bool Loading => LoaderService.IsLoading(MusicReleases.Base.Enums.LoadingType.Artists);
 

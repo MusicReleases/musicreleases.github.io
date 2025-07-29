@@ -89,6 +89,12 @@ public static class Enums
 		SaveDb,
 	}
 
+	public enum DisplayMobile
+	{
+		Releases,
+		Artists,
+		Date,
+	}
 
 	public static string GetLocalStorageKey(ServiceType serviceType, LocalStorageKey localStorageKey)
 	{
