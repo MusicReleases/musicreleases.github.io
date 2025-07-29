@@ -23,7 +23,7 @@
 
 		<div class="main">
 
-			<MenuReleases Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Releases)">
+			<MenuReleases>
 			</MenuReleases>
 
 			<MenuDateYear Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Date)">
@@ -35,7 +35,7 @@
 			<MenuPlaylists>
 			</MenuPlaylists>
 
-			<div class="content page scroll">
+			<div class="content page scroll @MobileService.GetMenuClass(Enums.DisplayMobile.Releases)">
 				@Body
 			</div>
 

@@ -6,5 +6,4 @@ public partial class MenuReleases
 {
 	[Parameter]
 	public string? Class { get; set; }
-
 }
