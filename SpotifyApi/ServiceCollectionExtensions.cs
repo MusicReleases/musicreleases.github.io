@@ -1,7 +1,7 @@
 ﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
-using JakubKastner.SpotifyApi.Objects;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JakubKastner.SpotifyApi;
@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IApiPlaylistService, ApiPlaylistService>();
 		services.AddScoped<IApiReleaseService, ApiReleaseService>();
 		services.AddScoped<IApiUserService, ApiUserService>();
+		services.AddScoped<IApiTrackService, ApiTrackService>();
 
 		// controllers
 		services.AddScoped<ISpotifyArtistService, SpotifyArtistService>();

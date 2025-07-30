@@ -1,0 +1,67 @@
+<div class="tracklist list">
+	@if (Release.Tracks is not null)
+	{
+		@foreach (var track in Release.Tracks)
+		{
+			<div class="track">
+				<div class="info">
+
+					<button class="number">
+						@track.TrackNumber // @track.DiscNumber
+					</button>
+
+					@* <button class="play" title="Play track">
+						<i class="fas fa-play"></i>
+					</button>
+					<button class="queue" title="Add release to queue">
+						<i class="fas fa-arrow-right"></i>
+					</button>
+					<button class="library active" title="Add track to library">
+						<i class="far fa-heart"></i>
+					</button> *@
+					<button class="playlist" title="Add track to playlist">
+						<i class="fas fa-plus"></i>
+					</button>
+
+					<button class="name">
+						@track.Name
+					</button>
+
+					<ReleaseArtists ArtistsObj="track.Artists">
+					</ReleaseArtists>
+
+					@if (track.Explicit)
+					{
+						<button class="explicit right" title="Explicit lyrics">
+							<span>E</span>
+						</button>
+					}
+
+					<button class="time icon-text @(track.Explicit ? "" : "right")">
+						<i class="far fa-clock"></i>@track.DurationString
+					</button>
+				</div>
+
+				@*  <div class="playlists icon-text list skrejto">
+			<div class="row">
+				<button class="update right" title="Update list of playlists"><i class="fas fa-sync-alt"></i></button>
+				<button class="close"><i class="fas fa-times"></i></button>
+			</div>
+			<button class="new" title="Add release to new playlist"><i class="fas fa-plus-circle"></i>Create new playlist</button>
+			<div class="row">
+				<button class="add new-auto" title="Add release to new playlist 'Artist name - Album name'"><i class="fas fa-plus-square"></i>Artist name - Album name</button>
+				<button class="add new-auto right" title="Add release to new playlist 'Artist name - Album name'"><i class="fas fa-chevron-up"></i></button>
+			</div>
+			<div class="row">
+				<button class="add" data-release_type="playlist" data-release_id="2UKqPRsvnx7sQjt5EmHxpm" title="Add release to playlist 'Playlist 1'"><i class="fas fa-plus"></i>Playlist 1</button>
+				<button class="add new-auto right" title="Add release to new playlist 'Artist name - Album name'"><i class="fas fa-chevron-up"></i></button>
+			</div>
+			<div class="row">
+				<button class="add" data-release_type="playlist" data-release_id="2UKqPRsvn456sQjt5EmHxpm" title="Add release to playlist 'Playlist 2'"><i class="fas fa-plus"></i>Playlist 2</button>
+				<button class="add new-auto right" title="Add release to new playlist 'Artist name - Album name'"><i class="fas fa-chevron-up"></i></button>
+			</div>
+		</div> *@
+			</div>
+		}
+	}
+</div>

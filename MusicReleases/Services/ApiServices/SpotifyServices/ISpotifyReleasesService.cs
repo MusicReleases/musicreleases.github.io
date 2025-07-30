@@ -8,7 +8,7 @@ namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 	{
 		SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases { get; }
 
-		event Action? OnReleasesDataChanged;
+		event Action? OnTracksDataChanged;
 
 		Task Get(SpotifyEnums.ReleaseType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate);
 	}

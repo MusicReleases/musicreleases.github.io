@@ -48,6 +48,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyReleasesService, SpotifyReleasesService>();
 		services.AddScoped<ISpotifyArtistsService, SpotifyArtistsService>();
 		services.AddScoped<ISpotifyPlaylistsService, SpotifyPlaylistsService>();
+		services.AddScoped<ISpotifyTracksService, SpotifyTracksService>();
 
 		return services;
 	}

@@ -1,3 +1,21 @@
-﻿<button type="button" class="playlist">
-	@PlaylistName
-</button>
+﻿@using JakubKastner.Extensions
+
+@if (Release is null)
+{
+	<button type="button" class="playlist" title="Add release to playlist @PlaylistName">
+		@PlaylistName
+	</button>
+}
+else
+{
+	<div class="row">
+		<button type="button" class="playlist add" title="Add release to the end of playlist @PlaylistName" @onclick="() => AddToPlaylist(false)">
+			<i class="fas fa-plus"></i>
+			@PlaylistName
+		</button>
+
+		<button class="add right" title="Add release to top of playlist @PlaylistName" @onclick="() => AddToPlaylist(true)">
+			<i class="fas fa-chevron-up"></i>
+		</button>
+	</div>
+}

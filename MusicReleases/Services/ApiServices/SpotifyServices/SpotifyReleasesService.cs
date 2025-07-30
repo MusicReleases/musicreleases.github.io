@@ -17,7 +17,7 @@ public class SpotifyReleasesService(ISpotifyReleaseService spotifyReleaseService
 
 	public SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases { get; private set; } = null;
 
-	public event Action? OnReleasesDataChanged;
+	public event Action? OnTracksDataChanged;
 
 	public async Task Get(ReleaseType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate)
 	{
@@ -58,6 +58,6 @@ public class SpotifyReleasesService(ISpotifyReleaseService spotifyReleaseService
 
 		// display
 		Releases = releasesApi ?? releasesDb;
-		OnReleasesDataChanged?.Invoke();
+		OnTracksDataChanged?.Invoke();
 	}
 }

@@ -3,19 +3,19 @@
 <div class="release album box">
 	<div class="info">
 
-		@* TODO img size *@
-
-		@* loading="lazy" *@
+		@* TODO img size + loading="lazy" *@
 		<img src="@SpotifyRelease.UrlImage" alt="Cover" class="cover" width="140" height="140">
 
-		@* target="_blank" *@
 		<a class="name icon-text" href="@SpotifyRelease.UrlApp" rel="noopener noreferrer">
 			@SpotifyRelease.Name
 		</a>
+
 		@if (SpotifyRelease.Artists is not null)
 		{
 			<ReleaseArtists ArtistsObj="SpotifyRelease.Artists" />
 		}
+
+
 		<p class="date icon-text">
 			<i class="fas fa-calendar-alt" aria-hidden="true"></i>
 			<button>
@@ -28,17 +28,19 @@
 
 			</ReleaseIcon>
 			@* <span class="sr-only">Album release</span> *@
-			
+
 			@if (SpotifyRelease.New)
 			{
 				<i class="fas fa-bolt" title="New release" aria-hidden="true"></i>
 				<span class="sr-only">New release</span>
 			}
 
-			@SpotifyRelease.TotalTracks
+
 
 			@* <i class="far fa-clock" aria-hidden="true"></i>00:00:00 *@
 		</p>
-
 	</div>
+
+	<ReleaseActions SpotifyRelease="@SpotifyRelease">
+	</ReleaseActions>
 </div>

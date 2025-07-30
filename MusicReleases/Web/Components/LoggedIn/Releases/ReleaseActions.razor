@@ -1,0 +1,43 @@
+﻿@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+
+@inject ISpotifyTracksService SpotifyTracksService
+
+<div class="buttons">
+
+	<button class="tracklist icon-text @TracklistClass" title="@TracklistTitle" @onclick="ViewTracklist">
+		<i class="fas fa-bars"></i>
+		<span>@SpotifyRelease.TotalTracks</span>
+	</button>
+
+	@*
+	<button class="play" title="Play release">
+		<i class="fas fa-play"></i>
+	</button>
+
+	<button class="queue" title="Add release to queue">
+		<i class="fas fa-arrow-right"></i>
+	</button>
+
+	<button class="save" title="Add release to library">
+		<i class="far fa-heart"></i>
+	</button>
+	*@
+
+	<button class="playlist @PlaylistClass" title="@PlaylistTitle" @onclick="ViewPlaylists">
+		<i class="fas fa-plus"></i>
+	</button>
+
+</div>
+
+@if (_isPlaylistDisplayed)
+{
+	<MenuPlaylists Release="@SpotifyRelease">
+
+	</MenuPlaylists>
+}
+
+@if (_isTracklistDisplayed)
+{
+	<ReleaseTracklist Release="@SpotifyRelease">
+	</ReleaseTracklist>
+}

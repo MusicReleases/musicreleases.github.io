@@ -1,7 +1,7 @@
 ﻿@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 @using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
 @using static JakubKastner.MusicReleases.Base.Enums
 
 @implements IDisposable
@@ -10,38 +10,52 @@
 @inject ISpotifyPlaylistsService SpotifyPlaylistsService
 @inject ILoaderService LoaderService
 
-<div class="menu playlists items scroll buttons-rounded-m">
+<div class="playlists @DivClass">
 
 	@if (!ApiLoginService.IsUserLoggedIn())
 	{
 		<p>User not logged in</p>
 	}
 
+	else if (Loading || Playlists is null || PlaylistsFiltered is null)
+	{
+		<p>Loading playlists...</p>
+	}
+	@* else if (Error)
+	{
+		<p>Failed to get playlists</p>
+		<ButtonUpdate Type="MenuButtonsType.Playlists">
+			Update
+		</ButtonUpdate>
+	} *@
 	else
 	{
-		if (Loading || _playlists?.List is null)
-		{
-			<p>Loading playlists...</p>
-		}
-		@* else if (Error)
-		{
-			<p>Failed to get playlists</p>
-			<ButtonUpdate Type="MenuButtonsType.Playlists">
-				Update
-			</ButtonUpdate>
-		} *@
-		else if (_playlists.List.Count < 1)
+		<div class="row">
+			<input type="text" class="new" placeholder="Search or create playlist" @bind="_playlistName" @bind:event="oninput">
+			<button class="create" title="Create playlist" @onclick="CreatePlaylist">
+				<i class="fas fa-plus-circle"></i>
+			</button>
+			<button class="close" title="Clear input" @onclick="ClearInput">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+
+		if (Playlists.Count < 1)
 		{
 			<p>0 playlists</p>
 			<ButtonUpdate Type="MenuButtonsType.Playlists">
 				Update
 			</ButtonUpdate>
 		}
+		else if (PlaylistsFiltered.Count < 1)
+		{
+			<p>0 playlists found with this filter</p>
+		}
 		else
 		{
-			@foreach (var playlist in _playlists.List)
+			@foreach (var playlist in PlaylistsFiltered)
 			{
-				<ButtonPlaylist PlaylistId=@playlist.Id PlaylistName=@playlist.Name>
+				<ButtonPlaylist PlaylistId=@playlist.Id PlaylistName=@playlist.Name Release="@Release">
 				</ButtonPlaylist>
 			}
 		}

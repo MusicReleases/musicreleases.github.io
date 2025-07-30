@@ -24,7 +24,7 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 	// TODO not null - after implementation of saving to db
 	public required HashSet<SpotifyArtist> Artists { get; init; }
 
-	public SortedSet<SpotifyTrack>? Tracks { get; init; }
+	public SortedSet<SpotifyTrack>? Tracks { get; set; }
 
 	public ReleaseType ReleaseType { get; init; }
 

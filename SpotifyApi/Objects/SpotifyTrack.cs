@@ -1,54 +1,97 @@
-﻿using JakubKastner.SpotifyApi.Objects.Base;
+﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects.Base;
 using SpotifyAPI.Web;
 using System.Diagnostics.CodeAnalysis;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyTrack : SpotifyIdNameObject
+public class SpotifyTrack : SpotifyIdNameObject, IComparable<SpotifyTrack>
 {
-	public SpotifyRelease? Album { get; private set; }
+	public int TrackNumber { get; init; }
+	public int DiscNumber { get; init; }
+	public TimeSpan Duration { get; init; }
 
-	public HashSet<SpotifyArtist> Artists { get { return _artists; } }
-	private readonly HashSet<SpotifyArtist> _artists;
+	public bool Explicit { get; init; }
 
-	public string ArtistsString
-	{
-		get
-		{
-			return string.Join(" • ", _artists.Select(x => x.Name));
-		}
-	}
+	// TODO album
+	//public SpotifyRelease? Album { get; private set; }
+	public HashSet<SpotifyArtist> Artists { get; init; }
+
+	public string DurationString => string.Format("{0:D2}:{1:D2}", (int)Duration.TotalMinutes, Duration.Seconds);
 
 	// TODO artists - GetArtists
 	[SetsRequiredMembers]
-	public SpotifyTrack(SimpleTrack simpleTrack)
+	public SpotifyTrack(SimpleTrack simpleTrack, SpotifyRelease release)
 	{
 		Id = simpleTrack.Id;
 		Name = simpleTrack.Name;
+		TrackNumber = simpleTrack.TrackNumber;
+		DiscNumber = simpleTrack.DiscNumber;
+		Duration = TimeSpan.FromMilliseconds(simpleTrack.DurationMs);
+		Explicit = simpleTrack.Explicit;
 		// TODO empty??
-		Album = null;
-		_artists = [];
-		//_artists = Controller.GetArtists(simpleTrack.Artists);
+		//Album = null;
+		Artists = [];
+		foreach (var simpleArtist in simpleTrack.Artists)
+		{
+			if (release.ReleaseType != SpotifyEnums.ReleaseType.Appears && release.Artists.Any(x => x.Id == simpleArtist.Id))
+			{
+				// skip artists from album (no for appears)
+				continue;
+			}
+
+			var artist = new SpotifyArtist(simpleArtist.Id, simpleArtist.Name);
+			Artists.Add(artist);
+		}
 	}
+
 	[SetsRequiredMembers]
 	public SpotifyTrack(FullTrack fullTrack)
 	{
 		Id = fullTrack.Id;
 		Name = fullTrack.Name;
-		Album = new(fullTrack.Album, ReleaseType.Tracks);
-		_artists = [];
-		//_artists = Controller.GetArtists(fullTrack.Artists);
+		TrackNumber = fullTrack.TrackNumber;
+		DiscNumber = fullTrack.DiscNumber;
+		Duration = TimeSpan.FromMilliseconds(fullTrack.DurationMs);
+		Explicit = fullTrack.Explicit;
+		//Album = new(fullTrack.Album, ReleaseType.Tracks);
+		Artists = [];
+		foreach (var simpleArtist in fullTrack.Artists)
+		{
+			var artist = new SpotifyArtist(simpleArtist.Id, simpleArtist.Name);
+			Artists.Add(artist);
+		}
 	}
+
 	[SetsRequiredMembers]
 	public SpotifyTrack(FullEpisode fullEpisode)
 	{
 		Id = fullEpisode.Id;
 		Name = fullEpisode.Name;
-		Album = new(fullEpisode.Show);
-		_artists =
+		TrackNumber = 0; // episode doesnt have track number
+		DiscNumber = 0; // episode doesnt have disc number
+		Duration = TimeSpan.FromMilliseconds(fullEpisode.DurationMs);
+		Explicit = fullEpisode.Explicit;
+		//Album = new(fullEpisode.Show);
+		Artists =
 		[
 			new(id: "0", name: "podcast")
 		];
+	}
+
+	public int CompareTo(SpotifyTrack? other)
+	{
+		if (other is null)
+		{
+			return 1;
+		}
+
+		var discCompare = DiscNumber.CompareTo(other.DiscNumber);
+		if (discCompare != 0)
+		{
+			return discCompare;
+		}
+
+		return TrackNumber.CompareTo(other.TrackNumber);
 	}
 }
