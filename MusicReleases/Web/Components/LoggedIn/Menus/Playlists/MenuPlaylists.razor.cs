@@ -11,12 +11,37 @@ public partial class MenuPlaylists
 	public SpotifyRelease? Release { get; set; }
 
 	private ISet<SpotifyPlaylist>? Playlists => SpotifyPlaylistsService.Playlists?.List;
-	private ISet<SpotifyPlaylist>? PlaylistsFiltered => (PlaylistNameTrimmed.IsNotNullOrEmpty() && Playlists is not null) ? Playlists.Where(x => x.Name.Contains(PlaylistNameTrimmed, StringComparison.CurrentCultureIgnoreCase)).ToHashSet() : Playlists;
+
+	private ISet<SpotifyPlaylist>? PlaylistsFiltered
+	{
+		get
+		{
+			var playlistName = _playlistName?.Trim();
+
+			if (playlistName.IsNullOrEmpty() || Playlists is null)
+			{
+				return Playlists;
+			}
+
+			if (playlistName.StartsWith('"') && playlistName.EndsWith('"') && playlistName.Length > 1)
+			{
+				var exactPhrase = playlistName.Length == 2 ? playlistName : playlistName[1..^1];
+
+				return Playlists
+					.Where(x => x.Name.Contains(exactPhrase, StringComparison.CurrentCultureIgnoreCase))
+					.ToHashSet();
+			}
+
+			var words = playlistName.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+			return Playlists.Where(playlist => words.All(word => playlist.Name.Contains(word, StringComparison.CurrentCultureIgnoreCase))).ToHashSet();
+		}
+	}
+
 	private bool Loading => LoaderService.IsLoading(LoadingType.Playlists);
 	private string DivClass => Release is null ? "menu items scroll buttons-rounded-m" : "icon-text list";
 
 	private string? _playlistName;
-	private string? PlaylistNameTrimmed => _playlistName?.Trim();
 
 
 	protected override void OnInitialized()

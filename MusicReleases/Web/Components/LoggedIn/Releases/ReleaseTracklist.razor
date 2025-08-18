@@ -1,13 +1,24 @@
 <div class="tracklist list">
 	@if (Release.Tracks is not null)
 	{
+		var discsCount = Release.Tracks.Select(t => t.DiscNumber).Distinct().Count();
+		int? lastDisc = null;
+
 		@foreach (var track in Release.Tracks)
 		{
+			if (discsCount > 1 && track.DiscNumber != lastDisc)
+			{
+				<div class="track">
+					Disc @track.DiscNumber
+				</div>
+				lastDisc = track.DiscNumber;
+			}
+
 			<div class="track">
 				<div class="info">
 
 					<button class="number">
-						@track.TrackNumber // @track.DiscNumber
+						@track.TrackNumber
 					</button>
 
 					@* <button class="play" title="Play track">
