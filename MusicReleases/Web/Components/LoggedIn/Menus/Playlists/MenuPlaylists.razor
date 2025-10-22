@@ -19,7 +19,7 @@
 
 	else
 	{
-		if (Loading || _playlists?.List is null)
+		@* if (Loading || _playlists?.List is null)
 		{
 			<p>Loading playlists...</p>
 		}
@@ -44,7 +44,7 @@
 				<ButtonPlaylist PlaylistId=@playlist.Id PlaylistName=@playlist.Name>
 				</ButtonPlaylist>
 			}
-		}
+		} *@
 	}
 
 </div>
