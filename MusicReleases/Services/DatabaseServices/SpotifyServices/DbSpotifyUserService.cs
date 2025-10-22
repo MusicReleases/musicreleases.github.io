@@ -40,7 +40,9 @@ public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateS
 	private async Task<SpotifyUpdateDbObject<SpotifyUserEntity>?> GetDb(string userId)
 	{
 		// get user db
+		Console.WriteLine("dB: get user - start");
 		var userDb = await _dbTable.GetItemAsync<SpotifyUserEntity>(userId);
+		Console.WriteLine("dB: get user - end");
 
 		if (userDb is null)
 		{
@@ -74,9 +76,10 @@ public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateS
 		}
 
 		// user db
-		Console.WriteLine("save user");
+		Console.WriteLine("db: save user - start");
 		var userDb = new SpotifyUserEntity(user.Info, user.Credentials.RefreshToken);
 		await _dbTable.StoreItemAsync(userDb);
+		Console.WriteLine("db: save user - end");
 
 		// update db
 		var updateDb = await _dbUpdateService.GetOrCreate(user.Info.Id);
@@ -86,8 +89,9 @@ public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateS
 
 	public async Task Delete(string userId)
 	{
-		Console.WriteLine("delete user");
+		Console.WriteLine("dB: delete user - start");
 		await _dbTable.RemoveItemAsync(userId);
+		Console.WriteLine("dB: delete user - end");
 	}
 
 	public async Task DeleteAllUserDatabases(string userId)

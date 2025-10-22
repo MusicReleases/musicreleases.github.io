@@ -24,27 +24,29 @@ public class DbSpotifyFilterService(IDbSpotifyService dbService) : IDbSpotifyFil
 
 	private async Task<SpotifyFilterEntity?> GetDb(string userId)
 	{
-		Console.WriteLine(value: "get filter");
+		Console.WriteLine("db: get filter - start");
 		var filterDb = await _dbTable.GetItemAsync<SpotifyFilterEntity>(userId);
+		Console.WriteLine("db: get filter - end");
 		return filterDb;
 	}
 
 	public async Task Delete(string userId)
 	{
-		Console.WriteLine("delete filter");
+		Console.WriteLine("db: delete filter - start");
 		await _dbTable.RemoveItemAsync(userId);
+		Console.WriteLine("db: delete filter - end");
 	}
 
 	public async Task Save(SpotifyFilter filter, string userId)
 	{
-		Console.WriteLine("save filter");
 		var filterDb = new SpotifyFilterEntity(filter, userId);
 		await SaveDb(filterDb);
 	}
 
 	private async Task SaveDb(SpotifyFilterEntity filterDb)
 	{
-		Console.WriteLine("save filter");
+		Console.WriteLine("db: save filter");
 		await _dbTable.StoreItemAsync(filterDb);
+		Console.WriteLine("db: save filter");
 	}
 }

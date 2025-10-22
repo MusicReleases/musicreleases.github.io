@@ -23,14 +23,17 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 
 	private async Task<ISet<SpotifyRelease>> GetDb(ISet<SpotifyReleaseArtistsDbObject> releaseIdsArtists)
 	{
+		Console.WriteLine("db: get releases - start");
+
 		var releasesDb = _dbTable.GetAllAsync<SpotifyReleaseEntity>();
 
 		var releases = new HashSet<SpotifyRelease>();
 
+		var releaseIdsArtistsDict = releaseIdsArtists.ToDictionary(x => x.ReleaseId);
+
 		await foreach (var releaseDb in releasesDb)
 		{
-			var releaseIdArtists = releaseIdsArtists.FirstOrDefault(x => x.ReleaseId == releaseDb.Id);
-			if (releaseIdArtists is null)
+			if (!releaseIdsArtistsDict.TryGetValue(releaseDb.Id, out var releaseIdArtists))
 			{
 				continue;
 			}
@@ -50,21 +53,27 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 
 			releases.Add(release);
 		}
+		Console.WriteLine("db: get releases - end");
 
 		return releases;
 	}
 
 	public async Task Save(ISet<SpotifyRelease> releases)
 	{
+		Console.WriteLine("db: save releases - start");
+
 		foreach (var release in releases)
 		{
 			var releaseEntity = new SpotifyReleaseEntity(release);
 			await _dbTable.StoreAsync(releaseEntity);
 		}
+		Console.WriteLine("db: save releases - end");
 	}
 
 	public async Task Delete(string releaseId)
 	{
+		Console.WriteLine("db: delete release - start");
 		await _dbTable.RemoveItemAsync(releaseId);
+		Console.WriteLine("db: delete release - end");
 	}
 }

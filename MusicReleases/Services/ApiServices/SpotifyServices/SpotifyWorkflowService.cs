@@ -38,6 +38,7 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 
 	private async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>?> StartLoadingPlaylists(bool forceUpdate)
 	{
+		Console.WriteLine("workflow: playlists - start");
 		var forceUpdateAuto = false;
 
 		if (_loaderService.IsLoading(LoadingType.Playlists) || _loaderService.IsLoading(LoadingType.PlaylistTracks))
@@ -54,11 +55,13 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 			await _spotifyPlaylistsService.Get(forceUpdate);
 		}
 		var playlists = _spotifyPlaylistsService.Playlists;
+		Console.WriteLine("workflow: playlists - end");
 		return playlists;
 	}
 
 	private async Task StartLoadingPlaylistsTracks(bool forceUpdate, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists> playlists)
 	{
+		Console.WriteLine("workflow: playlist tracks - start");
 		var forceUpdateAuto = false;
 
 		if (_loaderService.IsLoading(LoadingType.Playlists) || _loaderService.IsLoading(LoadingType.PlaylistTracks))
@@ -74,6 +77,7 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 		{
 			// TODO load playlists tracks
 		}
+		Console.WriteLine("workflow: playlist tracks - end");
 	}
 
 
@@ -90,6 +94,7 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 
 	private async Task<ISet<SpotifyArtist>?> StartLoadingArtists(bool forceUpdate)
 	{
+		Console.WriteLine("workflow: artists - start");
 		var forceUpdateAuto = false;
 
 		if (_loaderService.IsLoading(LoadingType.Artists) || _loaderService.IsLoading(LoadingType.Releases))
@@ -112,11 +117,13 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 		}
 
 		_spotifyFilterService.SetArtists(artists);
+		Console.WriteLine("workflow: artists - end");
 		return artists;
 	}
 
 	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, ISet<SpotifyArtist> artists)
 	{
+		Console.WriteLine("workflow: releases - start");
 		var forceUpdateAuto = false;
 		if (_loaderService.IsLoading(LoadingType.Artists) || _loaderService.IsLoading(LoadingType.Releases))
 		{
@@ -140,6 +147,7 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 
 		// filter releases
 		_spotifyFilterService.SetReleases(releases);
+		Console.WriteLine("workflow: releases - end");
 	}
 
 	public bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, ReleaseType? releaseType = null) where T : SpotifyIdNameObject where U : SpotifyUserListUpdate

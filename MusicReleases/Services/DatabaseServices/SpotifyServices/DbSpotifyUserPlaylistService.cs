@@ -69,7 +69,7 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 	private async Task<ISet<SpotifyUserPlaylistEntity>> GetSavedDb(string userId)
 	{
 		// TODO user artist db table
-		Console.WriteLine("get playlists");
+		Console.WriteLine("db: get user playlists - start");
 
 		// get artists from db
 		var userPlaylistsDb = _dbTable.GetAllAsync<SpotifyUserPlaylistEntity>();
@@ -84,6 +84,7 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 			}
 			playlistsDb.Add(userPlaylistDb);
 		}
+		Console.WriteLine("db: get user playlists - end");
 
 		return playlistsDb;
 	}
@@ -145,6 +146,7 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 
 	private async Task SaveDb(ISet<SpotifyPlaylist> playlists, string userId)
 	{
+		Console.WriteLine("db: save user playlists - start");
 		var userPlaylistsDb = await GetSavedDb(userId);
 
 		var newPlaylists = playlists.Where(x => !userPlaylistsDb.Any(y => y.PlaylistId == x.Id)).ToHashSet();
@@ -158,20 +160,24 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 			await _dbTable.StoreAsync(playlistEntity);
 		}
 
+		Console.WriteLine("db: save user playlists - end");
 		// delete not followed artists
 		await Delete(deletedPlaylists);
 	}
 
 	private async Task Delete(ISet<SpotifyUserPlaylistEntity> userPlaylistsDb)
 	{
+		Console.WriteLine("db: delete user playlists - start");
 		foreach (var userPlaylistDb in userPlaylistsDb)
 		{
 			await _dbTable.RemoveItemAsync(userPlaylistDb);
 		}
+		Console.WriteLine("db: delete user playlists - end");
 	}
 
 	public async Task Delete(string userId)
 	{
+		Console.WriteLine("db: delete user playlists by user id - start");
 		var userPlaylistsDb = _dbTable.GetAllAsync<SpotifyUserPlaylistEntity>();
 		await foreach (var userPlaylistDb in userPlaylistsDb)
 		{
@@ -181,5 +187,6 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 			}
 			await _dbTable.RemoveItemAsync(userPlaylistDb);
 		}
+		Console.WriteLine("db: delete user playlists by user id - end");
 	}
 }

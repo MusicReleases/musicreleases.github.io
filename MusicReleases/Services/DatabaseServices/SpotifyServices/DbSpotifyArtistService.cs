@@ -12,7 +12,7 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 	public async Task<ISet<SpotifyArtist>?> GetAll()
 	{
 		// get artists from db
-		Console.WriteLine("get artists");
+		Console.WriteLine("db: get all artists - start");
 		var artistsDb = _dbTable.GetAllAsync<SpotifyArtistEntity>();
 		var artists = new HashSet<SpotifyArtist>();
 
@@ -22,15 +22,18 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 			artists.Add(artist);
 		}
 
+		Console.WriteLine("db: get all artists - end");
 		return artists;
 	}
 
 	public async Task Save(ISet<SpotifyArtist> artists)
 	{
+		Console.WriteLine("db: save artists - start");
 		foreach (var artist in artists)
 		{
 			var artistEntity = new SpotifyArtistEntity(artist);
 			await _dbTable.StoreAsync(artistEntity);
 		}
+		Console.WriteLine("db: save artists - end");
 	}
 }

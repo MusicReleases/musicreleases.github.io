@@ -79,7 +79,7 @@ public partial class Releases
 
 		base.OnInitialized();
 
-		Console.WriteLine("Releases.OnInitialized");
+		//Console.WriteLine("Releases.OnInitialized");
 		//LoadReleases();
 	}
 
@@ -102,7 +102,7 @@ public partial class Releases
 	protected override async Task OnParametersSetAsync()
 	{
 		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
-		Console.WriteLine("Releases.OnParametersSet");
+		//Console.WriteLine("Releases.OnParametersSet");
 		await LoadReleases();
 	}
 
@@ -143,8 +143,6 @@ public partial class Releases
 
 	private void GetReleases()
 	{
-		Console.WriteLine("get releases -------------");
-
 		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
 
 		if (!userLoggedIn)

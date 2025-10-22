@@ -64,6 +64,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 
 	private (ISet<SpotifyRelease> byTypeDate, ISet<SpotifyRelease> byTypeArtist) FilterReleases()
 	{
+		Console.WriteLine("filter: releases - start");
 		if (Filter is null)
 		{
 			throw new NullReferenceException(nameof(Filter));
@@ -107,6 +108,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 		}
 
 		FilteredReleases = [.. releasesByTypeAdvancedArtistDate];
+		Console.WriteLine("filter: releases - end");
 
 		return (releasesByTypeAdvancedDate.ToHashSet(), releasesByTypeAdvancedArtist.ToHashSet());
 	}
@@ -176,6 +178,8 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 
 	private void FilterArtists(ISet<SpotifyRelease> releasesByTypeDate)
 	{
+		Console.WriteLine("filter: artists - start");
+
 		if (_allArtists is null)
 		{
 			FilteredArtists = null;
@@ -186,10 +190,12 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 		var filteredArtists = _allArtists.Where(a => artistIdsInFilteredReleases.Contains(a.Id));
 
 		FilteredArtists = [.. filteredArtists];
+		Console.WriteLine("filter: artists - end");
 	}
 
 	private void FilterDate(ISet<SpotifyRelease> releases)
 	{
+		Console.WriteLine("filter: date - start");
 		var filteredYearMonth = releases
 			.Select(r => r.ReleaseDate)
 			.Distinct()
@@ -204,6 +210,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 			);
 
 		FilteredYearMonth = filteredYearMonth;
+		Console.WriteLine("filter: date - end");
 	}
 
 	public void SetFilter(SpotifyFilter filter)

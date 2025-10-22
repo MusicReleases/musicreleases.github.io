@@ -28,20 +28,23 @@ public class DbSpotifyUpdateService(IDbSpotifyService dbService) : IDbSpotifyUpd
 
 	public async Task<SpotifyLastUpdateEntity?> Get(string userId)
 	{
-		Console.WriteLine(value: "get update");
+		Console.WriteLine("db: get update - start");
 		var userUpdateDb = await _dbTable.GetItemAsync<SpotifyLastUpdateEntity>(userId);
+		Console.WriteLine("db: get update - end");
 		return userUpdateDb;
 	}
 
 	public async Task Delete(string userId)
 	{
-		Console.WriteLine("delete update");
+		Console.WriteLine("db: delete update - start");
 		await _dbTable.RemoveItemAsync(userId);
+		Console.WriteLine("db: delete update - end");
 	}
 
 	public async Task Update(SpotifyLastUpdateEntity lastUpdateDb)
 	{
-		Console.WriteLine("save update");
+		Console.WriteLine("db: save update - start");
 		await _dbTable.StoreItemAsync(lastUpdateDb);
+		Console.WriteLine("db: save update - end");
 	}
 }

@@ -41,7 +41,6 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 		var artistIdsDb = followedArtistDb.Select(x => x.ArtistId);
 
 		// get all artists (name) from db
-		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntity>();
 		var artistsDb = await _dbArtistService.GetAll();
 		if (artistsDb is null)
 		{
@@ -63,7 +62,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 	private async Task<ISet<SpotifyUserArtistEntity>> GetFollowedDb(string userId)
 	{
 		// TODO user artist db table
-		Console.WriteLine("get artists");
+		Console.WriteLine("db: get user artists - start");
 
 		// get artists from db
 		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntity>();
@@ -78,7 +77,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 			}
 			artistsDb.Add(userArtistDb);
 		}
-
+		Console.WriteLine("db: get user artists - end");
 		return artistsDb;
 	}
 
@@ -139,6 +138,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 	private async Task SaveDb(ISet<SpotifyArtist> artists, string userId)
 	{
+		Console.WriteLine("db: save user artists - start");
 		var userArtistsDb = await GetFollowedDb(userId);
 
 		var newFollowedArtists = artists.Where(x => !userArtistsDb.Any(y => y.ArtistId == x.Id)).ToHashSet();
@@ -151,6 +151,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 			var artistEntity = new SpotifyUserArtistEntity(userId, artist.Id);
 			await _dbTable.StoreAsync(artistEntity);
 		}
+		Console.WriteLine("db: save user artists - end");
 
 		// delete not followed artists
 		await Delete(unfollowedArtists);
@@ -158,14 +159,17 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 	private async Task Delete(ISet<SpotifyUserArtistEntity> userArtistsDb)
 	{
+		Console.WriteLine("db: delete user artists - start");
 		foreach (var userArtistDb in userArtistsDb)
 		{
 			await _dbTable.RemoveItemAsync(userArtistDb);
 		}
+		Console.WriteLine("db: delete user artists - end");
 	}
 
 	public async Task Delete(string userId)
 	{
+		Console.WriteLine("db: delete user artists by user id - start");
 		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntity>();
 		await foreach (var userArtistDb in userArtistsDb)
 		{
@@ -175,5 +179,6 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 			}
 			await _dbTable.RemoveItemAsync(userArtistDb);
 		}
+		Console.WriteLine("db: delete followed artists by user id - end");
 	}
 }
