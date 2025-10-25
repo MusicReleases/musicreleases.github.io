@@ -34,7 +34,9 @@ public class SpotifyPlaylistsService(ISpotifyPlaylistService spotifyPlaylistServ
 		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
+		Console.WriteLine("api: get playlists - start");
 		var playlistsApi = await _spotifyPlaylistService.GetUserPlaylists(true, playlistsDb, forceUpdate);
+		Console.WriteLine("api: get playlists - end");
 
 		if (playlistsApi is not null)
 		{

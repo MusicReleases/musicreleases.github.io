@@ -35,7 +35,9 @@ public class SpotifyArtistsService(ISpotifyArtistService spotifyArtistService, I
 		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
+		Console.WriteLine("api: get artists - start");
 		var artistsApi = await _spotifyArtistService.GetUserFollowedArtists(artistsDb, forceUpdate);
+		Console.WriteLine("api: get artists - end");
 
 		if (artistsApi is not null)
 		{

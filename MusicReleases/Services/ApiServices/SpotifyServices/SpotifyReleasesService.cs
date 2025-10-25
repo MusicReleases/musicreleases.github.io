@@ -41,7 +41,9 @@ public class SpotifyReleasesService(ISpotifyReleaseService spotifyReleaseService
 		_loaderService.StopLoading(loadingType, loadingCategoryGetDb);
 
 		// get api
+		Console.WriteLine("api: get releases - start");
 		var releasesApi = await _spotifyReleaseService.GetReleases(releaseType, artists, releasesDb, forceUpdate);
+		Console.WriteLine("api: get releases - end");
 
 		if (releasesApi is not null)
 		{

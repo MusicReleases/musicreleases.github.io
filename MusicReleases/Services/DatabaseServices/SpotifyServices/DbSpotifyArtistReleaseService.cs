@@ -66,8 +66,7 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 	private async Task<ISet<SpotifyReleaseArtistsDbObject>> GetReleaseIds(ISet<SpotifyArtist> followedArtists)
 	{
 		var artistReleasesDb = await GetAllDb();
-		var allArtists = await _dbArtistService.GetAll()
-						 ?? throw new NullReferenceException("allArtists");
+		var allArtists = await _dbArtistService.GetAll() ?? throw new NullReferenceException("allArtists");
 
 		var artistDict = allArtists.ToDictionary(a => a.Id);
 
@@ -93,7 +92,7 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 		foreach (var release in releaseArtistMap)
 		{
 			var artists = release.Value
-				.Where(id => artistDict.ContainsKey(id))
+				.Where(artistDict.ContainsKey)
 				.Select(id => artistDict[id])
 				.ToHashSet();
 
