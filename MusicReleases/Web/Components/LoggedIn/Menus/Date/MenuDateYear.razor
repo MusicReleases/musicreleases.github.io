@@ -1,5 +1,6 @@
 ﻿@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 
 @implements IDisposable
 
@@ -8,6 +9,10 @@
 @inject ILoaderService LoaderService
 
 <div class="menu date items scroll buttons-rounded-m @Class">
+
+	<Date class="hide-pc hide-tablet">
+	</Date>
+
 	@if (Loading)
 	{
 		<p>Loading...</p>

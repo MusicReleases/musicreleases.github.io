@@ -1,12 +1,15 @@
 ﻿@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Services.UiServices
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
 
 @implements IDisposable
 
 @inject ILoaderService LoaderService
+@inject IMobileService MobileService
 
-<div class="menu artists buttons-rounded-l">
-	<ButtonTitle Type="_type" DisplayTitle="_displayTitle">
+<div class="menu artists buttons-rounded-l" @attributes="AdditionalAttributes">
+
+	<ButtonTitle Type="_type" DisplayTitle="_displayTitle" OnClick="HideMenu">
 		<i class="fas fa-users" aria-hidden="true"></i>
 	</ButtonTitle>
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons;
@@ -13,6 +14,9 @@ public partial class ButtonTitle
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
+	[Parameter]
+	public EventCallback<MouseEventArgs> OnClick { get; set; }
+
 
 	private string? _title;
 
@@ -23,7 +27,12 @@ public partial class ButtonTitle
 		_title = Type.ToString();
 	}
 
-	private void Hide()
+	private async Task HandleClick(MouseEventArgs e)
 	{
+		if (!OnClick.HasDelegate)
+		{
+			return;
+		}
+		await OnClick.InvokeAsync(e);
 	}
 }
