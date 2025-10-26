@@ -7,8 +7,8 @@
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 
 
-<button type="button" class="year icon-text-right @ButtonClass" @onclick="FilterYear">
-	@Year<i class="fas @IconClass" aria-hidden="true" @onclick="DisplayMonths" @onclick:stopPropagation="true"></i>
+<button type="button" class="year icon-text @ButtonClass" @onclick="FilterYear">
+	<i class="fas @IconClass" aria-hidden="true" @onclick="DisplayMonths" @onclick:stopPropagation="true"></i>@Year
 </button>
 
 @if (_renderMonths)

@@ -24,7 +24,6 @@
     .row {
         display: flex;
     }
-
     // tracklist
     &.tracklist {
         .track {
@@ -32,9 +31,9 @@
                 display: flex;
                 flex-wrap: wrap;
 
-                &>* {
+                /*& > * {
                     margin-right: 5px;
-                }
+                }*/
 
                 .artists {
                     display: inline-block;
@@ -53,7 +52,6 @@
             }
         }
     }
-
     // playlists
     &.playlists {
         .update {

@@ -71,6 +71,28 @@
                 padding: 6px;
             }
         }
+
+        & > .tracklist {
+            & > .track {
+                & > .info {
+                    .number {
+                        width: 25px;
+                    }
+
+                    .time {
+                        width: 75px;
+                    }
+
+                    .artists {
+                        padding: 0;
+
+                        span {
+                            margin: 0 7px;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     &.texts .release {

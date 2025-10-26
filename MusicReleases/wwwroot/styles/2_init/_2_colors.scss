@@ -31,6 +31,7 @@ $color_0: rgb(0, 0, 0);
     $color_7: rgb(66, 66, 66);
 
     $color_text: rgb(255, 255, 255);
+    $color_text_2: rgb(105, 105, 105);
 
     // light colors
     @if $theme==1 {
@@ -43,6 +44,7 @@ $color_0: rgb(0, 0, 0);
         $color_7: rgb(195, 195, 195);
 
         $color_text: rgb(0, 0, 0);
+        $color_text_2: rgb(150, 150, 150);
     }
     // color theme$
     @if $theme==3 {
@@ -188,6 +190,26 @@ $color_0: rgb(0, 0, 0);
                 &:hover {
                     background-color: transparent;
                     color: $color_text_button;
+                }
+            }
+        }
+
+        & > .tracklist {
+            & > .track {
+                & > .info {
+                    &:hover {
+                        background-color: $color_2;
+                    }
+
+                    & > .artists {
+                        .artist {
+                            color: $color_text_2;
+
+                            &:hover {
+                                color: $color_text_button;
+                            }
+                        }
+                    }
                 }
             }
         }
