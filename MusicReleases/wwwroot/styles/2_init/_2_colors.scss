@@ -35,7 +35,19 @@ $color_0: rgb(0, 0, 0);
 
     // light colors
     @if $theme==1 {
-        $color_1: rgb(255, 255, 255);
+        $color_1: rgb(6, 6, 6);
+        $color_2: rgb(16, 16, 16);
+        $color_3: rgb(26, 26, 26);
+        $color_4: rgb(36, 36, 36);
+        $color_5: rgb(46, 46, 46);
+        $color_6: rgb(56, 56, 56);
+        $color_7: rgb(66, 66, 66);
+
+        $color_text: rgb(255, 255, 255);
+        $color_text_2: rgb(105, 105, 105);
+
+        // TODO light theme colors
+        /*$color_1: rgb(255, 255, 255);
         $color_2: rgb(245, 245, 245);
         $color_3: rgb(235, 235, 235);
         $color_4: rgb(225, 225, 225);
@@ -44,10 +56,11 @@ $color_0: rgb(0, 0, 0);
         $color_7: rgb(195, 195, 195);
 
         $color_text: rgb(0, 0, 0);
-        $color_text_2: rgb(150, 150, 150);
+        $color_text_2: rgb(150, 150, 150);*/
     }
     // color theme$
     @if $theme==3 {
+        // TODO color theme
         // https://coolors.co/293f14-386c0b-388a06-38a700-31d843-3eff8b-50ff96
         $color_1: rgb(41, 63, 20);
         $color_2: rgb(56, 138, 6);

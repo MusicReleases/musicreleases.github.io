@@ -66,34 +66,30 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 	private async Task<ISet<SpotifyReleaseArtistsDbObject>> GetReleaseIds(ISet<SpotifyArtist> followedArtists)
 	{
 		var artistReleasesDb = await GetAllDb();
-		var allArtists = await _dbArtistService.GetAll();
+		var artistsDb = await _dbArtistService.GetAll() ?? throw new NullReferenceException("artistsDb");
 
-		if (allArtists is null)
-		{
-			throw new NullReferenceException(nameof(allArtists));
-		}
-
-		var artistDict = allArtists.ToDictionary(a => a.Id);
+		var artistDict = artistsDb.ToDictionary(a => a.Id);
+		var followedArtistIds = followedArtists.Select(a => a.Id).ToHashSet();
 
 		// releases from followed artist
-		var followedReleases = artistReleasesDb
-			.Where(x => followedArtists
-			.Any(y => y.Id == x.ArtistId))
-			.GroupBy(x => x.ReleaseId)
-			.ToDictionary(g => g.Key, g => g.Select(a => a.ArtistId).ToHashSet());
 
-		var releaseArtistsDb = new HashSet<SpotifyReleaseArtistsDbObject>();
-		foreach (var release in followedReleases)
-		{
-			var artists = release.Value
-				.Where(artistDict.ContainsKey)
-				.Select(id => artistDict[id])
-				.ToHashSet();
+		var releasesWithFollowed = artistReleasesDb
+			.Where(ar => followedArtistIds.Contains(ar.ArtistId))
+			.Select(ar => ar.ReleaseId)
+			.ToHashSet();
 
-			var releaseArtistDb = new SpotifyReleaseArtistsDbObject(release.Key, artists);
-
-			releaseArtistsDb.Add(releaseArtistDb);
-		}
+		// releases from followed artist with all release artists
+		var releaseArtistsDb = artistReleasesDb
+			.Where(ar => releasesWithFollowed.Contains(ar.ReleaseId))
+			.GroupBy(ar => ar.ReleaseId)
+			.Select(g => new SpotifyReleaseArtistsDbObject(
+				g.Key,
+				g.Select(ar => artistDict.GetValueOrDefault(ar.ArtistId))
+				 .Where(a => a is not null)
+				 .Select(a => a!)
+				 .ToHashSet()
+			))
+			.ToHashSet();
 
 		return releaseArtistsDb;
 	}
