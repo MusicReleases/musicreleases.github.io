@@ -40,6 +40,6 @@ public class DbSpotifyPlaylistService(IDbSpotifyService dbService) : IDbSpotifyP
 			var artistEntity = new SpotifyPlaylistEntity(playlist);
 			await _dbTable.StoreAsync(artistEntity);
 		}
-		Console.WriteLine("db: save playlists - start");
+		Console.WriteLine("db: save playlists - end");
 	}
 }

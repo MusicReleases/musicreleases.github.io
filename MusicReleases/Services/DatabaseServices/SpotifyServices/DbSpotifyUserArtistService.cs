@@ -141,8 +141,11 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 		Console.WriteLine("db: save user artists - start");
 		var userArtistsDb = await GetFollowedDb(userId);
 
-		var newFollowedArtists = artists.Where(x => !userArtistsDb.Any(y => y.ArtistId == x.Id)).ToHashSet();
-		var unfollowedArtists = userArtistsDb.Where(x => !artists.Any(y => y.Id == x.ArtistId)).ToHashSet();
+		var userArtistIds = userArtistsDb.Select(x => x.ArtistId).ToHashSet();
+		var artistIds = artists.Select(x => x.Id).ToHashSet();
+
+		var newFollowedArtists = artists.Where(x => !userArtistIds.Contains(x.Id)).ToHashSet();
+		var unfollowedArtists = userArtistsDb.Where(x => !artistIds.Contains(x.ArtistId)).ToHashSet();
 
 		// save new followed artists
 		await _dbArtistService.Save(newFollowedArtists);

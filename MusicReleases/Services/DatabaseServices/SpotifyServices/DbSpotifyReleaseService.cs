@@ -33,7 +33,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 
 		await foreach (var releaseDb in releasesDb)
 		{
-			if (!releaseIdsArtistsDict.TryGetValue(releaseDb.Id, out var releaseIdArtists))
+			if (!releaseIdsArtistsDict.TryGetValue(releaseDb.Id, out var releaseIdArtist))
 			{
 				continue;
 			}
@@ -48,7 +48,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyRe
 				UrlWeb = releaseDb.UrlWeb,
 				UrlImage = releaseDb.UrlImage,
 				ReleaseType = releaseDb.ReleaseType,
-				Artists = [.. releaseIdArtists.Artists],
+				Artists = [.. releaseIdArtist.Artists],
 			};
 
 			releases.Add(release);

@@ -66,42 +66,37 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 	private async Task<ISet<SpotifyReleaseArtistsDbObject>> GetReleaseIds(ISet<SpotifyArtist> followedArtists)
 	{
 		var artistReleasesDb = await GetAllDb();
-		var allArtists = await _dbArtistService.GetAll() ?? throw new NullReferenceException("allArtists");
+		var allArtists = await _dbArtistService.GetAll();
+
+		if (allArtists is null)
+		{
+			throw new NullReferenceException(nameof(allArtists));
+		}
 
 		var artistDict = allArtists.ToDictionary(a => a.Id);
 
-		var followedReleases = PrepareFollowedReleases(artistReleasesDb, followedArtists);
-
-		var releaseIds = BuildReleaseArtistObjects(followedReleases, artistDict);
-
-		return releaseIds;
-	}
-
-	private Dictionary<string, HashSet<string>> PrepareFollowedReleases(IEnumerable<SpotifyArtistReleaseEntity> allReleases, ISet<SpotifyArtist> followedArtists)
-	{
-		return allReleases
-			.Where(x => followedArtists.Any(y => y.Id == x.ArtistId))
+		// releases from followed artist
+		var followedReleases = artistReleasesDb
+			.Where(x => followedArtists
+			.Any(y => y.Id == x.ArtistId))
 			.GroupBy(x => x.ReleaseId)
 			.ToDictionary(g => g.Key, g => g.Select(a => a.ArtistId).ToHashSet());
-	}
 
-	private ISet<SpotifyReleaseArtistsDbObject> BuildReleaseArtistObjects(Dictionary<string, HashSet<string>> releaseArtistMap, Dictionary<string, SpotifyArtist> artistDict)
-	{
 		var releaseArtistsDb = new HashSet<SpotifyReleaseArtistsDbObject>();
-
-		foreach (var release in releaseArtistMap)
+		foreach (var release in followedReleases)
 		{
 			var artists = release.Value
 				.Where(artistDict.ContainsKey)
 				.Select(id => artistDict[id])
 				.ToHashSet();
 
-			releaseArtistsDb.Add(new SpotifyReleaseArtistsDbObject(release.Key, artists));
+			var releaseArtistDb = new SpotifyReleaseArtistsDbObject(release.Key, artists);
+
+			releaseArtistsDb.Add(releaseArtistDb);
 		}
 
 		return releaseArtistsDb;
 	}
-
 
 	private async Task<ISet<SpotifyArtistReleaseEntity>> GetAllDb()
 	{
@@ -164,8 +159,12 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 	private async Task SaveDb(ISet<SpotifyRelease> releases, string userId)
 	{
 		Console.WriteLine("db: save artist releases - start");
+
 		var artistReleasesDb = await GetAllDb();
-		var newReleases = releases.Where(x => !artistReleasesDb.Any(y => y.ReleaseId == x.Id)).ToHashSet();
+
+		var existingReleaseIds = artistReleasesDb.Select(x => x.ReleaseId).ToHashSet();
+		var newReleases = releases.Where(x => !existingReleaseIds.Contains(x.Id)).ToHashSet();
+
 		var newArtists = new HashSet<SpotifyArtist>();
 
 		// save new releases
@@ -184,12 +183,16 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 		await _dbArtistService.Save(newArtists);
 		Console.WriteLine("db: save artist releases - end");
 
-		// delete or keep releases
-		var artists = releases.SelectMany(x => x.Artists);
 
-		// keep releases from unfollowed artists (for cache)
-		var artistReleasesFromFollowedArtists = artistReleasesDb.Where(x => artists.Any(y => y.Id == x.ArtistId));
-		var deletedReleases = artistReleasesFromFollowedArtists.Where(x => !releases.Any(y => y.Id == x.ReleaseId)).ToHashSet();
+		// delete or keep releases
+		var artists = releases.SelectMany(x => x.Artists).ToHashSet();
+
+		var artistIds = artists.Select(a => a.Id).ToHashSet();
+		var releaseIds = releases.Select(r => r.Id).ToHashSet();
+
+		var artistReleasesFromFollowedArtists = artistReleasesDb.Where(x => artistIds.Contains(x.ArtistId)).ToHashSet();
+
+		var deletedReleases = artistReleasesFromFollowedArtists.Where(x => !releaseIds.Contains(x.ReleaseId)).ToHashSet();
 
 		// delete releases from followed artists
 		await Delete(deletedReleases);
@@ -204,6 +207,24 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 			await _dbTable.RemoveItemAsync(artistReleaseDb);
 			await _dbReleaseService.Delete(artistReleaseDb.ReleaseId);
 		}
-		Console.WriteLine("db: dele artist releases - end");
+		Console.WriteLine("db: delete artist releases - end");
 	}
+
+	/*
+private async Task Delete(ISet<SpotifyArtistReleaseEntity> artistReleasesDb)
+{
+	Console.WriteLine("db: delete artist releases - start");
+
+	await Task.WhenAll(artistReleasesDb.Select(DeleteItem));
+
+	Console.WriteLine("db: delete artist releases - end");
+}
+
+private async Task DeleteItem(SpotifyArtistReleaseEntity artistReleaseDb)
+{
+	// delete releases from followed artists (= probably deleted from spotify)
+	await _dbTable.RemoveItemAsync(artistReleaseDb);
+	await _dbReleaseService.Delete(artistReleaseDb.ReleaseId);
+}
+	*/
 }
