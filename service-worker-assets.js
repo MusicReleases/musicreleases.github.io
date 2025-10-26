@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "d/N5nZDT",
+  "version": "1zJuOLku",
   "assets": [
     {
       "hash": "sha256-8TpqA28w98549rCBY+UieWMV+Ms8G65CIp5WC2rfoac=",
@@ -14,8 +14,8 @@ self.assetsManifest = {
       "url": "_framework/Blazored.LocalStorage.12n6dz54qr.wasm"
     },
     {
-      "hash": "sha256-0u3mDqmHZCpHaySrCLp7vTTIWAc9g1XAOuhw3vK1k88=",
-      "url": "_framework/Extensions.2wd6y4fez5.wasm"
+      "hash": "sha256-cF+Y5Z0gqoqQteLJ+KUDyrHJvD7VBa1XMOwZf9aw25g=",
+      "url": "_framework/Extensions.8amzhlmjlr.wasm"
     },
     {
       "hash": "sha256-X+K27ireYTrXKZ7TeiSnysMl4p65TEyu1mzkqNvSY6E=",
@@ -82,8 +82,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.WebAssembly.pxf5p9f275.wasm"
     },
     {
-      "hash": "sha256-j4tjIt6sM7j9L/currfJOriyOcBWgfyeUpAaIPdO7so=",
-      "url": "_framework/MusicReleases.9iapftzpet.wasm"
+      "hash": "sha256-U2Mljb9y4BEjoELyjAWst9feDsgZA+HxCXdfHJu59Fg=",
+      "url": "_framework/MusicReleases.z0774wo3py.wasm"
     },
     {
       "hash": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
@@ -94,8 +94,8 @@ self.assetsManifest = {
       "url": "_framework/SpotifyAPI.Web.dd69tlc3sa.wasm"
     },
     {
-      "hash": "sha256-p0Fpw6ZX9tmkVl7rkS/vawduQLBUltU24CobzTWRmpk=",
-      "url": "_framework/SpotifyApi.5lues8r3o4.wasm"
+      "hash": "sha256-X4AAeMMfu1Evj+LClCtz4vt8mT1bRg/oGlzJtltxJvA=",
+      "url": "_framework/SpotifyApi.zb79nvmp34.wasm"
     },
     {
       "hash": "sha256-xMF0eauQ5DkSzUozHLFFMQnL6DSJO09nJLtgag+Dzbw=",
@@ -290,7 +290,7 @@ self.assetsManifest = {
       "url": "_framework/Tavenem.DataStore.d21jns0ond.wasm"
     },
     {
-      "hash": "sha256-ZvhQbdTr0nlszB/EPeg2BJQBVZP1keVTXtqe/276cb4=",
+      "hash": "sha256-/OuwpwyxypRF8TkDH9wJcEgP1KHpsF3aXh1W1MeJNC0=",
       "url": "_framework/blazor.boot.json"
     },
     {
@@ -326,7 +326,7 @@ self.assetsManifest = {
       "url": "_framework/icudt_no_CJK.lfu7j35m59.dat"
     },
     {
-      "hash": "sha256-1UaY0gNXDx1Mc0cp1SeVXeH267IZ/ouELw196Z9TYjE=",
+      "hash": "sha256-HNlzBTCYC1UY9miaZw1FFIqT5ZXVniJ+HH9xpZ+j7HA=",
       "url": "appsettings.json"
     },
     {
