@@ -138,7 +138,6 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 	private async Task SaveDb(ISet<SpotifyArtist> artists, string userId)
 	{
-		Console.WriteLine("db: save user artists - start");
 		var userArtistsDb = await GetFollowedDb(userId);
 
 		var userArtistIds = userArtistsDb.Select(x => x.ArtistId).ToHashSet();
@@ -149,6 +148,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 
 		// save new followed artists
 		await _dbArtistService.Save(newFollowedArtists);
+		Console.WriteLine("db: save user artists - start");
 		foreach (var artist in newFollowedArtists)
 		{
 			var artistEntity = new SpotifyUserArtistEntity(userId, artist.Id);

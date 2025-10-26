@@ -158,7 +158,6 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 	private async Task SaveDb(ISet<SpotifyRelease> releases, string userId)
 	{
-		Console.WriteLine("db: save artist releases - start");
 
 		var artistReleasesDb = await GetAllDb();
 
@@ -169,6 +168,8 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 		// save new releases
 		await _dbReleaseService.Save(newReleases);
+
+		Console.WriteLine("db: save artist releases - start");
 		foreach (var release in newReleases)
 		{
 			foreach (var artist in release.Artists)
@@ -178,10 +179,10 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 				newArtists.Add(artist);
 			}
 		}
+		Console.WriteLine("db: save artist releases - end");
 
 		// save release artists
 		await _dbArtistService.Save(newArtists);
-		Console.WriteLine("db: save artist releases - end");
 
 
 		// delete or keep releases

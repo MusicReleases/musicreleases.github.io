@@ -89,9 +89,9 @@ public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateS
 
 	public async Task Delete(string userId)
 	{
-		Console.WriteLine("dB: delete user - start");
+		Console.WriteLine("db: delete user - start");
 		await _dbTable.RemoveItemAsync(userId);
-		Console.WriteLine("dB: delete user - end");
+		Console.WriteLine("db: delete user - end");
 	}
 
 	public async Task DeleteAllUserDatabases(string userId)

@@ -41,7 +41,6 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 		var playlistIdsDb = playlistsDb.Select(x => x.PlaylistId);
 
 		// get all artists (name) from db
-		var userPlaylistsDb = _dbTable.GetAllAsync<SpotifyUserPlaylistEntity>();
 		var playlistsDbAll = await _dbPlaylistService.GetAll();
 		if (playlistsDbAll is null)
 		{
@@ -146,8 +145,6 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 
 	private async Task SaveDb(ISet<SpotifyPlaylist> playlists, string userId)
 	{
-		Console.WriteLine("db: save user playlists - start");
-
 		var userPlaylistsDb = await GetSavedDb(userId);
 
 		var userPlaylistIds = userPlaylistsDb.Select(x => x.PlaylistId).ToHashSet();
@@ -158,14 +155,15 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 
 		// save new followed artists
 		await _dbPlaylistService.Save(newPlaylists);
+
+		Console.WriteLine("db: save user playlists - start");
 		foreach (var playlist in newPlaylists)
 		{
 			var playlistEntity = new SpotifyUserPlaylistEntity(userId, playlist.Id);
 			await _dbTable.StoreAsync(playlistEntity);
 		}
-
-
 		Console.WriteLine("db: save user playlists - end");
+
 		// delete not followed artists
 		await Delete(deletedPlaylists);
 	}
@@ -177,6 +175,7 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService, IDbSpotif
 		{
 			await _dbTable.RemoveItemAsync(userPlaylistDb);
 		}
+		Console.WriteLine("db: delete user playlists - end");
 	}
 
 	/*private async Task Delete(ISet<SpotifyUserPlaylistEntity> userPlaylistsDb)
