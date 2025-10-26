@@ -1,4 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Base;
+﻿using JakubKastner.Extensions;
+using JakubKastner.SpotifyApi.Base;
 using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
@@ -178,5 +179,30 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 		//if (playlist != null) playlist.Tracks = tracks;
 
 		return tracks;
+	}
+
+	public async Task<SpotifyPlaylist> CreatePlaylistInApi(string playlistName)
+	{
+		// TODO options - desription, public, collaborative
+
+		var spotifyClient = _client.GetClient();
+		var user = _controllerUser.GetUser();
+		var userId = user?.Info?.Id;
+
+		if (userId.IsNullOrEmpty())
+		{
+			throw new NullReferenceException(nameof(userId));
+		}
+
+		var request = new PlaylistCreateRequest(playlistName)
+		{
+			Collaborative = false,
+			Public = false,
+		};
+
+		var playlistApi = await spotifyClient.Playlists.Create(userId, request);
+		var playlist = new SpotifyPlaylist(playlistApi, [], true);
+
+		return playlist;
 	}
 }

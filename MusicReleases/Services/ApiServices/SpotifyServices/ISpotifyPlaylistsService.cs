@@ -10,5 +10,6 @@ namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
 		event Action? OnPlaylistsDataChanged;
 
 		Task Get(bool forceUpdate);
+		Task Create(string playlistName);
 	}
 }

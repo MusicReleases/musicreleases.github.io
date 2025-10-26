@@ -81,6 +81,12 @@ public partial class MenuPlaylists
 
 	private async Task CreatePlaylist()
 	{
-		// todo create playlist
+		if (_playlistName.IsNullOrEmpty())
+		{
+			return;
+		}
+
+		await SpotifyPlaylistsService.Create(_playlistName);
+		ClearInput();
 	}
 }

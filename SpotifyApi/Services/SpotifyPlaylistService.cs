@@ -157,4 +157,15 @@ internal class SpotifyPlaylistService(IApiPlaylistService controllerApiPlaylist,
 		return playlistStorage;
 	}
 
+	public async Task<SpotifyPlaylist> Create(string playlistName)
+	{
+		var user = _controllerUser.GetUserRequired();
+		var playlist = await _controllerApiPlaylist.CreatePlaylistInApi(playlistName);
+
+		user.Playlists ??= new(new HashSet<SpotifyPlaylist>(), new SpotifyUserListUpdatePlaylists(DateTime.Now));
+
+		user.Playlists.List!.Add(playlist);
+
+		return playlist;
+	}
 }

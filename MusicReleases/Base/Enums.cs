@@ -84,8 +84,9 @@ public static class Enums
 	}
 	public enum LoadingCategory
 	{
-		GetDb,
 		GetApi,
+		SaveApi,
+		GetDb,
 		SaveDb,
 	}
 
