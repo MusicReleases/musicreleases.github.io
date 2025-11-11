@@ -9,6 +9,8 @@ public partial class MenuPlaylists
 {
 	[Parameter]
 	public SpotifyRelease? Release { get; set; }
+	[Parameter]
+	public SpotifyTrack? Track { get; set; }
 
 	private ISet<SpotifyPlaylist>? Playlists => SpotifyPlaylistsService.Playlists?.List;
 
@@ -39,7 +41,7 @@ public partial class MenuPlaylists
 	}
 
 	private bool Loading => LoaderService.IsLoading(LoadingType.Playlists);
-	private string DivClass => Release is null ? "menu items scroll buttons-rounded-m" : "icon-text list";
+	private string DivClass => Release is null && Track is null ? "menu items scroll buttons-rounded-m" : "icon-text list";
 
 	private string? _playlistName;
 

@@ -4,13 +4,7 @@
 @inject ISpotifyPlaylistsService SpotifyPlaylistsService
 @inject ISpotifyTracksService SpotifyTracksService
 
-@if (Release is null)
-{
-	<button type="button" class="playlist" title="Add release to playlist @Playlist.Name">
-		@Playlist.Name
-	</button>
-}
-else
+@if (Release is not null)
 {
 	<div class="row">
 		@if (Release.Tracks is not null && Release.Tracks.Any(track => Playlist.Tracks.Contains(track.Id)))
@@ -32,4 +26,34 @@ else
 			</button>
 		}
 	</div>
+}
+else if (Track is not null)
+{
+	<div class="row">
+		@if (Playlist.Tracks.Contains(Track.Id))
+		{
+			<button type="button" class="playlist add" title="Remove track from playlist @Playlist.Name" @onclick="() => RemoveFromPlaylist()">
+				<i class="fas fa-minus"></i>
+				@Playlist.Name
+			</button>
+		}
+		else
+		{
+			<button type="button" class="playlist add" title="Add track to the end of playlist @Playlist.Name" @onclick="() => AddToPlaylist(false)">
+				<i class="fas fa-plus"></i>
+				@Playlist.Name
+			</button>
+
+			<button class="add right" title="Add track to top of playlist @Playlist.Name" @onclick="() => AddToPlaylist(true)">
+				<i class="fas fa-chevron-up"></i>
+			</button>
+		}
+	</div>
+}
+
+else
+{
+	<button type="button" class="playlist" title="Add release to playlist @Playlist.Name">
+		@Playlist.Name
+	</button>
 }

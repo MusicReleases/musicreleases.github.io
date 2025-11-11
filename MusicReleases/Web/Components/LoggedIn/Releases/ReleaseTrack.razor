@@ -15,7 +15,7 @@
 			<i class="far fa-heart"></i>
 		</button> *@
 
-		<button class="playlist" title="Add track to playlist">
+		<button class="playlist @PlaylistClass" title="@PlaylistTitle" @onclick="ViewPlaylists">
 			<i class="fas fa-plus"></i>
 		</button>
 		
@@ -37,4 +37,13 @@
 			<i class="far fa-clock"></i>@Track.DurationString
 		</button>
 	</div>
+
+
+	@if (_isPlaylistDisplayed)
+	{
+		<MenuPlaylists Track="@Track">
+
+		</MenuPlaylists>
+	}
+
 </div>

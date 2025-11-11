@@ -225,7 +225,7 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 		return snapshotId;
 	}
 
-	public async Task<string> RemoveTracksInApi(string playlistId, SortedSet<SpotifyTrack> tracks)
+	public async Task<string> RemoveTracksInApi(string playlistId, ISet<SpotifyTrack> tracks)
 	{
 		var spotifyClient = _client.GetClient();
 

@@ -11,7 +11,16 @@ public partial class ButtonPlaylist
 	[Parameter]
 	public SpotifyRelease? Release { get; set; }
 
+	[Parameter]
+	public SpotifyTrack? Track { get; set; }
+
 	private async Task AddToPlaylist(bool positionTop)
+	{
+		await AddReleaseToPlaylist(positionTop);
+		await AddTrackToPlaylist(positionTop);
+	}
+
+	private async Task AddReleaseToPlaylist(bool positionTop)
 	{
 		if (Release is null)
 		{
@@ -32,7 +41,23 @@ public partial class ButtonPlaylist
 		Playlist = await SpotifyPlaylistsService.AddTracks(Playlist, Release.Tracks, positionTop);
 	}
 
+	private async Task AddTrackToPlaylist(bool positionTop)
+	{
+		if (Track is null)
+		{
+			return;
+		}
+
+		Playlist = await SpotifyPlaylistsService.AddTrack(Playlist, Track, positionTop);
+	}
+
 	private async Task RemoveFromPlaylist()
+	{
+		await RemoveReleaseFromPlaylist();
+		await RemoveTrackFromPlaylist();
+	}
+
+	private async Task RemoveReleaseFromPlaylist()
 	{
 		if (Release is null)
 		{
@@ -48,5 +73,14 @@ public partial class ButtonPlaylist
 			return;
 		}
 		Playlist = await SpotifyPlaylistsService.RemoveTracks(Playlist, Release.Tracks);
+	}
+
+	private async Task RemoveTrackFromPlaylist()
+	{
+		if (Track is null)
+		{
+			return;
+		}
+		Playlist = await SpotifyPlaylistsService.RemoveTrack(Playlist, Track);
 	}
 }

@@ -9,7 +9,7 @@ public partial class ReleaseActions
 	public required SpotifyRelease SpotifyRelease { get; set; }
 
 	private bool _isPlaylistDisplayed = false;
-	private string PlaylistTitle => _isPlaylistDisplayed ? "Hide playlists" : "Add to release to playlist";
+	private string PlaylistTitle => _isPlaylistDisplayed ? "Hide playlists" : "Add release to playlist";
 	private string PlaylistClass => _isPlaylistDisplayed ? "active" : string.Empty;
 
 	private bool _isTracklistDisplayed = false;

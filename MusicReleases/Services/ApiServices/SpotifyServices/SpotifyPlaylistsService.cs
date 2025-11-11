@@ -112,7 +112,14 @@ public class SpotifyPlaylistsService(ISpotifyPlaylistService spotifyPlaylistServ
 		return playlistApi;
 	}
 
-	public async Task<SpotifyPlaylist> RemoveTracks(SpotifyPlaylist playlist, SortedSet<SpotifyTrack> tracks)
+	public async Task<SpotifyPlaylist> AddTrack(SpotifyPlaylist playlist, SpotifyTrack track, bool positionTop)
+	{
+		var tracks = new HashSet<SpotifyTrack> { track };
+		var playlistApi = await AddTracks(playlist, tracks, positionTop);
+		return playlistApi;
+	}
+
+	public async Task<SpotifyPlaylist> RemoveTracks(SpotifyPlaylist playlist, ISet<SpotifyTrack> tracks)
 	{
 		var loadingType = LoadingType.Playlists;
 		var loadingCategorySaveApi = LoadingCategory.SaveApi;
@@ -135,6 +142,13 @@ public class SpotifyPlaylistsService(ISpotifyPlaylistService spotifyPlaylistServ
 
 		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
 
+		return playlistApi;
+	}
+
+	public async Task<SpotifyPlaylist> RemoveTrack(SpotifyPlaylist playlist, SpotifyTrack track)
+	{
+		var tracks = new SortedSet<SpotifyTrack> { track };
+		var playlistApi = await RemoveTracks(playlist, tracks);
 		return playlistApi;
 	}
 }

@@ -10,5 +10,5 @@ public interface ISpotifyPlaylistService
 	Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>?> GetUserPlaylists(bool onlyEditable = false, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? existingPlaylist = null, bool forceUpdate = false);
 	Task<SpotifyPlaylist> Create(string playlistName);
 	Task<SpotifyPlaylist> AddTracks(SpotifyPlaylist playlist, ISet<SpotifyTrack> tracks, bool positionTop);
-	Task<SpotifyPlaylist> RemoveTracks(SpotifyPlaylist playlist, SortedSet<SpotifyTrack> tracks);
+	Task<SpotifyPlaylist> RemoveTracks(SpotifyPlaylist playlist, ISet<SpotifyTrack> tracks);
 }
