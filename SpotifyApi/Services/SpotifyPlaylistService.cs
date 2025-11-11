@@ -177,4 +177,13 @@ internal class SpotifyPlaylistService(IApiPlaylistService controllerApiPlaylist,
 
 		return playlist;
 	}
+
+	public async Task<SpotifyPlaylist> RemoveTracks(SpotifyPlaylist playlist, SortedSet<SpotifyTrack> tracks)
+	{
+		var snapshotId = await _controllerApiPlaylist.RemoveTracksInApi(playlist.Id, tracks);
+		var trackIds = tracks.Select(t => t.Id).ToHashSet();
+		playlist.RemoveTracks(snapshotId, trackIds);
+
+		return playlist;
+	}
 }

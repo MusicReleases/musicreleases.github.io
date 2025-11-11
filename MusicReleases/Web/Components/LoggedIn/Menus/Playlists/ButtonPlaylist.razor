@@ -13,13 +13,23 @@
 else
 {
 	<div class="row">
-		<button type="button" class="playlist add" title="Add release to the end of playlist @Playlist.Name" @onclick="() => AddToPlaylist(false)">
-			<i class="fas fa-plus"></i>
-			@Playlist.Name
-		</button>
+		@if (Release.Tracks is not null && Release.Tracks.Any(track => Playlist.Tracks.Contains(track.Id)))
+		{
+			<button type="button" class="playlist add" title="Remove release from playlist @Playlist.Name" @onclick="() => RemoveFromPlaylist()">
+				<i class="fas fa-minus"></i>
+				@Playlist.Name
+			</button>
+		}
+		else
+		{
+			<button type="button" class="playlist add" title="Add release to the end of playlist @Playlist.Name" @onclick="() => AddToPlaylist(false)">
+				<i class="fas fa-plus"></i>
+				@Playlist.Name
+			</button>
 
-		<button class="add right" title="Add release to top of playlist @Playlist.Name" @onclick="() => AddToPlaylist(true)">
-			<i class="fas fa-chevron-up"></i>
-		</button>
+			<button class="add right" title="Add release to top of playlist @Playlist.Name" @onclick="() => AddToPlaylist(true)">
+				<i class="fas fa-chevron-up"></i>
+			</button>
+		}
 	</div>
 }

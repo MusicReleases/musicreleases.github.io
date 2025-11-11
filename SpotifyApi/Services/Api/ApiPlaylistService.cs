@@ -211,15 +211,32 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 	{
 		var spotifyClient = _client.GetClient();
 
-		var tracksIds = tracks.Select(tracks => tracks.UrlApp).ToHashSet();
+		var tracksUrl = tracks.Select(tracks => tracks.UrlApp).ToHashSet();
 
 		var position = positionTop ? 0 : null as int?;
-		var request = new PlaylistAddItemsRequest([.. tracksIds])
+		var request = new PlaylistAddItemsRequest([.. tracksUrl])
 		{
 			Position = position,
 		};
 
 		var snapshot = await spotifyClient.Playlists.AddItems(playlistId, request);
+		var snapshotId = snapshot.SnapshotId;
+
+		return snapshotId;
+	}
+
+	public async Task<string> RemoveTracksInApi(string playlistId, SortedSet<SpotifyTrack> tracks)
+	{
+		var spotifyClient = _client.GetClient();
+
+		var tracksRequest = tracks.Select(track => new PlaylistRemoveItemsRequest.Item() { Uri = track.UrlApp }).ToHashSet();
+
+		var request = new PlaylistRemoveItemsRequest()
+		{
+			Tracks = [.. tracksRequest],
+		};
+
+		var snapshot = await spotifyClient.Playlists.RemoveItems(playlistId, request);
 		var snapshotId = snapshot.SnapshotId;
 
 		return snapshotId;

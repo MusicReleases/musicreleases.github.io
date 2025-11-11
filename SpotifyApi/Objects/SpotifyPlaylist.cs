@@ -41,4 +41,10 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		SnapshotId = snapshotId;
 		Tracks.UnionWith(trackIds);
 	}
+
+	public void RemoveTracks(string snapshotId, ISet<string> trackIds)
+	{
+		SnapshotId = snapshotId;
+		Tracks.ExceptWith(trackIds);
+	}
 }
