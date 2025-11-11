@@ -8,9 +8,10 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 {
 	public required bool CurrentUserOwned { get; init; }
 	public required bool Collaborative { get; init; }
-	public string? SnapshotId { get; init; }
+	public required string SnapshotId { get; set; }
 
 	public int? TotalTracks { get; init; }
+	// TODO private set
 	public HashSet<string> Tracks { get; set; } = [];
 
 	// TODO playlist owner - currentuserowned
@@ -29,9 +30,15 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		TotalTracks = fullPlaylist.Tracks?.Total;
 		Collaborative = fullPlaylist.Collaborative ?? false;
 		CurrentUserOwned = currentUserOwned;
-		SnapshotId = fullPlaylist.SnapshotId;
+		SnapshotId = fullPlaylist.SnapshotId ?? "";
 		UrlApp = fullPlaylist.Uri ?? "";
 		UrlWeb = fullPlaylist.Href ?? "";
 		Tracks = tracks;
+	}
+
+	public void AddTracks(string snapshotId, ISet<string> trackIds)
+	{
+		SnapshotId = snapshotId;
+		Tracks.UnionWith(trackIds);
 	}
 }

@@ -6,10 +6,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 public partial class ButtonPlaylist
 {
 	[Parameter, EditorRequired]
-	public required string PlaylistId { get; set; }
-
-	[Parameter, EditorRequired]
-	public required string PlaylistName { get; set; }
+	public required SpotifyPlaylist Playlist { get; set; }
 
 	[Parameter]
 	public SpotifyRelease? Release { get; set; }
@@ -21,6 +18,17 @@ public partial class ButtonPlaylist
 			return;
 		}
 
+		if (Release.Tracks is null || Release.Tracks.Count < 1)
+		{
+			// try to get tracks
+			await SpotifyTracksService.Get(Release);
+		}
 
+		if (Release.Tracks is null || Release.Tracks.Count < 1)
+		{
+			return;
+		}
+
+		await SpotifyPlaylistsService.AddTracks(Playlist, Release.Tracks, positionTop);
 	}
 }

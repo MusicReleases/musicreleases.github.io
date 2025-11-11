@@ -1,20 +1,24 @@
 ﻿@using JakubKastner.Extensions
+@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+
+@inject ISpotifyPlaylistsService SpotifyPlaylistsService
+@inject ISpotifyTracksService SpotifyTracksService
 
 @if (Release is null)
 {
-	<button type="button" class="playlist" title="Add release to playlist @PlaylistName">
-		@PlaylistName
+	<button type="button" class="playlist" title="Add release to playlist @Playlist.Name">
+		@Playlist.Name
 	</button>
 }
 else
 {
 	<div class="row">
-		<button type="button" class="playlist add" title="Add release to the end of playlist @PlaylistName" @onclick="() => AddToPlaylist(false)">
+		<button type="button" class="playlist add" title="Add release to the end of playlist @Playlist.Name" @onclick="() => AddToPlaylist(false)">
 			<i class="fas fa-plus"></i>
-			@PlaylistName
+			@Playlist.Name
 		</button>
 
-		<button class="add right" title="Add release to top of playlist @PlaylistName" @onclick="() => AddToPlaylist(true)">
+		<button class="add right" title="Add release to top of playlist @Playlist.Name" @onclick="() => AddToPlaylist(true)">
 			<i class="fas fa-chevron-up"></i>
 		</button>
 	</div>

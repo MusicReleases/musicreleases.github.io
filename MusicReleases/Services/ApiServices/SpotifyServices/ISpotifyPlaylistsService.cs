@@ -11,4 +11,5 @@ public interface ISpotifyPlaylistsService
 
 	Task Get(bool forceUpdate);
 	Task Create(string playlistName);
+	Task AddTracks(SpotifyPlaylist playlist, ISet<SpotifyTrack> tracks, bool positionTop);
 }

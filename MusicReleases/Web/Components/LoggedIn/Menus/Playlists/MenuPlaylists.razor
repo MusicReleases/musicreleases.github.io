@@ -55,7 +55,7 @@
 		{
 			@foreach (var playlist in PlaylistsFiltered)
 			{
-				<ButtonPlaylist PlaylistId=@playlist.Id PlaylistName=@playlist.Name Release="@Release">
+				<ButtonPlaylist Playlist=@playlist Release="@Release">
 				</ButtonPlaylist>
 			}
 		}

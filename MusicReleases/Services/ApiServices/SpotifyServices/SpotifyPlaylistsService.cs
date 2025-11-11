@@ -85,4 +85,28 @@ public class SpotifyPlaylistsService(ISpotifyPlaylistService spotifyPlaylistServ
 
 		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
 	}
+
+	public async Task AddTracks(SpotifyPlaylist playlist, ISet<SpotifyTrack> tracks, bool positionTop)
+	{
+		var loadingType = LoadingType.Playlists;
+		var loadingCategorySaveApi = LoadingCategory.SaveApi;
+		var loadingCategorySaveDb = LoadingCategory.SaveDb;
+
+		// create in api
+		_loaderService.StartLoading(loadingType, loadingCategorySaveApi);
+		await _spotifyPlaylistService.AddTracks(playlist, tracks, positionTop);
+
+		// TODO save to db
+
+		//var userId = _spotifyUserService.GetUserIdRequired();
+
+		//_loaderService.StartLoading(loadingType, loadingCategorySaveDb);
+		_loaderService.StopLoading(loadingType, loadingCategorySaveApi);
+
+		/*Playlists = new(playlists.ToHashSet(), new SpotifyUserListUpdatePlaylists(DateTime.Now));
+
+		await _dbSpotifyUserPlaylistService.Save(userId, Playlists);*/
+
+		_loaderService.StopLoading(loadingType, loadingCategorySaveDb);
+	}
 }

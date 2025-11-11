@@ -168,4 +168,13 @@ internal class SpotifyPlaylistService(IApiPlaylistService controllerApiPlaylist,
 
 		return playlist;
 	}
+
+	public async Task<SpotifyPlaylist> AddTracks(SpotifyPlaylist playlist, ISet<SpotifyTrack> tracks, bool positionTop)
+	{
+		var snapshotId = await _controllerApiPlaylist.AddTracksInApi(playlist.Id, tracks, positionTop);
+		var trackIds = tracks.Select(t => t.Id).ToHashSet();
+		playlist.AddTracks(snapshotId, trackIds);
+
+		return playlist;
+	}
 }

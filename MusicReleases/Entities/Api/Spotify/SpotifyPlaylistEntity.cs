@@ -8,7 +8,7 @@ public class SpotifyPlaylistEntity : SpotifyIdNameUrlEntity
 {
 	public bool Collaborative { get; init; }
 	public bool CurrentUserOwned { get; init; }
-	public string? SnapshotId { get; init; }
+	public required string SnapshotId { get; init; }
 
 	public SpotifyPlaylistEntity() { }
 
@@ -19,6 +19,7 @@ public class SpotifyPlaylistEntity : SpotifyIdNameUrlEntity
 		Name = spotifyPlaylist.Name;
 		Collaborative = spotifyPlaylist.Collaborative;
 		CurrentUserOwned = spotifyPlaylist.CurrentUserOwned;
+		SnapshotId = spotifyPlaylist.SnapshotId;
 		UrlApp = spotifyPlaylist.UrlApp;
 		UrlWeb = spotifyPlaylist.UrlWeb;
 	}

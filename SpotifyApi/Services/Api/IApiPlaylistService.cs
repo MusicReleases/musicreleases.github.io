@@ -8,4 +8,5 @@ internal interface IApiPlaylistService
 	Task<ISet<SpotifyPlaylist>> GetPlaylistsTracksFromApi(ISet<SpotifyPlaylist> playlists, bool forceUpdate);
 	Task<IList<SpotifyTrack>> GetPlaylistTracksFromApi(string playlistId);
 	Task<SpotifyPlaylist> CreatePlaylistInApi(string playlistName);
+	Task<string> AddTracksInApi(string playlistId, ISet<SpotifyTrack> tracks, bool positionTop);
 }

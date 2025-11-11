@@ -72,7 +72,8 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 	{
 		foreach (var playlist in playlists)
 		{
-			playlist.Tracks = await GetPlaylistTracks(playlist, forceUpdate) ?? [];
+			var tracks = await GetPlaylistTracks(playlist, forceUpdate) ?? []; ;
+			playlist.AddTracks(playlist.SnapshotId, tracks);
 		}
 		return playlists;
 	}
@@ -204,5 +205,23 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 		var playlist = new SpotifyPlaylist(playlistApi, [], true);
 
 		return playlist;
+	}
+
+	public async Task<string> AddTracksInApi(string playlistId, ISet<SpotifyTrack> tracks, bool positionTop)
+	{
+		var spotifyClient = _client.GetClient();
+
+		var tracksIds = tracks.Select(tracks => tracks.UrlApp).ToHashSet();
+
+		var position = positionTop ? 0 : null as int?;
+		var request = new PlaylistAddItemsRequest([.. tracksIds])
+		{
+			Position = position,
+		};
+
+		var snapshot = await spotifyClient.Playlists.AddItems(playlistId, request);
+		var snapshotId = snapshot.SnapshotId;
+
+		return snapshotId;
 	}
 }
