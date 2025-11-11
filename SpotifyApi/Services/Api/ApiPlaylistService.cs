@@ -199,6 +199,7 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 		{
 			Collaborative = false,
 			Public = false,
+			Description = string.Empty,
 		};
 
 		var playlistApi = await spotifyClient.Playlists.Create(userId, request);
