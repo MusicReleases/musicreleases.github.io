@@ -37,6 +37,8 @@
             .artists {
                 .artist {
                     font-size: 20px;
+                    padding: 10px;
+                    display: inline-block;
 
                     &:first-child {
                         padding-left: 0;
