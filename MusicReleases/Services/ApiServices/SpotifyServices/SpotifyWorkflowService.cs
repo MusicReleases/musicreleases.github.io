@@ -150,7 +150,7 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 		Console.WriteLine("workflow: releases - end");
 	}
 
-	public bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, ReleaseType? releaseType = null) where T : SpotifyIdNameObject where U : SpotifyUserListUpdate
+	public bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, ReleaseType? releaseType = null) where T : SpotifyIdNameUrlObject where U : SpotifyUserListUpdate
 	{
 		if (userList is null || userList.List is null || userList.Update is null || userList.List.Count < 1)
 		{

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-public class SpotifyArtistEntity : SpotifyIdNameEntity
+public class SpotifyArtistEntity : SpotifyIdNameUrlEntity
 {
 	public SpotifyArtistEntity() { }
 
@@ -13,5 +13,7 @@ public class SpotifyArtistEntity : SpotifyIdNameEntity
 	{
 		Id = spotifyArtist.Id;
 		Name = spotifyArtist.Name;
+		UrlApp = spotifyArtist.UrlApp;
+		UrlWeb = spotifyArtist.UrlWeb;
 	}
 }

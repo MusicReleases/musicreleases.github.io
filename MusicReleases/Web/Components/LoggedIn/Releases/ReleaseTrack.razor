@@ -1,0 +1,40 @@
+<div class="track">
+	<div class="info">
+		
+		<button class="number">
+			@Track.TrackNumber
+		</button>
+
+		@* <button class="play" title="Play track">
+			<i class="fas fa-play"></i>
+		</button>
+		<button class="queue" title="Add release to queue">
+			<i class="fas fa-arrow-right"></i>
+		</button>
+		<button class="library active" title="Add track to library">
+			<i class="far fa-heart"></i>
+		</button> *@
+
+		<button class="playlist" title="Add track to playlist">
+			<i class="fas fa-plus"></i>
+		</button>
+		
+		<a class="name" href="@Track.UrlApp" rel="noopener noreferrer">
+			@Track.Name
+		</a>
+
+		<ReleaseArtists ArtistsObj="Track.Artists">
+		</ReleaseArtists>
+
+		@if (Track.Explicit)
+		{
+			<button class="explicit right" title="Explicit lyrics">
+				<span>E</span>
+			</button>
+		}
+
+		<button class="time icon-text @(Track.Explicit ? "" : "right")">
+			<i class="far fa-clock"></i>@Track.DurationString
+		</button>
+	</div>
+</div>

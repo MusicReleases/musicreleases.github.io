@@ -6,14 +6,12 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyRelease : SpotifyIdNameObject, IComparable
+public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 {
 	public required DateTime ReleaseDate { get; init; }
 	public required int TotalTracks { get; init; }
 	public bool New { get; init; } = false;
 
-	public required string UrlApp { get; init; }
-	public required string UrlWeb { get; init; }
 	public required string UrlImage { get; init; }
 
 	public string ArtistString => string.Join(", ", Artists.Select(x => x.Name));
@@ -122,9 +120,10 @@ public class SpotifyRelease : SpotifyIdNameObject, IComparable
 		}
 		UrlApp = simpleShow.Uri;
 		UrlWeb = simpleShow.Href;
+		// TODO artist for simple show
 		Artists =
 		[
-			new("0", simpleShow.Publisher)
+			new("0", simpleShow.Publisher, "", "")
 		];
 		ReleaseType = ReleaseType.Podcasts;
 		New = true;

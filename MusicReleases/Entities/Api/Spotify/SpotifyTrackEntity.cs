@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-public class SpotifyTrackEntity : SpotifyIdNameEntity
+public class SpotifyTrackEntity : SpotifyIdNameUrlEntity
 {
 	public required string AlbumId { get; set; }
 }

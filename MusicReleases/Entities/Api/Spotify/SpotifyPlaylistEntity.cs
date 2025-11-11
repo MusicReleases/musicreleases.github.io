@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-public class SpotifyPlaylistEntity : SpotifyIdNameEntity
+public class SpotifyPlaylistEntity : SpotifyIdNameUrlEntity
 {
 	public bool Collaborative { get; init; }
 	public bool CurrentUserOwned { get; init; }
@@ -19,5 +19,7 @@ public class SpotifyPlaylistEntity : SpotifyIdNameEntity
 		Name = spotifyPlaylist.Name;
 		Collaborative = spotifyPlaylist.Collaborative;
 		CurrentUserOwned = spotifyPlaylist.CurrentUserOwned;
+		UrlApp = spotifyPlaylist.UrlApp;
+		UrlWeb = spotifyPlaylist.UrlWeb;
 	}
 }

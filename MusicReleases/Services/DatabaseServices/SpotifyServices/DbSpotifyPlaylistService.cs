@@ -24,6 +24,8 @@ public class DbSpotifyPlaylistService(IDbSpotifyService dbService) : IDbSpotifyP
 				Name = playlistDb.Name,
 				CurrentUserOwned = playlistDb.CurrentUserOwned,
 				Collaborative = playlistDb.Collaborative,
+				UrlApp = playlistDb.UrlApp,
+				UrlWeb = playlistDb.UrlWeb,
 			};
 			playlists.Add(playlist);
 		}

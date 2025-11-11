@@ -5,13 +5,11 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-public class SpotifyReleaseEntity : SpotifyIdNameEntity
+public class SpotifyReleaseEntity : SpotifyIdNameUrlEntity
 {
 	public DateTime ReleaseDate { get; init; }
 	public int TotalTracks { get; init; }
 
-	public required string UrlApp { get; init; }
-	public required string UrlWeb { get; init; }
 	public required string UrlImage { get; init; }
 
 

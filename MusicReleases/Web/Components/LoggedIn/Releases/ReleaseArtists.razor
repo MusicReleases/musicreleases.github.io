@@ -5,9 +5,9 @@
 	{
 		var artist = ArtistsObj.ElementAt(i);
 
-		<button class="artist">
+		<a class="artist" href="@artist.UrlApp" rel="noopener noreferrer">
 			@artist.Name
-		</button>
+		</a>
 
 		@if (i < ArtistsObj.Count - 1)
 		{

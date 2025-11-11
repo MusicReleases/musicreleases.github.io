@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyArtist : SpotifyIdNameObject
+public class SpotifyArtist : SpotifyIdNameUrlObject, IComparable
 {
 	public SortedSet<SpotifyRelease>? Releases { get; set; }
 	public bool New { get; init; } = false;
@@ -19,6 +19,8 @@ public class SpotifyArtist : SpotifyIdNameObject
 	{
 		Id = simpleArtist.Id;
 		Name = simpleArtist.Name;
+		UrlApp = simpleArtist.Uri;
+		UrlWeb = simpleArtist.Href;
 		New = true;
 	}
 
@@ -27,14 +29,18 @@ public class SpotifyArtist : SpotifyIdNameObject
 	{
 		Id = fullArtist.Id;
 		Name = fullArtist.Name;
+		UrlApp = fullArtist.Uri;
+		UrlWeb = fullArtist.Href;
 		New = true;
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyArtist(string id, string name)
+	public SpotifyArtist(string id, string name, string urlApp, string urlWeb)
 	{
 		Id = id;
 		Name = name;
+		UrlApp = urlApp;
+		UrlWeb = urlWeb;
 		New = true;
 	}
 }

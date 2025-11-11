@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyTrack : SpotifyIdNameObject, IComparable<SpotifyTrack>
+public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 {
 	public int TrackNumber { get; init; }
 	public int DiscNumber { get; init; }
@@ -29,6 +29,8 @@ public class SpotifyTrack : SpotifyIdNameObject, IComparable<SpotifyTrack>
 		DiscNumber = simpleTrack.DiscNumber;
 		Duration = TimeSpan.FromMilliseconds(simpleTrack.DurationMs);
 		Explicit = simpleTrack.Explicit;
+		UrlApp = simpleTrack.Uri;
+		UrlWeb = simpleTrack.Href;
 		// TODO empty??
 		//Album = null;
 		Artists = [];
@@ -40,7 +42,7 @@ public class SpotifyTrack : SpotifyIdNameObject, IComparable<SpotifyTrack>
 				continue;
 			}
 
-			var artist = new SpotifyArtist(simpleArtist.Id, simpleArtist.Name);
+			var artist = new SpotifyArtist(simpleArtist);
 			Artists.Add(artist);
 		}
 	}
@@ -54,11 +56,13 @@ public class SpotifyTrack : SpotifyIdNameObject, IComparable<SpotifyTrack>
 		DiscNumber = fullTrack.DiscNumber;
 		Duration = TimeSpan.FromMilliseconds(fullTrack.DurationMs);
 		Explicit = fullTrack.Explicit;
+		UrlApp = fullTrack.Uri;
+		UrlWeb = fullTrack.Href;
 		//Album = new(fullTrack.Album, ReleaseType.Tracks);
 		Artists = [];
 		foreach (var simpleArtist in fullTrack.Artists)
 		{
-			var artist = new SpotifyArtist(simpleArtist.Id, simpleArtist.Name);
+			var artist = new SpotifyArtist(simpleArtist);
 			Artists.Add(artist);
 		}
 	}
@@ -72,10 +76,13 @@ public class SpotifyTrack : SpotifyIdNameObject, IComparable<SpotifyTrack>
 		DiscNumber = 0; // episode doesnt have disc number
 		Duration = TimeSpan.FromMilliseconds(fullEpisode.DurationMs);
 		Explicit = fullEpisode.Explicit;
+		UrlApp = fullEpisode.Uri;
+		UrlWeb = fullEpisode.Href;
 		//Album = new(fullEpisode.Show);
+		// TODO podcast url
 		Artists =
 		[
-			new(id: "0", name: "podcast")
+			new("0", "podcast", "", "")
 		];
 	}
 

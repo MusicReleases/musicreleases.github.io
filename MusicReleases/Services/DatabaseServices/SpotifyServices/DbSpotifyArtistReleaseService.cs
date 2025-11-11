@@ -151,7 +151,6 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 		await _dbUpdateService.Update(updateDb);
 	}
 
-
 	private async Task SaveDb(ISet<SpotifyRelease> releases, string userId)
 	{
 
@@ -159,22 +158,25 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 
 		var existingReleaseIds = artistReleasesDb.Select(x => x.ReleaseId).ToHashSet();
 		var newReleases = releases.Where(x => !existingReleaseIds.Contains(x.Id)).ToHashSet();
-
 		var newArtists = new HashSet<SpotifyArtist>();
 
 		// save new releases
 		await _dbReleaseService.Save(newReleases);
 
-		Console.WriteLine("db: save artist releases - start");
+		var artistReleaseEntities = new HashSet<SpotifyArtistReleaseEntity>();
 		foreach (var release in newReleases)
 		{
 			foreach (var artist in release.Artists)
 			{
 				var artistReleaseEntity = new SpotifyArtistReleaseEntity(artist.Id, release.Id);
-				await _dbTable.StoreAsync(artistReleaseEntity);
+				artistReleaseEntities.Add(artistReleaseEntity);
 				newArtists.Add(artist);
 			}
 		}
+
+		Console.WriteLine("db: save artist releases - start");
+		var tasks = artistReleaseEntities.Select(e => _dbTable.StoreAsync(e));
+		await Task.WhenAll(tasks);
 		Console.WriteLine("db: save artist releases - end");
 
 		// save release artists

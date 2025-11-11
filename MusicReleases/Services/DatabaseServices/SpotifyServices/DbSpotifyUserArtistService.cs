@@ -51,7 +51,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 		foreach (var artistId in artistIdsDb)
 		{
 			var artistDb = artistsDb.First(x => x.Id == artistId);
-			var artist = new SpotifyArtist(artistDb.Id, artistDb.Name);
+			var artist = new SpotifyArtist(artistDb.Id, artistDb.Name, artistDb.UrlApp, artistDb.UrlWeb);
 			artists.Add(artist);
 		}
 

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyPlaylist : SpotifyIdNameObject, IComparable
+public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 {
 	public required bool CurrentUserOwned { get; init; }
 	public required bool Collaborative { get; init; }
@@ -30,6 +30,8 @@ public class SpotifyPlaylist : SpotifyIdNameObject, IComparable
 		Collaborative = fullPlaylist.Collaborative ?? false;
 		CurrentUserOwned = currentUserOwned;
 		SnapshotId = fullPlaylist.SnapshotId;
+		UrlApp = fullPlaylist.Uri ?? "";
+		UrlWeb = fullPlaylist.Href ?? "";
 		Tracks = tracks;
 	}
 }

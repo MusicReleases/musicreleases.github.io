@@ -16,9 +16,9 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		var artistsDb = _dbTable.GetAllAsync<SpotifyArtistEntity>();
 		var artists = new HashSet<SpotifyArtist>();
 
-		await foreach (var artistDb in artistsDb)
+		await foreach (SpotifyArtistEntity artistDb in artistsDb)
 		{
-			var artist = new SpotifyArtist(artistDb.Id, artistDb.Name);
+			var artist = new SpotifyArtist(artistDb.Id, artistDb.Name, artistDb.UrlApp, artistDb.UrlWeb);
 			artists.Add(artist);
 		}
 
