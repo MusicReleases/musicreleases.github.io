@@ -2,14 +2,13 @@
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
 
-namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+
+public interface ISpotifyReleasesService
 {
-	public interface ISpotifyReleasesService
-	{
-		SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases { get; }
+	SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases { get; }
 
-		event Action? OnTracksDataChanged;
+	event Action? OnTracksDataChanged;
 
-		Task Get(SpotifyEnums.ReleaseType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate);
-	}
+	Task Get(SpotifyEnums.ReleaseType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate);
 }

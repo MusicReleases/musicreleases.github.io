@@ -1,14 +1,13 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
 
-namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+
+public interface ISpotifyArtistsService
 {
-	public interface ISpotifyArtistsService
-	{
-		SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? Artists { get; }
+	SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? Artists { get; }
 
-		event Action? OnArtistsDataChanged;
+	event Action? OnArtistsDataChanged;
 
-		Task Get(bool forceUpdate);
-	}
+	Task Get(bool forceUpdate);
 }
