@@ -1,0 +1,21 @@
+#app {
+    height: 100%;
+}
+
+.body.login {
+    height: 100%;
+
+    .header, .main {
+        padding: 50px;
+    }
+
+    .main {
+        .info {
+            padding-bottom: 40px;
+
+            p {
+                padding-bottom: 10px;
+            }
+        }
+    }
+}
