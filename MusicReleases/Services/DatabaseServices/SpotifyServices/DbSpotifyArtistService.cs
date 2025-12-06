@@ -1,39 +1,35 @@
-﻿using JakubKastner.MusicReleases.Entities.Api.Spotify;
+﻿using DexieNET;
+using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
-using Tavenem.Blazor.IndexedDB;
-using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
 public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArtistService
 {
-	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyArtist);
+	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<ISet<SpotifyArtist>?> GetAll()
+	public async Task<IReadOnlyList<SpotifyArtist>?> GetAll()
 	{
-		// get artists from db
 		Console.WriteLine("db: get all artists - start");
-		var artistsDb = _dbTable.GetAllAsync<SpotifyArtistEntity>();
-		var artists = new HashSet<SpotifyArtist>();
 
-		await foreach (SpotifyArtistEntity artistDb in artistsDb)
-		{
-			var artist = new SpotifyArtist(artistDb.Id, artistDb.Name, artistDb.UrlApp, artistDb.UrlWeb);
-			artists.Add(artist);
-		}
+		var db = await _dbService.GetDb();
+		var entities = await db.Artists.ToArray();
 
-		Console.WriteLine("db: get all artists - end");
+		var artists = entities.Select(e => e.ToModel()).ToArray();
+
+		Console.WriteLine($"db: get all artists - end");
 		return artists;
 	}
 
-	public async Task Save(ISet<SpotifyArtist> artists)
+	public async Task Save(IReadOnlyList<SpotifyArtist> artists)
 	{
 		Console.WriteLine("db: save artists - start");
-		foreach (var artist in artists)
-		{
-			var artistEntity = new SpotifyArtistEntity(artist);
-			await _dbTable.StoreAsync(artistEntity);
-		}
+
+		var entities = artists.Select(a => a.ToEntity());
+
+		var db = await _dbService.GetDb();
+		await db.Artists.BulkPut(entities);
+
 		Console.WriteLine("db: save artists - end");
 	}
 }

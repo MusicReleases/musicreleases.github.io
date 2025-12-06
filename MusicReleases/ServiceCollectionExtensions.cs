@@ -20,6 +20,8 @@ public static class ServiceCollectionExtensions
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
 
+		services.AddScoped<IDbSpotifyServiceOld, DbSpotifyServiceOld>();
+
 		services.AddScoped<IDbSpotifyUpdateService, DbSpotifyUpdateService>();
 		services.AddScoped<IDbSpotifyFilterService, DbSpotifyFilterService>();
 

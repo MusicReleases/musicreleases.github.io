@@ -6,7 +6,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyReleaseService(IDbSpotifyService dbService) : IDbSpotifyReleaseService
+public class DbSpotifyReleaseService(IDbSpotifyServiceOld dbService) : IDbSpotifyReleaseService
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyRelease);
 

@@ -5,7 +5,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyFilterService(IDbSpotifyService dbService) : IDbSpotifyFilterService
+public class DbSpotifyFilterService(IDbSpotifyServiceOld dbService) : IDbSpotifyFilterService
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyFilter);
 

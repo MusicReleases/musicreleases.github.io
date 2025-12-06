@@ -6,7 +6,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyArtistService dbArtistService, IDbSpotifyUpdateService dbUpdateService) : IDbSpotifyUserArtistService
+public class DbSpotifyUserArtistService(IDbSpotifyServiceOld dbService, IDbSpotifyArtistService dbArtistService, IDbSpotifyUpdateService dbUpdateService) : IDbSpotifyUserArtistService
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyUserArtist);
 
@@ -147,7 +147,7 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService, IDbSpotifyA
 		var unfollowedArtists = userArtistsDb.Where(x => !artistIds.Contains(x.ArtistId)).ToHashSet();
 
 		// save new followed artists
-		await _dbArtistService.Save(newFollowedArtists);
+		await _dbArtistService.Save(newFollowedArtists.ToList());
 		Console.WriteLine("db: save user artists - start");
 		foreach (var artist in newFollowedArtists)
 		{

@@ -7,7 +7,7 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpotifyReleaseService dbReleaseService, IDbSpotifyUpdateService dbUpdateService, IDbSpotifyArtistService dbArtistService) : IDbSpotifyArtistReleaseService
+public class DbSpotifyArtistReleaseService(IDbSpotifyServiceOld dbService, IDbSpotifyReleaseService dbReleaseService, IDbSpotifyUpdateService dbUpdateService, IDbSpotifyArtistService dbArtistService) : IDbSpotifyArtistReleaseService
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyArtistRelease);
 
@@ -67,7 +67,6 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 	{
 		var artistReleasesDb = await GetAllDb();
 		var artistsDb = await _dbArtistService.GetAll() ?? throw new NullReferenceException("artistsDb");
-
 		var artistDict = artistsDb.ToDictionary(a => a.Id);
 		var followedArtistIds = followedArtists.Select(a => a.Id).ToHashSet();
 
@@ -180,7 +179,7 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService, IDbSpoti
 		Console.WriteLine("db: save artist releases - end");
 
 		// save release artists
-		await _dbArtistService.Save(newArtists);
+		await _dbArtistService.Save(newArtists.ToList());
 
 
 		// delete or keep releases

@@ -1,34 +1,37 @@
-﻿using JakubKastner.MusicReleases.Base;
-using JakubKastner.MusicReleases.Database;
-using Tavenem.Blazor.IndexedDB;
+﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyService(IndexedDbService indexedDbService) : IDbSpotifyService
+public class DbSpotifyService(IDexieNETService<SpotifyDb> dexieService) : IDbSpotifyService
 {
-	private readonly IndexedDbService _indexedDbService = indexedDbService;
+	private const int CURRENT_DB_VERSION = 1;
 
-	public async Task DeleteAll()
+	private readonly IDexieNETService<SpotifyDb> _dexieService = dexieService;
+	private SpotifyDb? _dbInstance;
+
+	private readonly SemaphoreSlim _lock = new(1, 1);
+
+	public async ValueTask<SpotifyDb> GetDb()
 	{
-		await _indexedDbService.DeleteDatabaseAsync(SpotifyReleasesDb.Name);
-	}
+		if (_dbInstance is not null) return _dbInstance;
 
-	public IndexedDb GetDb()
-	{
-		var indexedDb = new IndexedDb(SpotifyReleasesDb.Name, _indexedDbService, SpotifyReleasesDb.GetAllTables(), SpotifyReleasesDb.Version);
-		return indexedDb;
-	}
-
-	public IndexedDbStore GetTable(Enums.DbStorageTablesSpotify tableName, IndexedDb? db = null)
-	{
-		db ??= GetDb();
-		var table = db[tableName.ToString()];
-
-		if (table is null)
+		await _lock.WaitAsync();
+		try
 		{
-			throw new NullReferenceException(nameof(table));
-		}
+			if (_dbInstance is null)
+			{
+				var db = await _dexieService.DexieNETFactory.Create();
 
-		return table;
+				db.Version(CURRENT_DB_VERSION).Stores();
+
+				_dbInstance = db;
+			}
+			return _dbInstance;
+		}
+		finally
+		{
+			_lock.Release();
+		}
 	}
 }
