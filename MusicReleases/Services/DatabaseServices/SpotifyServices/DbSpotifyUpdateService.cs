@@ -1,50 +1,35 @@
-﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
-using Tavenem.Blazor.IndexedDB;
+﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyUpdateService(IDbSpotifyServiceOld dbService) : IDbSpotifyUpdateService
+public class DbSpotifyUpdateService(IDbSpotifyService dbService) : IDbSpotifyUpdateService
 {
-	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyUpdate);
+	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<SpotifyLastUpdateEntity> GetOrCreate(string userId)
+	public async Task<DateTime> Get(string userId, LoadingType dbType)
 	{
-		var userUpdateDb = await Get(userId);
+		var key = GetKey(userId, dbType);
 
-		// record existed
-		if (userUpdateDb is not null)
-		{
-			return userUpdateDb;
-		}
+		var db = await _dbService.GetDb();
+		var meta = await db.Update.Get(key);
 
-		// 0 records - add new
-		userUpdateDb = new(userId);
+		var lastUpdate = meta?.LastUpdate ?? DateTime.MinValue;
 
-		await Update(userUpdateDb);
-
-		return userUpdateDb;
+		return lastUpdate;
 	}
 
-	public async Task<SpotifyLastUpdateEntity?> Get(string userId)
+	public async Task SetLastArtistSync(string userId, LoadingType dbType)
 	{
-		Console.WriteLine("db: get update - start");
-		var userUpdateDb = await _dbTable.GetItemAsync<SpotifyLastUpdateEntity>(userId);
-		Console.WriteLine("db: get update - end");
-		return userUpdateDb;
+		var key = GetKey(userId, dbType);
+
+		var db = await _dbService.GetDb();
+		await db.Update.Put(new SpotifyUserUpdateEntity(key, DateTime.Now));
 	}
 
-	public async Task Delete(string userId)
+	private static string GetKey(string userId, LoadingType dbType)
 	{
-		Console.WriteLine("db: delete update - start");
-		await _dbTable.RemoveItemAsync(userId);
-		Console.WriteLine("db: delete update - end");
-	}
-
-	public async Task Update(SpotifyLastUpdateEntity lastUpdateDb)
-	{
-		Console.WriteLine("db: save update - start");
-		await _dbTable.StoreItemAsync(lastUpdateDb);
-		Console.WriteLine("db: save update - end");
+		return $"{dbType}_{userId}";
 	}
 }

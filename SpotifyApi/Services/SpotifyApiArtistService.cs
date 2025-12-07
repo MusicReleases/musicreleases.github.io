@@ -4,10 +4,10 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-internal class SpotifyArtistService(IApiArtistService controllerApiArtist, ISpotifyUserService controllerUser) : ISpotifyArtistService
+internal class SpotifyApiArtistService(IApiArtistServiceOld controllerApiArtist, ISpotifyApiUserService controllerUser) : ISpotifyApiArtistService
 {
-	private readonly IApiArtistService _controllerApiArtist = controllerApiArtist;
-	private readonly ISpotifyUserService _controllerUser = controllerUser;
+	private readonly IApiArtistServiceOld _controllerApiArtist = controllerApiArtist;
+	private readonly ISpotifyApiUserService _controllerUser = controllerUser;
 
 	public async Task<SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>?> GetUserFollowedArtists(SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? existingArtists = null, bool forceUpdate = false)
 	{

@@ -7,11 +7,11 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyArtistsService(ISpotifyArtistService spotifyArtistService, ISpotifyUserService spotifyUserService, IDbSpotifyUserArtistService dbUserArtistService, ILoaderService loaderService) : ISpotifyArtistsService
+public class SpotifyArtistsServiceOld(ISpotifyApiArtistService spotifyArtistService, ISpotifyApiUserService spotifyUserService, IDbSpotifyUserArtistServiceOld dbUserArtistService, ILoaderService loaderService) : ISpotifyArtistsServiceOld
 {
-	private readonly ISpotifyArtistService _spotifyArtistService = spotifyArtistService;
-	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
-	private readonly IDbSpotifyUserArtistService _dbUserArtistService = dbUserArtistService;
+	private readonly ISpotifyApiArtistService _spotifyArtistService = spotifyArtistService;
+	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
+	private readonly IDbSpotifyUserArtistServiceOld _dbUserArtistService = dbUserArtistService;
 	private readonly ILoaderService _loaderService = loaderService;
 
 	public SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? Artists { get; private set; } = null;

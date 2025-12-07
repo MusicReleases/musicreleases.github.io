@@ -7,11 +7,11 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService, IDbSpotifyFilterService dbSpotifyFilterService, ISpotifyUserService spotifyUserService) : ISpotifyFilterUrlService
+public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService, IDbSpotifyFilterService dbSpotifyFilterService, ISpotifyApiUserService spotifyUserService) : ISpotifyFilterUrlService
 {
 	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 	private readonly IDbSpotifyFilterService _dbSpotifyFilterService = dbSpotifyFilterService;
-	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
+	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 
 	private const string _urlNull = "_";
 

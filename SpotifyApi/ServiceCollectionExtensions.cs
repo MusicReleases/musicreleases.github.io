@@ -19,17 +19,18 @@ public static class ServiceCollectionExtensions
 
 		// api controllers
 		services.AddScoped<IApiArtistService, ApiArtistService>();
+		services.AddScoped<IApiArtistServiceOld, ApiArtistServiceOld>();
 		services.AddScoped<IApiPlaylistService, ApiPlaylistService>();
 		services.AddScoped<IApiReleaseService, ApiReleaseService>();
 		services.AddScoped<IApiUserService, ApiUserService>();
 		services.AddScoped<IApiTrackService, ApiTrackService>();
 
 		// controllers
-		services.AddScoped<ISpotifyArtistService, SpotifyArtistService>();
-		services.AddScoped<ISpotifyPlaylistService, SpotifyPlaylistService>();
-		services.AddScoped<ISpotifyReleaseService, SpotifyReleaseService>();
-		services.AddScoped<ISpotifyTrackService, SpotifyTrackService>();
-		services.AddScoped<ISpotifyUserService, SpotifyUserService>();
+		services.AddScoped<ISpotifyApiArtistService, SpotifyApiArtistService>();
+		services.AddScoped<ISpotifyApiPlaylistService, SpotifyApiPlaylistService>();
+		services.AddScoped<ISpotifyApiReleaseService, SpotifyApiReleaseService>();
+		services.AddScoped<ISpotifyApiTrackService, SpotifyApiTrackService>();
+		services.AddScoped<ISpotifyApiUserService, SpotifyApiUserService>();
 
 		return services;
 	}

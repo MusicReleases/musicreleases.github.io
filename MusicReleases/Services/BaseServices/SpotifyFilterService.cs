@@ -7,10 +7,10 @@ using JakubKastner.SpotifyApi.Services;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpotifyUserService spotifyUserService) : ISpotifyFilterService
+public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpotifyApiUserService spotifyUserService) : ISpotifyFilterService
 {
 	private readonly IDbSpotifyFilterService _filterDbService = filterDbService;
-	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
+	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 
 	public SpotifyFilter? Filter { get; private set; } = null;
 

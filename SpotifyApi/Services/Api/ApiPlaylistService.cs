@@ -5,10 +5,10 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
-internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService controllerUser) : IApiPlaylistService
+internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyApiUserService controllerUser) : IApiPlaylistService
 {
 	private readonly ISpotifyApiClient _client = client;
-	private readonly ISpotifyUserService _controllerUser = controllerUser;
+	private readonly ISpotifyApiUserService _controllerUser = controllerUser;
 
 	// user playlists
 	public async Task<ISet<SpotifyPlaylist>> GetUserPlaylistsFromApi(ISet<SpotifyPlaylist>? existingPlaylists = null)

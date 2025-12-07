@@ -3,7 +3,7 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-public interface ISpotifyPlaylistService
+public interface ISpotifyApiPlaylistService
 {
 	Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>> GetPlaylistsTracks(SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? playlistsStorage = null, bool forceUpdate = false);
 	Task<SpotifyPlaylist?> GetUserPlaylist(string playlistId, bool getTracks = false);

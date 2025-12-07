@@ -13,11 +13,23 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		Console.WriteLine("db: get all artists - start");
 
 		var db = await _dbService.GetDb();
-		var entities = await db.Artists.ToArray();
+		var artistsDb = await db.Artists.ToArray();
 
-		var artists = entities.Select(e => e.ToModel()).ToArray();
+		var artists = artistsDb.Select(e => e.ToModel()).ToArray();
 
 		Console.WriteLine($"db: get all artists - end");
+		return artists;
+	}
+	public async Task<IReadOnlyList<SpotifyArtist>> GetByIds(IEnumerable<string> ids)
+	{
+		Console.WriteLine("db: get artists by ids - start");
+
+		var db = await _dbService.GetDb();
+		var artistsDb = await db.Artists.BulkGet(ids);
+
+		var artists = artistsDb.Select(e => e!.ToModel()).ToArray();
+
+		Console.WriteLine($"db: get artists by ids - end");
 		return artists;
 	}
 
@@ -25,10 +37,10 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 	{
 		Console.WriteLine("db: save artists - start");
 
-		var entities = artists.Select(a => a.ToEntity());
+		var artistsDb = artists.Select(a => a.ToEntity());
 
 		var db = await _dbService.GetDb();
-		await db.Artists.BulkPut(entities);
+		await db.Artists.BulkPut(artistsDb);
 
 		Console.WriteLine("db: save artists - end");
 	}

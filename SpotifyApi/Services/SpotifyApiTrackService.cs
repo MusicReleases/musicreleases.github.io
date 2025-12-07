@@ -3,7 +3,7 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-internal class SpotifyTrackService(IApiTrackService apiTrackService) : ISpotifyTrackService
+internal class SpotifyApiTrackService(IApiTrackService apiTrackService) : ISpotifyApiTrackService
 {
 	private readonly IApiTrackService _apiTrackService = apiTrackService;
 	public async Task<ISet<SpotifyTrack>> GetReleaseTracks(SpotifyRelease release)

@@ -8,41 +8,23 @@ internal class ApiArtistService(ISpotifyApiClient client) : IApiArtistService
 {
 	private readonly ISpotifyApiClient _client = client;
 
-	public async Task<ISet<SpotifyArtist>> GetUserFollowedArtistsFromApi()
-	{
-		var artistsFromApi = await GetUserFollowedArtistsApi();
-		var artists = new SortedSet<SpotifyArtist>();
-
-		if (artistsFromApi is null)
-		{
-			return artists;
-		}
-
-		foreach (var artistApi in artistsFromApi)
-		{
-			var artist = new SpotifyArtist(artistApi);
-			artists.Add(artist);
-		}
-
-		return artists;
-	}
-
-	private async Task<IList<FullArtist>?> GetUserFollowedArtistsApi()
+	public async Task<List<SpotifyArtist>> GetFollowed(CancellationToken ct = default)
 	{
 		var request = new FollowOfCurrentUserRequest(FollowOfCurrentUserRequest.Type.Artist)
 		{
 			Limit = ApiRequestLimit.UserFollowedArtists,
 		};
+
 		var spotifyClient = _client.GetClient();
 		var response = await spotifyClient.Follow.OfCurrentUser(request);
 		var artistsAsync = spotifyClient.Paginate(response.Artists, s => s.Artists);
 
-		var artists = new List<FullArtist>();
-
-		await foreach (var artist in artistsAsync)
+		var artists = new List<SpotifyArtist>();
+		await foreach (var artistApi in artistsAsync.WithCancellation(ct))
 		{
-			artists.Add(artist);
+			artists.Add(new SpotifyArtist(artistApi));
 		}
+
 		return artists;
 	}
 }

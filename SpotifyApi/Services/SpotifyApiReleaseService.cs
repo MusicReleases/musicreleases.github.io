@@ -5,10 +5,10 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, ISpotifyUserService controllerUser) : ISpotifyReleaseService
+internal class SpotifyApiReleaseService(IApiReleaseService controllerApiRelease, ISpotifyApiUserService controllerUser) : ISpotifyApiReleaseService
 {
 	private readonly IApiReleaseService _controllerApiRelease = controllerApiRelease;
-	private readonly ISpotifyUserService _controllerUser = controllerUser;
+	private readonly ISpotifyApiUserService _controllerUser = controllerUser;
 
 	public async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>?> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false)
 	{
@@ -19,7 +19,7 @@ internal class SpotifyReleaseService(IApiReleaseService controllerApiRelease, IS
 		}
 		else
 		{
-			var lastUpdate = ISpotifyReleaseService.GetLastTimeUpdate(existingReleases.Update, releaseType);
+			var lastUpdate = ISpotifyApiReleaseService.GetLastTimeUpdate(existingReleases.Update, releaseType);
 			if (lastUpdate.HasValue)
 			{
 				var dateTimeDifference = DateTime.Now - lastUpdate;

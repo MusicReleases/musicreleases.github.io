@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Services;
 
-public interface ISpotifyUserService
+public interface ISpotifyApiUserService
 {
 	(Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, Uri currentUrl);
 	bool IsLoggedIn();

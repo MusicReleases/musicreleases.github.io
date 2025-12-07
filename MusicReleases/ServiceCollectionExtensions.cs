@@ -3,6 +3,7 @@ using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.UiServices;
+using JakubKastner.MusicReleases.State.Spotify;
 
 namespace JakubKastner.MusicReleases;
 
@@ -19,14 +20,15 @@ public static class ServiceCollectionExtensions
 
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
-
 		services.AddScoped<IDbSpotifyServiceOld, DbSpotifyServiceOld>();
 
 		services.AddScoped<IDbSpotifyUpdateService, DbSpotifyUpdateService>();
+		services.AddScoped<IDbSpotifyUpdateServiceOld, DbSpotifyUpdateServiceOld>();
 		services.AddScoped<IDbSpotifyFilterService, DbSpotifyFilterService>();
 
 		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
 		services.AddScoped<IDbSpotifyUserArtistService, DbSpotifyUserArtistService>();
+		services.AddScoped<IDbSpotifyUserArtistServiceOld, DbSpotifyUserArtistServiceOld>();
 
 		services.AddScoped<IDbSpotifyArtistService, DbSpotifyArtistService>();
 		services.AddScoped<IDbSpotifyArtistReleaseService, DbSpotifyArtistReleaseService>();
@@ -36,7 +38,12 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDbSpotifyPlaylistService, DbSpotifyPlaylistService>();
 		services.AddScoped<IDbSpotifyUserPlaylistService, DbSpotifyUserPlaylistService>();
 
+		// spotify state
+		services.AddScoped<ISpotifyArtistState, SpotifyArtistState>();
+
 		// spotify services
+		services.AddScoped<ISpotifyTaskManagerService, SpotifyTaskManagerService>();
+
 		services.AddScoped<ISpotifyFilterUrlService, SpotifyFilterUrlService>();
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
 
@@ -48,7 +55,8 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ILoaderService, LoaderService>();
 
 		services.AddScoped<ISpotifyReleasesService, SpotifyReleasesService>();
-		services.AddScoped<ISpotifyArtistsService, SpotifyArtistsService>();
+		services.AddScoped<ISpotifyArtistService, SpotifyArtistService>();
+		services.AddScoped<ISpotifyArtistsServiceOld, SpotifyArtistsServiceOld>();
 		services.AddScoped<ISpotifyPlaylistsService, SpotifyPlaylistsService>();
 		services.AddScoped<ISpotifyTracksService, SpotifyTracksService>();
 

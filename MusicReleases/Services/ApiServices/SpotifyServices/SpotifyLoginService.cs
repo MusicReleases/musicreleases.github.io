@@ -9,10 +9,10 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyFilterUrlService filterUrlService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyFilterUrlService filterUrlService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
-	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
+	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;

@@ -3,7 +3,7 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public interface ISpotifyArtistsService
+public interface ISpotifyArtistsServiceOld
 {
 	SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? Artists { get; }
 

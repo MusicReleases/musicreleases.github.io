@@ -5,7 +5,7 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-internal class SpotifyUserService(ISpotifyApiClient client, IApiUserService controllerApiUser) : ISpotifyUserService
+internal class SpotifyApiUserService(ISpotifyApiClient client, IApiUserService controllerApiUser) : ISpotifyApiUserService
 {
 	private readonly ISpotifyApiClient _client = client;
 	private readonly IApiUserService _controllerApiUser = controllerApiUser;

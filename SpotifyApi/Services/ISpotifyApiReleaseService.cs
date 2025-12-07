@@ -4,7 +4,7 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-public interface ISpotifyReleaseService
+public interface ISpotifyApiReleaseService
 {
 	Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>?> GetReleases(ReleaseType releaseType, ISet<SpotifyArtist> artists, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? existingReleases = null, bool forceUpdate = false);
 	public static DateTime? GetLastTimeUpdate(SpotifyUserListUpdateRelease lastUpdateList, ReleaseType releaseType) => releaseType switch

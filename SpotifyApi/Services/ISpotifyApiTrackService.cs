@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Services;
 
-public interface ISpotifyTrackService
+public interface ISpotifyApiTrackService
 {
 	Task<ISet<SpotifyTrack>> GetReleaseTracks(SpotifyRelease release);
 }

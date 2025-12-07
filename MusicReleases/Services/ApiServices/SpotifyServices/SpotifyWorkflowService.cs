@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
 using JakubKastner.SpotifyApi.Services;
@@ -7,12 +8,16 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, ILoaderService loaderService, ISpotifyArtistsService spotifyArtistsService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistsService spotifyPlaylistsService) : ISpotifyWorkflowService
+public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterService spotifyFilterService, ILoaderService loaderService, ISpotifyArtistService spotifyArtistService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistsService spotifyPlaylistsService) : ISpotifyWorkflowService
 {
+	ISpotifyArtistState _spotifyArtistState = spotifyArtistState;
+
+	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+
 	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 	private readonly ILoaderService _loaderService = loaderService;
 
-	private readonly ISpotifyArtistsService _spotifyArtistsService = spotifyArtistsService;
+	private readonly ISpotifyArtistService _spotifyArtistService = spotifyArtistService;
 	private readonly ISpotifyReleasesService _spotifyReleasesService = spotifyReleasesService;
 	private readonly ISpotifyPlaylistsService _spotifyPlaylistsService = spotifyPlaylistsService;
 
@@ -84,41 +89,23 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 	// artists
 	public async Task StartLoadingArtistsWithReleases(bool forceUpdate, ReleaseType releaseType)
 	{
-		var artists = await StartLoadingArtists(forceUpdate);
+		await StartLoadingArtists(forceUpdate);
+
+
+		var artists = _spotifyArtistState.SortedFollowedArtists;
 		if (artists is null)
 		{
 			return;
 		}
-		await StartLoadingReleases(forceUpdate, releaseType, artists);
+		await StartLoadingReleases(forceUpdate, releaseType, artists.ToHashSet());
 	}
 
-	private async Task<ISet<SpotifyArtist>?> StartLoadingArtists(bool forceUpdate)
+	private async Task StartLoadingArtists(bool forceUpdate)
 	{
 		Console.WriteLine("workflow: artists - start");
-		var forceUpdateAuto = false;
+		var userId = _spotifyApiUserService.GetUserIdRequired();
 
-		if (_loaderService.IsLoading(LoadingType.Artists) || _loaderService.IsLoading(LoadingType.Releases))
-		{
-			return null;
-		}
-
-		if (!forceUpdate)
-		{
-			forceUpdateAuto = ForceUpdate(_spotifyArtistsService.Artists);
-		}
-		if (forceUpdate || forceUpdateAuto)
-		{
-			await _spotifyArtistsService.Get(forceUpdate);
-		}
-		var artists = _spotifyArtistsService.Artists?.List;
-		if (artists is null)
-		{
-			return null;
-		}
-
-		_spotifyFilterService.SetArtists(artists);
-		Console.WriteLine("workflow: artists - end");
-		return artists;
+		await _spotifyArtistService.Get(userId, forceUpdate);
 	}
 
 	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, ISet<SpotifyArtist> artists)
@@ -161,7 +148,7 @@ public class SpotifyWorkflowService(ISpotifyFilterService spotifyFilterService, 
 
 		if (releaseType.HasValue && userList.Update is SpotifyUserListUpdateRelease userListUpdateRelease)
 		{
-			lastUpdate = ISpotifyReleaseService.GetLastTimeUpdate(userListUpdateRelease, releaseType.Value);
+			lastUpdate = ISpotifyApiReleaseService.GetLastTimeUpdate(userListUpdateRelease, releaseType.Value);
 		}
 		else if (userList.Update is SpotifyUserListUpdateMain userListUpdateMain)
 		{

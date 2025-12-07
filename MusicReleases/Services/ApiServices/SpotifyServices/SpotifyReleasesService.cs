@@ -8,10 +8,10 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleasesService(ISpotifyReleaseService spotifyReleaseService, ISpotifyUserService spotifyUserService, IDbSpotifyArtistReleaseService dbSpotifyArtistReleaseService, ILoaderService loaderService) : ISpotifyReleasesService
+public class SpotifyReleasesService(ISpotifyApiReleaseService spotifyReleaseService, ISpotifyApiUserService spotifyUserService, IDbSpotifyArtistReleaseService dbSpotifyArtistReleaseService, ILoaderService loaderService) : ISpotifyReleasesService
 {
-	private readonly ISpotifyReleaseService _spotifyReleaseService = spotifyReleaseService;
-	private readonly ISpotifyUserService _spotifyUserService = spotifyUserService;
+	private readonly ISpotifyApiReleaseService _spotifyReleaseService = spotifyReleaseService;
+	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 	private readonly IDbSpotifyArtistReleaseService _dbSpotifyArtistReleaseService = dbSpotifyArtistReleaseService;
 	private readonly ILoaderService _loaderService = loaderService;
 
