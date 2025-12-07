@@ -4,6 +4,6 @@ namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
 public interface IDbSpotifyUpdateService
 {
-	Task<DateTime> Get(string userId, LoadingType dbType);
-	Task SetLastArtistSync(string userId, LoadingType dbType);
+	Task<DateTime> Get(string userId, SpotifyDbUpdateType dbType);
+	Task Save(string userId, SpotifyDbUpdateType dbType);
 }

@@ -1,4 +1,5 @@
 ﻿using DexieNET;
+using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 
@@ -13,7 +14,7 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		Console.WriteLine("db: get all artists - start");
 
 		var db = await _dbService.GetDb();
-		var artistsDb = await db.Artists.ToArray();
+		var artistsDb = await db.Artist.ToArray();
 
 		var artists = artistsDb.Select(e => e.ToModel()).ToArray();
 
@@ -25,7 +26,7 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		Console.WriteLine("db: get artists by ids - start");
 
 		var db = await _dbService.GetDb();
-		var artistsDb = await db.Artists.BulkGet(ids);
+		var artistsDb = await db.Artist.BulkGet(ids);
 
 		var artists = artistsDb.Select(e => e!.ToModel()).ToArray();
 
@@ -37,10 +38,15 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 	{
 		Console.WriteLine("db: save artists - start");
 
+		if (artists.Count == 0)
+		{
+			return;
+		}
+
 		var artistsDb = artists.Select(a => a.ToEntity());
 
 		var db = await _dbService.GetDb();
-		await db.Artists.BulkPut(artistsDb);
+		await db.Artist.BulkPutSafe(artistsDb);
 
 		Console.WriteLine("db: save artists - end");
 	}

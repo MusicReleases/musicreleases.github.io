@@ -21,24 +21,23 @@ public class SpotifyArtistService(ISpotifyFilterService filterService, IApiArtis
 
 	public async Task Get(string userId, bool forceUpdate = false)
 	{
-		// 1. Zrušit předchozí běh (pokud uživatel kliká zběsile)
+		// cancel any ongoing sync
 		Cancel();
 		_cts = new CancellationTokenSource();
 		var token = _cts.Token;
 
 		try
 		{
+			// load data from db to state
 			await LoadFromDbToState(userId);
-
-			// KROK B: Rozhodnutí o syncu (Smart Logic)
-			// Nahrazuje tvoji logiku "GetUserFollowedArtists(artistsDb, forceUpdate)"
-			var lastSync = await _metaDb.Get(userId, LoadingType.Artists);
+			Console.WriteLine("last sync get");
+			var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Artists);
+			Console.WriteLine("last sync  - " + lastSync);
 			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
 
 			if (shouldSync)
 			{
-				// Spustíme dlouhou operaci na pozadí s vizualizací v TaskManageru
-				await _taskManager.Run("Synchronizace Umělců", async (task) =>
+				await _taskManager.Run("Getting artists", async (task) =>
 				{
 					await SyncProcess(userId, task, token);
 				});
@@ -46,52 +45,48 @@ public class SpotifyArtistService(ISpotifyFilterService filterService, IApiArtis
 		}
 		catch (OperationCanceledException)
 		{
-			// Sync zrušen, nic se neděje
+			// cancelled
 		}
 	}
 
-	// Pomocná metoda pro načtení z DB do UI
 	private async Task LoadFromDbToState(string userId)
 	{
-		// Získáme IDčka
-		var ids = await _linkDb.GetFollowedIds(userId);
+		var artistIds = await _linkDb.GetFollowedIds(userId);
 
-		if (ids.Count > 0)
+		if (artistIds.Count == 0)
 		{
-			var artists = await _artistDb.GetByIds(ids);
-
-			_state.SetFollowed(artists);
-
-			_filterService.SetArtists(_state.SortedFollowedArtists.ToHashSet());
+			return;
 		}
+
+		var artists = await _artistDb.GetByIds(artistIds);
+
+		_state.SetFollowed(artists);
+
+		_filterService.SetArtists(_state.SortedFollowedArtists.ToHashSet());
 	}
 
-	// Samotný proces synchronizace (API -> DB -> UI)
 	private async Task SyncProcess(string userId, SpotifyBackgroundTask task, CancellationToken ct)
 	{
-		// 1. API STAHIVÁNÍ
-		task.Status = "Stahuji seznam ze Spotify...";
-		// Tady voláš API. Pokud API vrací "nic nového" (304 Not Modified), můžeš skončit.
-		// Ale pro jednoduchost stahujeme vše.
+		// get followed artists from api
+		task.Status = "Getting artists from api...";
 		var apiArtists = await _api.GetFollowed(ct);
 		ct.ThrowIfCancellationRequested();
 
-		// 2. UKLÁDÁNÍ DO DB (Batch)
-		task.Status = $"Ukládám {apiArtists.Count} umělců do DB...";
+		task.Status = $"Saving {apiArtists.Count} artists to local db...";
 
-		// A) Uložit data artistů (Upsert - aktualizuje jména/fotky)
+		// save to artist db
 		await _artistDb.Save(apiArtists);
 		ct.ThrowIfCancellationRequested();
 
-		// B) Aktualizovat vazby (Kdo koho sleduje) - TOHLE JE TA DELTA LOGIKA
+		// save to user-artist db
 		var apiIds = apiArtists.Select(a => a.Id);
 		await _linkDb.SetFollowed(userId, apiIds);
 
-		// C) Uložit čas syncu
-		await _metaDb.SetLastArtistSync(userId, LoadingType.Artists);
+		// save to update db
+		await _metaDb.Save(userId, SpotifyDbUpdateType.Artists);
 
-		// 3. AKTUALIZACE UI (Finální refresh)
-		task.Status = "Aktualizuji zobrazení...";
+		// update ui
+		task.Status = "Displaying artists...";
 		_state.SetFollowed(apiArtists);
 
 		_filterService.SetArtists(_state.SortedFollowedArtists.ToHashSet());

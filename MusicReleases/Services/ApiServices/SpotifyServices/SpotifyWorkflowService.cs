@@ -106,6 +106,8 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 		var userId = _spotifyApiUserService.GetUserIdRequired();
 
 		await _spotifyArtistService.Get(userId, forceUpdate);
+
+		Console.WriteLine("workflow: artists - end");
 	}
 
 	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, ISet<SpotifyArtist> artists)

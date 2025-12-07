@@ -16,13 +16,14 @@ internal class ApiArtistService(ISpotifyApiClient client) : IApiArtistService
 		};
 
 		var spotifyClient = _client.GetClient();
-		var response = await spotifyClient.Follow.OfCurrentUser(request);
-		var artistsAsync = spotifyClient.Paginate(response.Artists, s => s.Artists);
+		var response = await spotifyClient.Follow.OfCurrentUser(request, ct);
+		var artistsAsync = spotifyClient.Paginate(response.Artists, s => s.Artists, cancel: ct);
 
 		var artists = new List<SpotifyArtist>();
 		await foreach (var artistApi in artistsAsync.WithCancellation(ct))
 		{
-			artists.Add(new SpotifyArtist(artistApi));
+			var artist = new SpotifyArtist(artistApi);
+			artists.Add(artist);
 		}
 
 		return artists;

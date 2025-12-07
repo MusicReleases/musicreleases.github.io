@@ -1,15 +1,14 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.MusicReleases.State.Spotify
+namespace JakubKastner.MusicReleases.State.Spotify;
+
+public interface ISpotifyArtistState
 {
-	public interface ISpotifyArtistState
-	{
-		IReadOnlyList<SpotifyArtist> SortedFollowedArtists { get; }
+	IReadOnlyList<SpotifyArtist> SortedFollowedArtists { get; }
 
-		event Action? OnChange;
+	event Action? OnChange;
 
-		SpotifyArtist? GetById(string id);
-		void MergeCache(IEnumerable<SpotifyArtist> others);
-		void SetFollowed(IEnumerable<SpotifyArtist> artists);
-	}
+	SpotifyArtist? GetById(string id);
+	void MergeCache(IEnumerable<SpotifyArtist> others);
+	void SetFollowed(IEnumerable<SpotifyArtist> artists);
 }

@@ -1,5 +1,6 @@
 ﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Mappers.Spotify;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
@@ -11,13 +12,10 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService) : IDbSpotif
 	{
 		var db = await _dbService.GetDb();
 
-		/*var keys = await db.UserArtist.Where(x => x.UserId, userId).PrimaryKeys();
-		var ids = keys.Select(k => k.ArtistId).ToHashSet();*/
-
 		var links = await db.UserArtist.Where(x => x.UserId, userId).ToArray();
-		var ids = links.Select(x => x.ArtistId).ToHashSet();
+		var artistIds = links.Select(x => x.ArtistId).ToHashSet();
 
-		return ids;
+		return artistIds;
 	}
 
 	public async Task SetFollowed(string userId, IEnumerable<string> apiIds)
@@ -41,21 +39,13 @@ public class DbSpotifyUserArtistService(IDbSpotifyService dbService) : IDbSpotif
 
 		if (toAdd.Count > 0)
 		{
-			//var newLinks = toAdd.Select(aid => new SpotifyUserArtistEntity((userId, aid), userId));
-
-			var newLinks = toAdd.Where(aid => !string.IsNullOrEmpty(aid)).Select(aid => new SpotifyUserArtistEntity(userId, aid)).ToList();
-			await db.UserArtist.BulkPut(newLinks);
+			var newLinks = toAdd.Where(artistId => !string.IsNullOrEmpty(artistId)).Select(artistId => artistId.ToSpotifyUserArtistEntity(userId)).ToList();
+			await db.UserArtist.BulkPutSafe(newLinks);
 		}
 
 		if (toRemove.Count > 0)
 		{
-			/*var keysToDelete = toRemove.Select(aid => (userId, aid));
-			await db.UserArtist.BulkDelete(keysToDelete);*/
-
-			var keysToDelete = toRemove.Select(aid => (userId, aid)).ToArray();
-
-			// Teď už BulkDelete pozná, že dostává správné klíče
-			await db.UserArtist.BulkDelete(keysToDelete);
+			await db.UserArtist.Where(x => x.UserId, userId).Filter(x => toRemove.Contains(x.ArtistId)).Delete();
 		}
 	}
 }

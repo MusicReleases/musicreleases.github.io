@@ -1,9 +1,8 @@
 ﻿
-namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+
+public interface ISpotifyArtistService
 {
-	public interface ISpotifyArtistService
-	{
-		void Cancel();
-		Task Get(string userId, bool forceUpdate = false);
-	}
+	void Cancel();
+	Task Get(string userId, bool forceUpdate = false);
 }

@@ -3,7 +3,7 @@ using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
-[Schema(StoreName = "Artists")]
+[Schema(StoreName = "Artist")]
 public partial record SpotifyArtistEntity
 	(
 		[property: Index(IsPrimary = true)] string Id,
