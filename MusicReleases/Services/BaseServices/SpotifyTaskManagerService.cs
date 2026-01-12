@@ -16,7 +16,14 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 
 	public async Task Run(string name, Func<SpotifyBackgroundTask, Task> work)
 	{
-		var task = new SpotifyBackgroundTask { Name = name, Status = "Starting..." };
+		var task = new SpotifyBackgroundTask
+		{
+			Name = name,
+			Status = "Starting..."
+		};
+
+		task.OnStateChanged += NotifyUI;
+
 		Tasks.Insert(0, task);
 		NotifyUI();
 
@@ -40,7 +47,28 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 		finally
 		{
 			task.IsRunning = false;
+			task.OnStateChanged -= NotifyUI;
 			NotifyUI();
+
+			_ = HideAfterDelay(task);
 		}
+	}
+
+	public void DismissAllFinished()
+	{
+		foreach (var task in Tasks.Where(t => !t.IsRunning))
+		{
+			task.IsOverlayVisible = false;
+		}
+		NotifyUI();
+	}
+
+
+	private async Task HideAfterDelay(SpotifyBackgroundTask task)
+	{
+		await Task.Delay(task.Failed ? 10000 : 5000);
+
+		task.IsOverlayVisible = false;
+		NotifyUI();
 	}
 }

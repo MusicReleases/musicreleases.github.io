@@ -18,6 +18,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <SassFile Remove="wwwroot\styles\5_components\_4_tasks.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="wwwroot\styles\5_components\_4_tasks.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="DartSassBuilder" Version="1.1.0" />
 		<PackageReference Include="DexieNET" Version="1.5.0" />

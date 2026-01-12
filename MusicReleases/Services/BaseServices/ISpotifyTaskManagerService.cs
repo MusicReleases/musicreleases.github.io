@@ -10,5 +10,6 @@ public interface ISpotifyTaskManagerService
 
 	event Action? OnChange;
 
+	void DismissAllFinished();
 	Task Run(string name, Func<SpotifyBackgroundTask, Task> work);
 }
