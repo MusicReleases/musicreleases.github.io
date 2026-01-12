@@ -60,6 +60,6 @@ public class DbSpotifyUserPlaylistService(IDbSpotifyService dbService) : IDbSpot
 	{
 		var db = await _dbService.GetDb();
 		var playlistDb = playlistId.ToUserPlaylistEntity(userId, order);
-		await db.UserPlaylist.Put(playlistDb);
+		await db.UserPlaylist.PutSafe(playlistDb);
 	}
 }

@@ -57,7 +57,7 @@ public class DbSpotifyPlaylistService(IDbSpotifyService dbService) : IDbSpotifyP
 	{
 		var db = await _dbService.GetDb();
 		var playlistDb = playlist.ToEntity();
-		await db.Playlist.Put(playlistDb);
+		await db.Playlist.PutSafe(playlistDb);
 	}
 
 

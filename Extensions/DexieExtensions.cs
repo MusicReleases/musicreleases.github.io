@@ -4,6 +4,11 @@ namespace JakubKastner.Extensions;
 
 public static class DexieExtensions
 {
+	public static async Task PutSafe<T, TKey>(this Table<T, TKey> table, T item) where T : IDBStore
+	{
+		await table.BulkPut([item]);
+	}
+
 	public static async Task BulkPutSafe<T, TKey>(this Table<T, TKey> table, IEnumerable<T> items) where T : IDBStore
 	{
 		if (items is ICollection<T> collection && collection.Count == 0)

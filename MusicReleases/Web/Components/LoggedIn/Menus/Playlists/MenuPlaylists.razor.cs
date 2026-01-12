@@ -2,6 +2,7 @@
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 using static JakubKastner.MusicReleases.Base.Enums;
+using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 
@@ -12,42 +13,21 @@ public partial class MenuPlaylists
 	[Parameter]
 	public SpotifyTrack? Track { get; set; }
 
-	private IReadOnlyList<SpotifyPlaylist>? Playlists => SpotifyPlaylistState.Playlists;
+	private IReadOnlyList<SpotifyPlaylist>? Playlists => FilterService.FilteredPlaylists;
 
-	private IReadOnlyList<SpotifyPlaylist>? PlaylistsFiltered
+	private string PlaylistName
 	{
-		get
-		{
-			var playlistName = _playlistName?.Trim();
-
-			if (playlistName.IsNullOrEmpty() || Playlists is null)
-			{
-				return Playlists;
-			}
-
-			if (playlistName.StartsWith('"') && playlistName.EndsWith('"') && playlistName.Length > 1)
-			{
-				var exactPhrase = playlistName.Length == 2 ? playlistName : playlistName[1..^1];
-
-				return [.. Playlists.Where(x => x.Name.Contains(exactPhrase, StringComparison.CurrentCultureIgnoreCase))];
-			}
-
-			var words = playlistName.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-			return [.. Playlists.Where(playlist => words.All(word => playlist.Name.Contains(word, StringComparison.CurrentCultureIgnoreCase)))];
-		}
+		get => FilterService.SearchText;
+		set => FilterService.SetSearchText(value);
 	}
 
 	private bool Loading => LoaderService.IsLoading(LoadingType.Playlists);
 	private string DivClass => Release is null && Track is null ? "menu items scroll buttons-rounded-m" : "icon-text list";
 
-	private string? _playlistName;
-
-
 	protected override void OnInitialized()
 	{
-		LoaderService.LoadingStateChanged += LoadingStateChanged;
-		SpotifyPlaylistState.OnChange += OnPlaylistsDataChanged;
+		LoaderService.LoadingStateChanged += StateHasChanged;
+		FilterService.OnFilterChanged += StateHasChanged;
 		base.OnInitialized();
 
 		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
@@ -56,37 +36,30 @@ public partial class MenuPlaylists
 		{
 			return;
 		}
+
+		FilterService.SetTypeFilter(PlaylistType.Editable);
 	}
 
 	public void Dispose()
 	{
-		LoaderService.LoadingStateChanged -= LoadingStateChanged;
-		SpotifyPlaylistState.OnChange -= OnPlaylistsDataChanged;
+		LoaderService.LoadingStateChanged -= StateHasChanged;
+		FilterService.OnFilterChanged -= StateHasChanged;
 	}
 
-	private void LoadingStateChanged()
-	{
-		InvokeAsync(StateHasChanged);
-	}
-	private void OnPlaylistsDataChanged()
-	{
-		InvokeAsync(StateHasChanged);
-	}
 
 	private void ClearInput()
 	{
-		_playlistName = string.Empty;
-		//InvokeAsync(StateHasChanged);
+		FilterService.SetSearchText(string.Empty);
 	}
 
 	private async Task CreatePlaylist()
 	{
-		if (_playlistName.IsNullOrEmpty())
+		if (PlaylistName.IsNullOrEmpty())
 		{
 			return;
 		}
 
-		await SpotifyPlaylistService.CreatePlaylist(_playlistName);
+		await SpotifyPlaylistService.CreatePlaylist(PlaylistName);
 		ClearInput();
 	}
 }

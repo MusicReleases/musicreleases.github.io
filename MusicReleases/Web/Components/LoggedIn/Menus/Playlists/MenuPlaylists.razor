@@ -9,8 +9,8 @@
 
 @inject IApiLoginService ApiLoginService
 @inject ISpotifyPlaylistService SpotifyPlaylistService
-@inject ISpotifyPlaylistState SpotifyPlaylistState
 @inject ILoaderService LoaderService
+@inject ISpotifyFilterPlaylistService FilterService
 
 <div class="playlists @DivClass">
 
@@ -19,7 +19,7 @@
 		<p>User not logged in</p>
 	}
 
-	else if (Loading || Playlists is null || PlaylistsFiltered is null)
+	else if (Loading || Playlists is null)
 	{
 		<p>Loading playlists...</p>
 	}
@@ -33,7 +33,7 @@
 	else
 	{
 		<div class="row">
-			<input type="text" class="new" placeholder="Search or create playlist" @bind="_playlistName" @bind:event="oninput">
+			<input type="text" class="new" placeholder="Search or create playlist" @bind="PlaylistName" @bind:event="oninput">
 			<button class="close" title="Clear input" @onclick="ClearInput">
 				<i class="fas fa-times"></i>
 			</button>
@@ -49,13 +49,13 @@
 				Update
 			</ButtonUpdate>
 		}
-		else if (PlaylistsFiltered.Count < 1)
+		else if (Playlists.Count < 1)
 		{
 			<p>0 playlists found with this filter</p>
 		}
 		else
 		{
-			@foreach (var playlist in PlaylistsFiltered)
+			@foreach (var playlist in Playlists)
 			{
 				<ButtonPlaylist Playlist=@playlist Release="@Release" Track="@Track">
 				</ButtonPlaylist>

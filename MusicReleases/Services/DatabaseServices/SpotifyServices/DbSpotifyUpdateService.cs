@@ -1,4 +1,5 @@
 ﻿using DexieNET;
+using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Mappers.Spotify;
 using static JakubKastner.MusicReleases.Base.Enums;
 
@@ -22,6 +23,6 @@ public class DbSpotifyUpdateService(IDbSpotifyService dbService) : IDbSpotifyUpd
 	public async Task Save(string userId, SpotifyDbUpdateType dbType)
 	{
 		var db = await _dbService.GetDb();
-		await db.Update.Put(userId.ToSpotifyUpdateEntity(dbType));
+		await db.Update.PutSafe(userId.ToSpotifyUpdateEntity(dbType));
 	}
 }
