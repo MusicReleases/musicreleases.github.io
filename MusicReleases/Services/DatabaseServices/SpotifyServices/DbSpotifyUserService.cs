@@ -6,13 +6,13 @@ using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpdateServiceOld dbUpdateService, IDbSpotifyUserArtistServiceOld dbUserArtistService, IDbSpotifyUserPlaylistService dbUserPlaylistService, IDbSpotifyFilterService dbFilterService) : IDbSpotifyUserService
+public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpdateServiceOld dbUpdateService, IDbSpotifyUserArtistServiceOld dbUserArtistService, IDbSpotifyUserPlaylistServiceOld dbUserPlaylistService, IDbSpotifyFilterService dbFilterService) : IDbSpotifyUserService
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyUser);
 
 	private readonly IDbSpotifyUpdateServiceOld _dbUpdateService = dbUpdateService;
 	private readonly IDbSpotifyUserArtistServiceOld _dbUserArtistService = dbUserArtistService;
-	private readonly IDbSpotifyUserPlaylistService _dbUserPlaylistService = dbUserPlaylistService;
+	private readonly IDbSpotifyUserPlaylistServiceOld _dbUserPlaylistService = dbUserPlaylistService;
 	private readonly IDbSpotifyFilterService _dbFilterService = dbFilterService;
 
 	public async Task<SpotifyUser?> Get(string userId)

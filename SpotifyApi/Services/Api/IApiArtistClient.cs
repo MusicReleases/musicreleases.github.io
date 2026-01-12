@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
-public interface IApiArtistService
+public interface IApiArtistClient
 {
 	Task<List<SpotifyArtist>> GetFollowed(CancellationToken ct = default);
 }

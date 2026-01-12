@@ -1,17 +1,16 @@
 ﻿using JakubKastner.MusicReleases.Base;
 
-namespace JakubKastner.MusicReleases.Services.BaseServices
+namespace JakubKastner.MusicReleases.Services.BaseServices;
+
+public interface ILoaderService
 {
-	public interface ILoaderService
-	{
-		bool Loading { get; }
-		string LoadingClass { get; }
+	bool Loading { get; }
+	string LoadingClass { get; }
 
-		event Action? LoadingStateChanged;
+	event Action? LoadingStateChanged;
 
-		bool IsLoading(Enums.LoadingType type);
-		bool IsLoading(Enums.LoadingType type, Enums.LoadingCategory category);
-		void StartLoading(Enums.LoadingType type, Enums.LoadingCategory category);
-		void StopLoading(Enums.LoadingType type, Enums.LoadingCategory category);
-	}
+	bool IsLoading(Enums.LoadingType type);
+	bool IsLoading(Enums.LoadingType type, Enums.LoadingCategory category);
+	void StartLoading(Enums.LoadingType type, Enums.LoadingCategory category);
+	void StopLoading(Enums.LoadingType type, Enums.LoadingCategory category);
 }

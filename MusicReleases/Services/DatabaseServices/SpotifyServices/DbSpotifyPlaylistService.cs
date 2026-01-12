@@ -1,48 +1,70 @@
-﻿using JakubKastner.MusicReleases.Entities.Api.Spotify;
+﻿using DexieNET;
+using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
-using Tavenem.Blazor.IndexedDB;
-using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyPlaylistService(IDbSpotifyServiceOld dbService) : IDbSpotifyPlaylistService
+public class DbSpotifyPlaylistService(IDbSpotifyService dbService) : IDbSpotifyPlaylistService
 {
-	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyPlaylist);
+	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<ISet<SpotifyPlaylist>?> GetAll()
+	public async Task<IReadOnlyList<SpotifyPlaylist>?> GetAll()
 	{
-		// get playlists from db
-		Console.WriteLine("db: get playlists - start");
-		var playlistsDb = _dbTable.GetAllAsync<SpotifyPlaylistEntity>();
-		var playlists = new HashSet<SpotifyPlaylist>();
+		Console.WriteLine("db: get all playlists - start");
 
-		await foreach (var playlistDb in playlistsDb)
-		{
-			var playlist = new SpotifyPlaylist
-			{
-				Id = playlistDb.Id,
-				Name = playlistDb.Name,
-				CurrentUserOwned = playlistDb.CurrentUserOwned,
-				Collaborative = playlistDb.Collaborative,
-				SnapshotId = playlistDb.SnapshotId,
-				UrlApp = playlistDb.UrlApp,
-				UrlWeb = playlistDb.UrlWeb,
-			};
-			playlists.Add(playlist);
-		}
+		var db = await _dbService.GetDb();
+		var playlistsDb = await db.Playlist.ToArray();
 
-		Console.WriteLine("db: get playlists - end");
+		var playlists = playlistsDb.Select(e => e.ToModel()).ToArray();
+
+		Console.WriteLine($"db: get all playlists - end");
 		return playlists;
 	}
 
-	public async Task Save(ISet<SpotifyPlaylist> playlists)
+	public async Task<IReadOnlyList<SpotifyPlaylist>> GetByIds(IEnumerable<string> ids)
+	{
+		Console.WriteLine("db: get playlists by ids - start");
+
+		var db = await _dbService.GetDb();
+		var playlistsDb = await db.Playlist.BulkGet(ids);
+
+		var playlists = playlistsDb.Select(e => e!.ToModel()).ToArray();
+
+		Console.WriteLine($"db: get playlists by ids - end");
+		return playlists;
+	}
+
+	public async Task Save(IReadOnlyList<SpotifyPlaylist> playlists)
 	{
 		Console.WriteLine("db: save playlists - start");
-		foreach (var playlist in playlists)
+
+		if (playlists.Count == 0)
 		{
-			var artistEntity = new SpotifyPlaylistEntity(playlist);
-			await _dbTable.StoreAsync(artistEntity);
+			return;
 		}
+
+		var playlistsDb = playlists.Select(a => a.ToEntity());
+
+		var db = await _dbService.GetDb();
+		await db.Playlist.BulkPutSafe(playlistsDb);
+
 		Console.WriteLine("db: save playlists - end");
+	}
+
+	public async Task Add(SpotifyPlaylist playlist)
+	{
+		var db = await _dbService.GetDb();
+		var playlistDb = playlist.ToEntity();
+		await db.Playlist.Put(playlistDb);
+	}
+
+
+	public async Task UpdateSnapshot(string playlistId, string newSnapshotId)
+	{
+		var db = await _dbService.GetDb();
+
+		await db.Playlist.Update(playlistId, p => p.SnapshotId, newSnapshotId);
 	}
 }

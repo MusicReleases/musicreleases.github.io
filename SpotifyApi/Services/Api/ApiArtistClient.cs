@@ -4,7 +4,7 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
-internal class ApiArtistService(ISpotifyApiClient client) : IApiArtistService
+internal class ApiArtistClient(ISpotifyApiClient client) : IApiArtistClient
 {
 	private readonly ISpotifyApiClient _client = client;
 

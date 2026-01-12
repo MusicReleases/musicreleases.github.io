@@ -12,9 +12,9 @@ public partial class MenuPlaylists
 	[Parameter]
 	public SpotifyTrack? Track { get; set; }
 
-	private ISet<SpotifyPlaylist>? Playlists => SpotifyPlaylistsService.Playlists?.List;
+	private IReadOnlyList<SpotifyPlaylist>? Playlists => SpotifyPlaylistState.Playlists;
 
-	private ISet<SpotifyPlaylist>? PlaylistsFiltered
+	private IReadOnlyList<SpotifyPlaylist>? PlaylistsFiltered
 	{
 		get
 		{
@@ -29,14 +29,12 @@ public partial class MenuPlaylists
 			{
 				var exactPhrase = playlistName.Length == 2 ? playlistName : playlistName[1..^1];
 
-				return Playlists
-					.Where(x => x.Name.Contains(exactPhrase, StringComparison.CurrentCultureIgnoreCase))
-					.ToHashSet();
+				return [.. Playlists.Where(x => x.Name.Contains(exactPhrase, StringComparison.CurrentCultureIgnoreCase))];
 			}
 
 			var words = playlistName.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-			return Playlists.Where(playlist => words.All(word => playlist.Name.Contains(word, StringComparison.CurrentCultureIgnoreCase))).ToHashSet();
+			return [.. Playlists.Where(playlist => words.All(word => playlist.Name.Contains(word, StringComparison.CurrentCultureIgnoreCase)))];
 		}
 	}
 
@@ -49,7 +47,7 @@ public partial class MenuPlaylists
 	protected override void OnInitialized()
 	{
 		LoaderService.LoadingStateChanged += LoadingStateChanged;
-		SpotifyPlaylistsService.OnPlaylistsDataChanged += OnPlaylistsDataChanged;
+		SpotifyPlaylistState.OnChange += OnPlaylistsDataChanged;
 		base.OnInitialized();
 
 		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
@@ -63,7 +61,7 @@ public partial class MenuPlaylists
 	public void Dispose()
 	{
 		LoaderService.LoadingStateChanged -= LoadingStateChanged;
-		SpotifyPlaylistsService.OnPlaylistsDataChanged -= OnPlaylistsDataChanged;
+		SpotifyPlaylistState.OnChange -= OnPlaylistsDataChanged;
 	}
 
 	private void LoadingStateChanged()
@@ -88,7 +86,7 @@ public partial class MenuPlaylists
 			return;
 		}
 
-		await SpotifyPlaylistsService.Create(_playlistName);
+		await SpotifyPlaylistService.CreatePlaylist(_playlistName);
 		ClearInput();
 	}
 }

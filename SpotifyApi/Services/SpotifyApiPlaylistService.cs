@@ -4,9 +4,9 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.SpotifyApi.Services;
 
-internal class SpotifyApiPlaylistService(IApiPlaylistService controllerApiPlaylist, ISpotifyApiUserService controllerUser) : ISpotifyApiPlaylistService
+internal class SpotifyApiPlaylistService(IApiPlaylistServiceOld controllerApiPlaylist, ISpotifyApiUserService controllerUser) : ISpotifyApiPlaylistService
 {
-	private readonly IApiPlaylistService _controllerApiPlaylist = controllerApiPlaylist;
+	private readonly IApiPlaylistServiceOld _controllerApiPlaylist = controllerApiPlaylist;
 	private readonly ISpotifyApiUserService _controllerUser = controllerUser;
 
 	// get list of user playlists

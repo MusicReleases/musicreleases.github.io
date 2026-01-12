@@ -8,18 +8,17 @@ using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterService spotifyFilterService, ILoaderService loaderService, ISpotifyArtistService spotifyArtistService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistsService spotifyPlaylistsService) : ISpotifyWorkflowService
+public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpotifyPlaylistState spotifyPlaylistState, ISpotifyFilterService spotifyFilterService, ILoaderService loaderService, ISpotifyArtistService spotifyArtistService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistService spotifyPlaylistService) : ISpotifyWorkflowService
 {
-	ISpotifyArtistState _spotifyArtistState = spotifyArtistState;
-
-	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+	private readonly ISpotifyArtistState _spotifyArtistState = spotifyArtistState;
+	private readonly ISpotifyPlaylistState _spotifyPlaylistState = spotifyPlaylistState;
 
 	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 	private readonly ILoaderService _loaderService = loaderService;
 
 	private readonly ISpotifyArtistService _spotifyArtistService = spotifyArtistService;
 	private readonly ISpotifyReleasesService _spotifyReleasesService = spotifyReleasesService;
-	private readonly ISpotifyPlaylistsService _spotifyPlaylistsService = spotifyPlaylistsService;
+	private readonly ISpotifyPlaylistService _spotifyPlaylistService = spotifyPlaylistService;
 
 	private const int DateForceHours = 24;
 
@@ -33,41 +32,30 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 	// playlists
 	public async Task StartLoadingPlaylistsWithTracks(bool forceUpdate)
 	{
-		var playlists = await StartLoadingPlaylists(forceUpdate);
+		await StartLoadingPlaylists(forceUpdate);
+
+		var playlists = _spotifyPlaylistState.Playlists;
 		if (playlists is null)
 		{
 			return;
 		}
-		await StartLoadingPlaylistsTracks(forceUpdate, playlists);
+		await StartLoadingPlaylistsTracks(forceUpdate, playlists.ToHashSet());
 	}
 
-	private async Task<SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>?> StartLoadingPlaylists(bool forceUpdate)
+	private async Task StartLoadingPlaylists(bool forceUpdate)
 	{
 		Console.WriteLine("workflow: playlists - start");
-		var forceUpdateAuto = false;
 
-		if (_loaderService.IsLoading(LoadingType.Playlists) || _loaderService.IsLoading(LoadingType.PlaylistTracks))
-		{
-			return null;
-		}
-		if (!forceUpdate)
-		{
-			forceUpdateAuto = ForceUpdate(_spotifyPlaylistsService.Playlists);
-		}
+		await _spotifyPlaylistService.LoadAndSync(forceUpdate);
 
-		if (forceUpdate || forceUpdateAuto)
-		{
-			await _spotifyPlaylistsService.Get(forceUpdate);
-		}
-		var playlists = _spotifyPlaylistsService.Playlists;
 		Console.WriteLine("workflow: playlists - end");
-		return playlists;
 	}
 
-	private async Task StartLoadingPlaylistsTracks(bool forceUpdate, SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists> playlists)
+	private async Task StartLoadingPlaylistsTracks(bool forceUpdate, ISet<SpotifyPlaylist> playlists)
 	{
 		Console.WriteLine("workflow: playlist tracks - start");
-		var forceUpdateAuto = false;
+		// TODO load playlists tracks
+		/*var forceUpdateAuto = false;
 
 		if (_loaderService.IsLoading(LoadingType.Playlists) || _loaderService.IsLoading(LoadingType.PlaylistTracks))
 		{
@@ -75,13 +63,13 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 		}
 		if (!forceUpdate)
 		{
-			forceUpdateAuto = ForceUpdate(_spotifyPlaylistsService.Playlists);
+			forceUpdateAuto = ForceUpdate(/*todo*//*);
 		}
 
 		if (forceUpdate || forceUpdateAuto)
 		{
 			// TODO load playlists tracks
-		}
+		}*/
 		Console.WriteLine("workflow: playlist tracks - end");
 	}
 
@@ -103,9 +91,8 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 	private async Task StartLoadingArtists(bool forceUpdate)
 	{
 		Console.WriteLine("workflow: artists - start");
-		var userId = _spotifyApiUserService.GetUserIdRequired();
 
-		await _spotifyArtistService.Get(userId, forceUpdate);
+		await _spotifyArtistService.Get(forceUpdate);
 
 		Console.WriteLine("workflow: artists - end");
 	}

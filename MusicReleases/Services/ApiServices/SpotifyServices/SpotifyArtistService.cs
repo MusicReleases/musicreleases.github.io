@@ -2,15 +2,17 @@
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
 using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyArtistService(ISpotifyFilterService filterService, IApiArtistService api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState state, ISpotifyTaskManagerService taskManager) : ISpotifyArtistService
+public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterService filterService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState state, ISpotifyTaskManagerService taskManager) : ISpotifyArtistService
 {
+	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly ISpotifyFilterService _filterService = filterService;
-	private readonly IApiArtistService _api = api;
+	private readonly IApiArtistClient _api = api;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
 	private readonly IDbSpotifyUserArtistService _linkDb = linkDb;
 	private readonly IDbSpotifyUpdateService _metaDb = metaDb;
@@ -19,7 +21,7 @@ public class SpotifyArtistService(ISpotifyFilterService filterService, IApiArtis
 
 	private CancellationTokenSource? _cts;
 
-	public async Task Get(string userId, bool forceUpdate = false)
+	public async Task Get(bool forceUpdate = false)
 	{
 		// cancel any ongoing sync
 		Cancel();
@@ -28,6 +30,7 @@ public class SpotifyArtistService(ISpotifyFilterService filterService, IApiArtis
 
 		try
 		{
+			var userId = _spotifyApiUserService.GetUserIdRequired();
 			// load data from db to state
 			await LoadFromDbToState(userId);
 			Console.WriteLine("last sync get");

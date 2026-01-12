@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
-internal interface IApiPlaylistService
+internal interface IApiPlaylistServiceOld
 {
 	Task<ISet<SpotifyPlaylist>> GetUserPlaylistsFromApi(ISet<SpotifyPlaylist>? existingPlaylists = null);
 	Task<ISet<SpotifyPlaylist>> GetPlaylistsTracksFromApi(ISet<SpotifyPlaylist> playlists, bool forceUpdate);

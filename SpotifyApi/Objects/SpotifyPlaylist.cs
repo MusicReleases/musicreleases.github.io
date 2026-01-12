@@ -10,6 +10,9 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 	public required bool Collaborative { get; init; }
 	public required string SnapshotId { get; set; }
 
+
+	public required string OwnerId { get; init; }
+
 	public int? TotalTracks { get; init; }
 	// TODO private set
 	public HashSet<string> Tracks { get; set; } = [];
@@ -19,6 +22,23 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 	public SpotifyPlaylist()
 	{
 		// TODO ctor for json
+	}
+
+	[SetsRequiredMembers]
+	public SpotifyPlaylist(FullPlaylist fullPlaylist)
+	{
+		// TODO null
+		Id = fullPlaylist.Id ?? "";
+		Name = fullPlaylist.Name ?? "";
+		TotalTracks = fullPlaylist.Tracks?.Total;
+		Collaborative = fullPlaylist.Collaborative ?? false;
+		//CurrentUserOwned = currentUserOwned;
+		SnapshotId = fullPlaylist.SnapshotId ?? "";
+		UrlApp = fullPlaylist.Uri ?? "";
+		UrlWeb = fullPlaylist.Href ?? "";
+		//Tracks = [];
+
+		OwnerId = fullPlaylist.Owner?.Id ?? "";
 	}
 
 	[SetsRequiredMembers]
@@ -34,6 +54,22 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		UrlApp = fullPlaylist.Uri ?? "";
 		UrlWeb = fullPlaylist.Href ?? "";
 		Tracks = tracks;
+
+		OwnerId = "";
+	}
+
+	[SetsRequiredMembers]
+	public SpotifyPlaylist(string id, string name, string urlApp, string urlWeb, string snapshotId, string ownerId, bool collaborative)
+	{
+		Id = id;
+		Name = name;
+		UrlApp = urlApp;
+		UrlWeb = urlWeb;
+		SnapshotId = snapshotId;
+		OwnerId = ownerId;
+		Collaborative = collaborative;
+
+		// TODO CurrentUserOwned
 	}
 
 	public void AddTracks(string snapshotId, ISet<string> trackIds)

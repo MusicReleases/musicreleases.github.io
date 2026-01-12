@@ -21,6 +21,7 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		Console.WriteLine($"db: get all artists - end");
 		return artists;
 	}
+
 	public async Task<IReadOnlyList<SpotifyArtist>> GetByIds(IEnumerable<string> ids)
 	{
 		Console.WriteLine("db: get artists by ids - start");
