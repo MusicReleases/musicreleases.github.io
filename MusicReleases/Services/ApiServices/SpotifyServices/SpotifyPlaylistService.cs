@@ -2,6 +2,7 @@
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
 using static JakubKastner.MusicReleases.Base.Enums;
@@ -108,38 +109,92 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		});
 	}
 
-	public async Task AddTracks(string playlistId, List<string> trackUris, bool positionTop)
+	public async Task AddTracks(string playlistId, IEnumerable<SpotifyTrack> tracks, bool positionTop)
 	{
-		await _taskManager.Run("Adding tracks to playlist", async (task) =>
+		var tracksList = tracks.ToList();
+		if (tracksList.Count == 0)
+		{
+			return;
+		}
+
+		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException("Playlist not found in state");
+
+		await _taskManager.Run($"Adding {tracksList.Count} tracks to playlist '{playlist.Name}'", async (task) =>
 		{
 			task.Status = "Sending request to Spotify...";
+
+			var trackUris = tracksList.Select(t => t.UrlApp).ToList();
 			var snapshotId = await _api.AddTracksToPlaylist(playlistId, trackUris, positionTop);
 
+			var ids = tracksList.Select(t => t.Id).ToList();
+			// TODO save to db
+
 			task.Status = "Updating local snapshot...";
-			await UpdateSnapshot(playlistId, snapshotId);
+			await UpdateLocalPlaylistAfterAdd(playlist, snapshotId, ids);
 		});
 	}
 
-	public async Task RemoveTracks(string playlistId, List<string> trackUris)
+	public async Task RemoveTracks(string playlistId, IEnumerable<SpotifyTrack> tracks)
 	{
-		await _taskManager.Run("Removing tracks from playlist", async (task) =>
+		var tracksList = tracks.ToList();
+		if (tracksList.Count == 0)
+		{
+			return;
+		}
+
+		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException("Playlist not found in state");
+
+		await _taskManager.Run($"Removing {tracksList.Count} tracks from playlist '{playlist.Name}'", async (task) =>
 		{
 			task.Status = "Sending request to Spotify...";
+			var trackUris = tracksList.Select(t => t.UrlApp).ToList();
 			var snapshotId = await _api.RemoveTracksFromPlaylist(playlistId, trackUris);
 
+			// TODO save to db
+
 			task.Status = "Updating local snapshot...";
-			await UpdateSnapshot(playlistId, snapshotId);
+			var trackIds = tracksList.Select(t => t.Id).ToList();
+			await UpdateLocalPlaylistAfterRemove(playlist, snapshotId, trackIds);
 		});
 	}
 
-	private async Task UpdateSnapshot(string playlistId, string snapshotId)
+	private async Task UpdateLocalPlaylistAfterAdd(SpotifyPlaylist playlist, string snapshotId, List<string> trackIds)
 	{
-		await _playlistDb.UpdateSnapshot(playlistId, snapshotId);
+		// update snapshot in db
+		await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId);
 
-		var playlist = _state.GetById(playlistId);
-		if (playlist != null)
+		// update state
+		if (playlist is not null)
 		{
 			playlist.SnapshotId = snapshotId;
+
+			foreach (var trackId in trackIds)
+			{
+				if (playlist.Tracks is ICollection<string> tracks)
+				{
+					tracks.Add(trackId);
+				}
+			}
+		}
+	}
+
+	private async Task UpdateLocalPlaylistAfterRemove(SpotifyPlaylist playlist, string snapshotId, List<string> trackIds)
+	{
+		// update snapshot in db
+		await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId);
+
+		// update state
+		if (playlist is not null)
+		{
+			playlist.SnapshotId = snapshotId;
+
+			if (playlist.Tracks is ICollection<string> tracks)
+			{
+				foreach (var id in trackIds)
+				{
+					tracks.Remove(id);
+				}
+			}
 		}
 	}
 

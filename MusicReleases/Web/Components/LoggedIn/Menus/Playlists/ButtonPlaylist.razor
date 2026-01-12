@@ -1,10 +1,19 @@
 ﻿@using JakubKastner.Extensions
 @using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+@using JakubKastner.MusicReleases.State.Spotify
 
-@inject ISpotifyPlaylistsServiceOld SpotifyPlaylistsService
+@inject ISpotifyPlaylistService SpotifyPlaylistService
 @inject ISpotifyTracksService SpotifyTracksService
+@inject ISpotifyPlaylistState SpotifyPlaylistState
 
-@if (Release is not null)
+@if (_isWorking)
+{
+	<button type="button" class="playlist loading" disabled>
+		<i class="fas fa-spinner fa-spin"></i>
+		@Playlist.Name
+	</button>
+}
+else if (Release is not null)
 {
 	<div class="row">
 		@if (Release.Tracks is not null && Release.Tracks.Any(track => Playlist.Tracks.Contains(track.Id)))

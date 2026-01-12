@@ -14,10 +14,37 @@ public partial class ButtonPlaylist
 	[Parameter]
 	public SpotifyTrack? Track { get; set; }
 
+	private bool _isWorking;
+
+	private void RefreshPlaylistData()
+	{
+		var fresh = SpotifyPlaylistState.GetById(Playlist.Id);
+		if (fresh != null)
+		{
+			Console.WriteLine($"DEBUG: Refreshing playlist. Old tracks: {Playlist.Tracks.Count}, New tracks: {fresh.Tracks.Count}");
+			Playlist = fresh;
+		}
+
+		else
+		{
+			Console.WriteLine("DEBUG: Playlist not found in State!");
+		}
+	}
+
 	private async Task AddToPlaylist(bool positionTop)
 	{
-		await AddReleaseToPlaylist(positionTop);
-		await AddTrackToPlaylist(positionTop);
+		try
+		{
+			await AddReleaseToPlaylist(positionTop);
+			await AddTrackToPlaylist(positionTop);
+
+			RefreshPlaylistData();
+		}
+		finally
+		{
+			_isWorking = false;
+			StateHasChanged();
+		}
 	}
 
 	private async Task AddReleaseToPlaylist(bool positionTop)
@@ -38,7 +65,7 @@ public partial class ButtonPlaylist
 			return;
 		}
 
-		Playlist = await SpotifyPlaylistsService.AddTracks(Playlist, Release.Tracks, positionTop);
+		await SpotifyPlaylistService.AddTracks(Playlist.Id, Release.Tracks, positionTop);
 	}
 
 	private async Task AddTrackToPlaylist(bool positionTop)
@@ -47,14 +74,23 @@ public partial class ButtonPlaylist
 		{
 			return;
 		}
-
-		Playlist = await SpotifyPlaylistsService.AddTrack(Playlist, Track, positionTop);
+		await SpotifyPlaylistService.AddTracks(Playlist.UrlApp, [Track], positionTop);
 	}
 
 	private async Task RemoveFromPlaylist()
 	{
-		await RemoveReleaseFromPlaylist();
-		await RemoveTrackFromPlaylist();
+		_isWorking = true;
+		try
+		{
+			await RemoveReleaseFromPlaylist();
+			await RemoveTrackFromPlaylist();
+			RefreshPlaylistData();
+		}
+		finally
+		{
+			_isWorking = false;
+			StateHasChanged();
+		}
 	}
 
 	private async Task RemoveReleaseFromPlaylist()
@@ -72,7 +108,8 @@ public partial class ButtonPlaylist
 		{
 			return;
 		}
-		Playlist = await SpotifyPlaylistsService.RemoveTracks(Playlist, Release.Tracks);
+
+		await SpotifyPlaylistService.RemoveTracks(Playlist.Id, Release.Tracks);
 	}
 
 	private async Task RemoveTrackFromPlaylist()
@@ -81,6 +118,6 @@ public partial class ButtonPlaylist
 		{
 			return;
 		}
-		Playlist = await SpotifyPlaylistsService.RemoveTrack(Playlist, Track);
+		await SpotifyPlaylistService.RemoveTracks(Playlist.Id, [Track]);
 	}
 }
