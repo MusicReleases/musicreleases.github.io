@@ -21,13 +21,7 @@ public partial class ButtonPlaylist
 		var fresh = SpotifyPlaylistState.GetById(Playlist.Id);
 		if (fresh != null)
 		{
-			Console.WriteLine($"DEBUG: Refreshing playlist. Old tracks: {Playlist.Tracks.Count}, New tracks: {fresh.Tracks.Count}");
 			Playlist = fresh;
-		}
-
-		else
-		{
-			Console.WriteLine("DEBUG: Playlist not found in State!");
 		}
 	}
 
@@ -74,7 +68,7 @@ public partial class ButtonPlaylist
 		{
 			return;
 		}
-		await SpotifyPlaylistService.AddTracks(Playlist.UrlApp, [Track], positionTop);
+		await SpotifyPlaylistService.AddTrack(Playlist.Id, Track, positionTop);
 	}
 
 	private async Task RemoveFromPlaylist()
@@ -118,6 +112,6 @@ public partial class ButtonPlaylist
 		{
 			return;
 		}
-		await SpotifyPlaylistService.RemoveTracks(Playlist.Id, [Track]);
+		await SpotifyPlaylistService.RemoveTrack(Playlist.Id, Track);
 	}
 }

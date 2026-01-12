@@ -109,6 +109,16 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		});
 	}
 
+	public async Task AddTrack(string playlistId, SpotifyTrack track, bool positionTop)
+	{
+		await AddTracks(playlistId, [track], positionTop);
+	}
+
+	public async Task RemoveTrack(string playlistId, SpotifyTrack track)
+	{
+		await RemoveTracks(playlistId, [track]);
+	}
+
 	public async Task AddTracks(string playlistId, IEnumerable<SpotifyTrack> tracks, bool positionTop)
 	{
 		var tracksList = tracks.ToList();
@@ -117,9 +127,10 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			return;
 		}
 
-		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException("Playlist not found in state");
+		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException($"Playlist not found in state");
+		var trackLabel = tracksList.Count == 1 ? "" : "s";
 
-		await _taskManager.Run($"Adding {tracksList.Count} tracks to playlist '{playlist.Name}'", async (task) =>
+		await _taskManager.Run($"Adding {tracksList.Count} track{trackLabel} to playlist '{playlist.Name}'", async (task) =>
 		{
 			task.Status = "Sending request to Spotify...";
 
@@ -133,7 +144,6 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			await UpdateLocalPlaylistAfterAdd(playlist, snapshotId, ids);
 		});
 	}
-
 	public async Task RemoveTracks(string playlistId, IEnumerable<SpotifyTrack> tracks)
 	{
 		var tracksList = tracks.ToList();
@@ -143,8 +153,9 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		}
 
 		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException("Playlist not found in state");
+		var trackLabel = tracksList.Count == 1 ? "" : "s";
 
-		await _taskManager.Run($"Removing {tracksList.Count} tracks from playlist '{playlist.Name}'", async (task) =>
+		await _taskManager.Run($"Removing {tracksList.Count} track{trackLabel} from playlist '{playlist.Name}'", async (task) =>
 		{
 			task.Status = "Sending request to Spotify...";
 			var trackUris = tracksList.Select(t => t.UrlApp).ToList();
