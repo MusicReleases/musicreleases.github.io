@@ -18,12 +18,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <SassFile Remove="wwwroot\styles\5_components\_4_tasks.scss" />
+		<!-- SVG icons to DLL -->
+		<EmbeddedResource Include="Icons\**\*.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="wwwroot\styles\5_components\_4_tasks.scss" />
+	  <Content Include="Icons\spotify\small-green.svg" />
 	</ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
@@ -50,6 +52,11 @@
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Icons\lucide\" />
+	  <Folder Include="Icons\custom\" />
 	</ItemGroup>
 
 </Project>

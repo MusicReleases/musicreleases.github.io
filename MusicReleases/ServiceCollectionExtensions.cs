@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddMusicReleases(this IServiceCollection services)
 	{
 		// base services
+		services.AddScoped<IIconService, IconService>();
 		services.AddScoped<IMobileService, MobileService>();
 		services.AddScoped<ILoginService, LoginService>();
 
