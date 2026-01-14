@@ -2,24 +2,30 @@
 
 namespace JakubKastner.MusicReleases.Base;
 
-public static class Icons
+public enum IconType
 {
-	public enum SpotifyIcon
-	{
-		SmallGreen,
-	}
+	Spotify,
+	Lucide,
+	Custom,
+}
 
-	public enum LucideIcon
-	{
+public enum SpotifyIcon
+{
+	SmallGreen,
+}
 
-	}
+public enum LucideIcon
+{
 
-	public enum CustomIcon
-	{
+}
 
-	}
+public enum CustomIcon
+{
 
+}
 
+public static class EnumIcons
+{
 	public static string GetIconForRelease(ReleaseType releaseType)
 	{
 		return releaseType switch

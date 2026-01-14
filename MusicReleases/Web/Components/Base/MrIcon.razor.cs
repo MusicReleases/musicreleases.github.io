@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using static JakubKastner.MusicReleases.Base.Icons;
+﻿using JakubKastner.MusicReleases.Base;
+using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
 
