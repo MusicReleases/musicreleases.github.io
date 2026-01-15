@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Primitives;
-using static JakubKastner.MusicReleases.Base.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
+using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices;
 

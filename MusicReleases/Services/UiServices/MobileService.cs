@@ -1,4 +1,4 @@
-﻿using static JakubKastner.MusicReleases.Base.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Services.UiServices;
 

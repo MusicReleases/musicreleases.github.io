@@ -1,9 +1,9 @@
 ﻿using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Base;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects;
 using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
 
@@ -68,8 +68,8 @@ public partial class Releases
 	private ReleaseType _type;
 
 	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
-	private bool Loading => LoaderService.IsLoading(Enums.LoadingType.Releases);
-	private bool LoadingArtists => LoaderService.IsLoading(Enums.LoadingType.Artists);
+	private bool Loading => LoaderService.IsLoading(LoadingType.Releases);
+	private bool LoadingArtists => LoaderService.IsLoading(LoadingType.Artists);
 
 
 	protected override void OnInitialized()

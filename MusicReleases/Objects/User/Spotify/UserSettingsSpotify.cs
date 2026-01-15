@@ -1,5 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using static JakubKastner.MusicReleases.Base.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Objects.User.Spotify;
 

@@ -1,8 +1,8 @@
 ﻿using JakubKastner.Extensions;
 using JakubKastner.SpotifyApi.Objects.Base;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using SpotifyAPI.Web;
 using System.Diagnostics.CodeAnalysis;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects;
 

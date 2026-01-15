@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Base;
+﻿using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
@@ -7,7 +7,7 @@ public class LoaderService : ILoaderService
 	private readonly ISpotifyTaskManagerService _spotifyTaskManagerService;
 
 
-	private readonly Dictionary<(Enums.LoadingType Type, Enums.LoadingCategory Category), bool> _loadingStates = [];
+	private readonly Dictionary<(LoadingType Type, LoadingCategory Category), bool> _loadingStates = [];
 
 	public LoaderService(ISpotifyTaskManagerService spotifyTaskManagerService)
 	{
@@ -31,27 +31,27 @@ public class LoaderService : ILoaderService
 		_spotifyTaskManagerService.OnChange -= OnTaskManagerChanged;
 	}
 
-	public void StartLoading(Enums.LoadingType type, Enums.LoadingCategory category)
+	public void StartLoading(LoadingType type, LoadingCategory category)
 	{
 		SetLoading(type, category, true);
 	}
 
-	public void StopLoading(Enums.LoadingType type, Enums.LoadingCategory category)
+	public void StopLoading(LoadingType type, LoadingCategory category)
 	{
 		SetLoading(type, category, false);
 	}
 
-	private void SetLoading(Enums.LoadingType type, Enums.LoadingCategory category, bool loading)
+	private void SetLoading(LoadingType type, LoadingCategory category, bool loading)
 	{
 		_loadingStates[(type, category)] = loading;
 		LoadingStateChanged?.Invoke();
 	}
 
-	public bool IsLoading(Enums.LoadingType type, Enums.LoadingCategory category)
+	public bool IsLoading(LoadingType type, LoadingCategory category)
 	{
 		return _loadingStates.TryGetValue((type, category), out var value) && value;
 	}
-	public bool IsLoading(Enums.LoadingType type)
+	public bool IsLoading(LoadingType type)
 	{
 		return _loadingStates.Where(x => x.Key.Type == type).Any(x => x.Value);
 	}

@@ -1,18 +1,17 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
-namespace JakubKastner.MusicReleases.Services.BaseServices
+namespace JakubKastner.MusicReleases.Services.BaseServices;
+
+public interface ISpotifyFilterPlaylistService
 {
-	public interface ISpotifyFilterPlaylistService
-	{
-		IReadOnlyList<SpotifyPlaylist>? FilteredPlaylists { get; }
-		string SearchText { get; }
-		SpotifyEnums.PlaylistType TypeFilter { get; }
+	IReadOnlyList<SpotifyPlaylist>? FilteredPlaylists { get; }
+	string SearchText { get; }
+	PlaylistType TypeFilter { get; }
 
-		event Action? OnFilterChanged;
+	event Action? OnFilterChanged;
 
-		void Dispose();
-		void SetSearchText(string text);
-		void SetTypeFilter(SpotifyEnums.PlaylistType type);
-	}
+	void Dispose();
+	void SetSearchText(string text);
+	void SetTypeFilter(PlaylistType type);
 }

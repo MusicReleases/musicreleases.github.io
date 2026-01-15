@@ -1,6 +1,6 @@
 using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Enums;
 using Microsoft.AspNetCore.Components;
-using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons;
 

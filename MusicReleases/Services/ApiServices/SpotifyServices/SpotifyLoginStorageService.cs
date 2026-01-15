@@ -1,5 +1,5 @@
 ﻿using Blazored.LocalStorage;
-using static JakubKastner.MusicReleases.Base.Enums;
+using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
@@ -9,8 +9,8 @@ public class SpotifyLoginStorageService(ILocalStorageService localStorageService
 
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
-	private readonly string _localStorageKeyLoggedInUser = GetLocalStorageKey(serviceType, LocalStorageKey.LoggedInUser);
-	private readonly string _localStorageKeyVerifier = GetLocalStorageKey(serviceType, LocalStorageKey.LoginVerifier);
+	private readonly string _localStorageKeyLoggedInUser = EnumDatabaseExtensions.GetLocalStorageKey(serviceType, LocalStorageKey.LoggedInUser);
+	private readonly string _localStorageKeyVerifier = EnumDatabaseExtensions.GetLocalStorageKey(serviceType, LocalStorageKey.LoginVerifier);
 
 	public async Task SaveUserId(string userId)
 	{
@@ -25,7 +25,7 @@ public class SpotifyLoginStorageService(ILocalStorageService localStorageService
 
 	public async Task DeleteSavedUser()
 	{
-		var localStorageKeys = GetAllLocalStorageKeys(serviceType);
+		var localStorageKeys = EnumDatabaseExtensions.GetAllLocalStorageKeys(serviceType);
 		foreach (var localStorageKey in localStorageKeys)
 		{
 			await _localStorageService.RemoveItemAsync(localStorageKey);

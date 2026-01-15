@@ -1,7 +1,6 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using SpotifyAPI.Web;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
@@ -48,7 +47,7 @@ internal class ApiReleaseService(ISpotifyApiClient client) : IApiReleaseService
 		var request = new ArtistsAlbumsRequest
 		{
 			Limit = ApiRequestLimit.ArtistReleases,
-			IncludeGroupsParam = GetApiReleaseType(releaseType),
+			IncludeGroupsParam = EnumReleaseTypeExtensions.GetApiReleaseType(releaseType),
 			// TODO market
 		};
 		// TODO all??

@@ -1,7 +1,7 @@
 ﻿using SpotifyAPI.Web.Http;
 using System.Net;
 
-namespace JakubKastner.SpotifyApi.Base;
+namespace JakubKastner.SpotifyApi.SpotifyEnums;
 
 // https://github.com/JohnnyCrazy/SpotifyAPI-NET/blob/master/SpotifyAPI.Web/RetryHandlers/SimpleRetryHandler.cs
 public class SpotifyApiRetryHandler : IRetryHandler

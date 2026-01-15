@@ -1,0 +1,71 @@
+@use 'mixins' as mixins;
+
+// TODO color theme https://coolors.co/293f14-386c0b-388a06-38a700-31d843-3eff8b-50ff96
+$themes: 
+( 
+    light: 
+    ( 
+        color-1: rgb(255, 255, 255), 
+        color-2: rgb(245, 245, 245),
+        color-3: rgb(235, 235, 235),
+        color-4: rgb(225, 225, 225),
+        color-5: rgb(215, 215, 215), 
+        color-6: rgb(205, 205, 205), 
+        color-7: rgb(195, 195, 195),
+        color-text-1: rgb(0, 0, 0), 
+        color-text-2: rgb(150, 150, 150),
+        color-text-button: rgb(0, 0, 0),
+    ), 
+    dark: 
+    (
+        color-1: rgb(6, 6, 6), 
+        color-2: rgb(16, 16, 16), 
+        color-3: rgb(26, 26, 26),
+        color-4: rgb(36, 36, 36), 
+        color-5: rgb(46, 46, 46), 
+        color-6: rgb(56, 56, 56), 
+        color-7: rgb(66, 66, 66), 
+        color-text-1: rgb(255, 255, 255), 
+        color-text-2: rgb(105, 105, 105),
+        color-text-button: rgb(26, 178, 107),
+    ), 
+    color:
+    (
+        color-1: rgb(41, 63, 20),
+        color-2: rgb(56, 138, 6), 
+        color-3: rgb(56, 108, 11),
+        color-4: rgb(56, 167, 0),
+        color-5: rgb(49, 216, 67), 
+        color-6: rgb(62, 255, 139), 
+        color-7: rgb(80, 255, 150), 
+        color-text-1: rgb(255, 255, 255), 
+        color-text-2: rgb(105, 105, 105),
+        color-text-button: rgb(26, 178, 107),
+    ),
+);
+
+// auto themes
+
+:root {
+    @include mixins.emit-theme-vars(map-get($themes, light));
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="color"]) {
+        @include mixins.emit-theme-vars(map-get($themes, dark));
+    }
+}
+
+// user themes
+
+:root[data-theme="dark"] {
+    @include mixins.emit-theme-vars(map-get($themes, dark));
+}
+
+:root[data-theme="color"] {
+    @include mixins.emit-theme-vars(map-get($themes, color));
+}
+
+:root[data-theme="light"] {
+    @include mixins.emit-theme-vars(map-get($themes, light));
+}

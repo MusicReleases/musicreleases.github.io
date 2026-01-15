@@ -1,6 +1,6 @@
-﻿using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
+﻿using JakubKastner.SpotifyApi.SpotifyEnums;
 
-namespace JakubKastner.MusicReleases.Base;
+namespace JakubKastner.MusicReleases.Enums;
 
 public enum IconType
 {
@@ -24,8 +24,17 @@ public enum CustomIcon
 
 }
 
-public static class EnumIcons
+public static class EnumIconsExtensions
 {
+	public static Enum GetIconForServiceType(ServiceType serviceType)
+	{
+		return serviceType switch
+		{
+			ServiceType.Spotify => SpotifyIcon.SmallGreen,
+			_ => throw new NotSupportedException(nameof(serviceType)),
+		};
+	}
+
 	public static string GetIconForRelease(ReleaseType releaseType)
 	{
 		return releaseType switch

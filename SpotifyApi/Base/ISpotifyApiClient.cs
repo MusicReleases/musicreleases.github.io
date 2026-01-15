@@ -1,6 +1,6 @@
 ﻿using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Base;
+namespace JakubKastner.SpotifyApi.SpotifyEnums;
 
 public interface ISpotifyApiClient
 {

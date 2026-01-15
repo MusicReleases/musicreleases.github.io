@@ -1,5 +1,14 @@
-﻿@forward 'app';
+@forward 'global/sizes';
+@forward 'global/colors';
+@forward 'global/main';
+@forward 'global/global';
 
+@forward 'components/button';
+@forward 'components/scrollbar';
+
+@forward 'app'; 
+
+/*
 @forward '1_fonts/dm_sans';
 @forward '1_fonts/pt_sans';
 
@@ -23,10 +32,10 @@
 @forward '4_menu/3_filter';
 @forward '4_menu/4_mobile';
 
-@forward '5_components/1_loader';
+//@forward '5_components/1_loader';
 @forward '5_components/2_lists';
 @forward '5_components/_3_buttons.scss';
-@forward '5_components/_4_tasks.scss';
+//@forward '5_components/_4_tasks.scss';
 
 @forward 'x_temp/1_dev';
-@forward 'x_temp/2_testing';
+@forward 'x_temp/2_testing';*/

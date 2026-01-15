@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using static JakubKastner.MusicReleases.Base.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
+using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedOut;
 
@@ -11,22 +11,14 @@ public partial class LoginButton
 	[Parameter]
 	public ServiceType Type { get; set; }
 
-	private string _type = string.Empty;
+	private string TypeName => Type.ToString();
 
-	protected override async Task OnInitializedAsync()
-	{
-		_type = Type.ToString();
-
-		// check if user is logged in
-		//await _loginController.AutoLoginUser();
-
-		await base.OnInitializedAsync();
-	}
+	private Enum TypeIcon => EnumIconsExtensions.GetIconForServiceType(Type);
 
 	/// <summary>
 	/// User clicked to login button.
 	/// </summary>
-	private void LoginUser()
+	private void ButtonLoginUser()
 	{
 		LoginService.LoginUser();
 	}

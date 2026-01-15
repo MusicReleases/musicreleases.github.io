@@ -1,4 +1,4 @@
-﻿namespace JakubKastner.SpotifyApi.Base;
+﻿namespace JakubKastner.SpotifyApi.SpotifyEnums;
 
 public static class EnsureMe
 {

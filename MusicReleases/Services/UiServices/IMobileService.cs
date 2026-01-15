@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.Base;
-using static JakubKastner.MusicReleases.Base.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Services.UiServices;
 
@@ -9,6 +8,6 @@ public interface IMobileService
 
 	event Action? OnDisplayChanged;
 
-	string GetMenuClass(Enums.DisplayMobile menuType);
-	void ShowMenu(Enums.DisplayMobile menuType);
+	string GetMenuClass(DisplayMobile menuType);
+	void ShowMenu(DisplayMobile menuType);
 }

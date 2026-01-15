@@ -1,9 +1,9 @@
 ﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Objects;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
-using JakubKastner.SpotifyApi.Base;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
@@ -121,7 +121,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 		}
 
 		var releasesByTypeAdvanced = releasesByType;
-		if (Filter.ReleaseType == SpotifyEnums.ReleaseType.Tracks || Filter.ReleaseType == SpotifyEnums.ReleaseType.Appears)
+		if (Filter.ReleaseType == ReleaseType.Tracks || Filter.ReleaseType == ReleaseType.Appears)
 		{
 			// tracks and eps filter only for tracks and appears
 			if (!Filter.Advanced.Tracks)

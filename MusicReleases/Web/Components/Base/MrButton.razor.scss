@@ -1,0 +1,17 @@
+.button {
+    --button-padding: 10px;
+
+    background-color: var(--color-2);
+    color: var(--color-text-1);
+    cursor: pointer;
+    border: none;
+    font-size: var(--font-size-1);
+    padding: var(--button-padding);
+    /*
+        box-sizing: content-box;
+        display: inline-block;
+    */
+    &.active {
+        color: var(--color-text-button);
+    }
+}

@@ -1,0 +1,43 @@
+@use 'mixins' as mixins;
+
+* {
+    margin: 0;
+    text-decoration: none;
+    font-family: "DM Sans", "Pontano Sans", sans-serif;
+    word-wrap: everywhere;
+    overflow-wrap: anywhere;
+}
+
+body {
+    background-color: var(--color-1);
+    color: var(--color-text-1);
+}
+
+p {
+    font-size: var(--font-size-1);
+}
+
+input {
+    border: none;
+    padding: 0;
+}
+
+
+// responsive styles (hide / show content on pc / mobile)
+@include mixins.respond(pc) {
+    .hide-pc {
+        display: none !important;
+    }
+}
+
+@include mixins.respond(tablet) {
+    .hide-tablet {
+        display: none !important;
+    }
+}
+
+@include mixins.respond(mobile) {
+    .hide-mobile {
+        display: none !important;
+    }
+}

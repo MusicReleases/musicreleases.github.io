@@ -1,20 +1,21 @@
 ﻿using static SpotifyAPI.Web.ArtistsAlbumsRequest;
 
-namespace JakubKastner.SpotifyApi.Base;
+namespace JakubKastner.SpotifyApi.SpotifyEnums;
 
-public static class SpotifyEnums
+// TODO all?????
+public enum ReleaseType
 {
-	// TODO all?????
-	public enum ReleaseType
-	{
-		//All,
-		Albums,
-		Tracks,
-		Appears,
-		Compilations,
-		Podcasts,
-	}
+	//All,
+	Albums,
+	Tracks,
+	Appears,
+	Compilations,
+	Podcasts,
+}
 
+
+public static class EnumReleaseTypeExtensions
+{
 	public static HashSet<ReleaseType> GetAllReleaseTypes()
 	{
 		return [.. Enum.GetValues<ReleaseType>().Cast<ReleaseType>()];
@@ -32,16 +33,5 @@ public static class SpotifyEnums
 			ReleaseType.Podcasts => throw new NotImplementedException(), //TODO podcasts;
 			_ => throw new Exception("Unsupported Release Type"),
 		};
-	}
-
-	[Flags]
-	public enum PlaylistType
-	{
-		None = 0,
-		Owned = 1 << 0,          // 1: my playlists
-		Collaborative = 1 << 1,  // 2: colaborative
-		Subscribed = 1 << 2,     // 4: only followed
-		Editable = Owned | Collaborative,
-		All = Owned | Collaborative | Subscribed,
 	}
 }

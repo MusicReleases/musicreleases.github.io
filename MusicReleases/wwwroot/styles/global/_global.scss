@@ -1,0 +1,36 @@
+.left {
+	padding-left: var(--padding-left-right);
+}
+
+.right {
+	padding-left: var(--padding-left-right);
+}
+
+
+// icon left and right margin
+.icon-text {
+	i {
+		margin-right: var(--margin-right-icon);
+	}
+
+	&-right {
+		i {
+			margin-left: var(--margin-right-icon);
+		}
+	}
+}
+
+// explicit
+.explicit {
+	span {
+		font-size: 13px;
+		padding-left: 2.5px;
+		font-style: italic;
+	}
+}
+
+
+// scroll
+.infinite-scroll {
+	position: relative
+}

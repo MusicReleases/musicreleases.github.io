@@ -1,12 +1,11 @@
-﻿using JakubKastner.MusicReleases.Base;
+﻿using JakubKastner.MusicReleases.Enums;
 using Microsoft.AspNetCore.Components;
-
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Buttons;
 
 public partial class ShowMenuButton
 {
 	[Parameter, EditorRequired]
-	public required Enums.DisplayMobile MenuType { get; set; }
+	public required DisplayMobile MenuType { get; set; }
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }

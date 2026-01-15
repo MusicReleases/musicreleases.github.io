@@ -1,6 +1,4 @@
-﻿using JakubKastner.MusicReleases.Base;
-
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
+﻿namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
 
 public partial class Releases
 {

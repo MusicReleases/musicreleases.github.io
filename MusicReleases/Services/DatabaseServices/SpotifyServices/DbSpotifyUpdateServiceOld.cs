@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
+using JakubKastner.MusicReleases.Enums;
 using Tavenem.Blazor.IndexedDB;
-using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 

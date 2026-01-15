@@ -1,7 +1,7 @@
 ﻿using DexieNET;
 using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Mappers.Spotify;
-using static JakubKastner.MusicReleases.Base.Enums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 

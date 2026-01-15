@@ -1,5 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects.Base;
+﻿using JakubKastner.SpotifyApi.Objects.Base;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using SpotifyAPI.Web;
 using System.Diagnostics.CodeAnalysis;
 
@@ -36,7 +36,7 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Artists = [];
 		foreach (var simpleArtist in simpleTrack.Artists)
 		{
-			if (release.ReleaseType != SpotifyEnums.ReleaseType.Appears && release.Artists.Any(x => x.Id == simpleArtist.Id))
+			if (release.ReleaseType != ReleaseType.Appears && release.Artists.Any(x => x.Id == simpleArtist.Id))
 			{
 				// skip artists from album (no for appears)
 				continue;

@@ -1,9 +1,9 @@
 ﻿using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Services;
-using static JakubKastner.MusicReleases.Base.Enums;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 

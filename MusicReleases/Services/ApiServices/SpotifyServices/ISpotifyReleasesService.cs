@@ -1,6 +1,6 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Objects.Base;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
@@ -10,5 +10,5 @@ public interface ISpotifyReleasesService
 
 	event Action? OnTracksDataChanged;
 
-	Task Get(SpotifyEnums.ReleaseType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate);
+	Task Get(ReleaseType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate);
 }

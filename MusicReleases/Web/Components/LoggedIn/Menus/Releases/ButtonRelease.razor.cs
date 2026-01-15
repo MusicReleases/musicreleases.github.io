@@ -1,6 +1,6 @@
-﻿using JakubKastner.MusicReleases.Base;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 
@@ -11,7 +11,7 @@ public partial class ButtonRelease
 
 	private string ReleaseTypeString => ReleaseType.ToString();
 	private string ButtonClass => ReleaseTypeString.ToLower() + (ReleaseFilter ? " active" : string.Empty);
-	private string IconClass => Icons.GetIconForRelease(ReleaseType);
+	private string IconClass => EnumIconsExtensions.GetIconForRelease(ReleaseType);
 
 	private bool ReleaseFilter => SpotifyFilterService.Filter!.ReleaseType == ReleaseType;
 

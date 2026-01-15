@@ -1,6 +1,6 @@
+using JakubKastner.MusicReleases.Enums;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
-using static JakubKastner.MusicReleases.Base.Enums;
-using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons;
 

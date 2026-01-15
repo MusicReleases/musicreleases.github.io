@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
 
-public partial class LogoShort
+public partial class Logo
 {
 	[Parameter]
 	public bool DisplayMusic { get; set; } = false;

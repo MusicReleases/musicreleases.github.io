@@ -1,5 +1,5 @@
 ﻿using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Base;
+using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 

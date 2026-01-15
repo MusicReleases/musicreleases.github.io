@@ -1,10 +1,10 @@
-@using JakubKastner.SpotifyApi.Base
+@using JakubKastner.SpotifyApi.SpotifyEnums
 
 <div class="footer menu releases hide-tablet hide-pc">
 	<div class="primary">
-		@foreach (var releaseType in SpotifyEnums.GetAllReleaseTypes())
+		@foreach (var releaseType in EnumReleaseTypeExtensions.GetAllReleaseTypes())
 		{
-			if (releaseType == SpotifyEnums.ReleaseType.Podcasts)
+			if (releaseType == ReleaseType.Podcasts)
 			{
 				// TODO podcasts
 				continue;

@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Base;
+﻿using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
@@ -9,8 +9,8 @@ public interface ILoaderService
 
 	event Action? LoadingStateChanged;
 
-	bool IsLoading(Enums.LoadingType type);
-	bool IsLoading(Enums.LoadingType type, Enums.LoadingCategory category);
-	void StartLoading(Enums.LoadingType type, Enums.LoadingCategory category);
-	void StopLoading(Enums.LoadingType type, Enums.LoadingCategory category);
+	bool IsLoading(LoadingType type);
+	bool IsLoading(LoadingType type, LoadingCategory category);
+	void StartLoading(LoadingType type, LoadingCategory category);
+	void StopLoading(LoadingType type, LoadingCategory category);
 }

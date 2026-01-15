@@ -1,9 +1,9 @@
-@using JakubKastner.SpotifyApi.Base
+@using JakubKastner.SpotifyApi.SpotifyEnums
 
 <div class="menu hover items icon-text scroll">
-	@foreach (var releaseType in SpotifyEnums.GetAllReleaseTypes())
+	@foreach (var releaseType in EnumReleaseTypeExtensions.GetAllReleaseTypes())
 	{
-		if (releaseType == SpotifyEnums.ReleaseType.Podcasts)
+		if (releaseType == ReleaseType.Podcasts)
 		{
 			// TODO podcasts
 			continue;

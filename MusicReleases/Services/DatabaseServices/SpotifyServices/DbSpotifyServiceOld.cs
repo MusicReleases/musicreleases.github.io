@@ -1,5 +1,5 @@
-﻿using JakubKastner.MusicReleases.Base;
-using JakubKastner.MusicReleases.Database;
+﻿using JakubKastner.MusicReleases.Database;
+using JakubKastner.MusicReleases.Enums;
 using Tavenem.Blazor.IndexedDB;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
@@ -19,7 +19,7 @@ public class DbSpotifyServiceOld(IndexedDbService indexedDbService) : IDbSpotify
 		return indexedDb;
 	}
 
-	public IndexedDbStore GetTable(Enums.DbStorageTablesSpotify tableName, IndexedDb? db = null)
+	public IndexedDbStore GetTable(DbStorageTablesSpotify tableName, IndexedDb? db = null)
 	{
 		db ??= GetDb();
 		var table = db[tableName.ToString()];

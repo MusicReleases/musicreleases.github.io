@@ -1,3 +1,4 @@
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
@@ -9,7 +10,7 @@ public partial class MenuArtists
 	public string? Class { get; set; }
 
 	private ISet<SpotifyArtist>? Artists => SpotifyFilterService.FilteredArtists;
-	private bool Loading => LoaderService.IsLoading(MusicReleases.Base.Enums.LoadingType.Artists);
+	private bool Loading => LoaderService.IsLoading(LoadingType.Artists);
 
 	protected override void OnInitialized()
 	{

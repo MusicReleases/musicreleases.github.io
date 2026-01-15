@@ -1,7 +1,7 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Base;
+namespace JakubKastner.SpotifyApi.SpotifyEnums;
 
 public class SpotifyApiClient(SpotifyConfig spotifyConfig) : ISpotifyApiClient
 {

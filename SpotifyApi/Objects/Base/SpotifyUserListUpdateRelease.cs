@@ -1,4 +1,4 @@
-﻿using static JakubKastner.SpotifyApi.Base.SpotifyEnums;
+﻿using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.SpotifyApi.Objects.Base;
 

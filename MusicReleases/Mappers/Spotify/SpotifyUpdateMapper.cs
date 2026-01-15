@@ -1,5 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using static JakubKastner.MusicReleases.Base.Enums;
+using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Mappers.Spotify;
 
