@@ -1,16 +1,25 @@
 .button {
-    --button-padding: 10px;
-
-    background-color: var(--color-2);
+    font-size: var(--font-size-1);
     color: var(--color-text-1);
     cursor: pointer;
     border: none;
-    font-size: var(--font-size-1);
-    padding: var(--button-padding);
+    padding: 18px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    width: fit-content;
     /*
         box-sizing: content-box;
         display: inline-block;
     */
+
+    background-color: var(--color-3);
+
+    &:hover {
+        background-color: var(--color-4);
+    }
+
     &.active {
         color: var(--color-text-button);
     }

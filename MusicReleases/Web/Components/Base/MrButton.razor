@@ -1,16 +1,36 @@
 ﻿@using JakubKastner.Extensions
 
-<button type="@Type"
-        class="button @Class"
-        disabled="@Disabled"
-        title="@Title"
-        @onclick="OnClick"
-        @attributes="Attributes">
 
-    @ChildContent
+@if (Href.IsNotNullOrEmpty())
+{
+    <a class="@($"button {Class}")"
+             href="@Href"
+             disabled="@Disabled"
+             title="@Title"
+             @onclick="OnClick"
+             @attributes="Attributes">
+        @ChildContent
 
-    @if (Text.IsNotNullOrEmpty())
-    {
-        <span>@Text</span>
-    }
-</button>
+        @if (Text.IsNotNullOrEmpty())
+        {
+            <span>@Text</span>
+        }
+    </a>
+}
+else
+{
+    <button type="@Type"
+            class="button @Class"
+            disabled="@Disabled"
+            title="@Title"
+            @onclick="OnClick"
+            @attributes="Attributes">
+
+        @ChildContent
+
+        @if (Text.IsNotNullOrEmpty())
+        {
+            <span>@Text</span>
+        }
+    </button>
+}

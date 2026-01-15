@@ -1,3 +1,14 @@
+.clickable {
+	cursor: pointer !important;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: flex-start;
+}
+
 .left {
 	padding-left: var(--padding-left-right);
 }

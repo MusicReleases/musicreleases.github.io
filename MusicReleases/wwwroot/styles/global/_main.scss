@@ -4,17 +4,33 @@
     margin: 0;
     text-decoration: none;
     font-family: "DM Sans", "Pontano Sans", sans-serif;
-    word-wrap: everywhere;
+    word-wrap: anywhere;
     overflow-wrap: anywhere;
 }
 
 body {
-    background-color: var(--color-1);
+    background-color: var(--color-2);
     color: var(--color-text-1);
+    height: 100vh;
+    width: 100vw;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
 }
 
 p {
     font-size: var(--font-size-1);
+}
+
+a {
+    color: var(--color-text-1);
+
+    &:hover {
+        text-decoration: none;
+        color: var(--color-text-1);
+    }
 }
 
 input {

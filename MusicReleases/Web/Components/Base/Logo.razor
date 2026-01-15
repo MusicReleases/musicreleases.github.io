@@ -1,10 +1,12 @@
-﻿<div class="logo">
+﻿@using JakubKastner.MusicReleases.Enums
+
+@inject NavigationManager NavManager
+
+<div class="logo @CssClass" @onclick="LogoOnClick">
     @if (DisplayMusic)
     {
         <span>Music</span>
     }
-    <img class="favicon" src="images/favicon/favicon-32x32.png" alt="">
-    <span>
-        Releases
-    </span>
+    <MrIcon Type="CustomIcon.Logo" Size="1em" />@* 
+     *@<span>Releases</span>
 </div>

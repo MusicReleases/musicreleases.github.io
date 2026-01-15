@@ -9,7 +9,6 @@ public partial class Index
 		_loading = true;
 
 		await LoadPage();
-		await base.OnInitializedAsync();
 
 		_loading = false;
 	}

@@ -24,6 +24,8 @@ public partial class MrButton
 	public string? Title { get; set; }
 	[Parameter]
 	public string? Text { get; set; }
+	[Parameter]
+	public string? Href { get; set; }
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? Attributes { get; set; }
 }

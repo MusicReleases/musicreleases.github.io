@@ -1,17 +1,25 @@
 ﻿@page "/login/spotify"
-@layout LayoutLogin
-@inherits LayoutComponentBase
+@layout LayoutPublic
 
+@using JakubKastner.MusicReleases.Enums
 @using JakubKastner.MusicReleases.Services.BaseServices
+
 @inject ILoginService LoginService
 @inject NavigationManager NavManager
 
 @if (_loading)
 {
-	<p>Loggin in user...</p>
+    <InfoSection Title="Login">
+        <p>Loggin in user...</p>
+    </InfoSection>
 }
 else if (_error)
 {
-	<p>Login failed, try again:</p>
-	<Login></Login>
+    <InfoSection Title="Login">
+        <p>Login via Spotify failed, try again:</p>
+    </InfoSection>
+    <nav class="buttons">
+        <LoginButton Type=ServiceType.Spotify />
+        <HomeButton />
+    </nav>
 }

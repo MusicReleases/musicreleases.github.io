@@ -1,5 +1,10 @@
 @use 'mixins' as mixins;
 
+:root {
+    --color-spotify: #191414;
+    --color-project: #19B16A;
+}
+
 // TODO color theme https://coolors.co/293f14-386c0b-388a06-38a700-31d843-3eff8b-50ff96
 $themes: 
 ( 

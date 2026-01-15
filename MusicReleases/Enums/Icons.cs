@@ -16,12 +16,12 @@ public enum SpotifyIcon
 
 public enum LucideIcon
 {
-
+	House,
 }
 
 public enum CustomIcon
 {
-
+	Logo,
 }
 
 public static class EnumIconsExtensions

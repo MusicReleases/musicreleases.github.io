@@ -1,0 +1,9 @@
+.logo {
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    color: var(--color-project);
+    font-weight: 900;
+    cursor: default;
+    user-select: none;
+}

@@ -1,0 +1,6 @@
+﻿<nav class="buttons">
+    @foreach (var serviceType in Enum.GetValues<Enums.ServiceType>())
+    {
+        <LoginButton Type=@serviceType></LoginButton>
+    }
+</nav>

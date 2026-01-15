@@ -11,14 +11,14 @@ public partial class LoginButton
 	[Parameter]
 	public ServiceType Type { get; set; }
 
-	private string TypeName => Type.ToString();
+	private string ButtonText => $"Login via {Type}";
 
 	private Enum TypeIcon => EnumIconsExtensions.GetIconForServiceType(Type);
 
 	/// <summary>
 	/// User clicked to login button.
 	/// </summary>
-	private void ButtonLoginUser()
+	private void ButtonOnClick()
 	{
 		LoginService.LoginUser();
 	}

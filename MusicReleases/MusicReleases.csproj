@@ -57,6 +57,7 @@
 	<ItemGroup>
 	  <Folder Include="Icons\lucide\" />
 	  <Folder Include="Icons\custom\" />
+	  <Folder Include="wwwroot\styles\oldstyle\1_fonts\" />
 	</ItemGroup>
 
 </Project>

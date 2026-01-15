@@ -1,22 +1,24 @@
 ﻿@page "/"
-@layout LayoutLogin
+@layout LayoutPublic
 
 @using JakubKastner.MusicReleases.Services.BaseServices
-
-@inherits LayoutComponentBase
 
 @inject ILoginService LoginService
 
 
 @* login user page (first) *@
 
-<h2>Login</h2>
-
 @if (_loading)
 {
-	<p>Loading...</p>
+    <InfoSection Title="Login">
+        <p>Loading...</p>
+    </InfoSection>
 }
 else
 {
-	<Login></Login>
+    <InfoSection Title="Login">
+        <p>Display releases from your followed artists on Spotify. Filter them by release date or artist name. Add them to your playlist.</p>
+        <p>Currently in beta version. Many features coming soon.</p>
+    </InfoSection>
+    <LoginButtons />
 }
