@@ -15,7 +15,7 @@ public enum DisplayMobile
 	Date,
 }
 
-public enum MenuButtonsType
+public enum MenuType
 {
 	Artists,
 	Releases,

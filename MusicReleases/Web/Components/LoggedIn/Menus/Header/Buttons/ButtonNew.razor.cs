@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Button
 public partial class ButtonNew
 {
 	[Parameter, EditorRequired]
-	public MenuButtonsType Type { get; set; }
+	public MenuType Type { get; set; }
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }

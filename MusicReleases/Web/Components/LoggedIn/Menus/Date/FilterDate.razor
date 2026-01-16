@@ -1,0 +1,21 @@
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Services.UiServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+
+@implements IDisposable
+
+@inject ILoaderService LoaderService
+@inject IMobileService MobileService
+
+<div class="menu date buttons-rounded-l" @attributes="AdditionalAttributes">
+
+	@if (!Loading)
+	{
+		<!-- TODO search -->
+
+		<ButtonSort Type="_type" />
+
+		<ButtonClearFilter Type="_type" />
+	}
+
+</div>

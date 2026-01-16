@@ -5,7 +5,6 @@ public partial class Loader
 	protected override void OnInitialized()
 	{
 		LoaderService.LoadingStateChanged += LoadingStateChanged;
-		base.OnInitialized();
 	}
 
 	private void LoadingStateChanged()
@@ -16,6 +15,6 @@ public partial class Loader
 	public void Dispose()
 	{
 		LoaderService.LoadingStateChanged -= LoadingStateChanged;
+		GC.SuppressFinalize(this);
 	}
-
 }

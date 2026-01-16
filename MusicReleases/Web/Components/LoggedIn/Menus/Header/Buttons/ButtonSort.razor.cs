@@ -6,10 +6,12 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Button
 public partial class ButtonSort
 {
 	[Parameter, EditorRequired]
-	public MenuButtonsType Type { get; set; }
+	public MenuType Type { get; set; }
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
+
+	public LucideIcon Icon => LucideIcon.ArrowDownUp; // LucideIcon.AZ  // LucideIcon.ZA
 
 	private void Sort()
 	{

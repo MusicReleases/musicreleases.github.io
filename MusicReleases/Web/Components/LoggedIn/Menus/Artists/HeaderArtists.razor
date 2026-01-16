@@ -1,0 +1,20 @@
+﻿@using JakubKastner.MusicReleases.Enums
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+
+@implements IDisposable
+
+@inject ILoaderService LoaderService
+
+<div class="menu artists buttons-rounded-l" @attributes="AdditionalAttributes">
+
+	<ButtonTitle Type="_type">
+		<MrIcon Icon="LucideIcon.MicVocal" />
+	</ButtonTitle>
+	
+	@if (!Loading)
+	{
+		<ButtonUpdate Type="_type" />
+	}
+
+</div>

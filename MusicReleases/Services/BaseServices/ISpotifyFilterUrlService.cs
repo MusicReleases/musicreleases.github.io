@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public interface ISpotifyFilterUrlService
 {
-	Task<string> ClearFilter(MenuButtonsType type);
+	Task<string> ClearFilter(MenuType type);
 	Task<string> GetFilterUrl();
 	Task<string> GetFilterUrl(int? year);
 	Task<string> GetFilterUrl(int? year, int? month);

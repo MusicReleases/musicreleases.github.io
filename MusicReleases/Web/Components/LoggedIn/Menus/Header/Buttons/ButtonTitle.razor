@@ -1,18 +1,3 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices
-
-@inject IApiLoginService ApiLoginService
-
-@if (!ApiLoginService.IsUserLoggedIn())
-{
-	<p>User not logged in</p>
-}
-else
-{
-	<button class="show-hide icon-text left" @onclick="HandleClick">
-		@ChildContent
-		@if (DisplayTitle)
-		{
-			@_title
-		}
-	</button>
-}
+﻿<MrButton Text="@Title" OnClick="@OnClick" class="show-hide icon-text left">
+	@ChildContent
+</MrButton>

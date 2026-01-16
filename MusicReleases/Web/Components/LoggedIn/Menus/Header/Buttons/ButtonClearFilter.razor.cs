@@ -6,12 +6,13 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Button
 public partial class ButtonClearFilter
 {
 	[Parameter, EditorRequired]
-	public required MenuButtonsType Type { get; set; }
+	public required MenuType Type { get; set; }
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
-	private string ButtonTitle => Type == MenuButtonsType.Releases ? "Default filter" : "Clear filter";
+	private string ButtonTitle => Type == MenuType.Releases ? "Default filter" : "Clear filter";
+	public LucideIcon Icon => LucideIcon.Funnel; // LucideIcon.FunnelX
 
 	private async Task ClearFilter()
 	{

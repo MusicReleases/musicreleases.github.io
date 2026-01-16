@@ -3,12 +3,13 @@
 
 @if (Href.IsNotNullOrEmpty())
 {
-    <a class="@($"button {Class}")"
+    <a class="button @Class"
              href="@Href"
              disabled="@Disabled"
              title="@Title"
              @onclick="OnClick"
              @attributes="Attributes">
+
         @ChildContent
 
         @if (Text.IsNotNullOrEmpty())

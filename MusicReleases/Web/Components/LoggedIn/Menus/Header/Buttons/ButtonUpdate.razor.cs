@@ -1,5 +1,4 @@
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons;
@@ -7,13 +6,10 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Button
 public partial class ButtonUpdate
 {
 	[Parameter, EditorRequired]
-	public MenuButtonsType Type { get; set; }
+	public MenuType Type { get; set; }
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
-
-	[Parameter, EditorRequired]
-	public EventCallback<bool> OnUpdating { get; set; }
 
 	private void Update()
 	{
@@ -21,24 +17,12 @@ public partial class ButtonUpdate
 
 		if (serviceType == ServiceType.Spotify)
 		{
-			OnUpdating.InvokeAsync(true);
-
-			switch (Type)
+			if (SpotifyFilterService.Filter is null)
 			{
-				case MenuButtonsType.Artists:
-					// TODO releases type
-					SpotifyWorkflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
-					break;
-				case MenuButtonsType.Releases:
-					// TODO releases type + load only releases without artists
-					SpotifyWorkflowController.StartLoadingArtistsWithReleases(true, ReleaseType.Albums);
-					break;
-				case MenuButtonsType.Playlists:
-					SpotifyWorkflowController.StartLoadingPlaylistsWithTracks(true);
-					break;
-				default:
-					throw new NotSupportedException(nameof(Type));
+				throw new NullReferenceException(nameof(SpotifyFilterService.Filter));
 			}
+
+			SpotifyWorkflowService.Update(Type, SpotifyFilterService.Filter.ReleaseType);
 		}
 	}
 }

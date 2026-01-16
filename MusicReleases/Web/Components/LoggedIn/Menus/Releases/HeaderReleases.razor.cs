@@ -1,12 +1,16 @@
-﻿namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
+﻿using Microsoft.AspNetCore.Components;
 
-public partial class Releases
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
+
+public partial class HeaderReleases
 {
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object>? AdditionalAttributes { get; set; }
 	private bool Loading => LoaderService.IsLoading(Enums.LoadingType.Artists) || LoaderService.IsLoading(Enums.LoadingType.Releases);
+
 	protected override void OnInitialized()
 	{
 		LoaderService.LoadingStateChanged += LoadingStateChanged;
-		base.OnInitialized();
 	}
 
 	public void Dispose()

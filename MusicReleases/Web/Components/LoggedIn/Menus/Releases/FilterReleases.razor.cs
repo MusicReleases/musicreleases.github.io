@@ -1,11 +1,10 @@
-﻿namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
+﻿namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 
-public partial class ReleasesFilters
+public partial class FilterReleases
 {
 	protected override void OnInitialized()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
 	}
 
 	public void Dispose()

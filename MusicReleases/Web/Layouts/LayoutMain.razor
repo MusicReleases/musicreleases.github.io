@@ -13,36 +13,38 @@
 
 @* main layout - user is sucessfully logged in *@
 
-<div class="body classic hide-player">
+<div class="body">
 
-	@if (!ApiLoginService.IsUserLoggedIn())
-	{
-		<p>User not logged in</p>
-	}
-	else {
-		<Header></Header>
+    @if (!ApiLoginService.IsUserLoggedIn())
+    {
+        <p>Error - User is not logged in</p>
+    }
+    else
+    {
+        <PrimaryHeader />
+        <SecondaryHeader />
 
-		<div class="main">
+        <div class="main">
 
-			<MenuReleases>
-			</MenuReleases>
+            <MenuReleases>
+            </MenuReleases>
 
-			<MenuDateYear Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Date)">
-			</MenuDateYear>
+            <MenuDateYear Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Date)">
+            </MenuDateYear>
 
-			<MenuArtists Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Artists)">
-			</MenuArtists>
+            <MenuArtists Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Artists)">
+            </MenuArtists>
 
-			<MenuPlaylists>
-			</MenuPlaylists>
+            <MenuPlaylists>
+            </MenuPlaylists>
 
-			<div class="content page scroll @MobileService.GetMenuClass(Enums.DisplayMobile.Releases)">
-				@Body
-			</div>
+            <div class="content page scroll @MobileService.GetMenuClass(Enums.DisplayMobile.Releases)">
+                @Body
+            </div>
 
-		</div>
+        </div>
 
-		<Footer></Footer>
-	}
+        <Footer></Footer>
+    }
 
 </div>

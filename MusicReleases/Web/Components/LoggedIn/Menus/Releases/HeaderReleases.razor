@@ -4,10 +4,9 @@
 
 @inject ILoaderService LoaderService
 
-<div class="menu filter scroll buttons-rounded-m">
+<div class="menu filter scroll buttons-rounded-m" @attributes="AdditionalAttributes">
 	@if (!Loading)
 	{
-		<ReleasesFilters></ReleasesFilters>
-		@* <ReleasesActions></ReleasesActions> *@
+		<ReleasesActions />
 	}
 </div>

@@ -1,22 +1,23 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
 
-public partial class Artists
+public partial class FilterDate
 {
+
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
+
 	private bool _displayTitle = true;
-	private readonly MenuButtonsType _type = MenuButtonsType.Artists;
+	private readonly MenuType _type = MenuType.Date;
 
 	private bool Loading => LoaderService.IsLoading(LoadingType.Artists) || LoaderService.IsLoading(LoadingType.Releases);
 
 	protected override void OnInitialized()
 	{
 		LoaderService.LoadingStateChanged += LoadingStateChanged;
-		base.OnInitialized();
 	}
 
 	public void Dispose()
@@ -36,6 +37,6 @@ public partial class Artists
 
 	private void HideMenu()
 	{
-		MobileService.ShowMenu(DisplayMobile.Artists);
+		MobileService.ShowMenu(DisplayMobile.Date);
 	}
 }

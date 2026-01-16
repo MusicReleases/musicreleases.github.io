@@ -16,7 +16,32 @@ public enum SpotifyIcon
 
 public enum LucideIcon
 {
+	ArrowDownAZ,
+	ArrowDownUp,
+	ArrowDownZA,
+	Calendar,
+	CirclePlus,
+	Delete,
+	Disc3,
+	DiscAlbum,
+	Flame,
+	Funnel,
+	FunnelX,
 	House,
+	ChevronDown,
+	ChevronUp,
+	ListMusic,
+	ListOrdered,
+	LogOut,
+	MicVocal,
+	Music,
+	Play,
+	Plus,
+	Podcast,
+	RefreshCcw,
+	UserRound,
+	Users,
+	X,
 }
 
 public enum CustomIcon

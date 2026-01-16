@@ -7,7 +7,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Button
 public partial class ButtonSearch
 {
 	[Parameter, EditorRequired]
-	public MenuButtonsType Type { get; set; }
+	public MenuType Type { get; set; }
 
 	[Parameter, EditorRequired]
 	public EventCallback<bool> OnSearching { get; set; }

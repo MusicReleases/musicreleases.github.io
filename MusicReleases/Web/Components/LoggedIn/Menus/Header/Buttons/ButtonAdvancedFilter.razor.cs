@@ -15,13 +15,12 @@ public partial class ButtonAdvancedFilter
 	public RenderFragment? ChildContent { get; set; }
 
 	private bool IsActive => IsFilterActive();
-	private string ButtonClass => IsActive ? "active" : string.Empty;
+	private string ButtonClass => IsActive ? "tracks active" : string.Empty;
 	private string ButtonTitle => IsActive ? "Hide " + Title : "Show " + Title;
 
 	protected override void OnInitialized()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
 	}
 
 	public void Dispose()

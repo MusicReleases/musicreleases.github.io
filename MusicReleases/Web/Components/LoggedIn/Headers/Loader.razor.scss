@@ -1,4 +1,7 @@
-﻿
+﻿:root {
+    --height-loader: 4px;
+}
+
 .loader {
     border-radius: var(--height-loader);
     background-size: 20%;
@@ -7,6 +10,8 @@
     display: grid;
     width: 100%;
     height: var(--height-loader);
+    background-color: transparent;
+    background: linear-gradient(to right, var(--color-project), var(--color-project));
 
     &.active {
         animation: loader-animation 3s ease-in-out infinite;

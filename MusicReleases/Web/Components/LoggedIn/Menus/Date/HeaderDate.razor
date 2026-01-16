@@ -1,0 +1,15 @@
+﻿@using JakubKastner.MusicReleases.Enums
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+
+@implements IDisposable
+
+@inject ILoaderService LoaderService
+
+<div class="menu date buttons-rounded-l" @attributes="AdditionalAttributes">
+
+	<ButtonTitle Type="_type">
+		<MrIcon Icon="LucideIcon.Calendar" />
+	</ButtonTitle>
+
+</div>

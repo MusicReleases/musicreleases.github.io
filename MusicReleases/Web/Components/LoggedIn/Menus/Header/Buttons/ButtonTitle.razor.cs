@@ -7,32 +7,15 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Button
 public partial class ButtonTitle
 {
 	[Parameter, EditorRequired]
-	public MenuButtonsType Type { get; set; }
+	public MenuType Type { get; set; }
 
-	[Parameter, EditorRequired]
-	public bool DisplayTitle { get; set; }
+	[Parameter]
+	public bool DisplayTitle { get; set; } = true;
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 	[Parameter]
 	public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-
-	private string? _title;
-
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-
-		_title = Type.ToString();
-	}
-
-	private async Task HandleClick(MouseEventArgs e)
-	{
-		if (!OnClick.HasDelegate)
-		{
-			return;
-		}
-		await OnClick.InvokeAsync(e);
-	}
+	private string Title => DisplayTitle ? Type.ToString() : string.Empty;
 }

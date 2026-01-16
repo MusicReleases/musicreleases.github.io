@@ -1,16 +1,4 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices
-
-@inject IApiLoginService ApiLoginService
-
-@if (!ApiLoginService.IsUserLoggedIn())
-{
-	<p>User not logged in</p>
-}
-else
-{
-	@* TODO sorting *@
-	@* <button class="sort" @onclick="Sort">
-		<i class="fas fa-sort-amount-down-alt" aria-hidden="true"></i>
-		@ChildContent
-	</button> *@
-}
+﻿<MrButton @onclick="Sort">
+    <MrIcon Icon="Icon" />
+    @ChildContent
+</MrButton>

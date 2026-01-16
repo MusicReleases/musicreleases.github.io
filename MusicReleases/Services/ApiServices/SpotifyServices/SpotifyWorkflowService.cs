@@ -126,7 +126,7 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 		Console.WriteLine("workflow: releases - end");
 	}
 
-	public bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, ReleaseType? releaseType = null) where T : SpotifyIdNameUrlObject where U : SpotifyUserListUpdate
+	private bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, ReleaseType? releaseType = null) where T : SpotifyIdNameUrlObject where U : SpotifyUserListUpdate
 	{
 		if (userList is null || userList.List is null || userList.Update is null || userList.List.Count < 1)
 		{
@@ -155,5 +155,26 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 			return true;
 		}
 		return false;
+	}
+
+	public async Task Update(MenuType menuType, ReleaseType releaseType)
+	{
+		switch (menuType)
+		{
+			case MenuType.Artists:
+				// TODO load only releases for new artists
+				await StartLoadingArtistsWithReleases(true, releaseType);
+				// TODO !!!!!!! set old update date for other release types - for update later
+				break;
+			case MenuType.Releases:
+				// TODO load only releases without updating artists
+				await StartLoadingArtistsWithReleases(true, releaseType);
+				break;
+			case MenuType.Playlists:
+				await StartLoadingPlaylistsWithTracks(true);
+				break;
+			default:
+				throw new NotSupportedException(nameof(Type));
+		}
 	}
 }

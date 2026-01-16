@@ -1,18 +1,19 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Playlists;
 
-public partial class Playlists
+public partial class HeaderPlaylists
 {
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object>? AdditionalAttributes { get; set; }
 	private bool Loading => LoaderService.IsLoading(LoadingType.Playlists) || LoaderService.IsLoading(LoadingType.PlaylistTracks);
 
-	private bool _displayTitle = true;
-	private readonly MenuButtonsType _type = MenuButtonsType.Playlists;
+	private readonly MenuType _type = MenuType.Playlists;
 
 	protected override void OnInitialized()
 	{
 		LoaderService.LoadingStateChanged += LoadingStateChanged;
-		base.OnInitialized();
 	}
 
 	public void Dispose()
@@ -23,10 +24,5 @@ public partial class Playlists
 	private void LoadingStateChanged()
 	{
 		InvokeAsync(StateHasChanged);
-	}
-
-	private void DisplayTitle(bool displayTitle)
-	{
-		_displayTitle = displayTitle;
 	}
 }

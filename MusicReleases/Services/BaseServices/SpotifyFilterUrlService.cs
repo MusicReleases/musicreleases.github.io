@@ -177,15 +177,14 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService,
 		return new(type, yearFilter, monthFilter, artistFilter, advancedFilter);
 	}
 
-	public async Task<string> ClearFilter(MenuButtonsType type)
+	public async Task<string> ClearFilter(MenuType type)
 	{
-		// TODO custom enum
 		return type switch
 		{
-			MenuButtonsType.Date => await GetFilterUrl(year: null, month: null),
-			MenuButtonsType.Artists => await GetFilterUrl(artist: null),
-			MenuButtonsType.Releases => await GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
-			_ => throw new NotSupportedException(nameof(MenuButtonsType)),
+			MenuType.Date => await GetFilterUrl(year: null, month: null),
+			MenuType.Artists => await GetFilterUrl(artist: null),
+			MenuType.Releases => await GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
+			_ => throw new NotSupportedException(nameof(MenuType)),
 		};
 	}
 }

@@ -1,0 +1,19 @@
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+
+@implements IDisposable
+
+@inject ILoaderService LoaderService
+
+<div class="menu playlists buttons-rounded-l" @attributes="AdditionalAttributes">
+
+	@if (!Loading)
+	{
+		<!-- TODO search -->
+
+		<ButtonSort Type="_type" />
+
+		<ButtonClearFilter Type="_type" />
+	}
+
+</div>

@@ -7,16 +7,16 @@
 
 @inject ISpotifyFilterService SpotifyFilterService
 
-<ButtonClearFilter Type="MenuButtonsType.Releases">
+<ButtonClearFilter Type="MenuType.Releases">
 </ButtonClearFilter>
 
 @if (SpotifyFilterService.Filter!.ReleaseType == ReleaseType.Tracks || SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears)
 {
-	<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Tracks" Title="tracks">
+	<ButtonAdvancedFilter Type="ReleasesFilters.Tracks" Title="tracks">
 		Tracks
 	</ButtonAdvancedFilter>
 
-	<ButtonAdvancedFilter Type="Enums.ReleasesFilters.EPs" Title="EPs">
+	<ButtonAdvancedFilter Type="ReleasesFilters.EPs" Title="EPs">
 		@if (SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears)
 		{
 			@:Albums and EPs
@@ -29,34 +29,34 @@
 }
 
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.NotRemixes" Title="not remixes">
+<ButtonAdvancedFilter Type="ReleasesFilters.NotRemixes" Title="not remixes">
 	Not remixes
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.Remixes" Title="remixes">
+<ButtonAdvancedFilter Type="ReleasesFilters.Remixes" Title="remixes">
 	Remixes
 </ButtonAdvancedFilter>
 
-@* <ButtonAdvancedFilter Type="Enums.ReleasesFilters.FollowedArtists" Title="releases from the artists I am following">
+@* <ButtonAdvancedFilter Type="ReleasesFilters.FollowedArtists" Title="releases from the artists I am following">
 	Followed artists
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.SavedReleases" Title="saved releases in library">
+<ButtonAdvancedFilter Type="ReleasesFilters.SavedReleases" Title="saved releases in library">
 	Saved releases
 </ButtonAdvancedFilter> *@
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.NotVariousArtists" Title="releases from not various artists">
+<ButtonAdvancedFilter Type="ReleasesFilters.NotVariousArtists" Title="releases from not various artists">
 	Not various artists
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.VariousArtists" Title="releases from various artists">
+<ButtonAdvancedFilter Type="ReleasesFilters.VariousArtists" Title="releases from various artists">
 	Various artists
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.NewReleases" Title="new releases">
+<ButtonAdvancedFilter Type="ReleasesFilters.NewReleases" Title="new releases">
 	New releases
 </ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="Enums.ReleasesFilters.OldReleases" Title="old releases">
+<ButtonAdvancedFilter Type="ReleasesFilters.OldReleases" Title="old releases">
 	Old releases
 </ButtonAdvancedFilter>

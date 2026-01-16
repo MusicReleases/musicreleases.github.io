@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Web.Components.Base;
 public partial class MrIcon<TIcon> where TIcon : Enum
 {
 	[Parameter, EditorRequired]
-	public required TIcon Type { get; set; }
+	public required TIcon Icon { get; set; }
 	[Parameter]
 	public string CssClass { get; set; } = "";
 	[Parameter]
@@ -21,7 +21,7 @@ public partial class MrIcon<TIcon> where TIcon : Enum
 
 	private void SetSvg()
 	{
-		svgContent = Type switch
+		svgContent = Icon switch
 		{
 			LucideIcon lucide => IconService.GetSvg(lucide),
 			SpotifyIcon spotify => IconService.GetSvg(spotify),

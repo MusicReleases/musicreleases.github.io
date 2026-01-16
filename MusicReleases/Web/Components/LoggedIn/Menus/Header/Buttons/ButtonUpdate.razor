@@ -1,17 +1,13 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices
+﻿@using JakubKastner.MusicReleases.Enums
+@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+@using JakubKastner.MusicReleases.Services.BaseServices
 
 @inject IApiLoginService ApiLoginService
-@inject ISpotifyWorkflowService SpotifyWorkflowController
+@inject ISpotifyWorkflowService SpotifyWorkflowService
+@inject ISpotifyFilterService SpotifyFilterService
 
-@if (!ApiLoginService.IsUserLoggedIn())
-{
-	<p>User not logged in</p>
-}
-else
-{	
-	<button class="update" @onclick="Update">
-		<i class="fas fa-sync-alt" aria-hidden="true"></i>
-		@ChildContent
-	</button>
-}
+<MrButton @onclick="Update">
+    <MrIcon Icon="LucideIcon.RefreshCcw" />
+    @ChildContent
+</MrButton>
