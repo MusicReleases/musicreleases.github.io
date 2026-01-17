@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
 
@@ -8,11 +7,11 @@ public partial class MrIcon<TIcon> where TIcon : Enum
 	[Parameter, EditorRequired]
 	public required TIcon Icon { get; set; }
 	[Parameter]
-	public string CssClass { get; set; } = "";
+	public string? Class { get; set; }
 	[Parameter]
 	public string Size { get; set; } = "1.25rem";
 
-	private string svgContent = "";
+	private string _svgContent = default!;
 
 	protected override void OnParametersSet()
 	{
@@ -21,12 +20,6 @@ public partial class MrIcon<TIcon> where TIcon : Enum
 
 	private void SetSvg()
 	{
-		svgContent = Icon switch
-		{
-			LucideIcon lucide => IconService.GetSvg(lucide),
-			SpotifyIcon spotify => IconService.GetSvg(spotify),
-			CustomIcon custom => IconService.GetSvg(custom),
-			_ => throw new ArgumentException($"Icon type '{typeof(TIcon).Name}' is not supported."),
-		};
+		_svgContent = IconService.GetSvg(Icon);
 	}
 }

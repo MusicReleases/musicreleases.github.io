@@ -2,11 +2,14 @@
 
 @inject NavigationManager NavManager
 
-<div class="logo @CssClass" @onclick="LogoOnClick">
+<div class="logo @Class" @onclick="LogoOnClick" title="@Title">
+
     @if (DisplayMusic)
     {
         <span>Music</span>
     }
+
     <MrIcon Icon="CustomIcon.Logo" Size="1em" />@* 
      *@<span>Releases</span>
+
 </div>

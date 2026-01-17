@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using JakubKastner.Extensions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
@@ -28,4 +29,6 @@ public partial class MrButton
 	public string? Href { get; set; }
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? Attributes { get; set; }
+
+	private string? ButtonTitle => Title.IsNullOrEmpty() ? Text : Title;
 }

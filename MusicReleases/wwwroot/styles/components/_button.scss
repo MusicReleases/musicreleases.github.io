@@ -19,24 +19,3 @@ button {
         font-weight: 900;
     }
 }
-
-.buttons-rounded {
-
-    &-m button {
-        font-size: 15px;
-        padding: 5px 10px;
-        border-radius: 16px;
-    }
-
-    &-l button {
-        font-size: 16px;
-        padding: 5px 10px;
-        border-radius: 16px;
-    }
-
-    &-xl button {
-        font-size: 16px;
-        padding: 10px;
-        border-radius: 10px;
-    }
-}

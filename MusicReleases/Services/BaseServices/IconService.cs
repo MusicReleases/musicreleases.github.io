@@ -19,9 +19,10 @@ public class IconService : IIconService
 
 	public string GetSvg<TIcon>(TIcon icon) where TIcon : Enum
 	{
-		if (!_meta.TryGetValue(typeof(TIcon), out var meta))
+		var runtimeType = icon.GetType();
+		if (!_meta.TryGetValue(runtimeType, out var meta))
 		{
-			throw new ArgumentException($"Unsupported icon enum: {typeof(TIcon).Name}");
+			throw new ArgumentException($"Unsupported icon enum: {runtimeType.Name}");
 		}
 
 		var resourceName = GetResourcePath(meta.Type, icon);

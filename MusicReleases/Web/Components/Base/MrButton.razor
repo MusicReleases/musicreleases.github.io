@@ -4,11 +4,11 @@
 @if (Href.IsNotNullOrEmpty())
 {
     <a class="button @Class"
-             href="@Href"
-             disabled="@Disabled"
-             title="@Title"
-             @onclick="OnClick"
-             @attributes="Attributes">
+       href="@Href"
+       disabled="@Disabled"
+       title="@ButtonTitle"
+       @onclick="OnClick"
+       @attributes="Attributes">
 
         @ChildContent
 
@@ -23,7 +23,7 @@ else
     <button type="@Type"
             class="button @Class"
             disabled="@Disabled"
-            title="@Title"
+            title="@ButtonTitle"
             @onclick="OnClick"
             @attributes="Attributes">
 

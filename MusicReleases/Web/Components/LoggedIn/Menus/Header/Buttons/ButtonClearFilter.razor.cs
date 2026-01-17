@@ -12,7 +12,7 @@ public partial class ButtonClearFilter
 	public RenderFragment? ChildContent { get; set; }
 
 	private string ButtonTitle => Type == MenuType.Releases ? "Default filter" : "Clear filter";
-	public LucideIcon Icon => LucideIcon.Funnel; // LucideIcon.FunnelX
+	private LucideIcon Icon => LucideIcon.Funnel; // LucideIcon.FunnelX
 
 	private async Task ClearFilter()
 	{

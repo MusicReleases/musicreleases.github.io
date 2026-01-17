@@ -8,7 +8,8 @@ public partial class Logo
 	public bool DisplayMusic { get; set; } = false;
 	[Parameter]
 	public bool ClickEnabled { get; set; } = false;
-	private string CssClass => ClickEnabled ? "clickable" : string.Empty;
+	private string Class => ClickEnabled ? "clickable" : string.Empty;
+	private string Title => ClickEnabled ? "Go to homepage" : string.Empty;
 
 	private void LogoOnClick()
 	{

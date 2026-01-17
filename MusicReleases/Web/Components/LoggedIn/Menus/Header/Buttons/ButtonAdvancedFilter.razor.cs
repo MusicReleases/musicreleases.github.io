@@ -1,3 +1,4 @@
+using JakubKastner.MusicReleases.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons;
@@ -6,7 +7,7 @@ public partial class ButtonAdvancedFilter
 {
 
 	[Parameter, EditorRequired]
-	public required Enums.ReleasesFilters Type { get; set; }
+	public required ReleasesFilters Type { get; set; }
 
 	[Parameter, EditorRequired]
 	public required string Title { get; set; }
@@ -15,8 +16,8 @@ public partial class ButtonAdvancedFilter
 	public RenderFragment? ChildContent { get; set; }
 
 	private bool IsActive => IsFilterActive();
-	private string ButtonClass => IsActive ? "tracks active" : string.Empty;
-	private string ButtonTitle => IsActive ? "Hide " + Title : "Show " + Title;
+	private string ButtonClass => (IsActive ? "active " : string.Empty) + "rounded-m chips";
+	private string ButtonTitle => (IsActive ? "Hide" : "Show") + $" {Title}";
 
 	protected override void OnInitialized()
 	{
@@ -26,6 +27,7 @@ public partial class ButtonAdvancedFilter
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void OnFilterOrDataChanged()

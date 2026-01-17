@@ -1,16 +1,15 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 
-public partial class HeaderDate
+public partial class ActionsReleases
 {
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? Attributes { get; set; }
-
-	private readonly MenuType _type = MenuType.Date;
-
 	private bool Loading => LoaderService.IsLoading(LoadingType.Artists) || LoaderService.IsLoading(LoadingType.Releases);
+
+	private readonly MenuType _type = MenuType.Releases;
 
 	protected override void OnInitialized()
 	{
@@ -26,5 +25,12 @@ public partial class HeaderDate
 	private void LoadingStateChanged()
 	{
 		InvokeAsync(StateHasChanged);
+	}
+
+	private void AddToPlaylist()
+	{
+	}
+	private void Play()
+	{
 	}
 }

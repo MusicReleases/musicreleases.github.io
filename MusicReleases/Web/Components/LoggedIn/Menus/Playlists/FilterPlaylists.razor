@@ -5,15 +5,13 @@
 
 @inject ILoaderService LoaderService
 
-<div class="menu playlists buttons-rounded-l" @attributes="AdditionalAttributes">
+<div class="playlists-filter" @attributes="Attributes">
 
 	@if (!Loading)
 	{
 		<!-- TODO search -->
 
 		<ButtonSort Type="_type" />
-
-		<ButtonClearFilter Type="_type" />
 	}
 
 </div>

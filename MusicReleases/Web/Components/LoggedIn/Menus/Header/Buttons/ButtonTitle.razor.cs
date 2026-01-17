@@ -8,14 +8,10 @@ public partial class ButtonTitle
 {
 	[Parameter, EditorRequired]
 	public MenuType Type { get; set; }
-
-	[Parameter]
-	public bool DisplayTitle { get; set; } = true;
-
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 	[Parameter]
 	public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-	private string Title => DisplayTitle ? Type.ToString() : string.Empty;
+	private string Text => Type.ToString();
 }

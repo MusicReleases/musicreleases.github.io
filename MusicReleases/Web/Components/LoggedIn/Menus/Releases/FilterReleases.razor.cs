@@ -10,6 +10,7 @@ public partial class FilterReleases
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void OnFilterOrDataChanged()

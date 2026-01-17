@@ -1,20 +1,63 @@
 .button {
-    font-size: var(--font-size-1);
-    color: var(--color-text-1);
     cursor: pointer;
     border: none;
-    padding: 18px;
-    border-radius: 25px;
     display: flex;
     flex-direction: row;
     gap: 7px;
     width: fit-content;
-    /*
-        box-sizing: content-box;
-        display: inline-block;
-    */
+    font-size: var(--font-size-1);
 
+    &.xl {
+        padding: 18px;
+        border-radius: 25px;
+    }
+
+
+    &.rounded {
+
+        &-m {
+            font-size: 15px;
+            padding: 5px 10px;
+            border-radius: 16px;
+        }
+
+        &-l {
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 16px;
+        }
+
+        &-xl {
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    }
+
+    color: var(--color-text-1);
     background-color: var(--color-3);
+
+    &.transparent {
+        background-color: transparent;
+    }
+
+    &.chips {
+        background-color: var(--color-1);
+
+        &:hover {
+            color: var(--color-1);
+            background-color: var(--color-project-2);
+        }
+
+        &.active {
+            color: var(--color-1);
+            background-color: var(--color-project);
+
+            &:hover {
+                background-color: var(--color-project-2);
+            }
+        }
+    }
 
     &:hover {
         background-color: var(--color-4);

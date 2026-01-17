@@ -11,7 +11,8 @@ public partial class ButtonSort
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
-	public LucideIcon Icon => LucideIcon.ArrowDownUp; // LucideIcon.AZ  // LucideIcon.ZA
+	private LucideIcon Icon => LucideIcon.ArrowDownUp; // LucideIcon.AZ  // LucideIcon.ZA
+	private string Title => $"Sort {Type.ToString().ToLower()}";
 
 	private void Sort()
 	{

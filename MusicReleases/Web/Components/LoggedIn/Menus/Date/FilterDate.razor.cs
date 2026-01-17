@@ -5,12 +5,9 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
 
 public partial class FilterDate
 {
-
 	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object>? AdditionalAttributes { get; set; }
+	public Dictionary<string, object>? Attributes { get; set; }
 
-
-	private bool _displayTitle = true;
 	private readonly MenuType _type = MenuType.Date;
 
 	private bool Loading => LoaderService.IsLoading(LoadingType.Artists) || LoaderService.IsLoading(LoadingType.Releases);
@@ -23,20 +20,11 @@ public partial class FilterDate
 	public void Dispose()
 	{
 		LoaderService.LoadingStateChanged -= LoadingStateChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void LoadingStateChanged()
 	{
 		InvokeAsync(StateHasChanged);
-	}
-
-	private void DisplayTitle(bool displayTitle)
-	{
-		_displayTitle = displayTitle;
-	}
-
-	private void HideMenu()
-	{
-		MobileService.ShowMenu(DisplayMobile.Date);
 	}
 }

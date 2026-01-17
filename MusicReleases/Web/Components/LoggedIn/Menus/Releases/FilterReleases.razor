@@ -7,37 +7,38 @@
 
 @inject ISpotifyFilterService SpotifyFilterService
 
-<ButtonClearFilter Type="MenuType.Releases">
-</ButtonClearFilter>
+<div class="releases-filter">
 
-@if (SpotifyFilterService.Filter!.ReleaseType == ReleaseType.Tracks || SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears)
-{
-	<ButtonAdvancedFilter Type="ReleasesFilters.Tracks" Title="tracks">
-		Tracks
+	<ButtonClearFilter Type="MenuType.Releases" />
+
+	@if (SpotifyFilterService.Filter!.ReleaseType == ReleaseType.Tracks || SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears)
+	{
+		<ButtonAdvancedFilter Type="ReleasesFilters.Tracks" Title="tracks">
+			Tracks
+		</ButtonAdvancedFilter>
+
+		<ButtonAdvancedFilter Type="ReleasesFilters.EPs" Title="EPs">
+			@if (SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears)
+			{
+				@:Albums and EPs
+			}
+			else
+			{
+				@:EPs
+			}
+		</ButtonAdvancedFilter>
+	}
+
+
+	<ButtonAdvancedFilter Type="ReleasesFilters.NotRemixes" Title="not remixes">
+		Not remixes
 	</ButtonAdvancedFilter>
 
-	<ButtonAdvancedFilter Type="ReleasesFilters.EPs" Title="EPs">
-		@if (SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears)
-		{
-			@:Albums and EPs
-		}
-		else
-		{
-			@:EPs
-		}
+	<ButtonAdvancedFilter Type="ReleasesFilters.Remixes" Title="remixes">
+		Remixes
 	</ButtonAdvancedFilter>
-}
 
-
-<ButtonAdvancedFilter Type="ReleasesFilters.NotRemixes" Title="not remixes">
-	Not remixes
-</ButtonAdvancedFilter>
-
-<ButtonAdvancedFilter Type="ReleasesFilters.Remixes" Title="remixes">
-	Remixes
-</ButtonAdvancedFilter>
-
-@* <ButtonAdvancedFilter Type="ReleasesFilters.FollowedArtists" Title="releases from the artists I am following">
+	@* <ButtonAdvancedFilter Type="ReleasesFilters.FollowedArtists" Title="releases from the artists I am following">
 	Followed artists
 </ButtonAdvancedFilter>
 
@@ -45,18 +46,20 @@
 	Saved releases
 </ButtonAdvancedFilter> *@
 
-<ButtonAdvancedFilter Type="ReleasesFilters.NotVariousArtists" Title="releases from not various artists">
-	Not various artists
-</ButtonAdvancedFilter>
+	<ButtonAdvancedFilter Type="ReleasesFilters.NotVariousArtists" Title="releases from not various artists">
+		Not various artists
+	</ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="ReleasesFilters.VariousArtists" Title="releases from various artists">
-	Various artists
-</ButtonAdvancedFilter>
+	<ButtonAdvancedFilter Type="ReleasesFilters.VariousArtists" Title="releases from various artists">
+		Various artists
+	</ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="ReleasesFilters.NewReleases" Title="new releases">
-	New releases
-</ButtonAdvancedFilter>
+	<ButtonAdvancedFilter Type="ReleasesFilters.NewReleases" Title="new releases">
+		New releases
+	</ButtonAdvancedFilter>
 
-<ButtonAdvancedFilter Type="ReleasesFilters.OldReleases" Title="old releases">
-	Old releases
-</ButtonAdvancedFilter>
+	<ButtonAdvancedFilter Type="ReleasesFilters.OldReleases" Title="old releases">
+		Old releases
+	</ButtonAdvancedFilter>
+
+</div>

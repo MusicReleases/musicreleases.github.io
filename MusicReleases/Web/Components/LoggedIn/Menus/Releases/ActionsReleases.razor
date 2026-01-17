@@ -1,0 +1,24 @@
+﻿@using JakubKastner.MusicReleases.Enums
+@using JakubKastner.MusicReleases.Services.BaseServices
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+
+@implements IDisposable
+
+@inject ILoaderService LoaderService
+
+<div class="releases-actions">
+
+    @if (!Loading)
+    {
+        <MrButton Text="Add to playlist" Title="Add all filtered releases to the playlist" OnClick="@AddToPlaylist" Class=" rounded-l transparent">
+            <MrIcon Icon="LucideIcon.Plus" />
+        </MrButton>
+
+        <MrButton Text="Play all" Title="Play all filtered releases" OnClick="@Play" Class="rounded-l transparent">
+            <MrIcon Icon="LucideIcon.Play" />
+        </MrButton>
+
+        <ButtonUpdate Type="_type" />
+    }
+
+</div>
