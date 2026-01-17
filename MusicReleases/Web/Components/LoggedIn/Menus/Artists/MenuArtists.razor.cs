@@ -11,24 +11,18 @@ public partial class MenuArtists
 
 	private ISet<SpotifyArtist>? Artists => SpotifyFilterService.FilteredArtists;
 	private bool Loading => LoaderService.IsLoading(LoadingType.Artists);
+	private readonly MenuType _menuType = MenuType.Artists;
 
 	protected override void OnInitialized()
 	{
 		LoaderService.LoadingStateChanged += LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
-
-		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
-
-		if (!userLoggedIn)
-		{
-			return;
-		}
 	}
 	public void Dispose()
 	{
 		LoaderService.LoadingStateChanged -= LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void LoadingStateChanged()

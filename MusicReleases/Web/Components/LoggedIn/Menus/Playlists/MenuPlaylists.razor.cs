@@ -28,14 +28,6 @@ public partial class MenuPlaylists
 	{
 		LoaderService.LoadingStateChanged += StateHasChanged;
 		FilterService.OnFilterChanged += StateHasChanged;
-		base.OnInitialized();
-
-		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
-
-		if (!userLoggedIn)
-		{
-			return;
-		}
 
 		FilterService.SetTypeFilter(PlaylistType.Editable);
 	}
@@ -44,6 +36,7 @@ public partial class MenuPlaylists
 	{
 		LoaderService.LoadingStateChanged -= StateHasChanged;
 		FilterService.OnFilterChanged -= StateHasChanged;
+		GC.SuppressFinalize(this);
 	}
 
 

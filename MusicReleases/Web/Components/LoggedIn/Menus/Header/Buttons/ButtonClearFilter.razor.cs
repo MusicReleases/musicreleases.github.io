@@ -10,6 +10,8 @@ public partial class ButtonClearFilter
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
+	[Parameter]
+	public string Class { get; set; } = "rounded-l transparent";
 
 	private string ButtonTitle => Type == MenuType.Releases ? "Default filter" : "Clear filter";
 	private LucideIcon Icon => LucideIcon.Funnel; // LucideIcon.FunnelX

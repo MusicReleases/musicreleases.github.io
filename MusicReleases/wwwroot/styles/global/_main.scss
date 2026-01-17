@@ -1,5 +1,3 @@
-@use 'mixins' as mixins;
-
 * {
     margin: 0;
     text-decoration: none;
@@ -38,22 +36,8 @@ input {
     padding: 0;
 }
 
-
-// responsive styles (hide / show content on pc / mobile)
-@include mixins.respond(pc) {
-    .hide-pc {
-        display: none !important;
-    }
-}
-
-@include mixins.respond(tablet) {
-    .hide-tablet {
-        display: none !important;
-    }
-}
-
-@include mixins.respond(mobile) {
-    .hide-mobile {
-        display: none !important;
-    }
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }

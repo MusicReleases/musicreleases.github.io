@@ -1,3 +1,15 @@
+@mixin chip-divider($side) {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background-color: var(--color-3);
+    pointer-events: none;
+    #{$side}: 0;
+}
+
 .button {
     cursor: pointer;
     border: none;
@@ -6,6 +18,7 @@
     gap: 7px;
     width: fit-content;
     font-size: var(--font-size-1);
+    position: relative;
 
     &.xl {
         padding: 18px;
@@ -41,8 +54,33 @@
         background-color: transparent;
     }
 
+    &.main-menu {
+        display: grid;
+        place-items: center;
+    }
+
     &.chips {
         background-color: var(--color-1);
+
+        &.left {
+            padding-right: 5px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+
+            &::after {
+                @include chip-divider(right);
+            }
+        }
+
+        &.right {
+            padding-left: 5px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+
+            &::before {
+                @include chip-divider(left);
+            }
+        }
 
         &:hover {
             color: var(--color-1);
@@ -64,6 +102,7 @@
     }
 
     &.active {
-        color: var(--color-text-button);
+        color: var(--color-project);
+        background-color: var(--color-4);
     }
 }

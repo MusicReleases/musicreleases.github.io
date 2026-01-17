@@ -7,7 +7,7 @@
 @inject ILoaderService LoaderService
 @inject IMobileService MobileService
 
-<div class="date-filter" @attributes="Attributes">
+<search role="search" class="date-filter" @attributes="Attributes">
 
 	@if (!Loading)
 	{
@@ -18,4 +18,4 @@
 		<ButtonClearFilter Type="_type" />
 	}
 
-</div>
+</search>

@@ -3,7 +3,7 @@
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject NavigationManager NavManager
 
-<MrButton Title="@ButtonTitle" @onclick="ClearFilter" Class="rounded-l transparent">
+<MrButton Title="@ButtonTitle" @onclick="ClearFilter" Class="@Class">
     <MrIcon Icon="Icon" />
     @ChildContent
 </MrButton>

@@ -1,3 +1,6 @@
+@use 'mixins' as mixins;
+
+
 .clickable {
 	cursor: pointer !important;
 }
@@ -44,4 +47,27 @@
 // scroll
 .infinite-scroll {
 	position: relative
+}
+
+.hidden {
+	display: none !important;
+}
+
+// responsive styles (hide / show content on pc / mobile)
+@include mixins.respond(pc) {
+	.hide-pc {
+		display: none !important;
+	}
+}
+
+@include mixins.respond(tablet) {
+	.hide-tablet {
+		display: none !important;
+	}
+}
+
+@include mixins.respond(mobile) {
+	.hide-mobile {
+		display: none !important;
+	}
 }

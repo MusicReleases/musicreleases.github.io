@@ -8,6 +8,4 @@
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject ISpotifyFilterService SpotifyFilterService
 
-<button type="button" class="artist @ButtonClass" @onclick="FilterArtist">
-	@ArtistName
-</button>	
+<MrButton Class="@ButtonClass" Title="@ArtistName" @onclick="FilterArtist" role="listitem" />

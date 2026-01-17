@@ -6,7 +6,6 @@
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 
-<button type="button" class="@ButtonClass" title="View released @ReleaseTypeString" @onclick="DisplayReleases">
-    <i class="fas fa-@IconClass" aria-hidden="true"></i>
-    <span>@ReleaseTypeString</span>
-</button>
+<MrButton Class="@ButtonClass" Title="@ButtonTitle" Text="@ReleaseTypeText" OnClick="DisplayReleases">
+    <MrIcon Icon="@Icon" />
+</MrButton>

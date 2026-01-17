@@ -10,17 +10,18 @@ public partial class ButtonDateMonth
 	[Parameter, EditorRequired]
 	public required int Month { get; set; }
 
-	private string? ButtonClass => MonthFilter ? " active" : string.Empty;
-	private bool MonthFilter => SpotifyFilterService.Filter.Month.HasValue && SpotifyFilterService.Filter.Month.Value.Year == Year && SpotifyFilterService.Filter.Month.Value.Month == Month;
+	private string ButtonClass => $"rounded-m transparent{(MonthFilter ? " active" : string.Empty)}";
+	private bool MonthFilter => SpotifyFilterService.Filter is not null && SpotifyFilterService.Filter.Month.HasValue && SpotifyFilterService.Filter.Month.Value.Year == Year && SpotifyFilterService.Filter.Month.Value.Month == Month;
 
 	protected override void OnInitialized()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
 	}
+
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void OnFilterOrDataChanged()

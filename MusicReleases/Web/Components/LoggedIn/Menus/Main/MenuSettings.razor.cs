@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main;
 
 public partial class MenuSettings
 {
@@ -9,8 +9,11 @@ public partial class MenuSettings
 
 	protected override void OnInitialized()
 	{
-		base.OnInitialized();
+		SetUser();
+	}
 
+	private void SetUser()
+	{
 		var serviceType = ApiLoginService.GetServiceType();
 		if (serviceType == ServiceType.Spotify)
 		{

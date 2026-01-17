@@ -9,17 +9,17 @@ public partial class ButtonArtist
 
 	[Parameter, EditorRequired]
 	public required string ArtistName { get; set; }
-	private string? ButtonClass => ArtistFilter ? "active" : string.Empty;
-	private bool ArtistFilter => SpotifyFilterService.Filter.Artist == ArtistId;
+	private string ButtonClass => $"rounded-m transparent{(ArtistFilter ? " active" : string.Empty)}";
+	private bool ArtistFilter => SpotifyFilterService.Filter?.Artist == ArtistId;
 
 	protected override void OnInitialized()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
 	}
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void OnFilterOrDataChanged()
@@ -29,7 +29,7 @@ public partial class ButtonArtist
 
 	private async Task FilterArtist()
 	{
-		string? artistFilter = ArtistFilter ? null : ArtistId;
+		var artistFilter = ArtistFilter ? null : ArtistId;
 
 		var url = await SpotifyFilterUrlService.GetFilterUrl(artistFilter);
 		NavManager.NavigateTo(url);

@@ -6,6 +6,4 @@
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 @inject ISpotifyFilterService SpotifyFilterService
 
-<button class="month @ButtonClass" @onclick="FilterMonth">
-	@Month
-</button>
+<MrButton Class="@ButtonClass" Text="@Month.ToString()" Title="Filter month" OnClick="FilterMonth" />

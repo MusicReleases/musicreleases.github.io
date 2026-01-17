@@ -1,3 +1,4 @@
+using JakubKastner.MusicReleases.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Date;
@@ -12,16 +13,15 @@ public partial class ButtonDateYear
 
 	private bool _renderMonths = false;
 	private bool _showMonths = false;
-	private string IconClass => _showMonths ? "fa-angle-up" : "fa-angle-down";
-	private string? ButtonClass => YearFilter ? "active" : string.Empty;
-	private string? MonthsClass => _showMonths ? string.Empty : "hidden";
-	private bool YearFilter => SpotifyFilterService.Filter.Year == Year;
+	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
+	private string ButtonClass => $"rounded-m transparent{(YearFilter ? " active" : string.Empty)}";
+	private string MonthsClass => _showMonths ? string.Empty : "hidden";
+	private bool YearFilter => SpotifyFilterService.Filter?.Year == Year;
 
 	protected override void OnInitialized()
 	{
 		// display active months on init
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
 
 		_renderMonths = YearFilter;
 		_showMonths = YearFilter;
@@ -30,6 +30,7 @@ public partial class ButtonDateYear
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void OnFilterOrDataChanged()
@@ -45,6 +46,7 @@ public partial class ButtonDateYear
 		}
 		_showMonths = !_showMonths;
 	}
+
 	private async Task FilterYear()
 	{
 		int? yearFilter = YearFilter ? null : Year;

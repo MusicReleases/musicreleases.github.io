@@ -1,7 +1,9 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices
+﻿@using JakubKastner.MusicReleases.Enums
+@using JakubKastner.MusicReleases.Services.ApiServices
 @using JakubKastner.MusicReleases.Services.UiServices
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Footers
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Headers
+@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main
 
 @inherits LayoutComponentBase;
 
@@ -24,27 +26,20 @@
         <PrimaryHeader />
         <SecondaryHeader />
 
+        @* menu *@
+        <MenuMain />
+        <MenuDateYear Class="@MobileService.GetMenuClass(DisplayMobile.Date)" />
+        <MenuArtists Class="@MobileService.GetMenuClass(DisplayMobile.Artists)" />
+        <MenuPlaylists />
+
         <div class="main">
-
-            <MenuReleases>
-            </MenuReleases>
-
-            <MenuDateYear Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Date)">
-            </MenuDateYear>
-
-            <MenuArtists Class="@MobileService.GetMenuClass(Enums.DisplayMobile.Artists)">
-            </MenuArtists>
-
-            <MenuPlaylists>
-            </MenuPlaylists>
-
-            <div class="content page scroll @MobileService.GetMenuClass(Enums.DisplayMobile.Releases)">
+            <div class="content page scroll @MobileService.GetMenuClass(DisplayMobile.Releases)">
                 @Body
             </div>
 
         </div>
 
-        <Footer></Footer>
+        <Footer />
     }
 
 </div>

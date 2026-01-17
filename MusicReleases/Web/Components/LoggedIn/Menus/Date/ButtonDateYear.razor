@@ -6,15 +6,20 @@
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ISpotifyFilterUrlService SpotifyFilterUrlService
 
-
-<button type="button" class="year icon-text @ButtonClass" @onclick="FilterYear">
-	<i class="fas @IconClass" aria-hidden="true" @onclick="DisplayMonths" @onclick:stopPropagation="true"></i>@Year
-</button>
+<MrButton Class="@ButtonClass" Text="@Year.ToString()" Title="Filter year" OnClick="FilterYear">
+    <span @onclick="DisplayMonths" @onclick:stopPropagation="true" title="Display months">
+        <MrIcon Icon="@Icon" />
+    </span>
+</MrButton>
 
 @if (_renderMonths)
 {
-	<div class="month @MonthsClass">
-		<MenuDateMonth Year="@Year" Months="@Months">
-		</MenuDateMonth>
-	</div>
+    <ul class="month-list @MonthsClass">
+        @foreach (var month in Months)
+        {
+            <li>
+                <ButtonDateMonth Year="@Year" Month="@month" />
+            </li>
+        }
+    </ul>
 }

@@ -25,9 +25,13 @@ public static class StringExtensions
 		for (var i = 0; i < value.Length; i++)
 		{
 			var c = value[i];
-			if (char.IsUpper(c) && i > 0)
+			if (i > 0)
 			{
-				sb.Append('-');
+				var prev = value[i - 1];
+				if (char.IsUpper(c) || (char.IsDigit(c) && !char.IsDigit(prev)))
+				{
+					sb.Append('-');
+				}
 			}
 			sb.Append(char.ToLowerInvariant(c));
 		}

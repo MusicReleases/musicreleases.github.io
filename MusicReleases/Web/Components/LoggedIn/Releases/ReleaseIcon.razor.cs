@@ -8,6 +8,6 @@ public partial class ReleaseIcon
 {
 	[Parameter]
 	public required ReleaseType ReleaseType { get; set; }
-	public string IconClass => "fas fa-" + EnumIconsExtensions.GetIconForRelease(ReleaseType);
+	public string IconClass => "fas fa-" + EnumIconsExtensions.GetIconForReleaseOld(ReleaseType);
 	public string Title => ReleaseType.ToString() + " release";
 }

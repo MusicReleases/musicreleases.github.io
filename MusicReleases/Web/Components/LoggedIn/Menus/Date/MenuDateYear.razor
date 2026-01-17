@@ -1,28 +1,30 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices
-@using JakubKastner.MusicReleases.Services.BaseServices
+﻿@using JakubKastner.MusicReleases.Services.BaseServices
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 
 @implements IDisposable
 
-@inject IApiLoginService ApiLoginService
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ILoaderService LoaderService
 
-<div class="menu date items scroll buttons-rounded-m @Class">
+<nav class="menu-date @Class" aria-label="Date list">
 
-	@if (Loading)
-	{
-		<p>Loading...</p>
-	}
-	else if (FilteredYearMonth is null)
-	{
-		<p>0 releases</p>
-	}
-	else
-	{
-		<Virtualize Items="@FilteredYearMonth" Context="year">
-			<ButtonDateYear Year="@year.Key" Months="@year.Value">
-			</ButtonDateYear>
-		</Virtualize>
-	}
-</div>
+    @if (Loading)
+    {
+        <p>Loading...</p>
+    }
+    else if (FilteredYearMonth is null)
+    {
+        <p>0 releases</p>
+    }
+    else
+    {
+        <ul class="year-list">
+            @foreach (var year in FilteredYearMonth)
+            {
+                <li>
+                    <ButtonDateYear Year="@year.Key" Months="@year.Value" />
+                </li>
+            }
+        </ul>
+    }
+</nav>

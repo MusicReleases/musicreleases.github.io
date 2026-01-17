@@ -2,28 +2,29 @@
 using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main;
 
 public partial class ButtonRelease
 {
 	[Parameter, EditorRequired]
 	public ReleaseType ReleaseType { get; set; }
 
-	private string ReleaseTypeString => ReleaseType.ToString();
-	private string ButtonClass => ReleaseTypeString.ToLower() + (ReleaseFilter ? " active" : string.Empty);
-	private string IconClass => EnumIconsExtensions.GetIconForRelease(ReleaseType);
+	private string ReleaseTypeText => ReleaseType.ToString();
+	private string ButtonTitle => $"View released {ReleaseTypeText}";
+	private string ButtonClass => $"main-menu rounded-xl trasparent{(ReleaseFilter ? " active" : string.Empty)}";
+	private LucideIcon Icon => EnumIconsExtensions.GetIconForRelease(ReleaseType);
 
-	private bool ReleaseFilter => SpotifyFilterService.Filter!.ReleaseType == ReleaseType;
+	private bool ReleaseFilter => SpotifyFilterService.Filter?.ReleaseType == ReleaseType;
 
 	protected override void OnInitialized()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
 	}
 
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void OnFilterOrDataChanged()

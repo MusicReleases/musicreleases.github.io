@@ -15,26 +15,13 @@ public partial class MenuDateYear
 	{
 		LoaderService.LoadingStateChanged += LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-		base.OnInitialized();
-
-		if (!ApiLoginService.IsUserLoggedIn())
-		{
-			return;
-		}
-
-		var serviceType = ApiLoginService.GetServiceType();
-		if (serviceType == ServiceType.Spotify)
-		{
-			// TODO show loader
-			// display playlists
-			//_artists = await _spotifyControllerArtist.GetUserFollowedArtists();
-		}
 	}
 
 	public void Dispose()
 	{
 		LoaderService.LoadingStateChanged -= LoadingStateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void LoadingStateChanged()

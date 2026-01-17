@@ -5,7 +5,7 @@
 
 @inject ILoaderService LoaderService
 
-<div class="playlists-filter" @attributes="Attributes">
+<search role="search" class="playlists-filter" @attributes="Attributes">
 
 	@if (!Loading)
 	{
@@ -14,4 +14,4 @@
 		<ButtonSort Type="_type" />
 	}
 
-</div>
+</search>

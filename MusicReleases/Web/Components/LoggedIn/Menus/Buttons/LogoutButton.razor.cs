@@ -2,7 +2,6 @@
 
 public partial class LogoutButton
 {
-
 	private void LogoutUser()
 	{
 		LoginService.LogoutUser();

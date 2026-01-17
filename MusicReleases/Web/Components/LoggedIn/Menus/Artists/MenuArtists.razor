@@ -1,52 +1,36 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices
-@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
+﻿@using JakubKastner.MusicReleases.Enums
 @using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header
 @using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
-@using JakubKastner.MusicReleases.Enums
 
 @implements IDisposable
 
-@inject IApiLoginService ApiLoginService
 @inject ISpotifyFilterService SpotifyFilterService
 @inject ILoaderService LoaderService
 
-<div class="menu artists items scroll buttons-rounded-m @Class">
+<aside class="menu-artists @Class" aria-label="Artists list" role="list">
 
-	<Artists class="hide-pc hide-tablet">
-	</Artists>
-
-	@if (!ApiLoginService.IsUserLoggedIn())
+	@if (Loading || Artists is null)
 	{
-		<p>User not logged in</p>
+		<p>Loading artists...</p>
 	}
-
-	else
-	{
-		if (Loading || Artists is null)
-		{
-			<p>Loading artists...</p>
-		}
-		@* else if (Error)
+	@* else if (Error)
 		{
 			<p>Failed to get artists</p>
 			<ButtonUpdate Type="MenuButtonsType.Artists">
 				Update
 			</ButtonUpdate>
 		} *@
-		else if (Artists.Count < 1)
-		{
-			<p>0 artists</p>
-			<ButtonUpdate Type="MenuType.Artists">
-				Update
-			</ButtonUpdate>
-		}
-		else
-		{
-			<Virtualize Items="@Artists" Context="artist">
-				<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name>
-				</ButtonArtist>
-			</Virtualize>
-		}
+	else if (Artists.Count < 1)
+	{
+		<p>0 artists</p>
+		<ButtonUpdate Type="_menuType">
+			Update
+		</ButtonUpdate>
 	}
-</div>
+	else
+	{
+		<Virtualize Items="@Artists" Context="artist">
+			<ButtonArtist ArtistId=@artist.Id ArtistName=@artist.Name />
+		</Virtualize>
+	}
+</aside>
