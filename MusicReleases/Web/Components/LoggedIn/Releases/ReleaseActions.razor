@@ -31,9 +31,11 @@
 
 @if (_isPlaylistDisplayed)
 {
-	<MenuPlaylists Release="@SpotifyRelease">
+	<AddToPlaylist Release="@SpotifyRelease" />
 
-	</MenuPlaylists>
+	@* <MenuPlaylists Release="@SpotifyRelease">
+
+	</MenuPlaylists> *@
 }
 
 @if (_isTracklistDisplayed)
