@@ -51,27 +51,39 @@ public class SpotifyFilterPlaylistService : IDisposable, ISpotifyFilterPlaylistS
 
 	private void ApplyFilter()
 	{
+		// filter and save
+		FilteredPlaylists = GetFilteredPlaylists(SearchText, TypeFilter)?.ToList().AsReadOnly();
+		OnFilterChanged?.Invoke();
+	}
+
+	public void Dispose()
+	{
+		_state.OnChange -= ApplyFilter;
+	}
+
+
+	public IEnumerable<SpotifyPlaylist>? GetFilteredPlaylists(string searchText, PlaylistType typeFilter = PlaylistType.All)
+	{
 		// check data
-		if (_state.Playlists is null)
+		var playlists = _state.Playlists;
+		if (playlists is null)
 		{
-			FilteredPlaylists = null;
-			OnFilterChanged?.Invoke();
-			return;
+			return null;
 		}
 
+		IEnumerable<SpotifyPlaylist> query = playlists;
 		var userId = _userService.GetUserIdRequired();
-		IEnumerable<SpotifyPlaylist> query = _state.Playlists;
 
 		// filter by type
-		if (TypeFilter != PlaylistType.All)
+		if (typeFilter != PlaylistType.All)
 		{
-			query = query.Where(p => (GetPlaylistType(p, userId) & TypeFilter) != 0);
+			query = query.Where(p => (GetPlaylistType(p, userId) & typeFilter) != 0);
 		}
 
 		// filter by text
-		if (!string.IsNullOrWhiteSpace(SearchText))
+		if (!string.IsNullOrWhiteSpace(searchText))
 		{
-			var text = SearchText.Trim();
+			var text = searchText.Trim();
 			if (text.StartsWith('"') && text.EndsWith('"') && text.Length > 1)
 			{
 				var exactPhrase = text.Length == 2 ? text : text[1..^1];
@@ -84,9 +96,7 @@ public class SpotifyFilterPlaylistService : IDisposable, ISpotifyFilterPlaylistS
 			}
 		}
 
-		// save filtered playlist
-		FilteredPlaylists = query.ToList().AsReadOnly();
-		OnFilterChanged?.Invoke();
+		return query;
 	}
 
 	private static PlaylistType GetPlaylistType(SpotifyPlaylist playlist, string userId)
@@ -100,10 +110,5 @@ public class SpotifyFilterPlaylistService : IDisposable, ISpotifyFilterPlaylistS
 			return PlaylistType.Collaborative;
 		}
 		return PlaylistType.Subscribed;
-	}
-
-	public void Dispose()
-	{
-		_state.OnChange -= ApplyFilter;
 	}
 }

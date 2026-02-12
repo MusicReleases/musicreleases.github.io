@@ -14,4 +14,5 @@ public interface ISpotifyFilterPlaylistService
 	void Dispose();
 	void SetSearchText(string text);
 	void SetTypeFilter(PlaylistType type);
+	IEnumerable<SpotifyPlaylist>? GetFilteredPlaylists(string searchText, PlaylistType typeFilter);
 }

@@ -1,73 +1,13 @@
-﻿@using JakubKastner.MusicReleases.Enums
-@using JakubKastner.MusicReleases.Services.ApiServices
-@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
-@using JakubKastner.MusicReleases.Services.BaseServices
-@using JakubKastner.MusicReleases.State.Spotify
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Header.Buttons
+﻿<ListPlaylists>
 
-@implements IDisposable
+    <RowTemplate Context="playlist">
 
-@inject IApiLoginService ApiLoginService
-@inject ISpotifyPlaylistService SpotifyPlaylistService
-@inject ILoaderService LoaderService
-@inject ISpotifyFilterPlaylistService FilterService
+        <div class="drop-zone" @ondragover:preventDefault="true" @ondrop="() => HandleDrop(playlist)">
 
-<div class="playlists @DivClass">
+            <ButtonPlaylist Name="@playlist.Name" />
 
-	@if (!ApiLoginService.IsUserLoggedIn())
-	{
-		<p>User not logged in</p>
-	}
+        </div>
 
-	else if (Loading || Playlists is null)
-	{
-		<p>Loading playlists...</p>
-	}
-	@* else if (Error)
-	{
-		<p>Failed to get playlists</p>
-		<ButtonUpdate Type="MenuButtonsType.Playlists">
-			Update
-		</ButtonUpdate>
-	} *@
-	else
-	{
-		<div class="row">
-			<input type="text" class="new" placeholder="Search or create playlist" @bind="PlaylistName" @bind:event="oninput">
-			<button class="close" title="Clear input" @onclick="ClearInput">
-				<i class="fas fa-times"></i>
-			</button>
-			<button class="create" title="Create playlist" @onclick="CreatePlaylist">
-				<i class="fas fa-plus"></i>
-			</button>
-		   @* 
-			  TODO create and add items to new playlist
-		   @if (Release is not null || Track is not null)
-			{
-				<button class="create" title="Create and add playlist" @onclick="CreatePlaylist">
-					<i class="fas fa-plus-circle"></i>
-				</button>
-			} *@
-		</div>
+    </RowTemplate>
 
-		if (Playlists.Count < 1)
-		{
-			<p>0 playlists</p>
-			<ButtonUpdate Type="MenuType.Playlists">
-				Update
-			</ButtonUpdate>
-		}
-		else if (Playlists.Count < 1)
-		{
-			<p>0 playlists found with this filter</p>
-		}
-		else
-		{
-			@foreach (var playlist in Playlists)
-			{
-				<ButtonPlaylist Playlist=@playlist Release="@Release" Track="@Track" />
-			}
-		}
-	}
-
-</div>
+</ListPlaylists>

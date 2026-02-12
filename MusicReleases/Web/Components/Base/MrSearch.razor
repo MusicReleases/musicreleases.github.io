@@ -1,0 +1,19 @@
+﻿@using JakubKastner.MusicReleases.Enums
+<div class="search-input-wrapper @Class">
+
+    <input type="text"
+           value="@SearchTerm"
+           @oninput="HandleInput"
+           placeholder="@Placeholder"
+           class="search" />
+
+    @if (!string.IsNullOrEmpty(SearchTerm))
+    {
+        <MrButton Class="clean-input" @onclick="Clear" Title="Clear input">
+            <MrIcon Icon="LucideIcon.Delete" />
+        </MrButton>
+    }
+
+    @ChildContent
+
+</div>
