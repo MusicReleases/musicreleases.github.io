@@ -1,0 +1,15 @@
+﻿<SidebarSection Type="SidebarType.Playlists" ContentAriaLabel="Playlist list" Loading="@Loading">
+
+    <Header>
+        <PlaylistSidebarHeader Loading="@Loading" />
+    </Header>
+
+    <Filter>
+        <PlaylistFilter SearchText="@_searchText" SearchTextChanged="@SearchTextChanged" />
+    </Filter>
+
+    <ChildContent>
+        <PlaylistSidebarContent Playlists="FilteredPlaylists" />
+    </ChildContent>
+
+</SidebarSection>

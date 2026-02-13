@@ -1,0 +1,14 @@
+﻿@using JakubKastner.SpotifyApi.Objects
+
+@if (Playlists is null || Playlists.Count < 1)
+{
+    <p>0 filtered playlists</p>
+}
+else
+{
+    <Virtualize TItem="SpotifyPlaylist" Items="@Playlists" Context="playlist">
+
+        @RowTemplate(playlist)
+
+    </Virtualize>
+}

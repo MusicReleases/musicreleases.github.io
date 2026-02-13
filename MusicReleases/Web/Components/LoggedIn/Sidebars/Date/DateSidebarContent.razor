@@ -1,0 +1,15 @@
+﻿@if (FilteredYearMonth is null)
+{
+    <p>0 releases</p>
+}
+else
+{
+    <ul class="year-list">
+        @foreach (var year in FilteredYearMonth)
+        {
+            <li>
+                <DateSidebarYearButton Year="@year.Key" Months="@year.Value" />
+            </li>
+        }
+    </ul>
+}

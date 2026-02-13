@@ -8,7 +8,7 @@ public partial class MrSearch
 	public RenderFragment? ChildContent { get; set; }
 
 	[Parameter]
-	public string SearchTerm { get; set; } = string.Empty;
+	public string SearchText { get; set; } = string.Empty;
 
 	[Parameter]
 	public EventCallback<string> ValueChanged { get; set; }
@@ -19,15 +19,16 @@ public partial class MrSearch
 	[Parameter]
 	public string? Class { get; set; }
 
+
 	private async Task HandleInput(ChangeEventArgs e)
 	{
-		SearchTerm = e.Value?.ToString() ?? string.Empty;
-		await ValueChanged.InvokeAsync(SearchTerm);
+		SearchText = e.Value?.ToString() ?? string.Empty;
+		await ValueChanged.InvokeAsync(SearchText);
 	}
 
 	private async Task Clear()
 	{
-		SearchTerm = string.Empty;
-		await ValueChanged.InvokeAsync(SearchTerm);
+		SearchText = string.Empty;
+		await ValueChanged.InvokeAsync(SearchText);
 	}
 }

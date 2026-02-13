@@ -15,9 +15,12 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddMusicReleases(this IServiceCollection services)
 	{
 		// base services
-		services.AddScoped<IIconService, IconService>();
-		services.AddScoped<IMobileService, MobileService>();
 		services.AddScoped<ILoginService, LoginService>();
+
+		// ui services
+		services.AddScoped<IIconService, IconService>();
+		services.AddScoped<IDragDropService, DragDropService>();
+		services.AddScoped<IMobileService, MobileService>();
 
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();

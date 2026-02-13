@@ -23,14 +23,17 @@
     }
     else
     {
-        <PrimaryHeader />
-        <SecondaryHeader />
+        <ArtistSidebar />
+        <DateSidebar />
+        <PlaylistSidebar />
 
         @* menu *@
         <MenuMain />
-        <MenuDateYear Class="@MobileService.GetMenuClass(DisplayMobile.Date)" />
-        <MenuArtists Class="@MobileService.GetMenuClass(DisplayMobile.Artists)" />
-        <MenuPlaylists />
+        @*
+        TODO mobile menu
+        <DateSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Date)" />
+        <ArtistSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Artists)" />
+         *@
 
         <div class="main">
             <div class="content page scroll @MobileService.GetMenuClass(DisplayMobile.Releases)">

@@ -1,0 +1,28 @@
+﻿@* header *@
+<header class="header-@TypeString">
+    @Header
+</header>
+
+@* filter *@
+<search role="search" class="filter-@TypeString">
+    @if (Loading)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @Filter
+    }
+</search>
+
+@* content (list) *@
+<nav aria-label="@ContentAriaLabel" class="menu-@TypeString">
+    @if (Loading)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @ChildContent
+    }
+</nav>

@@ -1,0 +1,27 @@
+﻿@*
+@if (Error)
+{
+	<p>Failed to get artists</p>
+	<ButtonUpdate Type="MenuButtonsType.Artists">
+		Update
+	</ButtonUpdate>
+}
+*@
+
+@if (Artists is null || Artists.Count < 1)
+{
+	<p>0 artists</p>
+	<UpdateButton Type="_menuType">
+		Update
+	</UpdateButton>
+}
+else
+{
+	<ul>
+		<Virtualize Items="@Artists" Context="artist">
+			<li>
+				<ArtistSidebarButton ArtistId=@artist.Id ArtistName=@artist.Name />
+			</li>
+		</Virtualize>
+	</ul>
+}

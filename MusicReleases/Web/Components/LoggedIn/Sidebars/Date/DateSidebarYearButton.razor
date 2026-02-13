@@ -1,0 +1,17 @@
+﻿<MrButton Class="@ButtonClass" Text="@Year.ToString()" Title="Filter year" OnClick="@FilterYear" role="listitem">
+    <span @onclick="DisplayMonths" @onclick:stopPropagation="true" title="Display months">
+        <MrIcon Icon="@Icon" />
+    </span>
+</MrButton>
+
+@if (_renderMonths)
+{
+    <ul class="month-list @MonthsClass">
+        @foreach (var month in Months)
+        {
+            <li>
+                <DateSidebarMonthButton Year="@Year" Month="@month" />
+            </li>
+        }
+    </ul>
+}

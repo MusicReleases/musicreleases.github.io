@@ -1,9 +1,0 @@
-﻿@using JakubKastner.MusicReleases.Services.BaseServices
-
-@implements IDisposable
-
-@inject NavigationManager NavManager
-@inject ISpotifyFilterUrlService SpotifyFilterUrlService
-@inject ISpotifyFilterService SpotifyFilterService
-
-<MrButton Class="@ButtonClass" Text="@Month.ToString()" Title="Filter month" OnClick="FilterMonth" />

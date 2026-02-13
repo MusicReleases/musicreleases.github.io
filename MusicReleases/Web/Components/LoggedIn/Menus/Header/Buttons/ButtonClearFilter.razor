@@ -1,9 +1,0 @@
-﻿@using JakubKastner.MusicReleases.Services.BaseServices
-
-@inject ISpotifyFilterUrlService SpotifyFilterUrlService
-@inject NavigationManager NavManager
-
-<MrButton Title="@ButtonTitle" @onclick="ClearFilter" Class="@Class">
-    <MrIcon Icon="Icon" />
-    @ChildContent
-</MrButton>

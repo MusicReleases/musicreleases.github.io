@@ -1,9 +1,0 @@
-﻿@using JakubKastner.Extensions
-@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
-@using JakubKastner.MusicReleases.State.Spotify
-
-@inject ISpotifyPlaylistService SpotifyPlaylistService
-@inject ISpotifyTracksService SpotifyTracksService
-@inject ISpotifyPlaylistState SpotifyPlaylistState
-
-<MrButton Class="@Class" Text="@Name" Disabled="IsLoading" />
