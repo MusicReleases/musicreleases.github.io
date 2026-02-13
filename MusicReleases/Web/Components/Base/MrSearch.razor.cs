@@ -8,10 +8,10 @@ public partial class MrSearch
 	public RenderFragment? ChildContent { get; set; }
 
 	[Parameter]
-	public string SearchText { get; set; } = string.Empty;
+	public string? SearchText { get; set; }
 
 	[Parameter]
-	public EventCallback<string> ValueChanged { get; set; }
+	public EventCallback<string?> ValueChanged { get; set; }
 
 	[Parameter]
 	public string Placeholder { get; set; } = "Search...";
@@ -20,15 +20,23 @@ public partial class MrSearch
 	public string? Class { get; set; }
 
 
-	private async Task HandleInput(ChangeEventArgs e)
+	private async Task TextValueChanged(string? newValue)
 	{
-		SearchText = e.Value?.ToString() ?? string.Empty;
-		await ValueChanged.InvokeAsync(SearchText);
+		await UpdateValue(newValue);
 	}
 
 	private async Task Clear()
 	{
-		SearchText = string.Empty;
-		await ValueChanged.InvokeAsync(SearchText);
+		await UpdateValue(null);
+	}
+
+	private async Task UpdateValue(string? newValue)
+	{
+		SearchText = newValue;
+
+		if (ValueChanged.HasDelegate)
+		{
+			await ValueChanged.InvokeAsync(SearchText);
+		}
 	}
 }

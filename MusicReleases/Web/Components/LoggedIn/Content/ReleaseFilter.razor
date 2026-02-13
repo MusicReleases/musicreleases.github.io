@@ -1,0 +1,21 @@
+﻿@using JakubKastner.SpotifyApi.SpotifyEnums
+
+<FilterClearButton Type="MenuType.Releases" Class="rounded-m chips" />
+
+@if (SpotifyFilterService.Filter!.ReleaseType == ReleaseType.Tracks || SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears)
+{
+	<ReleaseFilterButton LeftType="ReleasesFilters.Tracks" LeftTitle="tracks" LeftText="Tracks"
+						 RightType="ReleasesFilters.EPs" RightTitle="@(SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears ? "albums and EPs" : "EPs")" RightText="@(SpotifyFilterService.Filter.ReleaseType == ReleaseType.Appears ? "Albums and EPs" : "EPs")" />
+}
+
+<ReleaseFilterButton LeftType="ReleasesFilters.NotRemixes" LeftTitle="not remixes" LeftText="Not remixes"
+					 RightType="ReleasesFilters.Remixes" RightTitle="remixes" RightText="Remixes" />
+
+@* <ReleaseFilterButton LeftType="ReleasesFilters.FollowedArtists" LeftTitle="releases from the artists I am following" LeftText="Followed artists"
+						RightType="ReleasesFilters.SavedReleases" RightTitle="saved releases in library" RightText="Saved releases" /> *@
+
+<ReleaseFilterButton LeftType="ReleasesFilters.NotVariousArtists" LeftTitle="releases from not various artists" LeftText="Not various artists"
+					 RightType="ReleasesFilters.VariousArtists" RightTitle="releases from various artists" RightText="Various artists" />
+
+<ReleaseFilterButton LeftType="ReleasesFilters.NewReleases" LeftTitle="new releases" LeftText="New releases"
+					 RightType="ReleasesFilters.OldReleases" RightTitle="old releases" RightText="Old releases" />

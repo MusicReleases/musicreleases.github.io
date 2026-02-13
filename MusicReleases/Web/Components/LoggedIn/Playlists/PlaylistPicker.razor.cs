@@ -1,11 +1,16 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
 
-public partial class PlaylistPicker
+public partial class PlaylistPicker : IDisposable
 {
+	[Inject]
+	private ISpotifyFilterPlaylistService FilterService { get; set; } = default!;
+
+
 	[Parameter]
 	public PlaylistType TypeFilter { get; set; } = PlaylistType.Editable;
 
@@ -39,6 +44,7 @@ public partial class PlaylistPicker
 	public void Dispose()
 	{
 		FilterService.OnFilterChanged -= StateChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	private void StateChanged()

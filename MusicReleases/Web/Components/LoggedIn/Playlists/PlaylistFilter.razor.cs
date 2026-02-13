@@ -1,32 +1,33 @@
 ﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
 
 public partial class PlaylistFilter
 {
+	[Inject]
+	private ISpotifyPlaylistService SpotifyPlaylistService { get; set; } = default!;
+
+
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? Attributes { get; set; }
 
 	[Parameter]
-	public string SearchText { get; set; } = string.Empty;
+	public string? SearchText { get; set; }
+
 	[Parameter]
 	public EventCallback<string> SearchTextChanged { get; set; }
 
 
 	private readonly MenuType _type = MenuType.Playlists;
 
-	private async Task OnSearch(string newSearchText)
+
+	private async Task OnSearch(string? newSearchText)
 	{
-		SearchText = newSearchText;
-
-		if (SearchTextChanged.HasDelegate)
-		{
-			await SearchTextChanged.InvokeAsync(newSearchText);
-		}
+		await UpdateSearchText(newSearchText);
 	}
-
 
 	private async Task CreatePlaylist()
 	{
@@ -41,7 +42,16 @@ public partial class PlaylistFilter
 
 	private async Task ClearSearch()
 	{
-		SearchText = string.Empty;
-		await OnSearch(SearchText);
+		await UpdateSearchText(null);
+	}
+
+	private async Task UpdateSearchText(string? newSearchText)
+	{
+		SearchText = newSearchText;
+
+		if (SearchTextChanged.HasDelegate)
+		{
+			await SearchTextChanged.InvokeAsync(newSearchText);
+		}
 	}
 }

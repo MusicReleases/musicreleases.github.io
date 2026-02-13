@@ -1,14 +1,33 @@
 ﻿using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects;
+using JakubKastner.MusicReleases.Services.ApiServices;
+using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
 
-public partial class Releases
+public partial class Releases : IDisposable
 {
+	[Inject]
+	private ISpotifyWorkflowService SpotifyWorkflowService { get; set; } = default!;
+
+	[Inject]
+	private IApiLoginService ApiLoginService { get; set; } = default!;
+
+	[Inject]
+	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+
+	[Inject]
+	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+
+	[Inject]
+	private ILoaderService LoaderService { get; set; } = default!;
+
+
 	[Parameter]
 	public string? Type { get; set; }
 
@@ -20,7 +39,6 @@ public partial class Releases
 
 	[Parameter]
 	public string? ArtistId { get; set; }
-
 
 	// this names must be same as in the URL and in Enums.ReleasesFilters
 	[Parameter]
@@ -64,20 +82,20 @@ public partial class Releases
 	public string? OldReleases { get; set; }
 
 
+	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
+
+	private bool Loading => LoaderService.IsLoading(LoadingType.Releases);
+
+	private bool LoadingArtists => LoaderService.IsLoading(LoadingType.Artists);
+
 
 	private ReleaseType _type;
-
-	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
-	private bool Loading => LoaderService.IsLoading(LoadingType.Releases);
-	private bool LoadingArtists => LoaderService.IsLoading(LoadingType.Artists);
 
 
 	protected override void OnInitialized()
 	{
-		LoaderService.LoadingStateChanged += LoadingStateChanged;
-		SpotifyFilterService.OnFilterOrDataChanged += OnFilterOrDataChanged;
-
-		base.OnInitialized();
+		LoaderService.LoadingStateChanged += StateChanged;
+		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
 
 		//Console.WriteLine("Releases.OnInitialized");
 		//LoadReleases();
@@ -85,16 +103,12 @@ public partial class Releases
 
 	public void Dispose()
 	{
-		LoaderService.LoadingStateChanged -= LoadingStateChanged;
-		SpotifyFilterService.OnFilterOrDataChanged -= OnFilterOrDataChanged;
-		//GC.SuppressFinalize(this);
+		LoaderService.LoadingStateChanged -= StateChanged;
+		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		GC.SuppressFinalize(this);
 	}
 
-	private void LoadingStateChanged()
-	{
-		InvokeAsync(StateHasChanged);
-	}
-	private void OnFilterOrDataChanged()
+	private void StateChanged()
 	{
 		InvokeAsync(StateHasChanged);
 	}

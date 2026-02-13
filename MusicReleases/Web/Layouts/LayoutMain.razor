@@ -1,17 +1,6 @@
-﻿@using JakubKastner.MusicReleases.Enums
-@using JakubKastner.MusicReleases.Services.ApiServices
-@using JakubKastner.MusicReleases.Services.UiServices
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Footers
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Headers
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main
+﻿@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Footers
 
-@inherits LayoutComponentBase;
-
-@implements IDisposable
-
-@inject IMobileService MobileService
-@inject IApiLoginService ApiLoginService
-@inject NavigationManager NavManager
+@inherits LayoutComponentBase
 
 @* main layout - user is sucessfully logged in *@
 
@@ -23,26 +12,29 @@
     }
     else
     {
+        <Loader />
+
+        <MainMenu />
+
         <ArtistSidebar />
         <DateSidebar />
         <PlaylistSidebar />
 
-        @* menu *@
-        <MenuMain />
-        @*
-        TODO mobile menu
-        <DateSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Date)" />
-        <ArtistSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Artists)" />
-         *@
 
-        <div class="main">
-            <div class="content page scroll @MobileService.GetMenuClass(DisplayMobile.Releases)">
-                @Body
-            </div>
-
-        </div>
+        <ReleaseSection>
+            @Body
+        </ReleaseSection>
 
         <Footer />
+
+        <ActiveTasks />
+
+
+        @*
+            TODO mobile menu
+            <DateSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Date)" />
+            <ArtistSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Artists)" />
+        *@
     }
 
 </div>

@@ -1,0 +1,19 @@
+﻿@* filter *@
+<search class="releases-filter" role="search">
+    <ReleaseFilter />
+</search>
+
+@* actions/toolbar *@
+<aside>
+    @if (!Loading)
+    {
+        <ReleaseToolbar />
+    }
+</aside>
+
+@* content *@
+<div class="releases-content">
+    <div class="content page scroll">
+        @ChildContent
+    </div>
+</div>

@@ -1,14 +1,11 @@
 ﻿<div class="search-input-wrapper @Class">
 
-    <input type="text"
-           value="@SearchText"
-           @oninput="HandleInput"
-           placeholder="@Placeholder"
-           class="search" />
+    <MrInput Value="@SearchText" Placeholder="@Placeholder" Class="search" ValueChanged="TextValueChanged" />
 
-    @if (SearchText.IsNotNullOrEmpty())
+    @* display when anything is in input *@
+    @if (!string.IsNullOrEmpty(SearchText))
     {
-        <MrButton Class="clean-input" OnClick="@Clear" Title="Clear input">
+        <MrButton Class="rounded-l transparent" OnClick="@Clear" Title="Clear input">
             <MrIcon Icon="LucideIcon.Delete" />
         </MrButton>
     }

@@ -1,8 +1,16 @@
-﻿namespace JakubKastner.MusicReleases.Web.Pages;
+﻿using JakubKastner.MusicReleases.Services.BaseServices;
+using Microsoft.AspNetCore.Components;
+
+namespace JakubKastner.MusicReleases.Web.Pages;
 
 public partial class Index
 {
+	[Inject]
+	private ILoginService LoginService { get; set; } = default!;
+
+
 	private bool _loading = true;
+
 
 	protected override async Task OnInitializedAsync()
 	{

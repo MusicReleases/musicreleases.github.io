@@ -1,3 +1,5 @@
+using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
@@ -5,6 +7,16 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
 
 public partial class PlaylistButton
 {
+	[Inject]
+	private ISpotifyPlaylistService SpotifyPlaylistService { get; set; } = default!;
+
+	[Inject]
+	private ISpotifyTracksService SpotifyTracksService { get; set; } = default!;
+
+	[Inject]
+	private ISpotifyPlaylistState SpotifyPlaylistState { get; set; } = default!;
+
+
 	[Parameter, EditorRequired]
 	public required SpotifyPlaylist Playlist { get; set; }
 
@@ -14,11 +26,16 @@ public partial class PlaylistButton
 	[Parameter]
 	public SpotifyTrack? Track { get; set; }
 
+
 	private bool IsReleaseInPlaylist => Release?.Tracks is not null && Release.Tracks.Any(track => Playlist.Tracks.Contains(track.Id));
+
 	private bool IsTrackInPlaylist => Track is not null && Playlist.Tracks.Contains(Track.Id);
+
 	private bool IsInPlaylist => IsReleaseInPlaylist || IsTrackInPlaylist;
 
+
 	private bool _isWorking;
+
 
 	protected override void OnParametersSet()
 	{

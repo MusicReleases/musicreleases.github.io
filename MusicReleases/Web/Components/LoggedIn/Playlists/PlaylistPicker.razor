@@ -1,10 +1,4 @@
-﻿@using JakubKastner.MusicReleases.Services.BaseServices
-
-@implements IDisposable
-
-@inject ISpotifyFilterPlaylistService FilterService
-
-<div class="playlist-picker">
+﻿<div class="playlist-picker">
     <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
 
     <PlaylistList Playlists="FilterService.FilteredPlaylists?.ToList()">

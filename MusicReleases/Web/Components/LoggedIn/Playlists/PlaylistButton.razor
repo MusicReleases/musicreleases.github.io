@@ -1,12 +1,4 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
-@using JakubKastner.MusicReleases.State.Spotify
-
-@inject ISpotifyPlaylistService SpotifyPlaylistService
-@inject ISpotifyTracksService SpotifyTracksService
-@inject ISpotifyPlaylistState SpotifyPlaylistState
-
-
-<div class="row">
+﻿<div class="row">
 
     <MrButton Text="@Playlist.Name" Title="@Title(false)" Disabled="_isWorking" OnClick="@PlaylistAction">
 

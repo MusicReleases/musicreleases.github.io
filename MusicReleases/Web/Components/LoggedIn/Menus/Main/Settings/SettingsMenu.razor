@@ -1,0 +1,23 @@
+﻿<div class="menu-user">
+
+    @if (_spotifyUser is null)
+    {
+    }
+    else
+    {
+        <MrButton Class="main-menu rounded-xl transparent" Text="@_spotifyUser.Name">
+            @if (_spotifyUser?.ProfilePictureUrl is not null)
+            {
+                <img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" width="50" />
+            }
+            else
+            {
+                <MrIcon Icon="LucideIcon.UserRound" title="Profile picture" />
+            }
+        </MrButton>
+
+        <SettingsButton />
+        <PlayerButton />
+        <LogoutButton />
+    }
+</div>

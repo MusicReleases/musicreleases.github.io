@@ -23,12 +23,16 @@ public partial class MrButton
 
 	[Parameter]
 	public string? Title { get; set; }
+
 	[Parameter]
 	public string? Text { get; set; }
+
 	[Parameter]
 	public string? Href { get; set; }
+
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? Attributes { get; set; }
+
 
 	private string? ButtonTitle => Title.IsNullOrEmpty() ? Text : Title;
 }

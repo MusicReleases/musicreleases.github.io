@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
+﻿using JakubKastner.MusicReleases.Services.BaseServices;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Web.Pages.Login;
 
 public partial class Spotify
 {
+	[Inject]
+	private ILoginService LoginService { get; set; } = default!;
+
+	[Inject]
+	private NavigationManager NavManager { get; set; } = default!;
+
+
 	private bool _loading = true;
 	private bool _error = false;
+
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -14,7 +24,6 @@ public partial class Spotify
 		_error = false;
 
 		await LoadPage();
-		await base.OnInitializedAsync();
 
 		_loading = false;
 	}

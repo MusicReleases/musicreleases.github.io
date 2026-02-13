@@ -1,24 +1,38 @@
+using JakubKastner.MusicReleases.Services.ApiServices;
+using JakubKastner.MusicReleases.Services.UiServices;
+using Microsoft.AspNetCore.Components;
+
 namespace JakubKastner.MusicReleases.Web.Layouts;
 
-public partial class LayoutMain
+public partial class LayoutMain : IDisposable
 {
+	[Inject]
+	private IMobileService MobileService { get; set; } = default!;
+
+	[Inject]
+	private IApiLoginService ApiLoginService { get; set; } = default!;
+
+	[Inject]
+	private NavigationManager NavManager { get; set; } = default!;
+
+
 	protected override void OnInitialized()
 	{
-		MobileService.OnDisplayChanged += OnDisplayChanged;
+		MobileService.OnDisplayChanged += StateChanged;
 
 		if (!CheckLoggedInUser())
 		{
 			return;
 		}
-		base.OnInitialized();
 	}
 
 	public void Dispose()
 	{
-		MobileService.OnDisplayChanged -= OnDisplayChanged;
+		MobileService.OnDisplayChanged -= StateChanged;
+		GC.SuppressFinalize(this);
 	}
 
-	private void OnDisplayChanged()
+	private void StateChanged()
 	{
 		InvokeAsync(StateHasChanged);
 	}

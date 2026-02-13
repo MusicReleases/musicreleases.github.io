@@ -1,11 +1,6 @@
-@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
-
-@inject ISpotifyPlaylistService SpotifyPlaylistService
-
-
 <MrSearch SearchText="@SearchText" Placeholder="Search or create playlist..." ValueChanged="@OnSearch">
 
-    <MrButton Title="Create new playlist" OnClick="@CreatePlaylist">
+    <MrButton Class="rounded-l transparent" Title="Create new playlist" OnClick="@CreatePlaylist">
         <MrIcon Icon="LucideIcon.CirclePlus" />
     </MrButton>
 
