@@ -24,22 +24,30 @@ public partial class DateSidebarYearButton : IDisposable
 
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
+
 	private string ButtonClass => $"rounded-m fill-width transparent{(YearFilter ? " active" : string.Empty)}";
+
 	private string MonthsClass => _showMonths ? string.Empty : "hidden";
+
 	private bool YearFilter => SpotifyFilterService.Filter?.Year == Year;
 
 
 	private bool _renderMonths = false;
+
 	private bool _showMonths = false;
 
 
-	protected override void OnInitialized()
+	protected override void OnParametersSet()
 	{
-		// display active months on init
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
-
+		// display active months and hide others
 		_renderMonths = YearFilter;
 		_showMonths = YearFilter;
+	}
+
+	protected override void OnInitialized()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+
 	}
 
 	public void Dispose()

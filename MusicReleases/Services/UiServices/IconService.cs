@@ -5,15 +5,19 @@ namespace JakubKastner.MusicReleases.Services.UiServices;
 
 public class IconService : IIconService
 {
-	private readonly Dictionary<string, string> _cache = [];
 	private const string ResourcePrefix = "JakubKastner.MusicReleases.Icons";
+	private const string iconFillStyle = "icon-fill";
+	private const string iconStrokeStyle = "icon-stroke";
+
+	private readonly Dictionary<string, string> _cache = [];
 
 	private static readonly Dictionary<Type, (IconType Type, string CssClass)> _meta =
 	   new()
 	   {
-			{ typeof(SpotifyIcon), (IconType.Spotify, "icon-fill") },
-			{ typeof(LucideIcon),  (IconType.Lucide,  "icon-stroke") },
-			{ typeof(CustomIcon),  (IconType.Custom,  "icon-fill") },
+			{ typeof(SpotifyIcon), (IconType.Spotify, iconFillStyle) },
+			{ typeof(LucideIcon),  (IconType.Lucide,  iconStrokeStyle) },
+			{ typeof(TablerIcon),  (IconType.Tabler,  iconStrokeStyle) },
+			{ typeof(CustomIcon),  (IconType.Custom,  iconFillStyle) },
 	   };
 
 

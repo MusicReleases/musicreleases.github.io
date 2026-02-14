@@ -1,6 +1,8 @@
-﻿<div class="playlist-picker">
-    <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
-
+﻿<div class="playlist-picker release-list scroll @Class">
+    <div class="row">
+        <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
+        <UpdateButton Type="MenuType.Playlists" Loading="@Loading" />
+    </div>
     <PlaylistList Playlists="FilterService.FilteredPlaylists?.ToList()">
 
         <RowTemplate Context="playlist">

@@ -1,0 +1,56 @@
+﻿@* TODO img size + loading="lazy" *@
+<img class="cover" src="@SpotifyRelease.UrlImage" title="Release cover" alt="Release cover" width="140" height="140">
+
+<div class="info">
+	<a class="name" href="@SpotifyRelease.UrlApp" title="Open album in Spotify app" rel="noopener noreferrer" draggable="true" @ondragstart="@OnDragStart">
+		@SpotifyRelease.Name
+	</a>
+
+	@if (SpotifyRelease.Artists is not null)
+	{
+		<div class="artists">
+			<ReleaseArtists Class="release" ArtistsObj="SpotifyRelease.Artists" />
+		</div>
+	}
+
+	<div class="date" title="Release date">
+
+		<MrIcon Icon="LucideIcon.Calendar" />
+
+		<span>@SpotifyRelease.ReleaseDate.ToString("dd").</span>
+
+		<MrButton Class="transparent hover-text-only p-0" Title="Filter releases by this month and year" OnClick="@FilterMonth">
+			@SpotifyRelease.ReleaseDate.ToString("MM").
+		</MrButton>
+
+		<MrButton Class="transparent hover-text-only p-0" Title="Filter releases by this year" OnClick="@FilterYear">
+			@SpotifyRelease.ReleaseDate.ToString("yyyy")
+		</MrButton>
+
+	</div>
+
+	<div class="properties">
+
+		<MrIcon Icon="EnumIconsExtensions.GetIconForRelease(SpotifyRelease.ReleaseType)" title="@ReleaseTypeTitle" />
+
+		@* 
+	@if(SpotifyRelease.Explicit)
+	{
+		<MrIcon Icon="TablerIcon.Explicit" title="Explicit content" />
+	}
+	*@
+
+		@if (SpotifyRelease.New)
+		{
+			<MrIcon Icon="LucideIcon.Flame" title="New release" />
+		}
+
+		@*
+	<span title="Track duration">
+		<MrIcon Icon="LucideIcon.Clock" />@*
+		*@@*@Release.DurationString
+	</span>
+	*@
+
+	</div>
+</div>

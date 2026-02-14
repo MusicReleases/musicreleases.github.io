@@ -18,8 +18,17 @@ public partial class MrIcon<TIcon> where TIcon : Enum
 	[Parameter]
 	public string Size { get; set; } = "1.25rem";
 
+	[Parameter]
+	public bool Fill { get; set; } = false;
+
+	[Parameter]
+	public bool Spin { get; set; } = false;
+
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? Attributes { get; set; }
+
+
+	private string IconClass => $"icon-wrapper{(Fill ? " icon-fill" : "")}{(Spin ? " spin" : string.Empty)} {Class}";
 
 
 	private string _svgContent = default!;

@@ -6,6 +6,7 @@ public enum IconType
 {
 	Spotify,
 	Lucide,
+	Tabler,
 	Custom,
 }
 
@@ -21,12 +22,14 @@ public enum LucideIcon
 	ArrowDownZA,
 	Calendar,
 	CirclePlus,
+	Clock,
 	Delete,
 	Disc3,
 	DiscAlbum,
 	Flame,
 	Funnel,
 	FunnelX,
+	Heart,
 	House,
 	ChevronDown,
 	ChevronUp,
@@ -45,6 +48,11 @@ public enum LucideIcon
 	UserRound,
 	Users,
 	X,
+}
+
+public enum TablerIcon
+{
+	Explicit,
 }
 
 public enum CustomIcon

@@ -1,18 +1,16 @@
-﻿@using JakubKastner.SpotifyApi.Objects
+﻿@for (int i = 0; i < ArtistsObj.Count; i++)
+{
+    var artist = ArtistsObj.ElementAt(i);
 
-<div class="artists icon-text">
-	@for (int i = 0; i < ArtistsObj.Count; i++)
-	{
-		var artist = ArtistsObj.ElementAt(i);
+    @* TODO artist filter <ArtistSidebarButton ArtistId="@artist.Id" ArtistName="@artist.Name" />*@
 
-		<a class="artist" href="@artist.UrlApp" rel="noopener noreferrer">
-			@artist.Name
-		</a>
+    <a class="artist @Class" href="@artist.UrlApp" title="Open artist in Spotify app" rel="noopener noreferrer">
+        @artist.Name
+    </a>
 
-		@if (i < ArtistsObj.Count - 1)
-		{
-			<span>•</span>
-		}
+    @if (i < ArtistsObj.Count - 1)
+    {
+        <span>•</span>
+    }
 
-	}
-</div>
+}

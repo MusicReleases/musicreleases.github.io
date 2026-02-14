@@ -1,4 +1,4 @@
-<div class="tracklist list">
+<div class="tracklist release-list scroll">
 	@if (Release.Tracks is not null)
 	{
 		var discsCount = Release.Tracks.Select(t => t.DiscNumber).Distinct().Count();
@@ -15,8 +15,7 @@
 			}
 
 
-			<ReleaseTrack Track="track">
-			</ReleaseTrack>
+			<ReleaseTrack Track="track" />
 		}
 	}
 </div>

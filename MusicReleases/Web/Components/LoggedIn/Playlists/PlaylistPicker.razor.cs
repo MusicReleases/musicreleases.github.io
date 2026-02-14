@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
@@ -10,6 +11,9 @@ public partial class PlaylistPicker : IDisposable
 	[Inject]
 	private ISpotifyFilterPlaylistService FilterService { get; set; } = default!;
 
+	[Inject]
+	private ILoaderService LoaderService { get; set; } = default!;
+
 
 	[Parameter]
 	public PlaylistType TypeFilter { get; set; } = PlaylistType.Editable;
@@ -19,6 +23,12 @@ public partial class PlaylistPicker : IDisposable
 
 	[Parameter]
 	public SpotifyTrack? Track { get; set; }
+
+	[Parameter]
+	public string? Class { get; set; }
+
+
+	private bool Loading => LoaderService.IsLoading(LoadingType.Playlists) || LoaderService.IsLoading(LoadingType.PlaylistTracks);
 
 
 	protected override void OnParametersSet()
@@ -39,11 +49,13 @@ public partial class PlaylistPicker : IDisposable
 	protected override void OnInitialized()
 	{
 		FilterService.OnFilterChanged += StateChanged;
+		LoaderService.LoadingStateChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		FilterService.OnFilterChanged -= StateChanged;
+		LoaderService.LoadingStateChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

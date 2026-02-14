@@ -1,0 +1,20 @@
+.release {
+    padding: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: var(--color-1);
+
+    .cover-info {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}

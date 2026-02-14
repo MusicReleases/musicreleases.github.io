@@ -3,7 +3,6 @@
     align-items: center;
     justify-content: center;
     vertical-align: middle;
-
     // lucide icons (stroke)
     &:deep(.icon-stroke) {
         width: 100%;
@@ -14,12 +13,27 @@
         stroke-linecap: round;
         stroke-linejoin: round;
     }
-
     // brand icons (fill)
     &:deep(.icon-fill) {
         width: 100%;
         height: 100%;
         fill: currentColor;
         stroke: none;
+    }
+
+    &.spin {
+        animation: spin 1s linear infinite;
+        transform-origin: center;
+    }
+}
+
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 }

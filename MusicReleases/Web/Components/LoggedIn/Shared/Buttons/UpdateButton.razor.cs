@@ -22,7 +22,13 @@ public partial class UpdateButton
 	public MenuType Type { get; set; }
 
 	[Parameter]
+	public bool Loading { get; set; } = false;
+
+	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
+
+
+	private LucideIcon Icon => Loading ? LucideIcon.LoaderCircle : LucideIcon.RefreshCcw;
 
 
 	private void Update()

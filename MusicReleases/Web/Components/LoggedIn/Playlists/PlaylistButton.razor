@@ -1,29 +1,16 @@
-﻿<div class="row">
+﻿<div class="row row-release-list">
 
-    <MrButton Text="@Playlist.Name" Title="@Title(false)" Disabled="_isWorking" OnClick="@PlaylistAction">
-
-        @if (_isWorking)
-        {
-            <MrIcon Icon="LucideIcon.LoaderCircle" Class="loading" />
-        }
-        else if (IsInPlaylist)
-        {
-            <MrIcon Icon="LucideIcon.Minus" />
-        }
-        else
-        {
-            <MrIcon Icon="LucideIcon.Plus" />
-        }
-
+    <MrButton Class="flex-fill flex-fill-max transparent hover-text-only" Text="@Playlist.Name" Title="@Title(false)" Disabled="_isWorking" OnClick="@PlaylistAction">
+        <MrIcon Icon="Icon" Spin="@_isWorking" />
     </MrButton>
 
-    @if (!IsInPlaylist)
+    @if (!IsInPlaylist && !_isWorking)
     {
 
-        <MrButton Title="@Title(true)" Disabled="_isWorking" OnClick="@PlaylistAction">
+        <MrButton Class="flex-fill transparent hover-text-only" Title="@Title(true)" Disabled="_isWorking" OnClick="@PlaylistAction">
             <MrIcon Icon="LucideIcon.ChevronUp" />
         </MrButton>
-        
+
     }
 
 </div>

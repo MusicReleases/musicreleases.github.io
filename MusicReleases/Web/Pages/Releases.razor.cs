@@ -84,9 +84,7 @@ public partial class Releases : IDisposable
 
 	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
 
-	private bool Loading => LoaderService.IsLoading(LoadingType.Releases);
-
-	private bool LoadingArtists => LoaderService.IsLoading(LoadingType.Artists);
+	private bool Loading => LoaderService.IsLoading(LoadingType.Releases) || LoaderService.IsLoading(LoadingType.Artists);
 
 
 	private ReleaseType _type;
@@ -96,9 +94,6 @@ public partial class Releases : IDisposable
 	{
 		LoaderService.LoadingStateChanged += StateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
-
-		//Console.WriteLine("Releases.OnInitialized");
-		//LoadReleases();
 	}
 
 	public void Dispose()
@@ -115,8 +110,6 @@ public partial class Releases : IDisposable
 
 	protected override async Task OnParametersSetAsync()
 	{
-		// TODO https://stackoverflow.com/questions/54345380/executing-method-on-parameter-change
-		//Console.WriteLine("Releases.OnParametersSet");
 		await LoadReleases();
 	}
 
@@ -146,7 +139,7 @@ public partial class Releases : IDisposable
 		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId, advancedFilter);
 		_type = filter.ReleaseType;
 		await SpotifyFilterService.SetFilterAndSaveDb(filter);
-		GetReleases();
+		await GetReleases();
 	}
 
 	private static bool IsFilterActive(string? filter)
@@ -155,7 +148,7 @@ public partial class Releases : IDisposable
 		return active;
 	}
 
-	private void GetReleases()
+	private async Task GetReleases()
 	{
 		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
 
@@ -166,10 +159,10 @@ public partial class Releases : IDisposable
 
 		var serviceType = ApiLoginService.GetServiceType();
 
-		if (serviceType == Enums.ServiceType.Spotify)
+		if (serviceType == ServiceType.Spotify)
 		{
 			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! loading every time from db - prefer loading from store !!!!!
-			SpotifyWorkflowService.StartLoadingAll(false, _type);
+			await SpotifyWorkflowService.StartLoadingAll(false, _type);
 		}
 	}
 }

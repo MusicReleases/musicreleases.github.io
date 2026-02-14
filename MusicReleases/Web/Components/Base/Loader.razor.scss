@@ -8,11 +8,11 @@
     background-size: 20%;
     background-repeat: repeat-y;
     background-position: -25% 0;
+    background-color: transparent;
+    background-image: linear-gradient(to right, var(--color-project), var(--color-project));
     display: grid;
     width: 100%;
     height: var(--height-loader);
-    background-color: transparent;
-    background: linear-gradient(to right, var(--color-project), var(--color-project));
 
     &.active {
         animation: loader-animation 3s ease-in-out infinite;

@@ -7,10 +7,4 @@ public partial class Release
 {
 	[Parameter]
 	public required SpotifyRelease SpotifyRelease { get; set; }
-	//private string? _url;
-
-	protected override void OnInitialized()
-	{
-		//if ()
-	}
 }

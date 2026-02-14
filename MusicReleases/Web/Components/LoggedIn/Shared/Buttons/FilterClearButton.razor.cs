@@ -26,7 +26,7 @@ public partial class FilterClearButton
 	private string ButtonTitle => Type == MenuType.Releases ? "Default filter" : "Clear filter";
 
 
-	private readonly LucideIcon _icon = LucideIcon.Funnel; // LucideIcon.FunnelX
+	private readonly LucideIcon _icon = LucideIcon.FunnelX;
 
 
 	private async Task ClearFilter()

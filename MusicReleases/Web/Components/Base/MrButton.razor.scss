@@ -20,6 +20,13 @@
     font-size: var(--font-size-1);
     position: relative;
 
+    &.hover-text-only {
+        &:hover {
+            background-color: transparent;
+            color: var(--color-project);
+        }
+    }
+
     &.xl {
         padding: 18px;
         border-radius: 25px;
@@ -56,6 +63,11 @@
     &.main-menu {
         display: grid;
         place-items: center;
+        background-color: transparent;
+
+        &.active {
+            background-color: var(--color-3);
+        }
     }
 
     &.fill-width {
@@ -104,14 +116,22 @@
         background-color: var(--color-4);
     }
 
+    &.active-transparent {
+        color: var(--color-project);
+    }
+
     &.active {
         color: var(--color-project);
         background-color: var(--color-4);
     }
 
-    &.ml- {
-        &5 {
-            margin-left: 5px;
+    &.flex-fill {
+        height: 100%;
+        align-items: center;
+        display: flex;
+
+        &-max {
+            flex-grow: 1;
         }
     }
 }

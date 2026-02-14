@@ -1,0 +1,32 @@
+.info {
+
+    .number {
+        width: 25px;
+        display: flex;
+        justify-content: center
+    }
+
+    .name {
+        margin-right: 25px;
+    }
+
+    .explicit, .duration {
+        margin-left: auto;
+    }
+
+        .explicit + .duration {
+            margin-left: 0;
+        }
+
+    .duration {
+        width: 75px;
+        display: flex;
+        gap: 5px;
+    }
+
+    & > * {
+        height: 100%;
+        align-items: center;
+        display: flex;
+    }
+}

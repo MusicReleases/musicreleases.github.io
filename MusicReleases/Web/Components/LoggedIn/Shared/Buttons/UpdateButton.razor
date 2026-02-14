@@ -1,4 +1,4 @@
-﻿<MrButton OnClick="@Update" Title="Update" Class="rounded-l transparent">
-    <MrIcon Icon="LucideIcon.RefreshCcw" />
+﻿<MrButton OnClick="@Update" Title="Update" Class="rounded-l transparent" Disabled="@Loading">
+    <MrIcon Icon="@Icon" Spin="@Loading" />
     @ChildContent
 </MrButton>

@@ -5,42 +5,36 @@
 
 <div class="buttons">
 
-	<button class="tracklist icon-text @TracklistClass" title="@TracklistTitle" @onclick="ViewTracklist">
-		<i class="fas fa-bars"></i>
-		<span>@SpotifyRelease.TotalTracks</span>
-	</button>
+	<MrButton Class="@TracklistClass" Text="@SpotifyRelease.TotalTracks.ToString()" Title="@TracklistTitle" OnClick="@ViewTracklist">
+		<MrIcon Icon="@TracklistIcon" Spin="@_loadingTracklist" />
+	</MrButton>
 
 	@*
-	<button class="play" title="Play release">
-		<i class="fas fa-play"></i>
-	</button>
+	<MrButton Class="" Title="Play release" OnClick="@Play">
+		<MrIcon Icon="LucideIcon.Play" />
+	</MrButton>
+	
+	<MrButton Class="" Title="Add release to queue" OnClick="@AddToQueue">
+		<MrIcon Icon="LucideIcon.ListOrdered" />
+	</MrButton>
 
-	<button class="queue" title="Add release to queue">
-		<i class="fas fa-arrow-right"></i>
-	</button>
-
-	<button class="save" title="Add release to library">
-		<i class="far fa-heart"></i>
-	</button>
+	<MrButton Class="" Title="Add release to library" OnClick="@AddToLibrary">
+		<MrIcon Icon="LucideIcon.Heart" Fill="_inLibrary" />
+	</MrButton>
 	*@
 
-	<button class="playlist @PlaylistClass" title="@PlaylistTitle" @onclick="ViewPlaylists">
-		<i class="fas fa-plus"></i>
-	</button>
+	<MrButton Class="@PlaylistClass" Title="@PlaylistTitle" OnClick="@ViewPlaylists">
+		<MrIcon Icon="@PlaylistIcon" Spin="@_loadingPlaylists" />
+	</MrButton>
 
 </div>
 
 @if (_isPlaylistDisplayed)
 {
 	<PlaylistPicker Release="@SpotifyRelease" />
-
-	@* <MenuPlaylists Release="@SpotifyRelease">
-
-	</MenuPlaylists> *@
 }
 
 @if (_isTracklistDisplayed)
 {
-	<ReleaseTracklist Release="@SpotifyRelease">
-	</ReleaseTracklist>
+	<ReleaseTracklist Release="@SpotifyRelease" />
 }

@@ -1,3 +1,4 @@
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Objects;
@@ -27,6 +28,8 @@ public partial class PlaylistButton
 	public SpotifyTrack? Track { get; set; }
 
 
+	private LucideIcon Icon => _isWorking ? LucideIcon.LoaderCircle : (IsInPlaylist ? LucideIcon.Minus : LucideIcon.Plus);
+
 	private bool IsReleaseInPlaylist => Release?.Tracks is not null && Release.Tracks.Any(track => Playlist.Tracks.Contains(track.Id));
 
 	private bool IsTrackInPlaylist => Track is not null && Playlist.Tracks.Contains(Track.Id);
@@ -34,7 +37,7 @@ public partial class PlaylistButton
 	private bool IsInPlaylist => IsReleaseInPlaylist || IsTrackInPlaylist;
 
 
-	private bool _isWorking;
+	private bool _isWorking = false;
 
 
 	protected override void OnParametersSet()
@@ -88,6 +91,7 @@ public partial class PlaylistButton
 
 	private async Task AddToPlaylist(bool positionTop)
 	{
+		_isWorking = true;
 		try
 		{
 			await AddReleaseToPlaylist(positionTop);
