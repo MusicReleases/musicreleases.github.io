@@ -1,11 +1,17 @@
-﻿<div class="logo @Class" @onclick="LogoOnClick" title="@Title">
+﻿<div class="logo @LogoClass" @onclick="LogoOnClick" title="@Title">
 
-    @if (DisplayMusic)
+    @if (DisplayLogoMiddle)
     {
         <span>Music</span>
     }
 
-    <MrIcon Icon="CustomIcon.Logo" Size="1em" />@* 
-     *@<span>Releases</span>
+    <MrIcon Icon="CustomIcon.Logo" Size="1em" />
+
+    @if (!DisplayLogoMiddle)
+    {
+        <span class="title">Music</span>
+    }
+
+    <span>Releases</span>
 
 </div>

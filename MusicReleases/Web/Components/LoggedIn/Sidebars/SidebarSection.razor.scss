@@ -1,0 +1,19 @@
+.header, .filter {
+    display: inline-flex;
+    gap: 2px;
+    padding: 5px;
+}
+
+.header {
+}
+
+.filter {
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+    min-height: 0
+}

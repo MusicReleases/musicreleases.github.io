@@ -4,8 +4,6 @@ namespace JakubKastner.MusicReleases.Web.Components.Base;
 
 public partial class MrSearch
 {
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
 
 	[Parameter]
 	public string? SearchText { get; set; }
@@ -15,9 +13,6 @@ public partial class MrSearch
 
 	[Parameter]
 	public string Placeholder { get; set; } = "Search...";
-
-	[Parameter]
-	public string? Class { get; set; }
 
 
 	private async Task TextValueChanged(string? newValue)

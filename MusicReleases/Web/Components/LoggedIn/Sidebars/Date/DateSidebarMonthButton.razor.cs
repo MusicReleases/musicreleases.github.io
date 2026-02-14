@@ -22,7 +22,7 @@ public partial class DateSidebarMonthButton : IDisposable
 	public required int Month { get; set; }
 
 
-	private string ButtonClass => $"rounded-m transparent{(MonthFilter ? " active" : string.Empty)}";
+	private string ButtonClass => $"rounded-m fill-width transparent{(MonthFilter ? " active" : string.Empty)}";
 	private bool MonthFilter => SpotifyFilterService.Filter is not null && SpotifyFilterService.Filter.Month.HasValue && SpotifyFilterService.Filter.Month.Value.Year == Year && SpotifyFilterService.Filter.Month.Value.Month == Month;
 
 

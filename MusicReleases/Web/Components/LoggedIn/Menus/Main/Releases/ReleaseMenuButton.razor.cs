@@ -25,7 +25,7 @@ public partial class ReleaseMenuButton : IDisposable
 
 	private string ButtonTitle => $"View released {ReleaseTypeText}";
 
-	private string ButtonClass => $"main-menu rounded-xl trasparent{(ReleaseFilter ? " active" : string.Empty)}";
+	private string ButtonClass => $"main-menu rounded-xl fill-width trasparent{(ReleaseFilter ? " active" : string.Empty)}";
 
 	private LucideIcon Icon => EnumIconsExtensions.GetIconForRelease(ReleaseType);
 

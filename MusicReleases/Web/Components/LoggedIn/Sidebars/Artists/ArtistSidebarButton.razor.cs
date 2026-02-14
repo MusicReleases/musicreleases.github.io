@@ -22,7 +22,7 @@ public partial class ArtistSidebarButton : IDisposable
 	public required string ArtistName { get; set; }
 
 
-	private string Class => $"rounded-m transparent{(FilterActive ? " active" : string.Empty)}";
+	private string Class => $"rounded-m fill-width transparent{(FilterActive ? " active" : string.Empty)}";
 	private bool FilterActive => SpotifyFilterService.Filter?.Artist == ArtistId;
 
 

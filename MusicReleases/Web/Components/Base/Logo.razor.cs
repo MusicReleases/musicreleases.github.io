@@ -9,13 +9,16 @@ public partial class Logo
 
 
 	[Parameter]
-	public bool DisplayMusic { get; set; } = false;
+	public bool DisplayLogoMiddle { get; set; } = false;
 
 	[Parameter]
 	public bool ClickEnabled { get; set; } = false;
 
+	[Parameter]
+	public string? Class { get; set; }
 
-	private string Class => ClickEnabled ? "clickable" : string.Empty;
+
+	private string LogoClass => $"{Class} {(ClickEnabled ? "clickable" : string.Empty)}";
 	private string Title => ClickEnabled ? "Go to homepage" : string.Empty;
 
 

@@ -1,0 +1,19 @@
+.filter, .toolbar {
+    display: inline-flex;
+    padding: 5px;
+}
+
+.filter {
+    grid-area: releases-filter;
+}
+
+.toolbar {
+    grid-area: releases-toolbar;
+    gap: 2px;
+}
+
+.content {
+    grid-area: releases-content;
+    overflow-y: auto;
+    height: 100%;
+}

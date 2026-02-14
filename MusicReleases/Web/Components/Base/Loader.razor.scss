@@ -3,6 +3,7 @@
 }
 
 .loader {
+    grid-area: loader;
     border-radius: var(--height-loader);
     background-size: 20%;
     background-repeat: repeat-y;

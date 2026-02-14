@@ -23,7 +23,7 @@ public partial class PlaylistSidebarButton
 	public string? Class { get; set; }
 
 
-	private string ButtonClass => $"rounded-m transparent {Class}";
+	private string ButtonClass => $"rounded-m fill-width transparent {Class}";
 
 
 	private bool _isLoading = false;

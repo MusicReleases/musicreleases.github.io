@@ -24,7 +24,7 @@ public partial class DateSidebarYearButton : IDisposable
 
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
-	private string ButtonClass => $"rounded-m transparent{(YearFilter ? " active" : string.Empty)}";
+	private string ButtonClass => $"rounded-m fill-width transparent{(YearFilter ? " active" : string.Empty)}";
 	private string MonthsClass => _showMonths ? string.Empty : "hidden";
 	private bool YearFilter => SpotifyFilterService.Filter?.Year == Year;
 

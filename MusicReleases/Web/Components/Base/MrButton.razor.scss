@@ -59,6 +59,10 @@
         place-items: center;
     }
 
+    &.fill-width {
+        width: 100%;
+    }
+
     &.chips {
         background-color: var(--color-1);
 
