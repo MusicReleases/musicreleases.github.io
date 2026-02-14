@@ -168,6 +168,7 @@ public partial class Releases : IDisposable
 
 		if (serviceType == Enums.ServiceType.Spotify)
 		{
+			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! loading every time from db - prefer loading from store !!!!!
 			SpotifyWorkflowService.StartLoadingAll(false, _type);
 		}
 	}

@@ -25,7 +25,6 @@
         border-radius: 25px;
     }
 
-
     &.rounded {
 
         &-m {
@@ -108,5 +107,11 @@
     &.active {
         color: var(--color-project);
         background-color: var(--color-4);
+    }
+
+    &.ml- {
+        &5 {
+            margin-left: 5px;
+        }
     }
 }

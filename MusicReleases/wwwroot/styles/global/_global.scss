@@ -2,72 +2,66 @@
 
 
 .clickable {
-	cursor: pointer !important;
+    cursor: pointer !important;
 }
 
 .buttons {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
-	align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
 }
 
 .left {
-	padding-left: var(--padding-left-right);
+    padding-left: var(--padding-left-right);
 }
 
 .right {
-	padding-left: var(--padding-left-right);
+    padding-left: var(--padding-left-right);
 }
 
 
 // icon left and right margin
 .icon-text {
-	i {
-		margin-right: var(--margin-right-icon);
-	}
+    i {
+        margin-right: var(--margin-right-icon);
+    }
 
-	&-right {
-		i {
-			margin-left: var(--margin-right-icon);
-		}
-	}
+    &-right {
+        i {
+            margin-left: var(--margin-right-icon);
+        }
+    }
 }
 
 // explicit
 .explicit {
-	span {
-		font-size: 13px;
-		padding-left: 2.5px;
-		font-style: italic;
-	}
-}
-
-
-// scroll
-.infinite-scroll {
-	position: relative
+    span {
+        font-size: 13px;
+        padding-left: 2.5px;
+        font-style: italic;
+    }
 }
 
 .hidden {
-	display: none !important;
+    display: none !important;
 }
 
 // responsive styles (hide / show content on pc / mobile)
 @include mixins.respond(pc) {
-	.hide-pc {
-		display: none !important;
-	}
+    .hide-pc {
+        display: none !important;
+    }
 }
 
 @include mixins.respond(tablet) {
-	.hide-tablet {
-		display: none !important;
-	}
+    .hide-tablet {
+        display: none !important;
+    }
 }
 
 @include mixins.respond(mobile) {
-	.hide-mobile {
-		display: none !important;
-	}
+    .hide-mobile {
+        display: none !important;
+    }
 }

@@ -51,7 +51,7 @@ public partial class ReleaseFilterButton : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private string ButtonClass(ReleasesFilters type, string customClass)
+	private string ButtonClass(ReleasesFilters type, string? customClass = null)
 	{
 		var active = IsFilterActive(type);
 		var buttonClass = $"rounded-m chips {customClass}{(active ? " active" : string.Empty)}";
