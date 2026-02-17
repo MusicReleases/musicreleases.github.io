@@ -1,4 +1,5 @@
 using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Artists;
@@ -14,6 +15,9 @@ public partial class ArtistSidebarButton : IDisposable
 	[Inject]
 	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
 
+	[Inject]
+	private IMobileService MobileService { get; set; } = default!;
+
 
 	[Parameter, EditorRequired]
 	public required string ArtistId { get; set; }
@@ -22,7 +26,7 @@ public partial class ArtistSidebarButton : IDisposable
 	public required string ArtistName { get; set; }
 
 
-	private string Class => $"rounded-m fill-width transparent{(FilterActive ? " active" : string.Empty)}";
+	private string Class => $"sidebar-button rounded-m fill-width transparent{(FilterActive ? " active" : string.Empty)}";
 	private bool FilterActive => SpotifyFilterService.Filter?.Artist == ArtistId;
 
 
@@ -48,5 +52,7 @@ public partial class ArtistSidebarButton : IDisposable
 
 		var url = await SpotifyFilterUrlService.GetFilterUrl(artistIdFilter);
 		NavManager.NavigateTo(url);
+
+		MobileService.HideMenu();
 	}
 }

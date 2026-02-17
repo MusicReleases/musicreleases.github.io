@@ -8,11 +8,17 @@ public enum Theme
 	Color,
 }
 
-public enum DisplayMobile
+public enum MobileMenu
 {
 	Releases,
 	Artists,
 	Date,
+}
+
+public enum OverflowMenu
+{
+	Releases,
+	Mobile,
 }
 
 public enum MenuType

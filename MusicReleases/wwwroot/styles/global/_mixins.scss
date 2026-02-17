@@ -7,68 +7,26 @@
     }
 }
 
-// TODO max height
-// ,only screen and (max-height: 399px)
-// mixins for responsive styles
-@mixin respond($breakpoint) {
-    @if $breakpoint==pc {
 
-        @media only screen and (min-width: 1050px) {
-            @content;
-        }
-    }
-    
-    @else if $breakpoint==tablet {
+// hover and active states for devices that support hover and those that don't
+@mixin hover-active($extra-selectors...) {
 
-        @media only screen and (max-width: 1049px) and (min-width: 860px) {
+    // custom selectors
+    @each $selector in $extra-selectors {
+        #{$selector} {
             @content;
         }
     }
 
-    @else if $breakpoint==mobile {
-
-        @media only screen and (max-width: 859px) {
+    // pc
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
             @content;
         }
     }
 
-    @else if $breakpoint==text {
-        @media only screen and (max-width: 1309px) {
-            @content;
-        }
-    }
-
-    @else if $breakpoint==watches {
-        @media only screen and (max-width: 100px) {
-            @content;
-        }
-    }
-}
-
-
-// TODO check if need to use and move to selector
-@include respond(text) {
-    .hide-text {
-        &.icon-text {
-            i {
-                margin-right: 0;
-            }
-        }
-
-        span {
-            display: none;
-        }
-    }
-}
-
-
-// favicon spin
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
+    // mobile / touch devices
+    &:active {
+        @content;
     }
 }

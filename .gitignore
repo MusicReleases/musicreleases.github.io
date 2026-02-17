@@ -399,9 +399,5 @@ FodyWeavers.xsd
 
 # Added by user
 *.css
-/MusicReleases/Web/Components/LoggedIn/Releases/ReleaseActions.razor.css
-/MusicReleases/Web/Components/LoggedIn/Releases/Release.razor.css
-/MusicReleases/Web/Components/LoggedIn/Releases/ReleaseInfo.razor.css
-/MusicReleases/Web/Components/LoggedIn/Menus/Main/Releases/ReleaseMenu.razor.css
-/MusicReleases/Web/Components/LoggedIn/Menus/Releases/ReleaseMenu.razor.css
-/MusicReleases/Web/Components/LoggedIn/Menus/Releases/ReleaseMenuList.razor.css
+/MusicReleases/Web/Components/LoggedIn/Releases/*.css
+/MusicReleases/Web/Components/LoggedIn/Menus/**/Releases/*.css

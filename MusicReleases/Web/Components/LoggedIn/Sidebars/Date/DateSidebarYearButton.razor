@@ -1,17 +1,26 @@
-﻿<MrButton Class="@ButtonClass" Text="@Year.ToString()" Title="Filter year" OnClick="@FilterYear" role="listitem">
-    <span @onclick="DisplayMonths" @onclick:stopPropagation="true" title="Display months">
-        <MrIcon Icon="@Icon" />
-    </span>
-</MrButton>
+﻿<li class="@ActiveClass">
+    <MrButton Class="@ButtonClass" Text="@Year.ToString()" Title="Filter year" OnClick="@FilterYear" role="listitem">
+        <ChildContent>
+            <span class="hide-mobile year @ActiveClass" title="Display months" @onclick="@DisplayMonths" @onclick:stopPropagation="true">
+                <MrIcon Icon="@Icon" />
+            </span>
+        </ChildContent>
+        <ChildContentAfterText>
+            <span class="show-mobile year @ActiveClass" title="Display months" @onclick="@DisplayMonths" @onclick:stopPropagation="true">
+                <MrIcon Icon="@Icon" />
+            </span>
+        </ChildContentAfterText>
+    </MrButton>
 
-@if (_renderMonths)
-{
-    <ul class="month-list @MonthsClass">
-        @foreach (var month in Months)
-        {
-            <li>
-                <DateSidebarMonthButton Year="@Year" Month="@month" />
-            </li>
-        }
-    </ul>
-}
+    @if (_renderMonths)
+    {
+        <ul class="month-list @MonthsClass">
+            @foreach (var month in Months)
+            {
+                <li>
+                    <DateSidebarMonthButton Year="@Year" Month="@month" />
+                </li>
+            }
+        </ul>
+    }
+</li>

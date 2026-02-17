@@ -9,17 +9,17 @@
             // TODO podcasts
             continue;
         }
-        <li class="nav-item @releaseType.ToString().ToLower()">
-            <ReleaseMenuButton ReleaseType=@releaseType Class="@ReleaseButtonClass" />
+        <li class="@releaseType.ToString().ToLower()">
+            <ReleaseMenuButton ReleaseType=@releaseType Class="@ClassButtonRelease" />
         </li>
     }
 
     @if (MenuType == MainMenuType.Primary)
     {
-        <li class="more">
-            <MrButton Class="@ClassMore" Text="More" Title="@TitleMore" OnClick="@DisplayMore" aria-expanded="@_showMore" aria-controls="more-releases">
-                <MrChip Class="@ActiveClass">
-                    <MrIcon Icon="@IconMore" />
+        <li class="@ClassLiOverflow">
+            <MrButton Class="@ClassButtonOverflow" Text="More" Title="@TitleButtonOverflow" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="more-releases">
+                <MrChip Class="@ClassChipOverflow">
+                    <MrIcon Icon="@IconOverflow" />
                 </MrChip>
             </MrButton>
         </li>

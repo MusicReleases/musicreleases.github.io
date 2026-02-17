@@ -1,0 +1,33 @@
+@use '../../../../../wwwroot/styles/global/layout' as layout;
+@use '../../../../../wwwroot/styles/global/mixins' as mixins;
+
+.active {
+    background-color: var(--color-3);
+    border-radius: 5px;
+}
+
+.year {
+
+    @include mixins.hover-active('&.active') {
+        background-color: var(--color-2);
+        border-radius: 999px;
+    }
+
+    &.hide-mobile {
+        display: none;
+
+        @include layout.respond(pc-tablet) {
+            display: flex;
+        }
+    }
+
+    &.show-mobile {
+        margin-left: auto;
+        padding: 9px 30px;
+        align-items: center;
+
+        @include layout.respond(pc-tablet) {
+            display: none;
+        }
+    }
+}

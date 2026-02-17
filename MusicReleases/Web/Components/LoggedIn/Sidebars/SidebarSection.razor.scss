@@ -20,7 +20,7 @@
     min-height: 0
 }
 
-@include layout.respond(tablet) {
+@include layout.respond(tablet-mobile) {
     .playlists-header,
     .playlists-filter,
     .playlists-menu {
@@ -40,5 +40,10 @@
         &:not(.show) {
             display: none;
         }
+    }
+
+    .artists-filter,
+    .date-filter {
+        background-color: var(--color-3);
     }
 }

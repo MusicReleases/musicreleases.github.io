@@ -17,4 +17,5 @@ public interface ISpotifyFilterService
 	void SetReleases(ISet<SpotifyRelease> releases);
 	void SetFilter(SpotifyFilter filter);
 	Task SetFilterAndSaveDb(SpotifyFilter filter);
+	void ClearFilter();
 }

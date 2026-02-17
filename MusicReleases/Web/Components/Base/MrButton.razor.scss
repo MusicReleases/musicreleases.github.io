@@ -1,3 +1,6 @@
+@use '../../../wwwroot/styles/global/layout' as layout;
+@use '../../../wwwroot/styles/global/mixins' as mixins;
+
 @mixin chip-divider($side) {
     content: "";
     position: absolute;
@@ -24,7 +27,7 @@
     align-items: center;
 
     &.hover-text-only {
-        &:hover {
+        @include mixins.hover-active {
             background-color: transparent;
             color: var(--color-project);
         }
@@ -63,15 +66,19 @@
         background-color: transparent;
     }
 
-    &.main-menu {
-        flex-direction: column;
-        justify-content: center;
+    &.main-menu,
+    &.main-menu-more {
         background-color: transparent;
 
         &.active {
             background-color: transparent;
             color: var(--color-text-1);
         }
+    }
+
+    &.main-menu {
+        flex-direction: column;
+        justify-content: center;
     }
 
     &.mobile-menu {
@@ -115,22 +122,25 @@
             }
         }
 
-        &:hover {
-            color: var(--color-1);
-            background-color: var(--color-project-2);
+        @include mixins.hover-active {
+            color: var(--color-text-1);
+            background-color: var(--color-5);
+            /*color: var(--color-1);
+            background-color: var(--color-project-2);*/
         }
 
         &.active {
             color: var(--color-1);
             background-color: var(--color-project);
 
-            &:hover {
-                background-color: var(--color-project-2);
+            @include mixins.hover-active {
+                background-color: var(--color-5);
+                //background-color: var(--color-project-2);
             }
         }
     }
 
-    &:hover {
+    @include mixins.hover-active {
         background-color: var(--color-4);
     }
 
@@ -149,6 +159,37 @@
 
         &-max {
             flex-grow: 1;
+        }
+    }
+
+    &.show-mobile {
+        display: none;
+
+        @include layout.respond(mobile) {
+            display: flex;
+        }
+    }
+
+    &.sidebar-button {
+        @include layout.respond(mobile) {
+            padding: 5px 30px;
+            height: 40px;
+        }
+
+        &.date {
+            &-year {
+                @include layout.respond(mobile) {
+                    padding-right: 0;
+                }
+            }
+
+            &-month {
+                padding: 5px 20px;
+
+                @include layout.respond(mobile) {
+                    padding: 5px 40px;
+                }
+            }
         }
     }
 }

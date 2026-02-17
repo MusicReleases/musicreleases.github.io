@@ -15,7 +15,8 @@ public partial class LayoutMain : IDisposable
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
 
-	private string ClassMain => MobileService.DisplayMobile.ToString().ToLower();
+
+	private string ClassMain => MobileService.MobileMenu.ToString().ToLower();
 
 	protected override void OnInitialized()
 	{

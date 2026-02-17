@@ -1,5 +1,6 @@
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Date;
@@ -15,6 +16,9 @@ public partial class DateSidebarYearButton : IDisposable
 	[Inject]
 	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
 
+	[Inject]
+	private IMobileService MobileService { get; set; } = default!;
+
 
 	[Parameter, EditorRequired]
 	public required int Year { get; set; }
@@ -25,9 +29,11 @@ public partial class DateSidebarYearButton : IDisposable
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
 
-	private string ButtonClass => $"rounded-m fill-width transparent{(YearFilter ? " active" : string.Empty)}";
+	private string ButtonClass => $"date-year sidebar-button rounded-m fill-width transparent{(YearFilter ? " active" : string.Empty)}";
 
 	private string MonthsClass => _showMonths ? string.Empty : "hidden";
+
+	private string ActiveClass => _showMonths ? "active" : string.Empty;
 
 	private bool YearFilter => SpotifyFilterService.Filter?.Year == Year;
 
@@ -75,5 +81,7 @@ public partial class DateSidebarYearButton : IDisposable
 		int? yearFilter = YearFilter ? null : Year;
 		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter);
 		NavManager.NavigateTo(url);
+
+		MobileService.HideMenu();
 	}
 }

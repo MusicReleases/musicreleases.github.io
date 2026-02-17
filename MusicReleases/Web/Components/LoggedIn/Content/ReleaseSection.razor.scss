@@ -1,6 +1,19 @@
 @use '../../../../wwwroot/styles/global/layout' as layout;
 
-.filter, .toolbar {
+.filter,
+.toolbar,
+.content {
+
+    @include layout.respond(mobile) {
+        &:not(.show) {
+            display: none;
+        }
+    }
+}
+
+
+.filter,
+.toolbar {
     display: inline-flex;
     padding: 5px;
 
@@ -24,10 +37,4 @@
     grid-area: releases-content;
     overflow-y: auto;
     height: 100%;
-
-    @include layout.respond(tablet) {
-        &:not(.show) {
-            display: none;
-        }
-    }
 }

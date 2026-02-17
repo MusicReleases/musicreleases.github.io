@@ -11,7 +11,8 @@
     --row-headers: 40px;
     --row-filters: 40px;
     --row-content: 1fr;
-    --row-menu-releases: 79px;
-    --row-menu-mobile: 67px;
-    --row-menu-all: calc(var(--row-menu-releases) + var(--row-menu-mobile));
+    --row-menu-releases: 395px;
+    --row-menu-releases-mobile: 79px;
+    --row-menu-main-mobile: 67px;
+    --row-menu-mobile: calc(var(--row-menu-releases-mobile) + var(--row-menu-main-mobile));
 }

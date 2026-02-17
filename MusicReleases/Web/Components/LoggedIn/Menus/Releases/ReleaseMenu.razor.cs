@@ -1,22 +1,54 @@
-﻿namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.UiServices;
+using Microsoft.AspNetCore.Components;
 
-public partial class ReleaseMenu
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
+
+public partial class ReleaseMenu : IDisposable
 {
-	private string ClassMore => _showMore ? string.Empty : "hidden";
+	[Inject]
+	public IMobileService MobileService { get; set; } = default!;
 
-	private bool _renderMore = false;
-	private bool _showMore = false;
+	[Inject]
+	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
 
-	private void DisplayMore(bool showMore)
+	private string ClassMenu => MobileService.MobileMenu == MobileMenu.Releases ? " show" : string.Empty;
+
+	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
+
+	private string ClassOverflowMenu => IsOverflowMenuDisplayed ? string.Empty : "hidden";
+
+
+	private const OverflowMenu _overflowMenu = OverflowMenu.Releases;
+
+	private bool _renderOverflowMenu = false;
+
+
+	protected override void OnInitialized()
 	{
-		if (!_renderMore)
-		{
-			_renderMore = showMore;
-			_showMore = showMore;
-			return;
-		}
+		MobileService.OnDisplayChanged += StateChanged;
+		OverflowMenuService.OnDisplayChanged += OverflowMenuDisplayChanged;
+	}
 
-		_showMore = showMore;
+	public void Dispose()
+	{
+		MobileService.OnDisplayChanged -= StateChanged;
+		OverflowMenuService.OnDisplayChanged -= OverflowMenuDisplayChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
+
+	private void OverflowMenuDisplayChanged()
+	{
+		if (!_renderOverflowMenu && IsOverflowMenuDisplayed)
+		{
+			_renderOverflowMenu = true;
+		}
+		StateChanged();
 	}
 }

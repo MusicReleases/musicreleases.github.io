@@ -177,13 +177,20 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService,
 		return new(type, yearFilter, monthFilter, artistFilter, advancedFilter);
 	}
 
-	public async Task<string> ClearFilter(MenuType type)
+	private async Task<string> ClearFilter()
+	{
+		_spotifyFilterService.ClearFilter();
+		return await GetFilterUrl();
+	}
+
+	public async Task<string> ClearFilter(MenuType? type = null)
 	{
 		return type switch
 		{
 			MenuType.Date => await GetFilterUrl(year: null, month: null),
 			MenuType.Artists => await GetFilterUrl(artist: null),
 			MenuType.Releases => await GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
+			null => await ClearFilter(),
 			_ => throw new NotSupportedException(nameof(MenuType)),
 		};
 	}

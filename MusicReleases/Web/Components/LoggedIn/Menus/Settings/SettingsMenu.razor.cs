@@ -1,28 +1,31 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.ApiServices;
+using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Settings;
 
-public partial class SettingsMenu
+public partial class SettingsMenu : IDisposable
 {
 	[Inject]
 	private ISpotifyApiUserService SpotifyUserService { get; set; } = default!;
 
+
+	[Inject]
+	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
+
 	[Inject]
 	private IApiLoginService ApiLoginService { get; set; } = default!;
 
-	[Parameter]
-	public bool DisplayOnMobile { get; set; } = false;
 
-	private string ClassMenu => DisplayOnMobile ? "show" : string.Empty;
-	private string TitleButton => _displayMenu ? "Hide menu" : "Show menu";
+	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
+
+	private string ClassOverflowMenu => IsOverflowMenuDisplayed ? "show" : string.Empty;
 
 
-	private bool _displayMenu = false;
-	//private bool _displayMenu = true;
+	private const OverflowMenu _overflowMenu = OverflowMenu.Mobile;
 
 	private SpotifyUserInfo? _spotifyUser;
 
@@ -30,6 +33,18 @@ public partial class SettingsMenu
 	protected override void OnInitialized()
 	{
 		SetUser();
+		OverflowMenuService.OnDisplayChanged += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		OverflowMenuService.OnDisplayChanged -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 
 	private void SetUser()
@@ -39,11 +54,5 @@ public partial class SettingsMenu
 		{
 			_spotifyUser = SpotifyUserService.GetUserRequired().Info;
 		}
-	}
-
-
-	private void ShowMenu()
-	{
-		_displayMenu = !_displayMenu;
 	}
 }

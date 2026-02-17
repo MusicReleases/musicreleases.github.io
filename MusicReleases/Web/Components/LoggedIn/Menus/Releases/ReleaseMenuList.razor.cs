@@ -1,42 +1,68 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 
-public partial class ReleaseMenuList
+public partial class ReleaseMenuList : IDisposable
 {
+	[Inject]
+	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+
+	[Inject]
+	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
+
+
 	[Parameter, EditorRequired]
 	public MainMenuType MenuType { get; set; }
-
-	[Parameter]
-	public EventCallback<bool> OnMoreClick { get; set; }
 
 	[Parameter]
 	public string? Class { get; set; }
 
 
-	private string TitleMore => _showMore ? "Hide more" : "Show more";
-
-	private string ClassMore => $"{_defaultButtonClass}{ActiveClass}";
-
-	private string ActiveClass => _showMore ? " active" : string.Empty;
-
 	private string ClassList => $"{MenuType.ToString().ToLower()} {Class}";
 
-	private string ReleaseButtonClass => MenuType == MainMenuType.Primary ? "main-menu" : string.Empty;
+	private string ClassButtonRelease => $"main-menu{(MenuType == MainMenuType.Primary ? string.Empty : "-more")}";
 
-	private LucideIcon IconMore => _showMore ? LucideIcon.X : LucideIcon.Ellipsis;
+	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
+
+	private string TitleButtonOverflow => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} more";
+
+	private string ClassButtonOverflow => $"{_buttonClass}{ClassChipOverflow}";
+
+	private string ClassChipOverflow => IsOverflowMenuDisplayed ? " active" : string.Empty;
+
+	private string ClassLiOverflow => $"more {SpotifyFilterService.Filter?.ReleaseType.ToString().ToLower()}-more";
+
+	private LucideIcon IconOverflow => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Ellipsis;
 
 
-	private readonly string _defaultButtonClass = "main-menu rounded-xl fill-width trasparent";
+	private const string _buttonClass = "main-menu rounded-xl fill-width trasparent";
 
-	private bool _showMore = false;
+	private const OverflowMenu _overflowMenu = OverflowMenu.Releases;
 
 
-	public void DisplayMore()
+	protected override void OnInitialized()
 	{
-		_showMore = !_showMore;
+		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		OverflowMenuService.OnDisplayChanged += StateChanged;
+	}
 
-		OnMoreClick.InvokeAsync(_showMore);
+	public void Dispose()
+	{
+		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		OverflowMenuService.OnDisplayChanged -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
+
+	public void ToggleOverflowMenu()
+	{
+		OverflowMenuService.ShowOrHideMenu(_overflowMenu);
 	}
 }

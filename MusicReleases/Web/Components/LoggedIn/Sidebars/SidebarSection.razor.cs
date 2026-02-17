@@ -31,14 +31,14 @@ public partial class SidebarSection : IDisposable
 
 	private string TypeString => Type.ToString().ToLower();
 
-	private DisplayMobile? MobileMenuType => Type switch
+	private MobileMenu? MobileMenuType => Type switch
 	{
-		SidebarType.Artists => DisplayMobile.Artists,
-		SidebarType.Date => DisplayMobile.Date,
+		SidebarType.Artists => MobileMenu.Artists,
+		SidebarType.Date => MobileMenu.Date,
 		_ => null
 	};
 
-	private string ClassShow => MobileService.DisplayMobile == MobileMenuType ? "show" : string.Empty;
+	private string ClassShow => MobileService.MobileMenu == MobileMenuType ? "show" : string.Empty;
 
 	protected override void OnInitialized()
 	{

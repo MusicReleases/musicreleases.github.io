@@ -224,4 +224,9 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 		await _filterDbService.Save(filter, userId);
 		SetFilter(filter);
 	}
+
+	public void ClearFilter()
+	{
+		Filter = new();
+	}
 }

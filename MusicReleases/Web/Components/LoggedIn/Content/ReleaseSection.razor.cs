@@ -19,7 +19,7 @@ public partial class ReleaseSection : IDisposable
 
 	private bool Loading => LoaderService.IsLoading(LoadingType.Releases);
 
-	private string ClassHide => MobileService.DisplayMobile == DisplayMobile.Releases ? "show" : string.Empty;
+	private string ClassHide => MobileService.MobileMenu == MobileMenu.Releases ? "show" : string.Empty;
 
 
 	protected override void OnInitialized()

@@ -1,6 +1,7 @@
 @use '../../../../../wwwroot/styles/global/layout' as layout;
 
 .mobile-nav {
+    grid-area: mobile-menu;
     display: none;
     container-type: inline-size;
     container-name: mobile-nav;

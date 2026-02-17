@@ -10,7 +10,7 @@ public partial class MenuSettingsDisplayButton : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public required DisplayMobile MenuType { get; set; }
+	public required MobileMenu MenuType { get; set; }
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
@@ -18,7 +18,7 @@ public partial class MenuSettingsDisplayButton : IDisposable
 
 	private string MenuTypeString => MenuType.ToString().ToLower();
 	private string Text => (IsMenuDisplayed ? "Hide " : "Show ") + MenuTypeString + " menu";
-	private bool IsMenuDisplayed => MobileService.DisplayMobile == MenuType;
+	private bool IsMenuDisplayed => MobileService.MobileMenu == MenuType;
 
 
 	protected override void OnInitialized()

@@ -11,7 +11,6 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
     @return map.get($icon-bps, $icons) - 1px;
 }
 
-
 .nav-list {
     display: grid;
     grid-template-columns: 1fr;
@@ -21,7 +20,6 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
     }
 
     &.primary {
-
         .more {
             display: none;
         }
@@ -36,6 +34,10 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
                 .appears,
                 .compilations {
                     display: none;
+                    &-more ::deep .button > .chip {
+                        // active
+                        background-color: var(--color-project);
+                    }
                 }
 
                 .more {
@@ -48,6 +50,10 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
 
                 .podcasts {
                     display: none;
+                    &-more ::deep .button > .chip {
+                        // active
+                        background-color: var(--color-project);
+                    }
                 }
             }
             // 2 icons
@@ -56,6 +62,10 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
 
                 .tracks {
                     display: none;
+                    &-more ::deep .button > .chip {
+                        // active
+                        background-color: var(--color-project);
+                    }
                 }
             }
             // 1 icon
@@ -64,6 +74,10 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
 
                 .albums {
                     display: none;
+                    &-more ::deep .button > .chip {
+                        // active
+                        background-color: var(--color-project);
+                    }
                 }
             }
         }
@@ -83,13 +97,12 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
             @container main-nav (max-width: #{bp-max(5)}) {
                 display: grid;
                 position: fixed;
-                bottom: var(--row-menu-all);
+                bottom: var(--row-menu-mobile);
                 right: 0px;
                 z-index: 1;
                 background-color: var(--color-3);
                 padding: 10px;
-                width: 14rem;
-                max-width: calc(100vw - 20px);
+                width: 100vw;
             }
             // 3 --> 3 icons
             @container main-nav (min-width: #{bp-min(4)}) {

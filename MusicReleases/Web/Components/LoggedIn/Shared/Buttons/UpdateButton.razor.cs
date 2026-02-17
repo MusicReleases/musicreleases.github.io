@@ -27,8 +27,13 @@ public partial class UpdateButton
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
+	[Parameter]
+	public string? Class { get; set; }
+
 
 	private LucideIcon Icon => Loading ? LucideIcon.LoaderCircle : LucideIcon.RefreshCcw;
+
+	private string ButtonClass => $"rounded-l transparent {Class}";
 
 
 	private void Update()

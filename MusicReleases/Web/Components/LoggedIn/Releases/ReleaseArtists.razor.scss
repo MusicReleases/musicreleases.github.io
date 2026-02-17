@@ -1,0 +1,11 @@
+.release {
+    font-size: 20px;
+}
+
+.track {
+    color: dimgray;
+
+    &:hover {
+        color: var(--color-project);
+    }
+}

@@ -6,36 +6,36 @@
     overflow: hidden;
     display: grid;
     grid-template-columns: var(--col-menu) var(--col-artists) var(--col-date) var(--col-main) var(--col-playlists);
-    grid-template-rows: var(--row-loader) var(--row-headers) var(--row-filters) var(--row-content);
+    grid-template-rows: var(--row-loader) var(--row-headers) var(--row-filters) var(--row-menu-releases) var(--row-content);
     grid-template-areas:
-        "loader loader loader loader loader" "logo artists-header date-header releases-filter playlists-header" "logo artists-filter date-filter releases-toolbar playlists-filter" "main-menu artists-menu date-menu releases-content playlists-menu";
+        "loader loader loader loader loader" "logo artists-header date-header releases-filter playlists-header" "logo artists-filter date-filter releases-toolbar playlists-filter" "releases-menu artists-menu date-menu releases-content playlists-menu" "settings-menu artists-menu date-menu releases-content playlists-menu";
 
     @include layout.respond(tablet) {
         grid-template-columns: var(--col-menu) var(--col-artists) var(--col-date) var(--col-main);
         grid-template-rows: var(--row-loader) var(--row-headers) var(--row-filters) var(--row-content);
         grid-template-areas:
-            "loader loader loader loader" "logo artists-header date-header releases-filter" "logo artists-filter date-filter releases-toolbar" "main-menu artists-menu date-menu releases-content";
+            "loader loader loader loader" "logo artists-header date-header releases-filter" "logo artists-filter date-filter releases-toolbar" "releases-menu artists-menu date-menu releases-content" "settings-menu artists-menu date-menu releases-content";
     }
 
     @include layout.respond(mobile) {
         grid-template-columns: var(--col-main);
-        grid-template-rows: var(--row-loader) var(--row-content) var(--row-filters) var(--row-headers) var(--row-menu-all);
+        grid-template-rows: var(--row-loader) var(--row-content) var(--row-filters) var(--row-headers) var(--row-menu-releases-mobile) var(--row-menu-main-mobile);
         grid-template-areas:
-            "loader" "releases-content" "releases-toolbar" "releases-filter" "main-menu";
+            "loader" "releases-content" "releases-toolbar" "releases-filter" "releases-menu" "mobile-menu";
 
         &.artists,
         &.date {
-            grid-template-rows: var(--row-loader) var(--row-headers) var(--row-filters) var(--row-content) var(--row-filters) var(--row-headers) var(--row-menu-all);
+            grid-template-rows: var(--row-loader) var(--row-content) var(--row-filters) var(--row-menu-main-mobile);
         }
 
         &.artists {
             grid-template-areas:
-                "loader" "artists-header" "artists-filter" "artists-menu" "releases-toolbar" "releases-filter" "main-menu";
+                "loader" "artists-menu" "artists-filter" "mobile-menu";
         }
 
         &.date {
             grid-template-areas:
-                "loader" "date-header" "date-filter" "date-menu" "releases-toolbar" "releases-filter" "main-menu";
+                "loader" "date-menu" "date-filter" "mobile-menu";
         }
     }
 }

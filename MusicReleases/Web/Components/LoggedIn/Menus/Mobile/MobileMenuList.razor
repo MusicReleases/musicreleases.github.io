@@ -2,7 +2,7 @@
 
 
     <li class="releases">
-        <MrButton Class="@GetButtonClass(DisplayMobile.Releases)" Title="View releases" OnClick="@DisplayReleases">
+        <MrButton Class="@GetButtonClass(Enums.MobileMenu.Releases)" Title="View releases" OnClick="() => DisplayMenu(Enums.MobileMenu.Releases)">
             <MrIcon Icon="@LucideIcon.Music2" />
             <span class="title">
                 Releases
@@ -11,7 +11,7 @@
     </li>
 
     <li class="artists">
-        <MrButton Class="@GetButtonClass(DisplayMobile.Artists)" Title="View artists" OnClick="@DisplayArtists">
+        <MrButton Class="@GetButtonClass(Enums.MobileMenu.Artists)" Title="View artists" OnClick="() => DisplayMenu(Enums.MobileMenu.Artists)">
             <MrIcon Icon="LucideIcon.MicVocal" />
             <span class="title">
                 Artists
@@ -20,7 +20,7 @@
     </li>
 
     <li class="date">
-        <MrButton class="@GetButtonClass(DisplayMobile.Date)" Title="View date" OnClick="@DisplayDate">
+        <MrButton Class="@GetButtonClass(Enums.MobileMenu.Date)" Title="View date" OnClick="() => DisplayMenu(Enums.MobileMenu.Date)">
             <MrIcon Icon="@LucideIcon.Calendar" />
             <span class="title">
                 Date
@@ -29,8 +29,8 @@
     </li>
 
     <li class="more">
-        <MrButton Class="@ClassMenu" Title="@TitleMenu" OnClick="@DisplayMenu" aria-expanded="@_showMenu" aria-controls="settings-menu">
-            <MrIcon Icon="@IconMenu" />
+        <MrButton Class="@ClassButtonOverflow" Title="@TitleButtonOverflow" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="settings-menu">
+            <MrIcon Icon="@IconOverflow" />
             <span class="title">
                 Menu
             </span>

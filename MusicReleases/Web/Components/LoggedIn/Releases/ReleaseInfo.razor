@@ -19,13 +19,9 @@
 
 		<span>@SpotifyRelease.ReleaseDate.ToString("dd").</span>
 
-		<MrButton Class="transparent hover-text-only p-0" Title="Filter releases by this month and year" OnClick="@FilterMonth">
-			@SpotifyRelease.ReleaseDate.ToString("MM").
-		</MrButton>
+		<MrButton Class="transparent hover-text-only p-0" Text="@($"{SpotifyRelease.ReleaseDate.ToString("MM")}.")" Title="Filter releases by this month and year" OnClick="@FilterMonth" />
 
-		<MrButton Class="transparent hover-text-only p-0" Title="Filter releases by this year" OnClick="@FilterYear">
-			@SpotifyRelease.ReleaseDate.ToString("yyyy")
-		</MrButton>
+		<MrButton Class="transparent hover-text-only p-0" Text="@SpotifyRelease.ReleaseDate.ToString("yyyy")" Title="Filter releases by this year" OnClick="@FilterYear" />
 
 	</div>
 

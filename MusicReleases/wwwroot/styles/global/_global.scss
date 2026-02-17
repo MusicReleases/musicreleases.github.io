@@ -1,4 +1,4 @@
-@use 'mixins' as mixins;
+//@use 'mixins' as mixins;
 
 
 .clickable {
@@ -82,7 +82,7 @@
 }
 
 // responsive styles (hide / show content on pc / mobile)
-@include mixins.respond(pc) {
+/*@include mixins.respond(pc) {
     .hide-pc {
         display: none !important;
     }
@@ -99,3 +99,4 @@
         display: none !important;
     }
 }
+*/

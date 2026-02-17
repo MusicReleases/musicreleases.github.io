@@ -10,6 +10,9 @@ public partial class MrButton
 	public RenderFragment? ChildContent { get; set; }
 
 	[Parameter]
+	public RenderFragment? ChildContentAfterText { get; set; }
+
+	[Parameter]
 	public EventCallback<MouseEventArgs> OnClick { get; set; }
 
 	[Parameter]

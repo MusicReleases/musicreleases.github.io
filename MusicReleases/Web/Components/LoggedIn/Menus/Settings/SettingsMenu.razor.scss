@@ -3,6 +3,7 @@
 
 .menu-user {
     margin-top: auto;
+    grid-area: settings-menu;
 
     @include layout.respond(mobile) {
         display: none;
@@ -14,23 +15,9 @@
             position: absolute;
             right: 0px;
             padding: 10px;
-            bottom: var(--row-menu-mobile);
+            bottom: var(--row-menu-main-mobile);
             background-color: var(--color-2);
-            width: 14rem;
-            max-width: calc(100vw - 20px);
+            width: 100vw;
         }
-    }
-}
-
-
-.menu-toggle {
-    display: none;
-
-    @include layout.respond(mobile) {
-        display: grid;
-        z-index: 5;
-        position: absolute;
-        right: 10px;
-        bottom: 20px;
     }
 }

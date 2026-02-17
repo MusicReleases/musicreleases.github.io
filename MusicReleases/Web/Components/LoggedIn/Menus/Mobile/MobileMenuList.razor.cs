@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Mobile;
 
-public partial class MobileMenuList
+public partial class MobileMenuList : IDisposable
 {
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
+
+	[Inject]
+	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
 
 	[Parameter]
@@ -17,48 +20,53 @@ public partial class MobileMenuList
 	public string? Class { get; set; }
 
 
-	private string TitleMenu => $"{(_showMenu ? "Hide" : "Show")} menu";
-	private string ClassMenu => $"{_buttonClass}{(_showMenu ? " active" : string.Empty)}";
+	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
+	private string TitleButtonOverflow => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} menu";
 
-	private LucideIcon IconMenu => _showMenu ? LucideIcon.X : LucideIcon.Menu;
+	private string ClassButtonOverflow => $"{_buttonClass}{(IsOverflowMenuDisplayed ? " active" : string.Empty)}";
 
-	private DisplayMobile _menuType = DisplayMobile.Releases;
+	private LucideIcon IconOverflow => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Menu;
+
 
 	private const string _buttonClass = "mobile-menu fill-width trasparent";
 
-	private bool _showMenu = false;
+	private const OverflowMenu _overflowMenu = OverflowMenu.Mobile;
 
 
-	private string GetButtonClass(DisplayMobile menuType)
+	protected override void OnInitialized()
 	{
-		var activeClass = menuType == _menuType ? " active" : string.Empty;
+		MobileService.OnDisplayChanged += StateChanged;
+		OverflowMenuService.OnDisplayChanged += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		MobileService.OnDisplayChanged -= StateChanged;
+		OverflowMenuService.OnDisplayChanged -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
+
+	private string GetButtonClass(Enums.MobileMenu menuType)
+	{
+		var activeClass = menuType == MobileService.MobileMenu ? " active" : string.Empty;
 
 		return $"{_buttonClass}{activeClass}";
 	}
 
-	private void DisplayReleases()
+	public void DisplayMenu(Enums.MobileMenu menuType)
 	{
-		_menuType = DisplayMobile.Releases;
-		MobileService.ShowMenu(_menuType);
+		OverflowMenuService.HideMenu();
+		MobileService.ShowMenu(menuType);
 	}
 
-	private void DisplayArtists()
+	private void ToggleOverflowMenu()
 	{
-		_menuType = DisplayMobile.Artists;
-		MobileService.ShowMenu(_menuType);
-	}
-
-	private void DisplayDate()
-	{
-		_menuType = DisplayMobile.Date;
-		MobileService.ShowMenu(_menuType);
-	}
-
-	public void DisplayMenu()
-	{
-		_showMenu = !_showMenu;
-
-		OnMoreClick.InvokeAsync(_showMenu);
+		OverflowMenuService.ShowOrHideMenu(_overflowMenu);
 	}
 }

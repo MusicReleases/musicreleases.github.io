@@ -4,9 +4,10 @@ namespace JakubKastner.MusicReleases.Services.UiServices;
 
 public interface IMobileService
 {
-	DisplayMobile DisplayMobile { get; }
+	MobileMenu MobileMenu { get; }
 
 	event Action? OnDisplayChanged;
 
-	void ShowMenu(DisplayMobile menuType);
+	void HideMenu();
+	void ShowMenu(MobileMenu menuType);
 }

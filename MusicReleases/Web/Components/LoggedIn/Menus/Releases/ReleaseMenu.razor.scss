@@ -1,4 +1,17 @@
+@use '../../../../../wwwroot/styles/global/layout' as layout;
+
 .main-nav {
     container-type: inline-size;
-    container-name: main-nav;       
+    container-name: main-nav;
+}
+
+.release-menu {
+    grid-area: releases-menu;
+
+
+    @include layout.respond(mobile) {
+        &:not(.show) {
+            display: none;
+        }
+    }
 }

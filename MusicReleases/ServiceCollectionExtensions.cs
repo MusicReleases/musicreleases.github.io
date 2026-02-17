@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IIconService, IconService>();
 		services.AddScoped<IDragDropService, DragDropService>();
 		services.AddScoped<IMobileService, MobileService>();
+		services.AddScoped<IOverflowMenuService, OverflowMenuService>();
 
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();

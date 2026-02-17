@@ -7,9 +7,7 @@ else
     <ul class="year-list">
         @foreach (var year in FilteredYearMonth)
         {
-            <li>
-                <DateSidebarYearButton Year="@year.Key" Months="@year.Value" />
-            </li>
+            <DateSidebarYearButton Year="@year.Key" Months="@year.Value" />
         }
     </ul>
-}
+}   
