@@ -2,4 +2,16 @@
     --font-size-1: 18px;
     --padding-left-right: 20px;
     --margin-right-icon: 5px;
+    --col-menu: 130px;
+    --col-artists: 230px;
+    --col-date: 120px;
+    --col-main: 1fr;
+    --col-playlists: 280px;
+    --row-loader: 5px;
+    --row-headers: 40px;
+    --row-filters: 40px;
+    --row-content: 1fr;
+    --row-menu-releases: 79px;
+    --row-menu-mobile: 67px;
+    --row-menu-all: calc(var(--row-menu-releases) + var(--row-menu-mobile));
 }

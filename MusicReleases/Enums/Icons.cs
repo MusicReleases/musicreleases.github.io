@@ -43,6 +43,7 @@ public enum LucideIcon
 	MicVocal,
 	Minus,
 	Music,
+	Music2,
 	Play,
 	Plus,
 	Podcast,

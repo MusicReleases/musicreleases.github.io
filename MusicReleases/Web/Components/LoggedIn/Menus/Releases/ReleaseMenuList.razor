@@ -1,0 +1,28 @@
+﻿@using JakubKastner.SpotifyApi.SpotifyEnums
+
+<ul class="nav-list @ClassList">
+
+    @foreach (var releaseType in EnumReleaseTypeExtensions.GetAllReleaseTypes())
+    {
+        if (releaseType == ReleaseType.Podcasts)
+        {
+            // TODO podcasts
+            continue;
+        }
+        <li class="nav-item @releaseType.ToString().ToLower()">
+            <ReleaseMenuButton ReleaseType=@releaseType Class="@ReleaseButtonClass" />
+        </li>
+    }
+
+    @if (MenuType == MainMenuType.Primary)
+    {
+        <li class="more">
+            <MrButton Class="@ClassMore" Text="More" Title="@TitleMore" OnClick="@DisplayMore" aria-expanded="@_showMore" aria-controls="more-releases">
+                <MrChip Class="@ActiveClass">
+                    <MrIcon Icon="@IconMore" />
+                </MrChip>
+            </MrButton>
+        </li>
+    }
+
+</ul>

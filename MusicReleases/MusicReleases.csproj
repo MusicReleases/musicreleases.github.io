@@ -16,12 +16,12 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <DebugType>portable</DebugType>
 	</PropertyGroup>
-
+		
 	<ItemGroup>
 		<!-- SVG icons to DLL -->
 		<EmbeddedResource Include="Icons\**\*.svg" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 	  <Content Include="Icons\spotify\small-green.svg" />
 	</ItemGroup>
@@ -55,7 +55,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Icons\custom\" />
 	  <Folder Include="wwwroot\styles\oldstyle\1_fonts\" />
 	</ItemGroup>
 

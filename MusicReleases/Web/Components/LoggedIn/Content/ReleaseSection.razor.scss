@@ -1,19 +1,33 @@
+@use '../../../../wwwroot/styles/global/layout' as layout;
+
 .filter, .toolbar {
     display: inline-flex;
     padding: 5px;
+
+    @include layout.respond(mobile) {
+        background-color: var(--color-3);
+    }
 }
 
 .filter {
     grid-area: releases-filter;
+    overflow: auto;
 }
 
 .toolbar {
     grid-area: releases-toolbar;
     gap: 2px;
+    overflow: auto;
 }
 
 .content {
     grid-area: releases-content;
     overflow-y: auto;
     height: 100%;
+
+    @include layout.respond(tablet) {
+        &:not(.show) {
+            display: none;
+        }
+    }
 }

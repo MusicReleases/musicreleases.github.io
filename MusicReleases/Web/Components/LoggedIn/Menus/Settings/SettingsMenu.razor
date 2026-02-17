@@ -1,4 +1,4 @@
-﻿<div class="menu-user">
+﻿<div class="menu-user @ClassMenu">
 
     @if (_spotifyUser is null)
     {
@@ -8,7 +8,7 @@
         <MrButton Class="main-menu rounded-xl fill-width transparent" Text="@_spotifyUser.Name">
             @if (_spotifyUser?.ProfilePictureUrl is not null)
             {
-                <img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" width="50" />
+                <img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" alt="Profile picture" width="50" />
             }
             else
             {
@@ -21,3 +21,9 @@
         <LogoutButton />
     }
 </div>
+@* 
+<div class="menu-toggle">
+    <MrButton Class="" Title="@TitleButton" OnClick="@ShowMenu">
+        <MrIcon Icon="LucideIcon.Menu" />
+    </MrButton>
+</div> *@

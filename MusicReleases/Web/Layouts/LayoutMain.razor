@@ -4,7 +4,7 @@
 
 @* main layout - user is sucessfully logged in *@
 
-<div class="body">
+<div class="body @ClassMain">
 
     @if (!ApiLoginService.IsUserLoggedIn())
     {
@@ -26,7 +26,7 @@
             @Body
         </ReleaseSection>
 
-        <Footer />
+        @* <Footer /> *@
 
         <ActiveTasks />
 

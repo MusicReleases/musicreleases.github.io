@@ -1,0 +1,40 @@
+﻿<ul class="nav-list @Class">
+
+
+    <li class="releases">
+        <MrButton Class="@GetButtonClass(DisplayMobile.Releases)" Title="View releases" OnClick="@DisplayReleases">
+            <MrIcon Icon="@LucideIcon.Music2" />
+            <span class="title">
+                Releases
+            </span>
+        </MrButton>
+    </li>
+
+    <li class="artists">
+        <MrButton Class="@GetButtonClass(DisplayMobile.Artists)" Title="View artists" OnClick="@DisplayArtists">
+            <MrIcon Icon="LucideIcon.MicVocal" />
+            <span class="title">
+                Artists
+            </span>
+        </MrButton>
+    </li>
+
+    <li class="date">
+        <MrButton class="@GetButtonClass(DisplayMobile.Date)" Title="View date" OnClick="@DisplayDate">
+            <MrIcon Icon="@LucideIcon.Calendar" />
+            <span class="title">
+                Date
+            </span>
+        </MrButton>
+    </li>
+
+    <li class="more">
+        <MrButton Class="@ClassMenu" Title="@TitleMenu" OnClick="@DisplayMenu" aria-expanded="@_showMenu" aria-controls="settings-menu">
+            <MrIcon Icon="@IconMenu" />
+            <span class="title">
+                Menu
+            </span>
+        </MrButton>
+    </li>
+
+</ul>

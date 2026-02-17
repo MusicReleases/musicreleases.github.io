@@ -14,14 +14,17 @@
 body {
     background-color: var(--color-2);
     color: var(--color-text-1);
+    height: 100vh;
     height: 100dvh;
     width: 100dvw;
     max-width: 100%;
+    overflow: hidden;
 }
 
 #app {
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
 p {

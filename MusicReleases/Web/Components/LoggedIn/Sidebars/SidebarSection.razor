@@ -1,10 +1,10 @@
 ﻿@* header *@
-<header class="@TypeString-header header" style="grid-area: @TypeString-header">
+<header class="@TypeString-header header @ClassShow" style="grid-area: @TypeString-header">
     @Header
 </header>
 
 @* filter *@
-<search class="@TypeString-filter filter" style="grid-area: @TypeString-filter" role="search">
+<search class="@TypeString-filter filter @ClassShow" style="grid-area: @TypeString-filter" role="search">
     @if (Loading)
     {
         <p>Loading...</p>
@@ -16,7 +16,7 @@
 </search>
 
 @* content (list) *@
-<nav class="@TypeString-menu menu scroll" style="grid-area: @TypeString-menu" aria-label="@ContentAriaLabel">
+<nav class="@TypeString-menu menu scroll @ClassShow" style="grid-area: @TypeString-menu" aria-label="@ContentAriaLabel">
     @if (Loading)
     {
         <p>Loading...</p>

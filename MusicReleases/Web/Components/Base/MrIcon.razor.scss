@@ -3,6 +3,14 @@
     align-items: center;
     justify-content: center;
     vertical-align: middle;
+    width: 1.25rem;
+    height: 1.25rem;
+
+    &.logo {
+        width: 1em;
+        height: 1em;
+    }
+
     // lucide icons (stroke)
     &:deep(.icon-stroke) {
         width: 100%;

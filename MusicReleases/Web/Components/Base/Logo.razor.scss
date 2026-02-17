@@ -1,3 +1,5 @@
+@use '../../../wwwroot/styles/global/layout' as layout;
+
 .logo {
     grid-area: logo;
     display: flex;
@@ -14,6 +16,10 @@
         justify-content: center;
         align-items: center;
         gap: 2px;
+
+        @include layout.respond(mobile) {
+                display: none;
+        }
 
         .title {
             margin-top: 5px;

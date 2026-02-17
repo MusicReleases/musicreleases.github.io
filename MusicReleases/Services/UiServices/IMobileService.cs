@@ -8,6 +8,5 @@ public interface IMobileService
 
 	event Action? OnDisplayChanged;
 
-	string GetMenuClass(DisplayMobile menuType);
 	void ShowMenu(DisplayMobile menuType);
 }

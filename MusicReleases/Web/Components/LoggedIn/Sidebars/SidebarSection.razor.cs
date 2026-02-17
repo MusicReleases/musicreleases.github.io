@@ -1,10 +1,15 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars;
 
-public partial class SidebarSection
+public partial class SidebarSection : IDisposable
 {
+	[Inject]
+	private IMobileService MobileService { get; set; } = default!;
+
+
 	[Parameter, EditorRequired]
 	public SidebarType Type { get; set; }
 
@@ -25,4 +30,29 @@ public partial class SidebarSection
 
 
 	private string TypeString => Type.ToString().ToLower();
+
+	private DisplayMobile? MobileMenuType => Type switch
+	{
+		SidebarType.Artists => DisplayMobile.Artists,
+		SidebarType.Date => DisplayMobile.Date,
+		_ => null
+	};
+
+	private string ClassShow => MobileService.DisplayMobile == MobileMenuType ? "show" : string.Empty;
+
+	protected override void OnInitialized()
+	{
+		MobileService.OnDisplayChanged += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		MobileService.OnDisplayChanged -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
 }

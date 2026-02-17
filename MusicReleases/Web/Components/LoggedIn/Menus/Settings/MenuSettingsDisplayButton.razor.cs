@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main.Settings;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Settings;
 
 public partial class MenuSettingsDisplayButton : IDisposable
 {

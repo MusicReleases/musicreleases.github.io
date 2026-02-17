@@ -23,6 +23,12 @@ public enum MenuType
 	Date,
 }
 
+public enum MainMenuType
+{
+	Primary,
+	Overflow,
+}
+
 
 public enum SidebarType
 {

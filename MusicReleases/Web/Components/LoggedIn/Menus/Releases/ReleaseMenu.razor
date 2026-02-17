@@ -1,0 +1,10 @@
+﻿<nav class="main-nav" aria-label="Releases menu">
+    <ReleaseMenuList MenuType="MainMenuType.Primary" OnMoreClick="DisplayMore" />
+</nav>
+
+@if (_renderMore)
+{
+    <nav id="more-releases" class="main-nav" aria-label="Releases menu">
+        <ReleaseMenuList MenuType="MainMenuType.Overflow" Class="@ClassMore" />
+    </nav>
+}

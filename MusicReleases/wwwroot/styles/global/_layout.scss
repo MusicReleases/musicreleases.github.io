@@ -1,0 +1,36 @@
+
+@mixin respond($breakpoint) {
+
+    @if $breakpoint==pc {
+
+        @media only screen and (min-width: 1151px) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint==tablet {
+
+        @media only screen and (max-width: 1150px) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint==mobile {
+
+        @media only screen and (max-width: 860px) {
+            @content;
+        }
+    }
+
+    /*@else if $breakpoint==text {
+        @media only screen and (max-width: 1309px) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint==watches {
+        @media only screen and (max-width: 100px) {
+            @content;
+        }
+    }*/
+}

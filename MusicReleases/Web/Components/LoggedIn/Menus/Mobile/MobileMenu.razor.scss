@@ -1,0 +1,14 @@
+@use '../../../../../wwwroot/styles/global/layout' as layout;
+
+.mobile-nav {
+    display: none;
+    container-type: inline-size;
+    container-name: mobile-nav;
+    background-color: var(--color-2);
+
+    @include layout.respond(mobile) {
+        display: flex;
+        flex-grow: 1;
+        padding: 13px 0;
+    }
+}

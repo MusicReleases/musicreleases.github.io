@@ -16,9 +16,6 @@ public partial class MrIcon<TIcon> where TIcon : Enum
 	public string? Class { get; set; }
 
 	[Parameter]
-	public string Size { get; set; } = "1.25rem";
-
-	[Parameter]
 	public bool Fill { get; set; } = false;
 
 	[Parameter]

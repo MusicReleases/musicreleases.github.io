@@ -3,7 +3,7 @@ using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Main.Releases;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 
 public partial class ReleaseMenuButton : IDisposable
 {
@@ -20,12 +20,18 @@ public partial class ReleaseMenuButton : IDisposable
 	[Parameter, EditorRequired]
 	public ReleaseType ReleaseType { get; set; }
 
+	[Parameter]
+	public string? Class { get; set; }
+
 
 	private string ReleaseTypeText => ReleaseType.ToString();
 
 	private string ButtonTitle => $"View released {ReleaseTypeText}";
 
-	private string ButtonClass => $"main-menu rounded-xl fill-width trasparent{(ReleaseFilter ? " active" : string.Empty)}";
+	private string ActiveClass => ReleaseFilter ? " active" : string.Empty;
+
+	private string ButtonClass => $"rounded-xl fill-width trasparent{ActiveClass} {Class}";
+
 
 	private LucideIcon Icon => EnumIconsExtensions.GetIconForRelease(ReleaseType);
 

@@ -1,3 +1,5 @@
+@use '../../../../wwwroot/styles/global/layout' as layout;
+
 .header, .filter {
     display: inline-flex;
     gap: 2px;
@@ -16,4 +18,27 @@
     overflow-y: auto;
     height: 100%;
     min-height: 0
+}
+
+@include layout.respond(tablet) {
+    .playlists-header,
+    .playlists-filter,
+    .playlists-menu {
+        &:not(.show) {
+            display: none;
+        }
+    }
+}
+
+@include layout.respond(mobile) {
+    .artists-header,
+    .artists-filter,
+    .artists-menu,
+    .date-header,
+    .date-filter,
+    .date-menu {
+        &:not(.show) {
+            display: none;
+        }
+    }
 }

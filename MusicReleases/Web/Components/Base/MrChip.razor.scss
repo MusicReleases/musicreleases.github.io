@@ -1,0 +1,12 @@
+.chip {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 3.5rem;
+    height: 1.9rem;
+
+    &.active {
+        background-color: var(--color-project);
+        border-radius: 999px;
+    }
+}
