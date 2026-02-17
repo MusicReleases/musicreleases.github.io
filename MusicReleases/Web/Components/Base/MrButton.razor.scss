@@ -1,5 +1,5 @@
-@use '../../../wwwroot/styles/global/layout' as layout;
-@use '../../../wwwroot/styles/global/mixins' as mixins;
+@use 'global/layout' as layout;
+@use 'global/mixins' as mixins;
 
 @mixin chip-divider($side) {
     content: "";

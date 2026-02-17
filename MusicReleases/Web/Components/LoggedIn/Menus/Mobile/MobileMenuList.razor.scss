@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use '../../../../../wwwroot/styles/global/layout' as layout;
+@use 'global/layout' as layout;
 
 // + 2 * padding (15px) + 3 * gap (15px)
 $icon-bps: ( 4: 112px * 4 + 2 * 15px + 3 * 15px, 3: 112px * 3 + 50px + 2 * 10px + 3 * 10px, 2: 112px * 3 + 50px + 2 * 5px + 3 * 2px);

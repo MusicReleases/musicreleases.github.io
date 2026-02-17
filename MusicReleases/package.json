@@ -1,0 +1,16 @@
+{
+  "name": "musicreleases",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "css": "sass --load-path=wwwroot/styles .:. --style=compressed --no-source-map",
+    "watch": "sass --watch --load-path=wwwroot/styles .:. --style=expanded"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.97.3"
+  }
+}

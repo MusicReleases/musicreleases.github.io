@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'mixins' as mixins;
 
 :root {
@@ -33,7 +34,7 @@ $themes:
         color-6: rgb(56, 56, 56), 
         color-7: rgb(66, 66, 66), 
         color-text-1: rgb(255, 255, 255), 
-        color-text-2: rgb(105, 105, 105),
+        color-text-2: rgb(105, 105, 105),   
         color-text-button: rgb(26, 178, 107),
     ), 
     color:
@@ -54,25 +55,25 @@ $themes:
 // auto themes
 
 :root {
-    @include mixins.emit-theme-vars(map-get($themes, light));
+    @include mixins.emit-theme-vars(map.get($themes, light));
 }
 
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]):not([data-theme="color"]) {
-        @include mixins.emit-theme-vars(map-get($themes, dark));
+        @include mixins.emit-theme-vars(map.get($themes, dark));
     }
 }
 
 // user themes
 
 :root[data-theme="dark"] {
-    @include mixins.emit-theme-vars(map-get($themes, dark));
+    @include mixins.emit-theme-vars(map.get($themes, dark));
 }
 
 :root[data-theme="color"] {
-    @include mixins.emit-theme-vars(map-get($themes, color));
+    @include mixins.emit-theme-vars(map.get($themes, color));
 }
 
 :root[data-theme="light"] {
-    @include mixins.emit-theme-vars(map-get($themes, light));
+    @include mixins.emit-theme-vars(map.get($themes, light));
 }

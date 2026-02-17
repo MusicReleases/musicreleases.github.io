@@ -399,5 +399,4 @@ FodyWeavers.xsd
 
 # Added by user
 *.css
-/MusicReleases/Web/Components/LoggedIn/Releases/*.css
-/MusicReleases/Web/Components/LoggedIn/Menus/**/Releases/*.css
+*.css.map

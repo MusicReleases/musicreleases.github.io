@@ -1,3 +1,5 @@
+@use 'mixins' as mixins;
+
 * {
     margin: 0;
     text-decoration: none;
@@ -34,7 +36,7 @@ p {
 a {
     color: var(--color-text-1);
 
-    &:hover {
+    @include mixins.hover-active {
         text-decoration: none;
         color: var(--color-project);
     }

@@ -12,6 +12,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    # build sass
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install NPM dependencies
+      working-directory: ./MusicReleases
+      run: npm ci
+
+    - name: Build SASS
+      working-directory: ./MusicReleases
+      run: npm run css
+
+    # build .net
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
