@@ -1,17 +1,16 @@
 @use 'global/layout' as layout;
 
-.main-nav {
-    container-type: inline-size;
-    container-name: main-nav;
-}
-
 .release-menu {
+    container-type: inline-size;
+    container-name: releases-menu;
     grid-area: releases-menu;
 
+    &-main {
 
-    @include layout.respond(mobile) {
-        &:not(.show) {
-            display: none;
+        @include layout.respond(mobile) {
+            &:not(.show) {
+                display: none;
+            }
         }
     }
 }

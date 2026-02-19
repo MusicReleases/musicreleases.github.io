@@ -1,4 +1,3 @@
-﻿<MrButton OnClick="@Update" Title="Update" Class="@ButtonClass" Disabled="@Loading">
-    <MrIcon Icon="@Icon" Spin="@Loading" />
-    @ChildContent
+﻿<MrButton OnClick="@Update" Text="@Text" Title="@ButtonTitle" Class="@ButtonClass" Disabled="@IsLoading">
+    <MrIcon Icon="@Icon" Spin="@IsLoading" />
 </MrButton>

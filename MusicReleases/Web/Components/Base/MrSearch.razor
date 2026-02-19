@@ -1,9 +1,9 @@
-﻿<MrInput Value="@SearchText" Placeholder="@Placeholder" Class="search" ValueChanged="TextValueChanged" />
+﻿<MrInput Value="@SearchText" Placeholder="@Placeholder" Class="search" ValueChanged="@TextValueChanged" />
 
 @* display when anything is in input *@
 @if (!string.IsNullOrEmpty(SearchText))
 {
-    <MrButton Class="rounded-l transparent" OnClick="@Clear" Title="Clear input">
-        <MrIcon Icon="LucideIcon.Delete" />
+    <MrButton Class="@ButtonClass" OnClick="@Clear" Title="Clear input">
+        <MrIcon Icon="@LucideIcon.Delete" />
     </MrButton>
 }

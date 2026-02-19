@@ -10,20 +10,20 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
-		
+
 	<ItemGroup>
 		<!-- SVG icons to DLL -->
 		<EmbeddedResource Include="Icons\**\*.svg" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <Content Include="Icons\spotify\small-green.svg" />
+		<Content Include="Icons\spotify\small-green.svg" />
 	</ItemGroup>
 
 
@@ -40,7 +40,7 @@
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="..\Extensions\Extensions.csproj" />
 		<ProjectReference Include="..\SpotifyApi\SpotifyApi.csproj" />
@@ -54,7 +54,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\styles\oldstyle\1_fonts\" />
+		<Folder Include="wwwroot\styles\oldstyle\1_fonts\" />
 	</ItemGroup>
-
+	
 </Project>

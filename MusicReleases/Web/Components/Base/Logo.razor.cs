@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using JakubKastner.MusicReleases.Enums;
+using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
 
@@ -8,17 +9,16 @@ public partial class Logo
 	private NavigationManager NavManager { get; set; } = default!;
 
 
-	[Parameter]
-	public bool DisplayLogoMiddle { get; set; } = false;
-
-	[Parameter]
-	public bool ClickEnabled { get; set; } = false;
-
-	[Parameter]
-	public string? Class { get; set; }
+	[Parameter, EditorRequired]
+	public LogoComponent Type { get; set; }
 
 
-	private string LogoClass => $"{Class} {(ClickEnabled ? "clickable" : string.Empty)}";
+	private string Class => Type.ToLowerString();
+
+	private bool DisplayLogoMiddle => Type == LogoComponent.Public;
+
+	private bool ClickEnabled => Type == LogoComponent.Public;
+
 	private string Title => ClickEnabled ? "Go to homepage" : string.Empty;
 
 

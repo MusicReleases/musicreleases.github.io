@@ -1,6 +1,6 @@
 ﻿@using JakubKastner.SpotifyApi.SpotifyEnums
 
-<ul class="nav-list @ClassList">
+<ul class="@ListClass">
 
     @foreach (var releaseType in EnumReleaseTypeExtensions.GetAllReleaseTypes())
     {
@@ -9,17 +9,17 @@
             // TODO podcasts
             continue;
         }
-        <li class="@releaseType.ToString().ToLower()">
-            <ReleaseMenuButton ReleaseType=@releaseType Class="@ClassButtonRelease" />
+        <li class="@releaseType.ToLowerString()">
+            <ReleaseMenuButton ReleaseType=@releaseType Class="@ReleaseButtonClass" />
         </li>
     }
 
-    @if (MenuType == MainMenuType.Primary)
+    @if (MenuType == ReleaseMenuComponent.Primary)
     {
-        <li class="@ClassLiOverflow">
-            <MrButton Class="@ClassButtonOverflow" Text="More" Title="@TitleButtonOverflow" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="more-releases">
-                <MrChip Class="@ClassChipOverflow">
-                    <MrIcon Icon="@IconOverflow" />
+        <li class="@OverflowListItemClass">
+            <MrButton Class="@OverflowButtonClass" Text="More" Title="@OverflowButtonTitle" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="more-releases">
+                <MrChip Class="@ClassActiveOverflow">
+                    <MrIcon Icon="@OverflowIcon" />
                 </MrChip>
             </MrButton>
         </li>

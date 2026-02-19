@@ -1,5 +1,3 @@
-/** MIXINS */
-
 // theme variable emitter
 @mixin emit-theme-vars($theme-map) {
     @each $key, $value in $theme-map {

@@ -1,14 +1,11 @@
-﻿@* filter *@
-<search class="releases-filter filter scroll @ClassHide" role="search">
+﻿<search class="filter scroll @ClassShow" role="search">
     <ReleaseFilter />
 </search>
 
-@* actions/toolbar *@
-<aside class="releases-toolbar toolbar @ClassHide">
-    <ReleaseToolbar Loading="@Loading" />
+<aside class="toolbar @ClassShow">
+    <ReleaseToolbar />
 </aside>
 
-@* content *@
-<div class="releases-content content scroll @ClassHide">
+<div class="content scroll @ClassShow">
     @ChildContent
 </div>

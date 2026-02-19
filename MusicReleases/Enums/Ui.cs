@@ -8,17 +8,10 @@ public enum Theme
 	Color,
 }
 
-public enum MobileMenu
-{
-	Releases,
-	Artists,
-	Date,
-}
-
 public enum OverflowMenu
 {
 	Releases,
-	Mobile,
+	Settings,
 }
 
 public enum MenuType
@@ -27,12 +20,6 @@ public enum MenuType
 	Releases,
 	Playlists,
 	Date,
-}
-
-public enum MainMenuType
-{
-	Primary,
-	Overflow,
 }
 
 

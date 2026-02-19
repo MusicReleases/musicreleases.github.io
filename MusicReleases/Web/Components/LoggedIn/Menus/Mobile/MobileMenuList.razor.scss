@@ -1,50 +1,44 @@
 @use 'sass:map';
-@use 'global/layout' as layout;
 
 // + 2 * padding (15px) + 3 * gap (15px)
 $icon-bps: ( 4: 112px * 4 + 2 * 15px + 3 * 15px, 3: 112px * 3 + 50px + 2 * 10px + 3 * 10px, 2: 112px * 3 + 50px + 2 * 5px + 3 * 2px);
 
 
 @function bp-max($icons) {
-    @return map.get($icon-bps, $icons)  - 1px;
+    @return map.get($icon-bps, $icons) - 1px;
 }
 
-.nav-list {
+.menu-list {
     gap: 15px;
     padding: 0 15px;
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    
+    .menu-item {
+        display: flex;
+    }
 
-    @container mobile-nav (max-width: #{bp-max(4)}) {
+    @container mobile-menu (max-width: #{bp-max(4)}) {
         grid-template-columns: repeat(3, 1fr) 50px;
         gap: 10px;
         padding: 0 10px;
-    }
 
-    @container mobile-nav (max-width: #{bp-max(3)}) {
-        gap: 2px;
-        padding: 0 5px;
-    }
-
-    @container mobile-nav (max-width: #{bp-max(2)}) {
-        grid-template-columns: repeat(4, 1fr);
-
-        .title {
+        .more .title {
             display: none;
         }
     }
 
-
-    li {
-        display: flex;
+    @container mobile-menu (max-width: #{bp-max(3)}) {
+        gap: 2px;
+        padding: 0 5px;
     }
 
-    .more {
+    @container mobile-menu (max-width: #{bp-max(2)}) {
+        grid-template-columns: repeat(4, 1fr);
+
         .title {
-            @container mobile-nav (max-width: #{bp-max(4)}) {
-                display: none;
-            }
+            display: none;
         }
     }
 }

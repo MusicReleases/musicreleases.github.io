@@ -24,18 +24,17 @@ public partial class ReleaseMenuButton : IDisposable
 	public string? Class { get; set; }
 
 
-	private string ReleaseTypeText => ReleaseType.ToString();
+	private bool IsActive => SpotifyFilterService.Filter?.ReleaseType == ReleaseType;
 
-	private string ButtonTitle => $"View released {ReleaseTypeText}";
+	private string ActiveClass => IsActive ? "active" : string.Empty;
 
-	private string ActiveClass => ReleaseFilter ? " active" : string.Empty;
+	private string ButtonText => ReleaseType.ToFriendlyString(true);
 
-	private string ButtonClass => $"rounded-xl fill-width trasparent{ActiveClass} {Class}";
+	private string ButtonTitle => $"View {ReleaseType.ToFriendlyString()}";
 
+	private string ButtonClass => $"{ActiveClass} {Class}";
 
 	private LucideIcon Icon => EnumIconsExtensions.GetIconForRelease(ReleaseType);
-
-	private bool ReleaseFilter => SpotifyFilterService.Filter?.ReleaseType == ReleaseType;
 
 
 	protected override void OnInitialized()

@@ -13,7 +13,7 @@
     #{$side}: 0;
 }
 
-.button {
+@mixin base {
     cursor: pointer;
     border: none;
     display: flex;
@@ -25,124 +25,294 @@
     white-space: nowrap;
     flex-shrink: 0;
     align-items: center;
-
-    &.hover-text-only {
-        @include mixins.hover-active {
-            background-color: transparent;
-            color: var(--color-project);
-        }
-    }
-
-    &.xl {
-        padding: 18px;
-        border-radius: 25px;
-    }
-
-    &.rounded {
-
-        &-m {
-            font-size: 15px;
-            padding: 5px 10px;
-            border-radius: 16px;
-        }
-
-        &-l {
-            font-size: 16px;
-            padding: 5px 10px;
-            border-radius: 16px;
-        }
-
-        &-xl {
-            font-size: 16px;
-            padding: 10px;
-            border-radius: 10px;
-        }
-    }
-
     color: var(--color-text-1);
     background-color: var(--color-3);
 
-    &.transparent {
-        background-color: transparent;
-    }
+    @include hover;
+}
 
-    &.main-menu,
-    &.main-menu-more {
-        background-color: transparent;
-
-        &.active {
-            background-color: transparent;
-            color: var(--color-text-1);
-        }
-    }
-
-    &.main-menu {
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    &.mobile-menu {
-        background-color: transparent;
-        display: flex;
-        justify-content: center;
-        font-size: 16px;
-        padding: 10px;
-        border-radius: 23px;
-
-        &.active {
-            background-color: var(--color-project-3);
-            color: var(--color-text-1);
-        }
-    }
-
-    &.fill-width {
-        width: 100%;
-    }
-
-    &.chips {
-        background-color: var(--color-1);
-
-        &.left {
-            padding-right: 5px;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-
-            &::after {
-                @include chip-divider(right);
-            }
-        }
-
-        &.right {
-            padding-left: 5px;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-
-            &::before {
-                @include chip-divider(left);
-            }
-        }
-
-        @include mixins.hover-active {
-            color: var(--color-text-1);
-            background-color: var(--color-5);
-            /*color: var(--color-1);
-            background-color: var(--color-project-2);*/
-        }
-
-        &.active {
-            color: var(--color-1);
-            background-color: var(--color-project);
-
-            @include mixins.hover-active {
-                background-color: var(--color-5);
-                //background-color: var(--color-project-2);
-            }
-        }
-    }
-
+// properties
+@mixin hover {
     @include mixins.hover-active {
         background-color: var(--color-4);
     }
+}
+
+@mixin hover-text-only {
+    @include mixins.hover-active {
+        background-color: transparent;
+        color: var(--color-project);
+    }
+}
+
+@mixin transparent {
+    background-color: transparent;
+    @include hover;
+}
+
+@mixin fill-width {
+    width: 100%;
+}
+
+@mixin fill-height {
+    height: 100%;
+}
+
+@mixin fill-height-flex {
+    @include fill-height;
+    display: flex;
+}
+
+@mixin fill-height-flex-max {
+    @include fill-height-flex;
+    flex-grow: 1;
+}
+
+// size
+@mixin xl {
+    padding: 18px;
+    border-radius: 25px;
+}
+
+// rounded
+@mixin rounded-m {
+    font-size: 15px;
+    padding: 5px 10px;
+    border-radius: 16px;
+}
+
+@mixin rounded-l {
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 16px;
+}
+
+@mixin rounded-xl {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+// chips
+@mixin chip {
+    background-color: var(--color-1);
+
+    @include mixins.hover-active {
+        color: var(--color-text-1);
+        background-color: var(--color-5);
+    }
+
+    &.active {
+        color: var(--color-1);
+        background-color: var(--color-project);
+
+        @include mixins.hover-active {
+            background-color: var(--color-5);
+        }
+    }
+}
+
+@mixin chip-left {
+    padding-right: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+
+    &::after {
+        @include chip-divider(right);
+    }
+}
+
+@mixin chip-right {
+    padding-left: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    &::before {
+        @include chip-divider(left);
+    }
+}
+
+// menu - mobile
+@mixin menu-mobile {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 23px;
+
+    &.active {
+        background-color: var(--color-project-3);
+        color: var(--color-text-1);
+    }
+}
+
+// menu - releases
+@mixin menu-releases {
+    @include menu-releases-overflow;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@mixin menu-releases-overflow {
+
+    &.active {
+        background-color: transparent;
+        color: var(--color-text-1);
+    }
+}
+
+
+.button {
+    @include base;
+    // MrSearchButton
+    &.search {
+        @include rounded-l;
+        @include transparent;
+    }
+    // HomeButton
+    &.home {
+        @include xl;
+    }
+
+    &.menu {
+        // MobileMenuButton
+        &-mobile {
+            @include menu-mobile;
+            @include transparent;
+            @include fill-width;
+        }
+        // ReleaseMenuButton
+        &-releases {
+            @include menu-releases;
+            @include transparent;
+            @include fill-width;
+            @include rounded-xl;
+
+            &-overflow {
+                @include menu-releases-overflow;
+                @include transparent;
+                @include fill-width;
+                @include rounded-xl;
+            }
+        }
+        // SettingsMenu
+        &-settings {
+            @include transparent;
+            @include fill-width;
+            @include rounded-xl;
+
+            &.user {
+                @include menu-releases;
+            }
+        }
+    }
+
+    &.filter {
+        // ReleaseFilterButton
+        &-releases {
+            @include rounded-l;
+            @include chip;
+
+            &.left {
+                margin-left: 5px;
+                @include chip-left;
+            }
+
+            &.right {
+                @include chip-right;
+            }
+        }
+        // ClearFilterButton
+        &-clear {
+            &.all {
+                // -> toolbar-releases
+            }
+
+            &.artists {
+                @include rounded-l;
+                @include transparent;
+            }
+
+            &.date {
+                @include rounded-l;
+                @include transparent;
+            }
+
+            &.releases {
+                @include rounded-m;
+                @include chip;
+            }
+        }
+    }
+    // UpdateButton
+    &.update {
+        &.artists {
+            @include rounded-l;
+            @include transparent;
+        }
+
+        &.releases {
+            // -> toolbar-releases
+        }
+
+        &.playlists {
+            @include rounded-l;
+            @include transparent;
+        }
+    }
+    // SortButton
+    &.sort {
+        &.artists {
+            @include rounded-l;
+            @include transparent;
+        }
+
+        &.playlists {
+            // -> playlist-action
+        }
+
+        &.date {
+            @include rounded-l;
+            @include transparent;
+        }
+
+        &.releases {
+            @include rounded-l;
+            @include transparent;
+        }
+    }
+
+    &.toolbar {
+        // ReleaseToolbar
+        &-releases {
+            @include rounded-l;
+            @include transparent;
+        }
+    }
+
+    &.playlist {
+        // PlaylistButton
+        &-add {
+            @include fill-height-flex-max;
+            @include transparent;
+            @include hover-text-only;
+
+            &-position {
+                @include fill-height-flex;
+                @include transparent;
+                @include hover-text-only;
+            }
+        }
+        // PlaylistFilter
+        &-action {
+            @include rounded-l;
+            @include transparent;
+        }
+    }
+}
+
+
+.button {
 
     &.active-transparent {
         color: var(--color-project);
@@ -153,14 +323,6 @@
         background-color: var(--color-4);
     }
 
-    &.flex-fill {
-        height: 100%;
-        display: flex;
-
-        &-max {
-            flex-grow: 1;
-        }
-    }
 
     &.show-mobile {
         display: none;

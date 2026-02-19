@@ -3,30 +3,15 @@
 * {
     margin: 0;
     text-decoration: none;
-    font-family: "DM Sans", "Pontano Sans", sans-serif;
+    font-family: 'DM Sans', 'Pontano Sans', sans-serif;
     word-wrap: anywhere;
     overflow-wrap: anywhere;
-}
 
-    *, *::before, *::after {
+    &,
+    &::before,
+    &::after {
         box-sizing: border-box;
     }
-
-
-body {
-    background-color: var(--color-2);
-    color: var(--color-text-1);
-    height: 100vh;
-    height: 100dvh;
-    width: 100dvw;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-#app {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
 }
 
 p {
@@ -51,4 +36,20 @@ ul {
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+body {
+    background-color: var(--color-2);
+    color: var(--color-text-1);
+    height: 100vh;
+    height: 100dvh;
+    width: 100dvw;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }

@@ -3,7 +3,6 @@
 .filter,
 .toolbar,
 .content {
-
     @include layout.respond(mobile) {
         &:not(.show) {
             display: none;
@@ -11,10 +10,10 @@
     }
 }
 
-
 .filter,
 .toolbar {
     display: inline-flex;
+    overflow: auto;
     padding: 5px;
 
     @include layout.respond(mobile) {
@@ -24,13 +23,11 @@
 
 .filter {
     grid-area: releases-filter;
-    overflow: auto;
 }
 
 .toolbar {
     grid-area: releases-toolbar;
     gap: 2px;
-    overflow: auto;
 }
 
 .content {

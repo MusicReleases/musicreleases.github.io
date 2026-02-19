@@ -1,0 +1,17 @@
+﻿@if (_spotifyUser is null)
+{
+    <p>User is not logged in</p>
+}
+else
+{
+    <MrButton Class="@ButtonClass" Text="@_spotifyUser.Name">
+        @if (_spotifyUser?.ProfilePictureUrl is not null)
+        {
+            <img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" alt="Profile picture" width="50" />
+        }
+        else
+        {
+            <MrIcon Icon="LucideIcon.UserRound" title="Profile picture" />
+        }
+    </MrButton>
+}

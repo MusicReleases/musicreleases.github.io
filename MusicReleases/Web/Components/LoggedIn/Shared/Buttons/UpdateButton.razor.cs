@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Shared.Buttons;
 
-public partial class UpdateButton
+public partial class UpdateButton : IDisposable
 {
+	[Inject]
+	private ILoaderService LoaderService { get; set; } = default!;
+
 	[Inject]
 	private IApiLoginService ApiLoginService { get; set; } = default!;
 
@@ -19,22 +22,45 @@ public partial class UpdateButton
 
 
 	[Parameter, EditorRequired]
-	public MenuType Type { get; set; }
+	public UpdateButtonComponent ButtonType { get; set; }
 
 	[Parameter]
-	public bool Loading { get; set; } = false;
-
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
+	public string? Text { get; set; }
 
 	[Parameter]
 	public string? Class { get; set; }
 
 
-	private LucideIcon Icon => Loading ? LucideIcon.LoaderCircle : LucideIcon.RefreshCcw;
+	private string ButtonClass => $"{(Class.IsNullOrEmpty() ? $"update {ButtonType.ToLowerString()}" : Class)}";
 
-	private string ButtonClass => $"rounded-l transparent {Class}";
+	private string ButtonTitle => $"Update {ButtonType.ToFriendlyString()}";
 
+	private LucideIcon Icon => IsLoading ? LucideIcon.LoaderCircle : LucideIcon.RefreshCcw;
+
+	private bool IsLoading => ButtonType switch
+	{
+		UpdateButtonComponent.Artists => LoaderService.IsLoading(LoadingType.Artists),
+		UpdateButtonComponent.Releases => LoaderService.IsLoading(LoadingType.Releases),
+		UpdateButtonComponent.Playlists => LoaderService.IsLoading(LoadingType.Playlists) || LoaderService.IsLoading(LoadingType.PlaylistTracks),
+		_ => throw new NotImplementedException(),
+	};
+
+
+	protected override void OnInitialized()
+	{
+		LoaderService.LoadingStateChanged += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		LoaderService.LoadingStateChanged -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
 
 	private void Update()
 	{
@@ -47,7 +73,7 @@ public partial class UpdateButton
 				throw new NullReferenceException(nameof(SpotifyFilterService.Filter));
 			}
 
-			SpotifyWorkflowService.Update(Type, SpotifyFilterService.Filter.ReleaseType);
+			SpotifyWorkflowService.Update(ButtonType, SpotifyFilterService.Filter.ReleaseType);
 		}
 	}
 }

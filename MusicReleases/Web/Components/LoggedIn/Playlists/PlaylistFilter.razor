@@ -1,7 +1,7 @@
-<MrSearch SearchText="@SearchText" Placeholder="Search or create playlist..." ValueChanged="@OnSearch" />
+<MrSearch SearchText="@SearchText" Placeholder="Search or create playlist..." ValueChanged="@Search" ButtonClass="@_buttonClass" />
 
-<MrButton Class="rounded-l transparent" Title="Create new playlist" OnClick="@CreatePlaylist">
+<MrButton Class="@_buttonClass" Title="Create new playlist" OnClick="@CreatePlaylist">
     <MrIcon Icon="LucideIcon.CirclePlus" />
 </MrButton>
 
-<SortButton Type="_type" />
+<SortButton ButtonType="SortButtonComponent.Playlists" Class="@_buttonClass" />

@@ -11,9 +11,7 @@
 @if (Artists is null || Artists.Count < 1)
 {
 	<p>0 artists</p>
-	<UpdateButton Type="_menuType">
-		Update
-	</UpdateButton>
+	<UpdateButton ButtonType="@UpdateButtonComponent.Artists" Text="Update" />
 }
 else
 {

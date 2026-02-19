@@ -2,19 +2,12 @@
 // scrollbars
 
 .infinite-scroll {
-    position: relative
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-
-    &:horizontal {
-        height: 5px;
-    }
+    position: relative;
 }
 
 .scroll {
     scrollbar-width: thin;
+    scrollbar-color: var(--color-6) transparent;
 
     &::-webkit-scrollbar {
         width: initial;
@@ -25,21 +18,24 @@
     }
 }
 
-// firefox
-.scroll {
-    scrollbar-color: var(--color-6) transparent;
-}
-// chrome
-::-webkit-scrollbar-track,
-::-webkit-scrollbar-track:horizontal {
-    background-color: transparent;
-}
+::-webkit-scrollbar {
+    width: 10px;
 
-::-webkit-scrollbar-thumb,
-::-webkit-scrollbar-thumb:horizontal {
-    background-color: var(--color-6);
+    &:horizontal {
+        height: 5px;
+    }
 
-    &:hover {
-        background-color: var(--color-text-2);
+    &-track,
+    &-track:horizontal {
+        background-color: transparent;
+    }
+
+    &-thumb,
+    &-thumb:horizontal {
+        background-color: var(--color-6);
+
+        &:hover {
+            background-color: var(--color-text-2);
+        }
     }
 }

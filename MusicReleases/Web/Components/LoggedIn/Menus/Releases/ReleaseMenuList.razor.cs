@@ -15,30 +15,30 @@ public partial class ReleaseMenuList : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public MainMenuType MenuType { get; set; }
+	public ReleaseMenuComponent MenuType { get; set; }
 
 	[Parameter]
 	public string? Class { get; set; }
 
 
-	private string ClassList => $"{MenuType.ToString().ToLower()} {Class}";
+	private string ListClass => $"menu-list {MenuType.ToLowerString()} {Class}";
 
-	private string ClassButtonRelease => $"main-menu{(MenuType == MainMenuType.Primary ? string.Empty : "-more")}";
+	private string ReleaseButtonClass => $"{_buttonClass}{(MenuType == ReleaseMenuComponent.Primary ? string.Empty : "-overflow")}";
 
 	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
-	private string TitleButtonOverflow => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} more";
+	private string ClassActiveOverflow => IsOverflowMenuDisplayed ? "active" : string.Empty;
 
-	private string ClassButtonOverflow => $"{_buttonClass}{ClassChipOverflow}";
+	private string OverflowListItemClass => $"more {SpotifyFilterService.Filter?.ReleaseType.ToLowerString()}-more";
 
-	private string ClassChipOverflow => IsOverflowMenuDisplayed ? " active" : string.Empty;
+	private string OverflowButtonTitle => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} more";
 
-	private string ClassLiOverflow => $"more {SpotifyFilterService.Filter?.ReleaseType.ToString().ToLower()}-more";
+	private string OverflowButtonClass => $"{_buttonClass} {ClassActiveOverflow}";
 
-	private LucideIcon IconOverflow => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Ellipsis;
+	private LucideIcon OverflowIcon => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Ellipsis;
 
 
-	private const string _buttonClass = "main-menu rounded-xl fill-width trasparent";
+	private const string _buttonClass = "menu-releases";
 
 	private const OverflowMenu _overflowMenu = OverflowMenu.Releases;
 

@@ -8,8 +8,13 @@ public partial class LogoutButton
 	[Inject]
 	private ILoginService LoginService { get; set; } = default!;
 
-	private void LogoutUser()
+
+	[Parameter]
+	public string? Class { get; set; }
+
+
+	private async Task LogoutUser()
 	{
-		LoginService.LogoutUser();
+		await LoginService.LogoutUser();
 	}
 }

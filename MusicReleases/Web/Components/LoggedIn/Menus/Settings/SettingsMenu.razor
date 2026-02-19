@@ -1,23 +1,10 @@
-﻿<div class="menu-user @ClassOverflowMenu">
+﻿<div class="settings-menu @ClassShow">
 
-    @if (_spotifyUser is null)
-    {
-    }
-    else
-    {
-        <MrButton Class="main-menu rounded-xl fill-width transparent" Text="@_spotifyUser.Name">
-            @if (_spotifyUser?.ProfilePictureUrl is not null)
-            {
-                <img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" alt="Profile picture" width="50" />
-            }
-            else
-            {
-                <MrIcon Icon="LucideIcon.UserRound" title="Profile picture" />
-            }
-        </MrButton>
+    <UserButton Class="@_buttonClass" />
+    @*
+        <SettingsButton Class="@_buttonClass" />
+        <PlayerButton Class="@_buttonClass" />
+    *@
+    <LogoutButton Class="@_buttonClass" />
 
-        <SettingsButton />
-        <PlayerButton />
-        <LogoutButton />
-    }
 </div>

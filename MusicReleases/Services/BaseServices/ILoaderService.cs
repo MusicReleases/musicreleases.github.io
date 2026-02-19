@@ -5,7 +5,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 public interface ILoaderService
 {
 	bool Loading { get; }
-	string LoadingClass { get; }
+	string ActiveClass { get; }
 
 	event Action? LoadingStateChanged;
 

@@ -53,7 +53,7 @@ public partial class PlaylistButton
 		}
 	}
 
-	private string Title(bool positionTop)
+	private string ButtonTitle(bool positionTop)
 	{
 		string itemName = Release is not null ? $"release '{Release.Name}'" : Track is not null ? $"track '{Track.Name}'" : "_";
 
@@ -87,7 +87,6 @@ public partial class PlaylistButton
 			await AddToPlaylist(false);
 		}
 	}
-
 
 	private async Task AddToPlaylist(bool positionTop)
 	{

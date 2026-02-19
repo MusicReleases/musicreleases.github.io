@@ -4,30 +4,32 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Content;
 
-public partial class ReleaseToolbar
+public partial class ReleaseToolbar : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
-
-	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
+	public ILoaderService LoaderService { get; set; } = default!;
 
 
-	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object>? Attributes { get; set; }
+	private bool Loading => LoaderService.IsLoading(LoadingType.Releases);
 
 
-	[Parameter, EditorRequired]
-	public required bool Loading { get; set; }
+	private const string _buttonClass = "toolbar-releases";
 
 
-	private readonly MenuType _type = MenuType.Releases;
-
-
-	private async Task ClearFilter()
+	protected override void OnInitialized()
 	{
-		var url = await SpotifyFilterUrlService.ClearFilter();
-		NavManager.NavigateTo(url);
+		LoaderService.LoadingStateChanged += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		LoaderService.LoadingStateChanged -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 
 	private void AddToPlaylist()

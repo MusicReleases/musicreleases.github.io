@@ -1,16 +1,6 @@
 @use 'mixins' as mixins;
 
 
-.clickable {
-    cursor: pointer !important;
-}
-
-/*.buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
-}*/
 
 .left {
     padding-left: var(--padding-left-right);
@@ -20,48 +10,10 @@
     padding-left: var(--padding-left-right);
 }
 
-.row {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-}
-
 .p- {
     &0 {
         padding: 0;
     }
-}
-
-.ml- {
-    &5 {
-        margin-left: 5px;
-    }
-}
-
-// icon left and right margin
-.icon-text {
-    i {
-        margin-right: var(--margin-right-icon);
-    }
-
-    &-right {
-        i {
-            margin-left: var(--margin-right-icon);
-        }
-    }
-}
-
-// explicit
-.explicit {
-    span {
-        font-size: 13px;
-        padding-left: 2.5px;
-        font-style: italic;
-    }
-}
-
-.hidden {
-    display: none !important;
 }
 
 .release-list {
@@ -80,23 +32,3 @@
         background-color: var(--color-4);
     }
 }
-
-// responsive styles (hide / show content on pc / mobile)
-/*@include mixins.respond(pc) {
-    .hide-pc {
-        display: none !important;
-    }
-}
-
-@include mixins.respond(tablet) {
-    .hide-tablet {
-        display: none !important;
-    }
-}
-
-@include mixins.respond(mobile) {
-    .hide-mobile {
-        display: none !important;
-    }
-}
-*/

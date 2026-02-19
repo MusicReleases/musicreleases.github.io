@@ -4,24 +4,24 @@ namespace JakubKastner.MusicReleases.Services.UiServices;
 
 public class MobileService : IMobileService
 {
-	public MobileMenu MobileMenu { get; private set; } = _defaultMenu;
+	public MobileMenuButtonComponent MobileMenu { get; private set; } = _defaultMenu;
 
 	public event Action? OnDisplayChanged;
 
 
-	private const MobileMenu _defaultMenu = MobileMenu.Releases;
+	private const MobileMenuButtonComponent _defaultMenu = MobileMenuButtonComponent.Releases;
 
 	public void HideMenu()
 	{
 		ShowMenuInternal();
 	}
 
-	public void ShowMenu(MobileMenu menuType)
+	public void ShowMenu(MobileMenuButtonComponent menuType)
 	{
 		ShowMenuInternal(menuType);
 	}
 
-	private void ShowMenuInternal(MobileMenu menuType = _defaultMenu)
+	private void ShowMenuInternal(MobileMenuButtonComponent menuType = _defaultMenu)
 	{
 		if (MobileMenu == menuType)
 		{

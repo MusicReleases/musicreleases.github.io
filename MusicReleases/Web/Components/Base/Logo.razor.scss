@@ -1,28 +1,48 @@
 @use 'global/layout' as layout;
 
-.logo {
+@mixin base {
     grid-area: logo;
     display: flex;
-    flex-direction: row;
-    gap: 7px;
     color: var(--color-project);
     font-weight: 900;
-    cursor: default;
     user-select: none;
+    cursor: default;
+}
 
-    &.main-logo {
-        flex-direction: column;
-        padding: 20px;
-        justify-content: center;
-        align-items: center;
-        gap: 2px;
+@mixin public {
+    flex-direction: row;
+    gap: 7px;
+}
 
-        @include layout.respond(mobile) {
-                display: none;
-        }
+@mixin header {
+    flex-direction: column;
+    gap: 2px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
 
-        .title {
-            margin-top: 5px;
-        }
+    @include layout.respond(mobile) {
+        display: none;
+    }
+
+    .title {
+        margin-top: 5px;
+    }
+}
+
+@mixin clickable {
+    cursor: pointer;
+}
+
+.logo {
+    @include base;
+
+    &.public {
+        @include clickable;
+        @include public;
+    }
+
+    &.header {
+        @include header;
     }
 }

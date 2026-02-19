@@ -1,5 +1,4 @@
-﻿using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Services;
@@ -183,14 +182,14 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService,
 		return await GetFilterUrl();
 	}
 
-	public async Task<string> ClearFilter(MenuType? type = null)
+	public async Task<string> ClearFilter(ClearFilterButtonComponent type)
 	{
 		return type switch
 		{
-			MenuType.Date => await GetFilterUrl(year: null, month: null),
-			MenuType.Artists => await GetFilterUrl(artist: null),
-			MenuType.Releases => await GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
-			null => await ClearFilter(),
+			ClearFilterButtonComponent.All => await ClearFilter(),
+			ClearFilterButtonComponent.Artists => await GetFilterUrl(artist: null),
+			ClearFilterButtonComponent.Date => await GetFilterUrl(year: null, month: null),
+			ClearFilterButtonComponent.Releases => await GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
 			_ => throw new NotSupportedException(nameof(MenuType)),
 		};
 	}

@@ -1,10 +1,10 @@
-﻿<nav class="main-nav release-menu @ClassMenu" aria-label="Releases menu">
-    <ReleaseMenuList MenuType="MainMenuType.Primary" />
+﻿<nav class="release-menu release-menu-main @ClassShow" aria-label="Releases menu">
+    <ReleaseMenuList MenuType="ReleaseMenuComponent.Primary" />
 </nav>
 
 @if (_renderOverflowMenu)
 {
-    <nav id="more-releases" class="main-nav" aria-label="Releases menu">
-        <ReleaseMenuList MenuType="MainMenuType.Overflow" Class="@ClassOverflowMenu" />
+    <nav class="release-menu" id="more-releases" aria-label="Releases menu">
+        <ReleaseMenuList MenuType="ReleaseMenuComponent.Overflow" Class="@OverflowMenuClass" />
     </nav>
-}
+}   

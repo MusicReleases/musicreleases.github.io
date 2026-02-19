@@ -4,6 +4,8 @@ namespace JakubKastner.MusicReleases.Web.Components.Base;
 
 public partial class MrSearch
 {
+	[Parameter]
+	public string ButtonClass { get; set; } = "search";
 
 	[Parameter]
 	public string? SearchText { get; set; }

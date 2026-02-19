@@ -1,6 +1,4 @@
-﻿@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Footers
-
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 @* main layout - user is sucessfully logged in *@
 
@@ -14,8 +12,7 @@
     {
         <Loader />
 
-        <Logo Class="main-logo" />
-        @* <MainMenu /> *@
+        <Logo Type="LogoComponent.Header" />
 
         <ReleaseMenu />
         <MobileMenu />
@@ -30,7 +27,6 @@
             @Body
         </ReleaseSection>
 
-        @* <Footer /> *@
 
         <ActiveTasks />
 

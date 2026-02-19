@@ -157,20 +157,20 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 		return false;
 	}
 
-	public async Task Update(MenuType menuType, ReleaseType releaseType)
+	public async Task Update(UpdateButtonComponent updateType, ReleaseType releaseType)
 	{
-		switch (menuType)
+		switch (updateType)
 		{
-			case MenuType.Artists:
+			case UpdateButtonComponent.Artists:
 				// TODO load only releases for new artists
 				await StartLoadingArtistsWithReleases(true, releaseType);
 				// TODO !!!!!!! set old update date for other release types - for update later
 				break;
-			case MenuType.Releases:
+			case UpdateButtonComponent.Releases:
 				// TODO load only releases without updating artists
 				await StartLoadingArtistsWithReleases(true, releaseType);
 				break;
-			case MenuType.Playlists:
+			case UpdateButtonComponent.Playlists:
 				await StartLoadingPlaylistsWithTracks(true);
 				break;
 			default:

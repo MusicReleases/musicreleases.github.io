@@ -1,36 +1,32 @@
-﻿<ul class="nav-list @Class">
+﻿<ul class="menu-list">
 
-
-    <li class="releases">
-        <MrButton Class="@GetButtonClass(Enums.MobileMenu.Releases)" Title="View releases" OnClick="() => DisplayMenu(Enums.MobileMenu.Releases)">
-            <MrIcon Icon="@LucideIcon.Music2" />
+    <li class="menu-item releases">
+        <MobileMenuButton ButtonType="@MobileMenuButtonComponent.Releases">
             <span class="title">
                 Releases
             </span>
-        </MrButton>
+        </MobileMenuButton>
     </li>
 
-    <li class="artists">
-        <MrButton Class="@GetButtonClass(Enums.MobileMenu.Artists)" Title="View artists" OnClick="() => DisplayMenu(Enums.MobileMenu.Artists)">
-            <MrIcon Icon="LucideIcon.MicVocal" />
+    <li class="menu-item artists">
+        <MobileMenuButton ButtonType="@MobileMenuButtonComponent.Artists">
             <span class="title">
                 Artists
             </span>
-        </MrButton>
+        </MobileMenuButton>
     </li>
 
-    <li class="date">
-        <MrButton Class="@GetButtonClass(Enums.MobileMenu.Date)" Title="View date" OnClick="() => DisplayMenu(Enums.MobileMenu.Date)">
-            <MrIcon Icon="@LucideIcon.Calendar" />
+    <li class="menu-item date">
+        <MobileMenuButton ButtonType="@MobileMenuButtonComponent.Date">
             <span class="title">
                 Date
             </span>
-        </MrButton>
+        </MobileMenuButton>
     </li>
 
-    <li class="more">
-        <MrButton Class="@ClassButtonOverflow" Title="@TitleButtonOverflow" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="settings-menu">
-            <MrIcon Icon="@IconOverflow" />
+    <li class="menu-item more">
+        <MrButton Class="@OverflowButtonClass" Title="@OverflowButtonTitle" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="settings-menu">
+            <MrIcon Icon="@OverflowIcon" />
             <span class="title">
                 Menu
             </span>

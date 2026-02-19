@@ -1,5 +1,4 @@
-﻿using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using Microsoft.AspNetCore.Components;
 
@@ -21,29 +20,10 @@ public partial class PlaylistFilter
 	public EventCallback<string> SearchTextChanged { get; set; }
 
 
-	private readonly MenuType _type = MenuType.Playlists;
+	private const string _buttonClass = "playlist-action";
 
+	private const MenuType _type = MenuType.Playlists;
 
-	private async Task OnSearch(string? newSearchText)
-	{
-		await UpdateSearchText(newSearchText);
-	}
-
-	private async Task CreatePlaylist()
-	{
-		if (SearchText.IsNullOrEmpty())
-		{
-			return;
-		}
-
-		await SpotifyPlaylistService.CreatePlaylist(SearchText);
-		await ClearSearch();
-	}
-
-	private async Task ClearSearch()
-	{
-		await UpdateSearchText(null);
-	}
 
 	private async Task UpdateSearchText(string? newSearchText)
 	{
@@ -53,5 +33,26 @@ public partial class PlaylistFilter
 		{
 			await SearchTextChanged.InvokeAsync(newSearchText);
 		}
+	}
+
+	private async Task Search(string? newSearchText)
+	{
+		await UpdateSearchText(newSearchText);
+	}
+
+
+	private async Task ClearSearch()
+	{
+		await UpdateSearchText(null);
+	}
+	private async Task CreatePlaylist()
+	{
+		if (SearchText.IsNullOrEmpty())
+		{
+			return;
+		}
+
+		await SpotifyPlaylistService.CreatePlaylist(SearchText);
+		await ClearSearch();
 	}
 }

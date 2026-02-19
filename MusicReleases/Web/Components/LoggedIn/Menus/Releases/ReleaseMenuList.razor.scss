@@ -11,7 +11,23 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
     @return map.get($icon-bps, $icons) - 1px;
 }
 
-.nav-list {
+@mixin hide-category($category) {
+    .#{$category} {
+        display: none;
+    }
+}
+
+@mixin hide-category-primary($category) {
+    @include hide-category($category);
+
+    .#{$category} {
+        &-more ::deep .button > .chip {
+            background-color: var(--color-project);
+        }
+    }
+}
+
+.menu-list {
     display: grid;
     grid-template-columns: 1fr;
 
@@ -28,57 +44,33 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
             // 5 icons
             grid-template-columns: repeat(5, 1fr);
             // 4 icons
-            @container main-nav (max-width: #{bp-max(5)}) {
+            @container releases-menu (max-width: #{bp-max(5)}) {
                 grid-template-columns: repeat(4, 1fr);
-
-                .appears,
-                .compilations {
-                    display: none;
-                    &-more ::deep .button > .chip {
-                        // active
-                        background-color: var(--color-project);
-                    }
-                }
 
                 .more {
                     display: grid;
                 }
+
+                @include hide-category-primary('appears');
+                @include hide-category-primary('compilations');
             }
             // 3 icons
-            @container main-nav (max-width: #{bp-max(4)}) {
+            @container releases-menu (max-width: #{bp-max(4)}) {
                 grid-template-columns: repeat(3, 1fr);
 
-                .podcasts {
-                    display: none;
-                    &-more ::deep .button > .chip {
-                        // active
-                        background-color: var(--color-project);
-                    }
-                }
+                @include hide-category-primary('podcasts');
             }
             // 2 icons
-            @container main-nav (max-width: #{bp-max(3)}) {
+            @container releases-menu (max-width: #{bp-max(3)}) {
                 grid-template-columns: repeat(2, 1fr);
 
-                .tracks {
-                    display: none;
-                    &-more ::deep .button > .chip {
-                        // active
-                        background-color: var(--color-project);
-                    }
-                }
+                @include hide-category-primary('tracks');
             }
             // 1 icon
-            @container main-nav (max-width: #{bp-max(2)}) {
+            @container releases-menu (max-width: #{bp-max(2)}) {
                 grid-template-columns: repeat(1, 1fr);
 
-                .albums {
-                    display: none;
-                    &-more ::deep .button > .chip {
-                        // active
-                        background-color: var(--color-project);
-                    }
-                }
+                @include hide-category-primary('albums');
             }
         }
     }
@@ -89,12 +81,11 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
 
         @include layout.respond(mobile) {
 
-
             &.hidden {
                 display: none;
             }
             // 4 --> 2 icons
-            @container main-nav (max-width: #{bp-max(5)}) {
+            @container releases-menu (max-width: #{bp-max(5)}) {
                 display: grid;
                 position: fixed;
                 bottom: var(--row-menu-mobile);
@@ -105,21 +96,17 @@ $icon-bps: ( 5: 118px * 5, 4: 88px * 4, 3: 76px * 3, 2: 76px * 2 );
                 width: 100vw;
             }
             // 3 --> 3 icons
-            @container main-nav (min-width: #{bp-min(4)}) {
-
-                .podcasts {
-                    display: none;
-                }
+            @container releases-menu (min-width: #{bp-min(4)}) {
+                @include hide-category('podcasts');
             }
             // 2 --> 4 icons
-            @container main-nav (min-width: #{bp-min(3)}) {
-
-                .tracks {
-                    display: none;
-                }
+            @container releases-menu (min-width: #{bp-min(3)}) {
+                @include hide-category('tracks');
             }
             // 1 --> 5 icons
-            @container main-nav (min-width: #{bp-min(2)}) {
+            @container releases-menu (min-width: #{bp-min(2)}) {
+                @include hide-category('albums');
+
                 .albums {
                     display: none;
                 }

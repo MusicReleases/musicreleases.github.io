@@ -31,10 +31,10 @@ public partial class SidebarSection : IDisposable
 
 	private string TypeString => Type.ToString().ToLower();
 
-	private MobileMenu? MobileMenuType => Type switch
+	private MobileMenuButtonComponent? MobileMenuType => Type switch
 	{
-		SidebarType.Artists => MobileMenu.Artists,
-		SidebarType.Date => MobileMenu.Date,
+		SidebarType.Artists => MobileMenuButtonComponent.Artists,
+		SidebarType.Date => MobileMenuButtonComponent.Date,
 		_ => null
 	};
 

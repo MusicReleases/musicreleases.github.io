@@ -1,5 +1,6 @@
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Content;
@@ -17,22 +18,17 @@ public partial class ReleaseFilterButton : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public required ReleasesFilters LeftType { get; set; }
+	public required ReleaseFilterButtonComponent ButtonType { get; set; }
 
 	[Parameter, EditorRequired]
-	public required string LeftTitle { get; set; }
+	public required ReleasesFilters FilterType { get; set; }
 
-	[Parameter, EditorRequired]
-	public required string LeftText { get; set; }
 
-	[Parameter, EditorRequired]
-	public required ReleasesFilters RightType { get; set; }
+	private string ButtonClass => $"filter-releases {ButtonType.ToLowerString()}{(IsFilterActive() ? " active" : string.Empty)}";
 
-	[Parameter, EditorRequired]
-	public required string RightTitle { get; set; }
+	private string ButtonTitle => $"{(IsFilterActive() ? "Hide" : "Show")} {GetTypeName(false)}";
 
-	[Parameter, EditorRequired]
-	public required string RightText { get; set; }
+	private string ButtonText => GetTypeName(true);
 
 
 	protected override void OnInitialized()
@@ -51,30 +47,32 @@ public partial class ReleaseFilterButton : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private string ButtonClass(ReleasesFilters type, string? customClass = null)
+	private string GetTypeName(bool capitalizeFirstLetter)
 	{
-		var active = IsFilterActive(type);
-		var buttonClass = $"rounded-m chips {customClass}{(active ? " active" : string.Empty)}";
-		return buttonClass;
+		if (FilterType == ReleasesFilters.Clear)
+		{
+			throw new NotImplementedException();
+		}
+
+		var name = FilterType.ToFriendlyString(capitalizeFirstLetter);
+		if (FilterType == ReleasesFilters.EPs && SpotifyFilterService.Filter?.ReleaseType == ReleaseType.Appears)
+		{
+			name = $"albums and {name}";
+		}
+
+		return name;
 	}
 
-	private string ButtonTitle(ReleasesFilters type, string title)
+	private async Task ChangeFilter()
 	{
-		var active = IsFilterActive(type);
-		var buttonTitle = $"{(active ? "Hide" : "Show")} {title}";
-		return buttonTitle;
-	}
-
-	private async Task ChangeFilter(ReleasesFilters type)
-	{
-		var url = await SpotifyFilterUrlService.GetFilterUrl(type, !IsFilterActive(type));
+		var url = await SpotifyFilterUrlService.GetFilterUrl(FilterType, !IsFilterActive());
 		NavManager.NavigateTo(url);
 	}
 
-	private bool IsFilterActive(ReleasesFilters type)
+	private bool IsFilterActive()
 	{
 		// this names must be same as in the URL and in Enums.ReleasesFilters
-		var filterProperty = SpotifyFilterService.Filter!.Advanced.GetType().GetProperty(type.ToString());
+		var filterProperty = SpotifyFilterService.Filter!.Advanced.GetType().GetProperty(FilterType.ToString());
 		if (filterProperty is null || filterProperty.PropertyType != typeof(bool))
 		{
 			throw new NotSupportedException(nameof(filterProperty));

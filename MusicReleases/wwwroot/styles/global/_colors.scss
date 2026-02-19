@@ -52,28 +52,26 @@ $themes:
     ),
 );
 
-// auto themes
-
 :root {
+    // default themes
     @include mixins.emit-theme-vars(map.get($themes, light));
-}
 
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]):not([data-theme="color"]) {
+    &:not([data-theme="light"]):not([data-theme="color"]) {
+        @media (prefers-color-scheme: dark) {
+            @include mixins.emit-theme-vars(map.get($themes, dark));
+        }
+    }
+
+    // user themes
+    &[data-theme="light"] {
+        @include mixins.emit-theme-vars(map.get($themes, light));
+    }
+
+    &[data-theme="dark"] {
         @include mixins.emit-theme-vars(map.get($themes, dark));
     }
-}
 
-// user themes
-
-:root[data-theme="dark"] {
-    @include mixins.emit-theme-vars(map.get($themes, dark));
-}
-
-:root[data-theme="color"] {
-    @include mixins.emit-theme-vars(map.get($themes, color));
-}
-
-:root[data-theme="light"] {
-    @include mixins.emit-theme-vars(map.get($themes, light));
+    &[data-theme="color"] {
+        @include mixins.emit-theme-vars(map.get($themes, color));
+    }
 }
