@@ -13,14 +13,12 @@ public partial class ReleaseMenu : IDisposable
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
 
-	private string ClassShow => MobileService.MobileMenu == MobileMenuButtonComponent.Releases ? " show" : string.Empty;
+	private string ClassShow => (MobileService.MobileMenu == MobileMenuButtonComponent.Releases).ToCssClass("show");
 
 	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
-	private string OverflowMenuClass => IsOverflowMenuDisplayed ? string.Empty : "hidden";
 
-
-	private const OverflowMenu _overflowMenu = OverflowMenu.Releases;
+	private const OverflowMenuType _overflowMenu = OverflowMenuType.Releases;
 
 	private bool _renderOverflowMenu = false;
 

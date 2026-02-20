@@ -14,12 +14,13 @@ public partial class MobileMenuList : IDisposable
 
 	private string OverflowButtonTitle => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} menu";
 
-	private string OverflowButtonClass => $"menu-mobile {(IsOverflowMenuDisplayed ? " active" : string.Empty)}";
 
 	private LucideIcon OverflowIcon => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Menu;
 
 
-	private const OverflowMenu _overflowMenu = OverflowMenu.Settings;
+	private const OverflowMenuType _overflowMenu = OverflowMenuType.Settings;
+
+	private const string _overflowButtonClass = "menu-mobile";
 
 
 	protected override void OnInitialized()

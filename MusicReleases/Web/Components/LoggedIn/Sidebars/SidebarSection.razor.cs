@@ -49,7 +49,7 @@ public partial class SidebarSection : IDisposable
 		_ => throw new NotImplementedException(),
 	};
 
-	private string ClassShow => MobileService.MobileMenu == MobileMenuType ? "show" : string.Empty;
+	private string ClassShow => (MobileService.MobileMenu == MobileMenuType).ToCssClass("show");
 
 
 	protected override void OnInitialized()

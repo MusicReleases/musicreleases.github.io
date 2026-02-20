@@ -4,11 +4,11 @@ namespace JakubKastner.MusicReleases.Services.UiServices;
 
 public class OverflowMenuService : IOverflowMenuService
 {
-	public OverflowMenu? DisplayedMenu { get; private set; } = null;
+	public OverflowMenuType? DisplayedMenu { get; private set; } = null;
 
 	public event Action? OnDisplayChanged;
 
-	public bool IsDisplayed(OverflowMenu menuType)
+	public bool IsDisplayed(OverflowMenuType menuType)
 	{
 		return DisplayedMenu == menuType;
 	}
@@ -18,12 +18,12 @@ public class OverflowMenuService : IOverflowMenuService
 		ShowMenuInternal();
 	}
 
-	public void ShowMenu(OverflowMenu menuType)
+	public void ShowMenu(OverflowMenuType menuType)
 	{
 		ShowMenuInternal(menuType);
 	}
 
-	public void ShowOrHideMenu(OverflowMenu menuType)
+	public void ShowOrHideMenu(OverflowMenuType menuType)
 	{
 		if (IsDisplayed(menuType))
 		{
@@ -36,7 +36,7 @@ public class OverflowMenuService : IOverflowMenuService
 		ShowMenuInternal(menuType);
 	}
 
-	private void ShowMenuInternal(OverflowMenu? menuType = null)
+	private void ShowMenuInternal(OverflowMenuType? menuType = null)
 	{
 		if (menuType == DisplayedMenu)
 		{

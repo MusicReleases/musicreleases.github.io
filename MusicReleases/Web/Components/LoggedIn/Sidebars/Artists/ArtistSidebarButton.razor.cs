@@ -28,7 +28,8 @@ public partial class ArtistSidebarButton : IDisposable
 
 	private bool FilterActive => SpotifyFilterService.Filter?.Artist == ArtistId;
 
-	private string ButtonClass => $"sidebar-content{(FilterActive ? " active" : string.Empty)}";
+
+	private const string _buttonClass = "sidebar-content";
 
 
 	protected override void OnInitialized()

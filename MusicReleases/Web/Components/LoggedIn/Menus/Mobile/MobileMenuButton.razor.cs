@@ -22,7 +22,7 @@ public partial class MobileMenuButton : IDisposable
 
 	private bool IsActive => ButtonType == MobileService.MobileMenu;
 
-	private string ButtonClass => $"menu-mobile {ButtonType.ToLowerString()}{(IsActive ? " active" : string.Empty)}";
+	private string ButtonClass => $"menu-mobile {ButtonType.ToLowerString()}";
 
 	private string ButtonTitle => $"View {ButtonType.ToFriendlyString()}";
 

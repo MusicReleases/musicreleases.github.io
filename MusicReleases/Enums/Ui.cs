@@ -8,26 +8,10 @@ public enum Theme
 	Color,
 }
 
-public enum OverflowMenu
+public enum OverflowMenuType
 {
 	Releases,
 	Settings,
-}
-
-public enum MenuType
-{
-	Artists,
-	Releases,
-	Playlists,
-	Date,
-}
-
-
-public enum SidebarType
-{
-	Artists,
-	Date,
-	Playlists,
 }
 
 public enum DragDropType

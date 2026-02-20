@@ -24,7 +24,7 @@ public partial class ReleaseFilterButton : IDisposable
 	public required ReleasesFilters FilterType { get; set; }
 
 
-	private string ButtonClass => $"filter-releases {ButtonType.ToLowerString()}{(IsFilterActive() ? " active" : string.Empty)}";
+	private string ButtonClass => $"filter-releases {ButtonType.ToLowerString()}";
 
 	private string ButtonTitle => $"{(IsFilterActive() ? "Hide" : "Show")} {GetTypeName(false)}";
 

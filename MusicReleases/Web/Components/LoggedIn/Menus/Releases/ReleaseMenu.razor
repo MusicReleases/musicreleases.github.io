@@ -5,6 +5,6 @@
 @if (_renderOverflowMenu)
 {
     <nav class="release-menu" id="more-releases" aria-label="Releases menu">
-        <ReleaseMenuList MenuType="ReleaseMenuComponent.Overflow" Class="@OverflowMenuClass" />
+        <ReleaseMenuList MenuType="ReleaseMenuComponent.Overflow" Hidden="@(!IsOverflowMenuDisplayed)" />
     </nav>
 }   

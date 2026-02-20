@@ -26,13 +26,9 @@ public partial class ReleaseMenuButton : IDisposable
 
 	private bool IsActive => SpotifyFilterService.Filter?.ReleaseType == ReleaseType;
 
-	private string ActiveClass => IsActive ? "active" : string.Empty;
-
 	private string ButtonText => ReleaseType.ToFriendlyString(true);
 
 	private string ButtonTitle => $"View {ReleaseType.ToFriendlyString()}";
-
-	private string ButtonClass => $"{ActiveClass} {Class}";
 
 	private LucideIcon Icon => EnumIconsExtensions.GetIconForRelease(ReleaseType);
 

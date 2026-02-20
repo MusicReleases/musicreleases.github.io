@@ -26,16 +26,13 @@ public partial class DateSidebarYearButton : IDisposable
 	[Parameter, EditorRequired]
 	public required SortedSet<int> Months { get; set; }
 
+	private bool IsFilterActive => SpotifyFilterService.Filter?.Year == Year;
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
 
-	private string ButtonClass => $"{_buttonClass}{(YearFilter ? " active" : string.Empty)}";
+	private string MonthListClass => _showMonths.ToCssClass(string.Empty, "hidden");
 
-	private string MonthListClass => _showMonths ? string.Empty : "hidden";
-
-	private string ActiveClass => _showMonths ? "active" : string.Empty;
-
-	private bool YearFilter => SpotifyFilterService.Filter?.Year == Year;
+	private string ActiveClass => _showMonths.ToCssClass("active");
 
 
 	private const string _buttonClass = "sidebar-content date-year";
@@ -48,8 +45,8 @@ public partial class DateSidebarYearButton : IDisposable
 	protected override void OnParametersSet()
 	{
 		// display active months and hide others
-		_renderMonths = YearFilter;
-		_showMonths = YearFilter;
+		_renderMonths = IsFilterActive;
+		_showMonths = IsFilterActive;
 	}
 
 	protected override void OnInitialized()
@@ -79,7 +76,7 @@ public partial class DateSidebarYearButton : IDisposable
 
 	private async Task FilterYear()
 	{
-		int? yearFilter = YearFilter ? null : Year;
+		int? yearFilter = IsFilterActive ? null : Year;
 		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter);
 		NavManager.NavigateTo(url);
 

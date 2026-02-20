@@ -190,7 +190,7 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService,
 			ClearFilterButtonComponent.Artists => await GetFilterUrl(artist: null),
 			ClearFilterButtonComponent.Date => await GetFilterUrl(year: null, month: null),
 			ClearFilterButtonComponent.Releases => await GetFilterUrl(advancedFilterType: ReleasesFilters.Clear, advancedFilterActive: true),
-			_ => throw new NotSupportedException(nameof(MenuType)),
+			_ => throw new NotImplementedException(),
 		};
 	}
 }

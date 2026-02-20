@@ -1,3 +1,5 @@
 ﻿<li @ondragover:preventDefault="true" @ondragenter:preventDefault="true" @ondragover="@HandleDragOver" @ondragenter="HandleDragEnter" @ondragleave="HandleDragLeave" @ondrop="@HandleDrop">
-    <MrButton Class="@ButtonClass" Href="@Playlist.UrlApp" Text="@Playlist.Name" Title="Open playlist in Spotify app" role="listitem" />
+
+    <MrButton Class="@_buttonClass" Text="@Playlist.Name" Title="Open playlist in Spotify app" Active="@IsDragOver" Href="@Playlist.UrlApp" role="listitem" />
+
 </li> 

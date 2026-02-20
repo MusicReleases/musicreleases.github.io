@@ -26,9 +26,7 @@ public partial class DateSidebarMonthButton : IDisposable
 	public required int Month { get; set; }
 
 
-	private string ButtonClass => $"{_buttonClass}{(MonthFilter ? " active" : string.Empty)}";
-
-	private bool MonthFilter => SpotifyFilterService.Filter is not null && SpotifyFilterService.Filter.Month.HasValue && SpotifyFilterService.Filter.Month.Value.Year == Year && SpotifyFilterService.Filter.Month.Value.Month == Month;
+	private bool IsFilterActive => SpotifyFilterService.Filter is not null && SpotifyFilterService.Filter.Month.HasValue && SpotifyFilterService.Filter.Month.Value.Year == Year && SpotifyFilterService.Filter.Month.Value.Month == Month;
 
 
 	private const string _buttonClass = "sidebar-content date-month";
@@ -52,8 +50,8 @@ public partial class DateSidebarMonthButton : IDisposable
 
 	private async Task FilterMonth()
 	{
-		int? monthFilter = MonthFilter ? null : Month;
-		int? yearFilter = MonthFilter ? null : Year;
+		int? monthFilter = IsFilterActive ? null : Month;
+		int? yearFilter = IsFilterActive ? null : Year;
 
 		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter, monthFilter);
 		NavManager.NavigateTo(url);

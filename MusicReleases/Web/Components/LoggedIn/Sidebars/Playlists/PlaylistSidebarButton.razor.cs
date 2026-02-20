@@ -23,12 +23,12 @@ public partial class PlaylistSidebarButton
 
 	private bool IsDragOver => _dragCounter > 0;
 
-	private string ButtonClass => $"sidebar-content{(IsDragOver ? " active" : string.Empty)}";
 
+	private const string _buttonClass = "sidebar-content";
+
+	private const bool _positionTop = true;
 
 	private bool _isLoading = false;
-
-	private readonly bool _positionTop = true;
 
 	private int _dragCounter = 0;
 

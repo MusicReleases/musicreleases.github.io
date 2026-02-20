@@ -13,11 +13,12 @@ public partial class SettingsMenu : IDisposable
 
 	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
-	private string ClassShow => IsOverflowMenuDisplayed ? "show" : string.Empty;
+	private string ClassShow => IsOverflowMenuDisplayed.ToCssClass("show");
+
 
 	private const string _buttonClass = "menu-settings";
 
-	private const OverflowMenu _overflowMenu = OverflowMenu.Settings;
+	private const OverflowMenuType _overflowMenu = OverflowMenuType.Settings;
 
 
 	protected override void OnInitialized()

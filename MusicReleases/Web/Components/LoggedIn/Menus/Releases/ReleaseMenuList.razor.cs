@@ -15,32 +15,31 @@ public partial class ReleaseMenuList : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public ReleaseMenuComponent MenuType { get; set; }
+	public required ReleaseMenuComponent MenuType { get; set; }
+
+	[Parameter]
+	public bool Hidden { get; set; }
 
 	[Parameter]
 	public string? Class { get; set; }
 
 
-	private string ListClass => $"menu-list {MenuType.ToLowerString()} {Class}";
+	private string ListClass => $"menu-list {MenuType.ToLowerString()}{Hidden.ToCssClass()} {Class}";
 
 	private string ReleaseButtonClass => $"{_buttonClass}{(MenuType == ReleaseMenuComponent.Primary ? string.Empty : "-overflow")}";
 
 	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
-	private string ClassActiveOverflow => IsOverflowMenuDisplayed ? "active" : string.Empty;
-
 	private string OverflowListItemClass => $"more {SpotifyFilterService.Filter?.ReleaseType.ToLowerString()}-more";
 
 	private string OverflowButtonTitle => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} more";
-
-	private string OverflowButtonClass => $"{_buttonClass} {ClassActiveOverflow}";
 
 	private LucideIcon OverflowIcon => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Ellipsis;
 
 
 	private const string _buttonClass = "menu-releases";
 
-	private const OverflowMenu _overflowMenu = OverflowMenu.Releases;
+	private const OverflowMenuType _overflowMenu = OverflowMenuType.Releases;
 
 
 	protected override void OnInitialized()

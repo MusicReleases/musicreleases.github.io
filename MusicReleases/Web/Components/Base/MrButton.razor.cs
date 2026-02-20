@@ -1,5 +1,4 @@
-﻿using JakubKastner.Extensions;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
@@ -17,6 +16,12 @@ public partial class MrButton
 
 	[Parameter]
 	public string Type { get; set; } = "button";
+
+	[Parameter]
+	public bool Active { get; set; }
+
+	[Parameter]
+	public bool Hidden { get; set; }
 
 	[Parameter]
 	public bool Disabled { get; set; }
@@ -38,4 +43,6 @@ public partial class MrButton
 
 
 	private string? ButtonTitle => Title.IsNullOrEmpty() ? Text : Title;
+
+	private string ButtonClass => $"button {Class}{Active.ToCssClass()}{Hidden.ToCssClass()}";
 }

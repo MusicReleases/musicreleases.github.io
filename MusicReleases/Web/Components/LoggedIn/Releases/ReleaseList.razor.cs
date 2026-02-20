@@ -9,11 +9,11 @@ public partial class ReleaseList
 	public required ReleaseListComponent ListType { get; set; }
 
 	[Parameter]
-	public string? Class { get; set; }
+	public bool Hidden { get; set; }
 
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
 
-	private string DivClass => $"scroll release-list {ListType.ToLowerString()} {Class}";
+	private string DivClass => $"scroll release-list {ListType.ToLowerString()}{Hidden.ToCssClass()}";
 }

@@ -15,7 +15,7 @@ public partial class SortButton
 	public string? Class { get; set; }
 
 
-	private string ButtonClass => $"{(Class.IsNullOrEmpty() ? $"sort {ButtonType.ToLowerString()}" : Class)}";
+	private string ButtonClass => $"sort {ButtonType.ToLowerString()} {Class}";
 
 	private string ButtonTitle => $"Sort {ButtonType.ToFriendlyString()}";
 

@@ -20,7 +20,7 @@
 		</MrButton>
 		*@
 
-		<MrButton Class="@PlaylistButtonClass" Title="@PlaylistButtonTitle" OnClick="@TogglePlaylists">
+		<MrButton Class="@_buttonClass" Title="@PlaylistButtonTitle" Active="@_isPlaylistListDisplayed" OnClick="@TogglePlaylists">
 			<MrIcon Icon="LucideIcon.Plus" />
 		</MrButton>
 
@@ -48,7 +48,7 @@
 
 	@if (_renderPlaylistList)
 	{
-		<ReleaseList ListType="@ReleaseListComponent.PlaylistTrack" Class="@ListClass">
+		<ReleaseList ListType="@ReleaseListComponent.PlaylistTrack" Hidden="@(!_isPlaylistListDisplayed)">
 			<PlaylistPicker Track="@Track" />
 		</ReleaseList>
 	}

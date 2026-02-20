@@ -20,7 +20,7 @@ public partial class ClearFilterButton
 	public string? Class { get; set; }
 
 
-	private string ButtonClass => $"{(Class.IsNullOrEmpty() ? $"filter-clear {ButtonType.ToLowerString()}" : Class)}";
+	private string ButtonClass => $"filter-clear {ButtonType.ToLowerString()} {Class}";
 
 	private string ButtonText => ButtonType == ClearFilterButtonComponent.All ? "Clear all filters" : string.Empty;
 

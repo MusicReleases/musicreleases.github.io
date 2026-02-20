@@ -1,10 +1,10 @@
 ﻿<div class="buttons">
 
-	<MrButton Class="@ListButtonClass(_listTracklist)" Text="@SpotifyRelease.TotalTracks.ToString()" Title="@ListButtonTitle(_listTracklist)" OnClick="@(() => ToggleList(_listTracklist))">
-		<MrIcon Icon="@ListButtonIcon(_listTracklist)" Spin="@IsListLoading(_listTracklist)" />
-	</MrButton>
+    <MrButton Class="@_buttonClass" Text="@SpotifyRelease.TotalTracks.ToString()" Title="@ListButtonTitle(_listTracklist)" Active="@IsListActive(_listTracklist)" OnClick="@(() => ToggleList(_listTracklist))">
+        <MrIcon Icon="@ListButtonIcon(_listTracklist)" Spin="@IsListLoading(_listTracklist)" />
+    </MrButton>
 
-	@*
+    @*
 	<MrButton Class="" Title="Play release" OnClick="@Play">
 		<MrIcon Icon="LucideIcon.Play" />
 	</MrButton>
@@ -18,22 +18,22 @@
 	</MrButton>
 	*@
 
-	<MrButton Class="@ListButtonClass(_listPlaylist)" Title="@ListButtonTitle(_listPlaylist)" OnClick="@(() => ToggleList(_listPlaylist))">
-		<MrIcon Icon="@ListButtonIcon(_listPlaylist)" Spin="@IsListLoading(_listPlaylist)" />
-	</MrButton>
+    <MrButton Class="@_buttonClass" Title="@ListButtonTitle(_listPlaylist)" Active="@IsListActive(_listPlaylist)" OnClick="@(() => ToggleList(_listPlaylist))">
+        <MrIcon Icon="@ListButtonIcon(_listPlaylist)" Spin="@IsListLoading(_listPlaylist)" />
+    </MrButton>
 
 </div>
 
 @if (RenderList(_listTracklist))
 {
-	<ReleaseList ListType="@_listTracklist" Class="@ListClass(_listTracklist)">
-		<ReleaseTracklist Tracks="@SpotifyRelease.Tracks" />
-	</ReleaseList>
+    <ReleaseList ListType="@_listTracklist" Hidden="@(!IsListActive(_listTracklist))">
+        <ReleaseTracklist Tracks="@SpotifyRelease.Tracks" />
+    </ReleaseList>
 }
 
 @if (RenderList(_listPlaylist))
 {
-	<ReleaseList ListType="@_listPlaylist" Class="@ListClass(_listPlaylist)">
-		<PlaylistPicker Release="@SpotifyRelease" />
-	</ReleaseList>
+    <ReleaseList ListType="@_listPlaylist" Hidden="@(!IsListActive(_listPlaylist))">
+        <PlaylistPicker Release="@SpotifyRelease" />
+    </ReleaseList>
 }

@@ -4,12 +4,12 @@ namespace JakubKastner.MusicReleases.Services.UiServices;
 
 public interface IOverflowMenuService
 {
-	OverflowMenu? DisplayedMenu { get; }
+	OverflowMenuType? DisplayedMenu { get; }
 
 	event Action? OnDisplayChanged;
 
-	bool IsDisplayed(OverflowMenu menuType);
+	bool IsDisplayed(OverflowMenuType menuType);
 	void HideMenu();
-	void ShowMenu(OverflowMenu menuType);
-	void ShowOrHideMenu(OverflowMenu menuType);
+	void ShowMenu(OverflowMenuType menuType);
+	void ShowOrHideMenu(OverflowMenuType menuType);
 }

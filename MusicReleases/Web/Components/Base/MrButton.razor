@@ -1,6 +1,6 @@
 ﻿@if (Href.IsNotNullOrEmpty())
 {
-    <a class="button @Class"
+    <a class="@ButtonClass"
        href="@Href"
        disabled="@Disabled"
        title="@ButtonTitle"
@@ -20,7 +20,7 @@
 else
 {
     <button type="@Type"
-            class="button @Class"
+            class="@ButtonClass"
             disabled="@Disabled"
             title="@ButtonTitle"
             @onclick="OnClick"

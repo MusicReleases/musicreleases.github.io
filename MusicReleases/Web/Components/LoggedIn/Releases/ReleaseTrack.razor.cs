@@ -17,10 +17,6 @@ public partial class ReleaseTrack
 
 	private string PlaylistButtonTitle => _isPlaylistListDisplayed ? "Hide playlists" : "Add track to playlist";
 
-	private string PlaylistButtonClass => $"{_buttonClass}{(_isPlaylistListDisplayed ? " active" : string.Empty)}";
-
-	private string ListClass => _isPlaylistListDisplayed ? string.Empty : "hidden";
-
 
 	private const string _buttonClass = "track-info";
 

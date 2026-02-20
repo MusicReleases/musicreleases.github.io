@@ -72,11 +72,6 @@ public partial class ReleaseActions
 		return _loadingList == listType;
 	}
 
-	private string ListClass(ReleaseListComponent listType)
-	{
-		return IsListActive(listType) ? string.Empty : "hidden";
-	}
-
 	private string ListButtonTitle(ReleaseListComponent listType)
 	{
 		var active = IsListActive(listType);
@@ -99,12 +94,6 @@ public partial class ReleaseActions
 			ReleaseListComponent.PlaylistRelease => isLoading ? LucideIcon.LoaderCircle : LucideIcon.Plus,
 			_ => throw new NotImplementedException(),
 		};
-	}
-
-	private string ListButtonClass(ReleaseListComponent listType)
-	{
-		var activeClass = IsListActive(listType) ? " active" : string.Empty;
-		return $"{_buttonClass}{activeClass}";
 	}
 
 	private async Task GetTracks()

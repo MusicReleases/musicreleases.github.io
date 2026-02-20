@@ -19,7 +19,7 @@ public class LoaderService : ILoaderService
 	public event Action? LoadingStateChanged;
 
 	public bool Loading => _loadingStates.Values.Any(x => x) || _spotifyTaskManagerService.IsAnyTaskRunning;
-	public string ActiveClass => Loading ? "active" : string.Empty;
+	public string ActiveClass => Loading.ToCssClass("active");
 
 	private void OnTaskManagerChanged()
 	{

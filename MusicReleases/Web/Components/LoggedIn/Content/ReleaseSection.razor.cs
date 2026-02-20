@@ -12,7 +12,7 @@ public partial class ReleaseSection : IDisposable
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
-	private string ClassShow => MobileService.MobileMenu == MobileMenuButtonComponent.Releases ? "show" : string.Empty;
+	private string ClassShow => (MobileService.MobileMenu == MobileMenuButtonComponent.Releases).ToCssClass("show");
 
 
 	protected override void OnInitialized()

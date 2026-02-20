@@ -17,8 +17,8 @@
     @if (MenuType == ReleaseMenuComponent.Primary)
     {
         <li class="@OverflowListItemClass">
-            <MrButton Class="@OverflowButtonClass" Text="More" Title="@OverflowButtonTitle" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="more-releases">
-                <MrChip Class="@ClassActiveOverflow">
+            <MrButton Class="@_buttonClass" Text="More" Title="@OverflowButtonTitle" Active="@IsOverflowMenuDisplayed" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="more-releases">
+                <MrChip Active="@IsOverflowMenuDisplayed">
                     <MrIcon Icon="@OverflowIcon" />
                 </MrChip>
             </MrButton>
