@@ -10,7 +10,7 @@ public partial class Logo
 
 
 	[Parameter, EditorRequired]
-	public LogoComponent LogoType { get; set; }
+	public required LogoComponent LogoType { get; set; }
 
 
 	private string Class => LogoType.ToLowerString();

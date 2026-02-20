@@ -1,12 +1,11 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.Objects.Base;
+using SpotifyAPI.Web;
 using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyUserInfo
+public class SpotifyUserInfo : SpotifyIdNameUrlObject
 {
-	public required string Id { get; set; }
-	public required string Name { get; set; }
 	public required string Country { get; set; }
 	public required string? ProfilePictureUrl { get; set; }
 	public required DateTime LastUpdate { get; set; }
@@ -19,6 +18,8 @@ public class SpotifyUserInfo
 		Id = userApi.Id;
 		Name = userApi.DisplayName;
 		Country = userApi.Country;
+		UrlApp = userApi.Uri;
+		UrlWeb = userApi.Href;
 		ProfilePictureUrl = userApi.Images?.LastOrDefault()?.Url;
 		LastUpdate = DateTime.Now;
 	}

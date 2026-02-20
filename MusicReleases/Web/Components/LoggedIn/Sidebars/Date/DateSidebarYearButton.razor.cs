@@ -26,6 +26,7 @@ public partial class DateSidebarYearButton : IDisposable
 	[Parameter, EditorRequired]
 	public required SortedSet<int> Months { get; set; }
 
+
 	private bool IsFilterActive => SpotifyFilterService.Filter?.Year == Year;
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;

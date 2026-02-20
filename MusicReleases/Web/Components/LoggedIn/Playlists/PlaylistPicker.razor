@@ -5,7 +5,7 @@
 
 </MrRow>
 
-<PlaylistList Playlists="FilterService.FilteredPlaylists?.ToList()">
+<PlaylistList Playlists="@FilterService.FilteredPlaylists?.ToList()">
 
     <RowTemplate Context="playlist">
         <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" />

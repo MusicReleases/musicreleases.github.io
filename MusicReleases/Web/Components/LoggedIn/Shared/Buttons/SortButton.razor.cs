@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Shared.Buttons;
 public partial class SortButton
 {
 	[Parameter, EditorRequired]
-	public SortButtonComponent ButtonType { get; set; }
+	public required SortButtonComponent ButtonType { get; set; }
 
 	[Parameter]
 	public string? Text { get; set; }

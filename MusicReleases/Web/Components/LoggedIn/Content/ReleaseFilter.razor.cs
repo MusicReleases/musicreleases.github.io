@@ -8,6 +8,7 @@ public partial class ReleaseFilter : IDisposable
 	[Inject]
 	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
 
+
 	protected override void OnInitialized()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;

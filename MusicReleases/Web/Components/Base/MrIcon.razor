@@ -1,5 +1,5 @@
 ﻿@typeparam TIcon where TIcon : Enum
 
-<span class="@IconClass" title="@Title" @attributes="@Attributes" @onclick="@OnClick" @onclick:stopPropagation="@StopPropagation">
+<span class="@IconClass" title="@Title" @attributes="Attributes" @onclick="OnClick" @onclick:stopPropagation="StopPropagation">
     @((MarkupString)_svgContent)
 </span>

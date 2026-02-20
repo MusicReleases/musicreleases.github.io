@@ -18,7 +18,7 @@ public partial class ReleaseMenuButton : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public ReleaseType ReleaseType { get; set; }
+	public required ReleaseType ReleaseType { get; set; }
 
 	[Parameter]
 	public string? Class { get; set; }

@@ -16,7 +16,7 @@ public partial class PlaylistPicker : IDisposable
 
 
 	[Parameter]
-	public PlaylistType TypeFilter { get; set; } = PlaylistType.Editable;
+	public PlaylistType PlaylistTypeFilter { get; set; } = PlaylistType.Editable;
 
 	[Parameter]
 	public SpotifyRelease? Release { get; set; }
@@ -40,7 +40,7 @@ public partial class PlaylistPicker : IDisposable
 			throw new InvalidOperationException($"You must provide only {nameof(Release)} or {nameof(Track)}, not both.");
 		}
 
-		FilterService.SetTypeFilter(TypeFilter);
+		FilterService.SetTypeFilter(PlaylistTypeFilter);
 	}
 
 	protected override void OnInitialized()

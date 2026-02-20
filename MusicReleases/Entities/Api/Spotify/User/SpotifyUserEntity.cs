@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
-public class SpotifyUserEntity : SpotifyIdNameEntity
+public class SpotifyUserEntity : SpotifyIdNameUrlEntity
 {
 	public required string Country { get; init; }
 	public string? ProfilePictureUrl { get; init; }
@@ -18,6 +18,8 @@ public class SpotifyUserEntity : SpotifyIdNameEntity
 		Id = spotifyUserInfo.Id;
 		Name = spotifyUserInfo.Name;
 		Country = spotifyUserInfo.Country;
+		UrlApp = spotifyUserInfo.UrlApp;
+		UrlWeb = spotifyUserInfo.UrlWeb;
 		ProfilePictureUrl = spotifyUserInfo.ProfilePictureUrl;
 		RefreshToken = refreshToken;
 	}

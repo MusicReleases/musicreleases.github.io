@@ -14,7 +14,6 @@ public partial class MobileMenuList : IDisposable
 
 	private string OverflowButtonTitle => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} menu";
 
-
 	private LucideIcon OverflowIcon => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Menu;
 
 

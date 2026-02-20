@@ -22,7 +22,7 @@ public partial class UpdateButton : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public UpdateButtonComponent ButtonType { get; set; }
+	public required UpdateButtonComponent ButtonType { get; set; }
 
 	[Parameter]
 	public string? Text { get; set; }
