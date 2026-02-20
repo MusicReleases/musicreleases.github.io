@@ -1,4 +1,10 @@
-.info {
+.track {
+
+    .number, .name, .explicit, .duration {
+        height: 100%;
+        align-items: center;
+        display: flex;
+    }
 
     .number {
         width: 25px;
@@ -22,11 +28,5 @@
         width: 75px;
         display: flex;
         gap: 5px;
-    }
-
-    & > * {
-        height: 100%;
-        align-items: center;
-        display: flex;
     }
 }

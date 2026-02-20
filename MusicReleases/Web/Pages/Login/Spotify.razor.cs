@@ -15,6 +15,7 @@ public partial class Spotify
 
 
 	private bool _loading = true;
+
 	private bool _error = false;
 
 
@@ -23,9 +24,14 @@ public partial class Spotify
 		_loading = true;
 		_error = false;
 
-		await LoadPage();
-
-		_loading = false;
+		try
+		{
+			await LoadPage();
+		}
+		finally
+		{
+			_loading = false;
+		}
 	}
 
 	private async Task LoadPage()

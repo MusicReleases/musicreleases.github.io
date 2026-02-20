@@ -16,9 +16,14 @@ public partial class Index
 	{
 		_loading = true;
 
-		await LoadPage();
-
-		_loading = false;
+		try
+		{
+			await LoadPage();
+		}
+		finally
+		{
+			_loading = false;
+		}
 	}
 
 	private async Task LoadPage()

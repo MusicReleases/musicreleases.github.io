@@ -13,8 +13,9 @@ else if (_error)
     <InfoSection Title="Login">
         <p>Login via Spotify failed, try again:</p>
     </InfoSection>
+
     <nav class="buttons">
-        <LoginButton Type=ServiceType.Spotify />
+        <LoginButton ServiceType=@ServiceType.Spotify />
         <HomeButton />
     </nav>
 }

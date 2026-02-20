@@ -400,3 +400,4 @@ FodyWeavers.xsd
 # Added by user
 *.css
 *.css.map
+/MusicReleases/Web/Components/LoggedIn/Releases/ReleaseList.razor.css

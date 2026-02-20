@@ -2,7 +2,7 @@
 
 @* main layout - user is sucessfully logged in *@
 
-<div class="body @ClassMain">
+<div class="body @BodyClass">
 
     @if (!ApiLoginService.IsUserLoggedIn())
     {
@@ -12,7 +12,7 @@
     {
         <Loader />
 
-        <Logo Type="LogoComponent.Header" />
+        <Logo LogoType="@LogoComponent.Header" />
 
         <ReleaseMenu />
         <MobileMenu />
@@ -29,13 +29,6 @@
 
 
         <ActiveTasks />
-
-
-        @*
-            TODO mobile menu
-            <DateSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Date)" />
-            <ArtistSidebar Class="@MobileService.GetMenuClass(DisplayMobile.Artists)" />
-        *@
     }
 
 </div>

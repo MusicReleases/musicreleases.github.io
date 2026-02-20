@@ -10,14 +10,14 @@ public partial class Logo
 
 
 	[Parameter, EditorRequired]
-	public LogoComponent Type { get; set; }
+	public LogoComponent LogoType { get; set; }
 
 
-	private string Class => Type.ToLowerString();
+	private string Class => LogoType.ToLowerString();
 
-	private bool DisplayLogoMiddle => Type == LogoComponent.Public;
+	private bool DisplayLogoMiddle => LogoType == LogoComponent.Public;
 
-	private bool ClickEnabled => Type == LogoComponent.Public;
+	private bool ClickEnabled => LogoType == LogoComponent.Public;
 
 	private string Title => ClickEnabled ? "Go to homepage" : string.Empty;
 

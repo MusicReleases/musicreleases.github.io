@@ -1,7 +1,11 @@
 ﻿<ul class="playlist-list">
-    <PlaylistList Playlists="Playlists">
+
+    <PlaylistList Playlists="@Playlists">
+
         <RowTemplate Context="playlist">
-            <PlaylistSidebarButton PlaylistName="@playlist.Name" PlaylistId="@playlist.Id" />
+            <PlaylistSidebarButton Playlist="@playlist" />
         </RowTemplate>
+
     </PlaylistList>
+
 </ul>

@@ -23,6 +23,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Web\Components\LoggedIn\Releases\ReleaseTrack.razor~RF1f8ad72.TMP" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="Icons\spotify\small-green.svg" />
 	</ItemGroup>
 

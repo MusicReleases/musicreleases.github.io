@@ -29,14 +29,16 @@ public partial class DateSidebarYearButton : IDisposable
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
 
-	private string ButtonClass => $"date-year sidebar-button rounded-m fill-width transparent{(YearFilter ? " active" : string.Empty)}";
+	private string ButtonClass => $"{_buttonClass}{(YearFilter ? " active" : string.Empty)}";
 
-	private string MonthsClass => _showMonths ? string.Empty : "hidden";
+	private string MonthListClass => _showMonths ? string.Empty : "hidden";
 
 	private string ActiveClass => _showMonths ? "active" : string.Empty;
 
 	private bool YearFilter => SpotifyFilterService.Filter?.Year == Year;
 
+
+	private const string _buttonClass = "sidebar-content date-year";
 
 	private bool _renderMonths = false;
 
@@ -53,7 +55,6 @@ public partial class DateSidebarYearButton : IDisposable
 	protected override void OnInitialized()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
-
 	}
 
 	public void Dispose()
@@ -67,9 +68,9 @@ public partial class DateSidebarYearButton : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void DisplayMonths()
+	private void ToggleMonths()
 	{
-		if (!_renderMonths && !_showMonths)
+		if (!_renderMonths)
 		{
 			_renderMonths = true;
 		}

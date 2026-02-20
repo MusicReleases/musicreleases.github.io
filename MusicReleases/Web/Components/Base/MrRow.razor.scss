@@ -1,5 +1,14 @@
-.row {    
+@use 'global/mixins' as mixins;
+
+.row {
     display: flex;
     flex-direction: row;
     height: 100%;
+    gap: 5px;
+    height: 45px;
+    align-items: center;
+
+    @include mixins.hover-active {
+        background-color: var(--color-4);
+    }
 }

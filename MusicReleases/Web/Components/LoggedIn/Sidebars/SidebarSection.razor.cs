@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
@@ -9,45 +10,58 @@ public partial class SidebarSection : IDisposable
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
 
+	[Inject]
+	private ILoaderService LoaderService { get; set; } = default!;
+
 
 	[Parameter, EditorRequired]
-	public SidebarType Type { get; set; }
+	public required SidebarComponent SidebarType { get; set; }
 
 	[Parameter, EditorRequired]
-	public bool Loading { get; set; }
+	public required RenderFragment Header { get; set; }
 
 	[Parameter, EditorRequired]
-	public RenderFragment Header { get; set; }
+	public required RenderFragment Filter { get; set; }
 
 	[Parameter, EditorRequired]
-	public RenderFragment Filter { get; set; }
-
-	[Parameter, EditorRequired]
-	public RenderFragment ChildContent { get; set; }
+	public required RenderFragment ChildContent { get; set; }
 
 	[Parameter]
 	public string? ContentAriaLabel { get; set; }
 
 
-	private string TypeString => Type.ToString().ToLower();
+	private string SidebarTypeString => SidebarType.ToLowerString();
 
-	private MobileMenuButtonComponent? MobileMenuType => Type switch
+	private string LoadingText => $"Loading {SidebarType.ToFriendlyString()}...";
+
+	private MobileMenuButtonComponent? MobileMenuType => SidebarType switch
 	{
-		SidebarType.Artists => MobileMenuButtonComponent.Artists,
-		SidebarType.Date => MobileMenuButtonComponent.Date,
+		SidebarComponent.Artists => MobileMenuButtonComponent.Artists,
+		SidebarComponent.Date => MobileMenuButtonComponent.Date,
 		_ => null
+	};
+
+	private bool Loading => SidebarType switch
+	{
+		SidebarComponent.Artists => LoaderService.IsLoading(LoadingType.Artists),
+		SidebarComponent.Date => LoaderService.IsLoading(LoadingType.Artists) || LoaderService.IsLoading(LoadingType.Releases),
+		SidebarComponent.Playlists => LoaderService.IsLoading(LoadingType.Playlists) || LoaderService.IsLoading(LoadingType.PlaylistTracks),
+		_ => throw new NotImplementedException(),
 	};
 
 	private string ClassShow => MobileService.MobileMenu == MobileMenuType ? "show" : string.Empty;
 
+
 	protected override void OnInitialized()
 	{
 		MobileService.OnDisplayChanged += StateChanged;
+		LoaderService.LoadingStateChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
+		LoaderService.LoadingStateChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

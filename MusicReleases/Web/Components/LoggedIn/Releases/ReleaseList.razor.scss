@@ -1,0 +1,24 @@
+@use 'global/mixins' as mixins;
+
+.release-list {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: var(--color-2);
+    padding: 25px;
+
+    &.hidden {
+        display: none;
+    }
+
+    &.track {
+    }
+
+    &.playlist {
+        &release {
+        }
+
+        &track {
+            background-color: var(--color-3);
+        }
+    }
+}

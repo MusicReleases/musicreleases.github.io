@@ -2,14 +2,15 @@
 <img class="cover" src="@SpotifyRelease.UrlImage" title="Release cover" alt="Release cover" width="140" height="140">
 
 <div class="info">
-	<a class="name" href="@SpotifyRelease.UrlApp" title="Open album in Spotify app" rel="noopener noreferrer" draggable="true" @ondragstart="@OnDragStart">
-		@SpotifyRelease.Name
-	</a>
+
+	<div class="name">
+		<MrButton Class="@_buttonClass" Href="@SpotifyRelease.UrlApp" Text="@SpotifyRelease.Name" Title="Open album in Spotify app" draggable="true" @ondragstart="@OnDragStart" />
+	</div>
 
 	@if (SpotifyRelease.Artists is not null)
 	{
 		<div class="artists">
-			<ReleaseArtists Class="release" ArtistsObj="SpotifyRelease.Artists" />
+			<ReleaseArtists Class="@_buttonClass" Artists="@SpotifyRelease.Artists" />
 		</div>
 	}
 
@@ -17,36 +18,37 @@
 
 		<MrIcon Icon="LucideIcon.Calendar" />
 
-		<span>@SpotifyRelease.ReleaseDate.ToString("dd").</span>
+		<span>@ReleaseDateDay</span>
 
-		<MrButton Class="transparent hover-text-only p-0" Text="@($"{SpotifyRelease.ReleaseDate.ToString("MM")}.")" Title="Filter releases by this month and year" OnClick="@FilterMonth" />
+		<MrButton Class="@_buttonClass" Text="@ReleaseDateMonth" Title="Filter releases by this month and year" OnClick="@FilterMonth" />
 
-		<MrButton Class="transparent hover-text-only p-0" Text="@SpotifyRelease.ReleaseDate.ToString("yyyy")" Title="Filter releases by this year" OnClick="@FilterYear" />
+		<MrButton Class="@_buttonClass" Text="@ReleaseDateYear" Title="Filter releases by this year" OnClick="@FilterYear" />
 
 	</div>
 
 	<div class="properties">
 
-		<MrIcon Icon="EnumIconsExtensions.GetIconForRelease(SpotifyRelease.ReleaseType)" title="@ReleaseTypeTitle" />
+		<MrIcon Icon="@ReleaseTypeIcon" Title="@ReleaseTypeIconTitle" />
 
 		@* 
-	@if(SpotifyRelease.Explicit)
-	{
-		<MrIcon Icon="TablerIcon.Explicit" title="Explicit content" />
-	}
-	*@
+		@if(SpotifyRelease.Explicit)
+		{
+			<MrIcon Icon="TablerIcon.Explicit" title="Explicit content" />
+		}
+		*@
 
 		@if (SpotifyRelease.New)
 		{
-			<MrIcon Icon="LucideIcon.Flame" title="New release" />
+			<MrIcon Icon="LucideIcon.Flame" Title="New release" />
 		}
 
 		@*
-	<span title="Track duration">
-		<MrIcon Icon="LucideIcon.Clock" />@*
-		*@@*@Release.DurationString
-	</span>
-	*@
+		<span title="Track duration">
+			<MrIcon Icon="LucideIcon.Clock" />@*
+			*@@*@Release.DurationString
+		</span>
+		*@
 
 	</div>
+
 </div>

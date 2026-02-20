@@ -1,7 +1,7 @@
-﻿<SidebarSection Type="SidebarType.Playlists" ContentAriaLabel="Playlist list" Loading="@Loading">
+﻿<SidebarSection SidebarType="@SidebarComponent.Playlists" ContentAriaLabel="Playlist list">
 
     <Header>
-        <PlaylistSidebarHeader Loading="@Loading" />
+        <PlaylistSidebarHeader />
     </Header>
 
     <Filter>
@@ -9,7 +9,7 @@
     </Filter>
 
     <ChildContent>
-        <PlaylistSidebarContent Playlists="FilteredPlaylists" />
+        <PlaylistSidebarContent Playlists="@FilteredPlaylists" />
     </ChildContent>
 
 </SidebarSection>

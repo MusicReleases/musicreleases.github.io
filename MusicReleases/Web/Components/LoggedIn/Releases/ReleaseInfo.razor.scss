@@ -8,21 +8,6 @@
     flex-direction: column;
     gap: 10px;
 
-    .name {
-        font-size: 24px;
-    }
-
-    .artists {
-        gap: 5px;
-    }
-
-    .date {
-        span {
-            margin-left: 5px;
-            font-size: var(--font-size-1)
-        }
-    }
-
     .artists, .date {
         align-items: center;
     }
@@ -31,5 +16,21 @@
     .artists, .date, .properties {
         display: flex;
         flex-direction: row;
+    }
+
+    .name {
+        font-size: 24px;
+    }
+
+    .artists {
+        font-size: 20px;
+        gap: 5px;
+    }
+
+    .date {
+        span {
+            margin-left: 5px;
+            font-size: var(--font-size-1)
+        }
     }
 }

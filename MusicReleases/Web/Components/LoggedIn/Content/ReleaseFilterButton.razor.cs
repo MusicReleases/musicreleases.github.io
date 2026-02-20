@@ -57,7 +57,7 @@ public partial class ReleaseFilterButton : IDisposable
 		var name = FilterType.ToFriendlyString(capitalizeFirstLetter);
 		if (FilterType == ReleasesFilters.EPs && SpotifyFilterService.Filter?.ReleaseType == ReleaseType.Appears)
 		{
-			name = $"albums and {name}";
+			name = $"Albums and {name}";
 		}
 
 		return name;

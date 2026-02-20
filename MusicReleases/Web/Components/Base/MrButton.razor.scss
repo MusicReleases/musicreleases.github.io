@@ -68,6 +68,15 @@
     flex-grow: 1;
 }
 
+
+@mixin show-mobile {
+    display: none;
+
+    @include layout.respond(mobile) {
+        display: flex;
+    }
+}
+
 // size
 @mixin xl {
     padding: 18px;
@@ -161,6 +170,27 @@
     }
 }
 
+// sidebar
+@mixin sidebar-content {
+    @include layout.respond(mobile) {
+        padding: 5px 30px;
+        height: 40px;
+    }
+}
+
+@mixin sidebar-content-date-year {
+    @include layout.respond(mobile) {
+        padding-right: 0;
+    }
+}
+
+@mixin sidebar-content-date-month {
+    padding: 5px 20px;
+
+    @include layout.respond(mobile) {
+        padding: 5px 40px;
+    }
+}
 
 .button {
     @include base;
@@ -172,6 +202,50 @@
     // HomeButton
     &.home {
         @include xl;
+    }
+    // LoginButton
+    &.login {
+        @include xl;
+    }
+
+    &.sidebar {
+        // SidebarTitleButton
+        &-title {
+            @include rounded-l;
+            @include transparent;
+            // -> &-header
+        }
+        // ___SidebarHeader
+        &-header {
+            @include rounded-l;
+            @include transparent;
+        }
+        // ___SidebarFilter
+        &-filter {
+            @include rounded-l;
+            @include transparent;
+
+            &.update {
+                @include show-mobile;
+            }
+        }
+        // ___SidebarContent
+        &-content {
+            @include sidebar-content;
+            @include transparent;
+            @include fill-width;
+            @include rounded-m;
+
+            &.date {
+                &-year {
+                    @include sidebar-content-date-year;
+                }
+
+                &-month {
+                    @include sidebar-content-date-month;
+                }
+            }
+        }
     }
 
     &.menu {
@@ -309,6 +383,33 @@
             @include transparent;
         }
     }
+
+    &.release {
+        // ReleaseInfo
+        &-info {
+            padding: 0;
+            @include transparent;
+            @include hover-text-only;
+        }
+
+        &-actions {
+            @include rounded-l;
+        }
+    }
+
+    &.track {
+        &-info {
+            @include transparent;
+            @include hover-text-only;
+            @include rounded-l;
+
+            &-artist {
+                color: dimgray;
+                @include transparent;
+                @include hover-text-only;
+            }
+        }
+    }
 }
 
 
@@ -321,37 +422,5 @@
     &.active {
         color: var(--color-project);
         background-color: var(--color-4);
-    }
-
-
-    &.show-mobile {
-        display: none;
-
-        @include layout.respond(mobile) {
-            display: flex;
-        }
-    }
-
-    &.sidebar-button {
-        @include layout.respond(mobile) {
-            padding: 5px 30px;
-            height: 40px;
-        }
-
-        &.date {
-            &-year {
-                @include layout.respond(mobile) {
-                    padding-right: 0;
-                }
-            }
-
-            &-month {
-                padding: 5px 20px;
-
-                @include layout.respond(mobile) {
-                    padding: 5px 40px;
-                }
-            }
-        }
     }
 }

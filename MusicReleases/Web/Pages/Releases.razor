@@ -4,7 +4,7 @@
 
 @if (Loading || FilteredReleases is null)
 {
-    <p>Loading releases...</p>
+    <MrLoading Loading="@Loading" Text="Loading releases..." />
 }
 else if (FilteredReleases.Count < 1)
 {
@@ -14,8 +14,10 @@ else
 {
 
     <div class="releases boxes infinite-scroll">
+
         <Virtualize Items="@FilteredReleases" Context="release">
             <Release SpotifyRelease="@release" />
         </Virtualize>
+
     </div>
 }

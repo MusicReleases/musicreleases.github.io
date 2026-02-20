@@ -17,11 +17,23 @@ public partial class ReleaseInfo
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
 
-	[Parameter]
+
+	[Parameter, EditorRequired]
 	public required SpotifyRelease SpotifyRelease { get; set; }
 
 
-	private string ReleaseTypeTitle => $"{SpotifyRelease.ReleaseType} release";
+	private string ReleaseDateDay => $"{SpotifyRelease.ReleaseDate:dd}.";
+
+	private string ReleaseDateMonth => $"{SpotifyRelease.ReleaseDate:MM}.";
+
+	private string ReleaseDateYear => $"{SpotifyRelease.ReleaseDate:yyyy}";
+
+	private LucideIcon ReleaseTypeIcon => EnumIconsExtensions.GetIconForRelease(SpotifyRelease.ReleaseType);
+
+	private string ReleaseTypeIconTitle => $"{SpotifyRelease.ReleaseType} release";
+
+
+	private const string _buttonClass = "release-info";
 
 
 	private void OnDragStart()

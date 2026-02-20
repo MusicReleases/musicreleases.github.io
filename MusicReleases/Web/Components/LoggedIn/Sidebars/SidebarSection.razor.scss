@@ -1,15 +1,36 @@
 @use 'global/layout' as layout;
 
+@mixin grid-area($type) {
+    &.header {
+        grid-area: #{$type}-header;
+    }
+
+    &.filter {
+        grid-area: #{$type}-filter;
+    }
+
+    &.menu {
+        grid-area: #{$type}-menu;
+    }
+}
+
+.artists {
+    @include grid-area('artists');
+}
+
+.date {
+    @include grid-area('date');
+}
+
+.playlists {
+    @include grid-area('playlists');
+}
+
+
 .header, .filter {
     display: inline-flex;
     gap: 2px;
     padding: 5px;
-}
-
-.header {
-}
-
-.filter {
 }
 
 .menu {
@@ -21,9 +42,7 @@
 }
 
 @include layout.respond(tablet-mobile) {
-    .playlists-header,
-    .playlists-filter,
-    .playlists-menu {
+    .playlists {
         &:not(.show) {
             display: none;
         }
@@ -31,19 +50,14 @@
 }
 
 @include layout.respond(mobile) {
-    .artists-header,
-    .artists-filter,
-    .artists-menu,
-    .date-header,
-    .date-filter,
-    .date-menu {
+    .artists,
+    .date {
         &:not(.show) {
             display: none;
         }
-    }
 
-    .artists-filter,
-    .date-filter {
-        background-color: var(--color-3);
+        &.filter {
+            background-color: var(--color-3);
+        }
     }
 }

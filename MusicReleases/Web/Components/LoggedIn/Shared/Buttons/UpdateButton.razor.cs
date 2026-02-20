@@ -31,7 +31,7 @@ public partial class UpdateButton : IDisposable
 	public string? Class { get; set; }
 
 
-	private string ButtonClass => $"{(Class.IsNullOrEmpty() ? $"update {ButtonType.ToLowerString()}" : Class)}";
+	private string ButtonClass => $"update {ButtonType.ToLowerString()} {Class}";
 
 	private string ButtonTitle => $"Update {ButtonType.ToFriendlyString()}";
 

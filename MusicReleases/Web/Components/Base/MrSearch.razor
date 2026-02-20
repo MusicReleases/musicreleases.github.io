@@ -3,7 +3,7 @@
 @* display when anything is in input *@
 @if (!string.IsNullOrEmpty(SearchText))
 {
-    <MrButton Class="@ButtonClass" OnClick="@Clear" Title="Clear input">
+    <MrButton Class="@ClearButtonClass" OnClick="@Clear" Title="Clear input">
         <MrIcon Icon="@LucideIcon.Delete" />
     </MrButton>
 }

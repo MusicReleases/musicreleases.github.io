@@ -1,13 +1,14 @@
-﻿<div class="release-list scroll @Class">
-    <MrRow>
-        <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
-        <UpdateButton ButtonType="@UpdateButtonComponent.Playlists" />
-    </MrRow>
-    <PlaylistList Playlists="FilterService.FilteredPlaylists?.ToList()">
+﻿<MrRow>
 
-        <RowTemplate Context="playlist">
-            <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" />
-        </RowTemplate>
+    <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
+    <UpdateButton ButtonType="@UpdateButtonComponent.Playlists" />
 
-    </PlaylistList>
-</div>
+</MrRow>
+
+<PlaylistList Playlists="FilterService.FilteredPlaylists?.ToList()">
+
+    <RowTemplate Context="playlist">
+        <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" />
+    </RowTemplate>
+
+</PlaylistList>

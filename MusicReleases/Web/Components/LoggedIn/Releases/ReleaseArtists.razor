@@ -1,14 +1,12 @@
-﻿@for (int i = 0; i < ArtistsObj.Count; i++)
+﻿@for (int i = 0; i < Artists.Count; i++)
 {
-    var artist = ArtistsObj.ElementAt(i);
+    var artist = Artists.ElementAt(i);
 
     @* TODO artist filter <ArtistSidebarButton ArtistId="@artist.Id" ArtistName="@artist.Name" />*@
 
-    <a class="artist @Class" href="@artist.UrlApp" title="Open artist in Spotify app" rel="noopener noreferrer">
-        @artist.Name
-    </a>
+    <MrButton Class="@Class" Href="@artist.UrlApp" Text="@artist.Name" Title="Open artist in Spotify app" />
 
-    @if (i < ArtistsObj.Count - 1)
+    @if (i < Artists.Count - 1)
     {
         <span>•</span>
     }

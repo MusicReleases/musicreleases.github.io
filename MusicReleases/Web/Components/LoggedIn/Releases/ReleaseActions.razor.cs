@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
@@ -6,54 +7,109 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
 
 public partial class ReleaseActions
 {
+	[Inject]
+	private ISpotifyTracksService SpotifyTracksService { get; set; } = default!;
+
+
 	[Parameter, EditorRequired]
 	public required SpotifyRelease SpotifyRelease { get; set; }
 
 
-	private string PlaylistTitle => _isPlaylistDisplayed ? "Hide playlists" : "Add release to playlist";
+	private const string _buttonClass = "release-actions";
 
-	private string PlaylistClass => $"rounded-l{(_isPlaylistDisplayed ? " active" : string.Empty)}";
+	private const ReleaseListComponent _listPlaylist = ReleaseListComponent.PlaylistRelease;
 
-	private string TracklistTitle => _isTracklistDisplayed ? "Hide tracklist" : "View tracklist";
+	private const ReleaseListComponent _listTracklist = ReleaseListComponent.Track;
 
-	private string TracklistClass => $"rounded-l{(_isTracklistDisplayed ? " active" : string.Empty)}";
+	private ReleaseListComponent? _activeList = null;
 
-	private LucideIcon PlaylistIcon => _loadingPlaylists ? LucideIcon.LoaderCircle : LucideIcon.Plus;
+	private ReleaseListComponent? _loadingList = null;
 
-	private LucideIcon TracklistIcon => _loadingTracklist ? LucideIcon.LoaderCircle : LucideIcon.ListMusic;
-
-
-	private bool _isPlaylistDisplayed = false;
-
-	private bool _isTracklistDisplayed = false;
-
-	private bool _loadingPlaylists = false;
-
-	private bool _loadingTracklist = false;
+	private readonly HashSet<ReleaseListComponent> _renderedLists = [];
 
 
-	private async Task ViewPlaylists()
+	private async Task ToggleList(ReleaseListComponent listType)
 	{
-		_loadingPlaylists = true;
-		_isTracklistDisplayed = false;
-		await GetTracks();
-		_isPlaylistDisplayed = !_isPlaylistDisplayed;
-		_loadingPlaylists = false;
+		if (_loadingList is not null)
+		{
+			return;
+		}
+
+		if (_activeList == listType)
+		{
+			_activeList = null;
+			return;
+		}
+
+		_loadingList = listType;
+		StateHasChanged();
+
+		try
+		{
+			await GetTracks();
+
+			_renderedLists.Add(listType);
+			_activeList = listType;
+		}
+		finally
+		{
+			_loadingList = null;
+		}
 	}
 
-	private async Task ViewTracklist()
+	private bool RenderList(ReleaseListComponent listType)
 	{
-		_loadingTracklist = true;
-		_isPlaylistDisplayed = false;
-		// get tracks
-		await GetTracks();
-		_isTracklistDisplayed = !_isTracklistDisplayed;
-		_loadingTracklist = false;
+		return _renderedLists.Contains(listType);
+	}
+
+	private bool IsListActive(ReleaseListComponent listType)
+	{
+		return _activeList == listType;
+	}
+
+	private bool IsListLoading(ReleaseListComponent listType)
+	{
+		return _loadingList == listType;
+	}
+
+	private string ListClass(ReleaseListComponent listType)
+	{
+		return IsListActive(listType) ? string.Empty : "hidden";
+	}
+
+	private string ListButtonTitle(ReleaseListComponent listType)
+	{
+		var active = IsListActive(listType);
+
+		return listType switch
+		{
+			ReleaseListComponent.Track => active ? "Hide tracklist" : "View tracklist",
+			ReleaseListComponent.PlaylistRelease => active ? "Hide playlists" : "Add release to playlist",
+			_ => throw new NotImplementedException(),
+		};
+	}
+
+	private LucideIcon ListButtonIcon(ReleaseListComponent listType)
+	{
+		var isLoading = IsListLoading(listType);
+
+		return listType switch
+		{
+			ReleaseListComponent.Track => isLoading ? LucideIcon.LoaderCircle : LucideIcon.ListMusic,
+			ReleaseListComponent.PlaylistRelease => isLoading ? LucideIcon.LoaderCircle : LucideIcon.Plus,
+			_ => throw new NotImplementedException(),
+		};
+	}
+
+	private string ListButtonClass(ReleaseListComponent listType)
+	{
+		var activeClass = IsListActive(listType) ? " active" : string.Empty;
+		return $"{_buttonClass}{activeClass}";
 	}
 
 	private async Task GetTracks()
 	{
-		if (SpotifyRelease.Tracks is not null && SpotifyRelease.Tracks.Count == 0)
+		if (SpotifyRelease.Tracks?.Count > 0)
 		{
 			// tracks loaded
 			return;

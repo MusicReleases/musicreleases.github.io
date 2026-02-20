@@ -13,20 +13,20 @@ public partial class LoginButton
 	/// <summary>
 	/// Service type (Spotify, Apple Music, ...)
 	/// </summary>
-	[Parameter]
-	public ServiceType Type { get; set; }
+	[Parameter, EditorRequired]
+	public required ServiceType ServiceType { get; set; }
 
 
-	private string ButtonText => $"Login via {Type}";
+	private string ButtonText => $"Login via {ServiceType.ToFriendlyString()}";
 
-	private Enum TypeIcon => EnumIconsExtensions.GetIconForServiceType(Type);
+	private Enum ServiceTypeIcon => EnumIconsExtensions.GetIconForServiceType(ServiceType);
 
 
 	/// <summary>
 	/// User clicked to login button.
 	/// </summary>
-	private void ButtonOnClick()
+	private async Task Login()
 	{
-		LoginService.LoginUser();
+		await LoginService.LoginUser();
 	}
 }

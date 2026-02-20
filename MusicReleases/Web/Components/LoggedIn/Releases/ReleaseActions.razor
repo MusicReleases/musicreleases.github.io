@@ -1,12 +1,7 @@
-﻿@using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices
-@using JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists
+﻿<div class="buttons">
 
-@inject ISpotifyTracksService SpotifyTracksService
-
-<div class="buttons">
-
-	<MrButton Class="@TracklistClass" Text="@SpotifyRelease.TotalTracks.ToString()" Title="@TracklistTitle" OnClick="@ViewTracklist">
-		<MrIcon Icon="@TracklistIcon" Spin="@_loadingTracklist" />
+	<MrButton Class="@ListButtonClass(_listTracklist)" Text="@SpotifyRelease.TotalTracks.ToString()" Title="@ListButtonTitle(_listTracklist)" OnClick="@(() => ToggleList(_listTracklist))">
+		<MrIcon Icon="@ListButtonIcon(_listTracklist)" Spin="@IsListLoading(_listTracklist)" />
 	</MrButton>
 
 	@*
@@ -23,18 +18,22 @@
 	</MrButton>
 	*@
 
-	<MrButton Class="@PlaylistClass" Title="@PlaylistTitle" OnClick="@ViewPlaylists">
-		<MrIcon Icon="@PlaylistIcon" Spin="@_loadingPlaylists" />
+	<MrButton Class="@ListButtonClass(_listPlaylist)" Title="@ListButtonTitle(_listPlaylist)" OnClick="@(() => ToggleList(_listPlaylist))">
+		<MrIcon Icon="@ListButtonIcon(_listPlaylist)" Spin="@IsListLoading(_listPlaylist)" />
 	</MrButton>
 
 </div>
 
-@if (_isPlaylistDisplayed)
+@if (RenderList(_listTracklist))
 {
-	<PlaylistPicker Release="@SpotifyRelease" />
+	<ReleaseList ListType="@_listTracklist" Class="@ListClass(_listTracklist)">
+		<ReleaseTracklist Tracks="@SpotifyRelease.Tracks" />
+	</ReleaseList>
 }
 
-@if (_isTracklistDisplayed)
+@if (RenderList(_listPlaylist))
 {
-	<ReleaseTracklist Release="@SpotifyRelease" />
+	<ReleaseList ListType="@_listPlaylist" Class="@ListClass(_listPlaylist)">
+		<PlaylistPicker Release="@SpotifyRelease" />
+	</ReleaseList>
 }

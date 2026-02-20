@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+﻿using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
@@ -21,8 +20,6 @@ public partial class PlaylistFilter
 
 
 	private const string _buttonClass = "playlist-action";
-
-	private const MenuType _type = MenuType.Playlists;
 
 
 	private async Task UpdateSearchText(string? newSearchText)

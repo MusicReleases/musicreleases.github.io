@@ -15,12 +15,20 @@ public partial class ReleaseTrack
 	public required SpotifyTrack Track { get; set; }
 
 
-	private string PlaylistTitle => _isPlaylistDisplayed ? "Hide playlists" : "Add track to playlist";
+	private string PlaylistButtonTitle => _isPlaylistListDisplayed ? "Hide playlists" : "Add track to playlist";
 
-	private string PlaylistClass => $"transparent rounded-l{(_isPlaylistDisplayed ? " active" : string.Empty)}";
+	private string PlaylistButtonClass => $"{_buttonClass}{(_isPlaylistListDisplayed ? " active" : string.Empty)}";
+
+	private string ListClass => _isPlaylistListDisplayed ? string.Empty : "hidden";
 
 
-	private bool _isPlaylistDisplayed = false;
+	private const string _buttonClass = "track-info";
+
+	private const string _artistButtonClass = $"{_buttonClass}-artist";
+
+	private bool _renderPlaylistList = false;
+
+	private bool _isPlaylistListDisplayed = false;
 
 
 	private void OnDragStart()
@@ -28,8 +36,13 @@ public partial class ReleaseTrack
 		DragDropService.StartDrag(Track, DragDropType.Track);
 	}
 
-	private void ViewPlaylists()
+	private void TogglePlaylists()
 	{
-		_isPlaylistDisplayed = !_isPlaylistDisplayed;
+		if (!_renderPlaylistList)
+		{
+			_renderPlaylistList = true;
+		}
+
+		_isPlaylistListDisplayed = !_isPlaylistListDisplayed;
 	}
 }

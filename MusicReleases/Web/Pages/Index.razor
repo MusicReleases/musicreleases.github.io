@@ -7,7 +7,7 @@
 @if (_loading)
 {
     <InfoSection Title="Login">
-        <p>Loading...</p>
+        <MrLoading Loading="@_loading" />
     </InfoSection>
 }
 else
@@ -16,5 +16,6 @@ else
         <p>Display releases from your followed artists on Spotify. Filter them by release date or artist name. Add them to your playlist.</p>
         <p>Currently in beta version. Many features coming soon.</p>
     </InfoSection>
+
     <LoginButtons />
 }

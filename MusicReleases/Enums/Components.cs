@@ -27,6 +27,13 @@ public enum UpdateButtonComponent
 	Playlists,
 }
 
+// TODO new enum to components
+/*public enum UpdateButtonComponentLocation
+{
+	SidebarHeader,
+	SidebarContent,
+}*/
+
 public enum SortButtonComponent
 {
 	Artists,
@@ -46,4 +53,18 @@ public enum ReleaseMenuComponent
 {
 	Primary,
 	Overflow,
+}
+
+public enum ReleaseListComponent
+{
+	Track,
+	PlaylistRelease,
+	PlaylistTrack,
+}
+
+public enum SidebarComponent
+{
+	Artists,
+	Playlists,
+	Date,
 }

@@ -1,28 +1,35 @@
-﻿@* header *@
-<header class="@TypeString-header header" style="grid-area: @TypeString-header">
-    @Header
+﻿@*
+@if (Error)
+{
+	<p>Failed to get artists</p>
+	<ButtonUpdate Type="MenuButtonsType.Artists">
+		Update
+	</ButtonUpdate>
+}
+*@
+
+<header class="@SidebarTypeString header">
+
+	@Header
+
 </header>
 
-@* filter *@
-<search class="@TypeString-filter filter @ClassShow" style="grid-area: @TypeString-filter" role="search">
-    @if (Loading)
-    {
-        <p>Loading...</p>
-    }
-    else
-    {
-        @Filter
-    }
+<search class="@SidebarTypeString filter @ClassShow" role="search">
+
+	@if (!Loading)
+	{
+		@Filter
+	}
+
 </search>
 
-@* content (list) *@
-<nav class="@TypeString-menu menu scroll @ClassShow" style="grid-area: @TypeString-menu" aria-label="@ContentAriaLabel">
-    @if (Loading)
-    {
-        <p>Loading...</p>
-    }
-    else
-    {
-        @ChildContent
-    }
+<nav class="@SidebarTypeString menu scroll @ClassShow" aria-label="@ContentAriaLabel">
+
+	<MrLoading Loading="@Loading" Text="@LoadingText" />
+
+	@if (!Loading)
+	{
+		@ChildContent
+	}
+
 </nav>

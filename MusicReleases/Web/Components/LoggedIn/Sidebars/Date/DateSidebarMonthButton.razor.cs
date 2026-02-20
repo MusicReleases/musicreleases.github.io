@@ -26,8 +26,12 @@ public partial class DateSidebarMonthButton : IDisposable
 	public required int Month { get; set; }
 
 
-	private string ButtonClass => $"sidebar-button date-month rounded-m fill-width transparent{(MonthFilter ? " active" : string.Empty)}";
+	private string ButtonClass => $"{_buttonClass}{(MonthFilter ? " active" : string.Empty)}";
+
 	private bool MonthFilter => SpotifyFilterService.Filter is not null && SpotifyFilterService.Filter.Month.HasValue && SpotifyFilterService.Filter.Month.Value.Year == Year && SpotifyFilterService.Filter.Month.Value.Month == Month;
+
+
+	private const string _buttonClass = "sidebar-content date-month";
 
 
 	protected override void OnInitialized()

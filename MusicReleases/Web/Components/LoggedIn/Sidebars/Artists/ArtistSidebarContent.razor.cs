@@ -1,4 +1,3 @@
-using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
@@ -11,14 +10,7 @@ public partial class ArtistSidebarContent : IDisposable
 	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
 
 
-	[Parameter]
-	public string? Class { get; set; }
-
-
 	private ISet<SpotifyArtist>? Artists => SpotifyFilterService.FilteredArtists;
-
-
-	private readonly MenuType _menuType = MenuType.Artists;
 
 
 	protected override void OnInitialized()

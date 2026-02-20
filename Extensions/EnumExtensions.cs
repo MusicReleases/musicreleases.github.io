@@ -7,20 +7,38 @@ public static class EnumExtensions
 	public static string ToFriendlyString(this Enum value, bool capitalizeFirstLetter = false)
 	{
 		var name = value.ToString();
+
+		if (name.IsNullOrEmpty())
+		{
+			return string.Empty;
+		}
+
 		string friendly;
 
-		// preserve acronyms like EPS or EPs: leave them as-is
-		if (Regex.IsMatch(name, @"^[A-Z]{2,}$") || Regex.IsMatch(name, @"^[A-Z][a-z]+s?$"))
+		// keep acronyms like EPS or EPs: leave them as-is
+		if (Regex.IsMatch(name, @"^[A-Z0-9]{2,}s?$"))
 		{
 			friendly = name;
 		}
+
 		else
 		{
-			// insert spaces before capital letters (camelCase -> separate words) and lowercase everything
-			friendly = Regex.Replace(name, "(?<!^)([A-Z])", " $1").ToLower();
+			// replace _ or -
+			var normalized = Regex.Replace(name, @"[_\-]+", " ");
+
+			// insert spaces between words
+			normalized = Regex.Replace(normalized, @"(?<=[a-z0-9])([A-Z])", " $1");
+
+			// acronyms and words
+			normalized = Regex.Replace(normalized, @"(?<=[A-Z])([A-Z][a-z])", " $1");
+
+			friendly = normalized.ToLowerInvariant();
+
+			// repalce multi spaces
+			friendly = Regex.Replace(friendly, @"\s{2,}", " ").Trim();
 		}
 
-		// osptionally capitalize the first letter of the result
+		// optionally capitalize the first letter of the result
 		if (capitalizeFirstLetter && friendly.Length > 0)
 		{
 			friendly = char.ToUpper(friendly[0]) + friendly.Substring(1);

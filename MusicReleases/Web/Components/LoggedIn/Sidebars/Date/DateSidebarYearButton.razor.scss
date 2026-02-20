@@ -31,3 +31,9 @@
         }
     }
 }
+
+.month-list {
+    &.hidden {
+        display: none;
+    }
+}

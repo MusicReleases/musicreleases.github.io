@@ -1,21 +1,13 @@
-<div class="tracklist release-list scroll">
-	@if (Release.Tracks is not null)
-	{
-		var discsCount = Release.Tracks.Select(t => t.DiscNumber).Distinct().Count();
-		int? lastDisc = null;
+@foreach (var track in Tracks)
+{
+    if (DiscsCount > 1 && track.DiscNumber < _lastDisc)
+    {
+        <div class="disc">
+            Disc @track.DiscNumber
+        </div>
 
-		@foreach (var track in Release.Tracks)
-		{
-			if (discsCount > 1 && track.DiscNumber != lastDisc)
-			{
-				<div class="track">
-					Disc @track.DiscNumber
-				</div>
-				lastDisc = track.DiscNumber;
-			}
+        _lastDisc = track.DiscNumber;
+    }
 
-
-			<ReleaseTrack Track="track" />
-		}
-	}
-</div>
+    <ReleaseTrack Track="@track" />
+}
