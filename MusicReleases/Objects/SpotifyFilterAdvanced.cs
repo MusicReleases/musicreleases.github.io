@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Objects;
 
-public class SpotifyFilterAdvanced
+public sealed record class SpotifyFilterAdvanced
 {
 	// this names must be same as in the URL and in Enums.ReleasesFilters
 	public bool Tracks { get; init; } = true;
@@ -16,9 +16,11 @@ public class SpotifyFilterAdvanced
 	public bool NewReleases { get; init; } = true;
 	public bool OldReleases { get; init; } = true;
 
-	public SpotifyFilterAdvanced()
-	{ }
+	public static SpotifyFilterAdvanced Default { get; } = new();
 
+	public bool IsActive => this != Default;
+
+	public SpotifyFilterAdvanced() { }
 
 	public SpotifyFilterAdvanced(bool tracks, bool eps, bool notRemixes, bool remixes, bool followedArtists, bool savedReleases, bool notVariousArtists, bool variousArtists, bool newReleases, bool oldReleases)
 	{

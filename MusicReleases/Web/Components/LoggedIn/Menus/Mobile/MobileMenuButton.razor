@@ -1,4 +1,15 @@
 ﻿<MrButton Class="@ButtonClass" Title="@ButtonTitle" Active="@IsActive" OnClick="@DisplayMenu">
-    <MrIcon Icon="@Icon" />
+
+    <div class="icon-wrapper">
+
+        @if (IsFilterActive)
+        {
+            <span class="dot" />
+        }
+        <MrIcon Icon="@Icon" />
+
+    </div>
+
     @ChildContent
-</MrButton>
+
+</MrButton> 

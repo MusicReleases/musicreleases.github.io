@@ -23,3 +23,11 @@ public enum ReleasesFilters
 	OldReleases,
 	NewReleases,
 }
+
+public enum FilterType
+{
+	Any,
+	Artist,
+	Date,
+	Advanced,
+}

@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.Objects;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Objects;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
@@ -18,4 +19,5 @@ public interface ISpotifyFilterService
 	void SetFilter(SpotifyFilter filter);
 	Task SetFilterAndSaveDb(SpotifyFilter filter);
 	void ClearFilter();
+	bool IsFilterActive(FilterType filterType);
 }

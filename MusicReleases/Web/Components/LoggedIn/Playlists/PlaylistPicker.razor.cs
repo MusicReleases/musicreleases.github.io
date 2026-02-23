@@ -27,6 +27,8 @@ public partial class PlaylistPicker : IDisposable
 
 	private bool Loading => LoaderService.IsLoading(LoadingType.Playlists) || LoaderService.IsLoading(LoadingType.PlaylistTracks);
 
+	private List<SpotifyPlaylist>? Playlists => FilterService.FilteredPlaylists?.ToList();
+
 
 	protected override void OnParametersSet()
 	{
@@ -61,4 +63,8 @@ public partial class PlaylistPicker : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
+	private void SearchTextChanged(string searchText)
+	{
+		FilterService.SetSearchText(searchText);
+	}
 }

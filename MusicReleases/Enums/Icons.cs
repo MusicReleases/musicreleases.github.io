@@ -26,6 +26,7 @@ public enum LucideIcon
 	Delete,
 	Disc3,
 	DiscAlbum,
+	Dot,
 	Ellipsis,
 	Eye,
 	Flame,

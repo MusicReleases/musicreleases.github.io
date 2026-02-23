@@ -1,13 +1,13 @@
 ﻿<div class="playlists">
     <MrRow Class="playlist-picker-header">
 
-        <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
+        <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@SearchTextChanged" />
         <UpdateButton Class="playlist-action" ButtonType="@UpdateButtonComponent.Playlists" />
 
     </MrRow>
 
     <div class="content scroll">
-        <PlaylistList Playlists="@FilterService.FilteredPlaylists?.ToList()">
+        <PlaylistList Playlists="@Playlists">
 
             <RowTemplate Context="playlist">
                 <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" />

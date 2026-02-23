@@ -1,4 +1,4 @@
-﻿using JakubKastner.Extensions;
+﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Objects;
@@ -228,5 +228,22 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 	public void ClearFilter()
 	{
 		Filter = new();
+	}
+
+	public bool IsFilterActive(FilterType filterType)
+	{
+		if (Filter is null)
+		{
+			return false;
+		}
+
+		return filterType switch
+		{
+			FilterType.Any => IsFilterActive(FilterType.Artist) || IsFilterActive(FilterType.Date) || IsFilterActive(FilterType.Advanced),
+			FilterType.Artist => Filter.Artist.IsNotNullOrEmpty(),
+			FilterType.Date => Filter.Year is not null,
+			FilterType.Advanced => Filter.Advanced.IsActive,
+			_ => throw new NotImplementedException(),
+		};
 	}
 }

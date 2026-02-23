@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
@@ -11,6 +12,9 @@ public partial class MobileMenuButton : IDisposable
 
 	[Inject]
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
+
+	[Inject]
+	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -34,16 +38,29 @@ public partial class MobileMenuButton : IDisposable
 		_ => throw new NotImplementedException(),
 	};
 
+	private FilterType FilterType => ButtonType switch
+	{
+		MobileMenuButtonComponent.Releases => FilterType.Advanced,
+		MobileMenuButtonComponent.Artists => FilterType.Artist,
+		MobileMenuButtonComponent.Date => FilterType.Date,
+		_ => throw new NotImplementedException(),
+	};
+
+	private bool IsFilterActive => SpotifyFilterService.IsFilterActive(FilterType);
+
+
 	protected override void OnInitialized()
 	{
 		MobileService.OnDisplayChanged += StateChanged;
 		OverflowMenuService.OnDisplayChanged += StateChanged;
+		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
 		OverflowMenuService.OnDisplayChanged -= StateChanged;
+		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
