@@ -1,11 +1,12 @@
 @use 'global/mixins' as mixins;
 
 .release-list {
-    max-height: 400px;
-    overflow-y: auto;
     background-color: var(--color-2);
     padding: 25px;
-
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+        
     &.hidden {
         display: none;
     }

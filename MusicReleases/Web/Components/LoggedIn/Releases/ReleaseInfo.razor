@@ -1,16 +1,27 @@
 ﻿@* TODO img size + loading="lazy" *@
-<img class="cover" src="@SpotifyRelease.UrlImage" title="Release cover" alt="Release cover" width="140" height="140">
+<img class="cover" src="@SpotifyRelease.UrlImage" title="Release cover" alt="Release cover" >
 
 <div class="info">
 
 	<div class="name">
-		<MrButton Class="@_buttonClass" Href="@SpotifyRelease.UrlApp" Text="@SpotifyRelease.Name" Title="Open album in Spotify app" draggable="true" @ondragstart="@OnDragStart" />
+
+		<MrButton Class="@_buttonClass" Href="@SpotifyRelease.UrlApp" Text="@SpotifyRelease.Name" Title="Open album in Spotify app" draggable="true" @ondragstart="@OnDragStart">
+
+			<MrIcon Icon="@ReleaseTypeIcon" Title="@ReleaseTypeIconTitle" />
+
+			@if (SpotifyRelease.New)
+			{
+				<MrIcon Icon="@LucideIcon.Flame" Title="New release" />
+			}
+
+		</MrButton>
+
 	</div>
 
 	@if (SpotifyRelease.Artists is not null)
 	{
 		<div class="artists">
-			<ReleaseArtists Class="@_buttonClass" Artists="@SpotifyRelease.Artists" />
+			<ReleaseArtists ButtonClass="@_buttonClass" Artists="@SpotifyRelease.Artists" />
 		</div>
 	}
 
@@ -28,21 +39,12 @@
 
 	<div class="properties">
 
-		<MrIcon Icon="@ReleaseTypeIcon" Title="@ReleaseTypeIconTitle" />
-
 		@* 
 		@if(SpotifyRelease.Explicit)
 		{
 			<MrIcon Icon="TablerIcon.Explicit" title="Explicit content" />
 		}
-		*@
 
-		@if (SpotifyRelease.New)
-		{
-			<MrIcon Icon="@LucideIcon.Flame" Title="New release" />
-		}
-
-		@*
 		<span title="Track duration">
 			<MrIcon Icon="LucideIcon.Clock" />@*
 			*@@*@Release.DurationString

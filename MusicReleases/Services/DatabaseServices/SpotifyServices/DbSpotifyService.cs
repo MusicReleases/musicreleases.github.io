@@ -8,13 +8,17 @@ public class DbSpotifyService(IDexieNETService<SpotifyDb> dexieService) : IDbSpo
 	private const int CURRENT_DB_VERSION = 1;
 
 	private readonly IDexieNETService<SpotifyDb> _dexieService = dexieService;
-	private SpotifyDb? _dbInstance;
 
 	private readonly SemaphoreSlim _lock = new(1, 1);
 
+	private SpotifyDb? _dbInstance;
+
 	public async ValueTask<SpotifyDb> GetDb()
 	{
-		if (_dbInstance is not null) return _dbInstance;
+		if (_dbInstance is not null)
+		{
+			return _dbInstance;
+		}
 
 		await _lock.WaitAsync();
 		try

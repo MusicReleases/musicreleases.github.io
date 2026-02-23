@@ -4,7 +4,7 @@
 
 @if (_renderOverflowMenu)
 {
-    <nav class="release-menu" id="more-releases" aria-label="Releases menu">
+    <nav class="release-menu release-menu-overflow" id="more-releases" aria-label="Releases menu">
         <ReleaseMenuList MenuType="@ReleaseMenuComponent.Overflow" Hidden="@(!IsOverflowMenuDisplayed)" />
     </nav>
 }   

@@ -4,11 +4,11 @@
 
     @* TODO artist filter <ArtistSidebarButton ArtistId="@artist.Id" ArtistName="@artist.Name" />*@
 
-    <MrButton Class="@Class" Href="@artist.UrlApp" Text="@artist.Name" Title="Open artist in Spotify app" />
+    <MrButton Class="@ButtonClass" Href="@artist.UrlApp" Text="@artist.Name" Title="Open artist in Spotify app" />
 
     @if (i < Artists.Count - 1)
     {
-        <span>•</span>
+        <span class="@SpanClass">•</span>
     }
 
 }

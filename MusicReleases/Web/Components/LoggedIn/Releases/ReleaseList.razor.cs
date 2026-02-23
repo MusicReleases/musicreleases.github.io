@@ -15,5 +15,5 @@ public partial class ReleaseList
 	public RenderFragment? ChildContent { get; set; }
 
 
-	private string DivClass => $"scroll release-list {ListType.ToLowerString()}{Hidden.ToCssClass()}";
+	private string DivClass => $"release-list {ListType.ToLowerString()}{Hidden.ToCssClass()}";
 }

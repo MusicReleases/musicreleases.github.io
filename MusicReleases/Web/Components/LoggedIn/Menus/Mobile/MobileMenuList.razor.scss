@@ -14,7 +14,9 @@ $icon-bps: ( 4: 112px * 4 + 2 * 15px + 3 * 15px, 3: 112px * 3 + 50px + 2 * 10px 
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    
+    overflow-x: auto;
+    overflow-y: hidden;
+
     .menu-item {
         display: flex;
     }

@@ -1,32 +1,40 @@
 .track {
 
-    .number, .name, .explicit, .duration {
+    .name-artists {
+        min-width: 0;
+        display: grid;
+        grid-template-rows: auto auto;
+        align-content: center;
+        gap: 0;
+
+        .name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .artists {
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+            min-width: 0;
+            max-width: 100%;
+        }
+    }
+
+    .number, .explicit, .duration {
         height: 100%;
         align-items: center;
         display: flex;
     }
 
-    .number {
-        width: 25px;
-        display: flex;
-        justify-content: center
+    .number, .explicit {
+        justify-content: center;
     }
-
-    .name {
-        margin-right: 25px;
-    }
-
-    .explicit, .duration {
-        margin-left: auto;
-    }
-
-        .explicit + .duration {
-            margin-left: 0;
-        }
 
     .duration {
-        width: 75px;
-        display: flex;
         gap: 5px;
     }
 }

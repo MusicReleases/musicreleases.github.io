@@ -1,14 +1,18 @@
-﻿<MrRow>
+﻿<div class="playlists">
+    <MrRow Class="playlist-picker-header">
 
-    <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
-    <UpdateButton ButtonType="@UpdateButtonComponent.Playlists" />
+        <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@((searchText) => FilterService.SetSearchText(searchText))" />
+        <UpdateButton Class="playlist-action" ButtonType="@UpdateButtonComponent.Playlists" />
 
-</MrRow>
+    </MrRow>
 
-<PlaylistList Playlists="@FilterService.FilteredPlaylists?.ToList()">
+    <div class="content scroll">
+        <PlaylistList Playlists="@FilterService.FilteredPlaylists?.ToList()">
 
-    <RowTemplate Context="playlist">
-        <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" />
-    </RowTemplate>
+            <RowTemplate Context="playlist">
+                <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" />
+            </RowTemplate>
 
-</PlaylistList>
+        </PlaylistList>
+    </div>
+</div>

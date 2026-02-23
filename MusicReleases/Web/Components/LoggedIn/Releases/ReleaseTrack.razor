@@ -20,23 +20,27 @@
 		</MrButton>
 		*@
 
-		<MrButton Class="@_buttonClass" Title="@PlaylistButtonTitle" Active="@_isPlaylistListDisplayed" OnClick="@TogglePlaylists">
+		<MrButton Class="@_buttonClassAction" Title="@PlaylistButtonTitle" Active="@_isPlaylistListDisplayed" OnClick="@TogglePlaylists">
 			<MrIcon Icon="LucideIcon.Plus" />
 		</MrButton>
 
-		<span class="name">
-			<MrButton Class="@_buttonClass" Href="@Track.UrlApp" Text="@Track.Name" Title="Open track in Spotify app" draggable="true" @ondragstart="@OnDragStart" />
-		</span>
+		<div class="name-artists">
 
-
-		<ReleaseArtists Class="@_artistButtonClass" Artists="@Track.Artists" />
-
-		@if (Track.Explicit)
-		{
-			<span class="explicit">
-				<MrIcon Icon="@TablerIcon.Explicit" Title="Explicit content" />
+			<span class="name">
+				<MrButton Class="@_buttonClass" Href="@Track.UrlApp" Text="@Track.Name" Title="Open track in Spotify app" draggable="true" @ondragstart="@OnDragStart" />
 			</span>
-		}
+
+			<div class="artists">
+				<ReleaseArtists ButtonClass="@_artistButtonClass" SpanClass="@_artistButtonClass" Artists="@Track.Artists" />
+			</div>
+		</div>
+
+		<span class="explicit">
+			@if (Track.Explicit)
+			{
+				<MrIcon Icon="@TablerIcon.Explicit" Title="Explicit content" />
+			}
+		</span>
 
 		<span class="duration" title="Track duration">
 			<MrIcon Icon="@LucideIcon.Clock" />

@@ -1,13 +1,15 @@
-@foreach (var track in Tracks)
-{
-    if (DiscsCount > 1 && track.DiscNumber < _lastDisc)
+<div class="tracklist scroll">
+    @foreach (var track in Tracks)
     {
-        <div class="disc">
-            Disc @track.DiscNumber
-        </div>
+        if (DiscsCount > 1 && track.DiscNumber < _lastDisc)
+        {
+            <div class="disc">
+                Disc @track.DiscNumber
+            </div>
 
-        _lastDisc = track.DiscNumber;
+            _lastDisc = track.DiscNumber;
+        }
+
+        <ReleaseTrack Track="@track" />
     }
-
-    <ReleaseTrack Track="@track" />
-}
+</div>

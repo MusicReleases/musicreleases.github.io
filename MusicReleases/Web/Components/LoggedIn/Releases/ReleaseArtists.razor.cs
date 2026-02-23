@@ -9,5 +9,8 @@ public partial class ReleaseArtists
 	public required HashSet<SpotifyArtist> Artists { get; set; }
 
 	[Parameter]
-	public string? Class { get; set; }
+	public string? ButtonClass { get; set; }
+
+	[Parameter]
+	public string? SpanClass { get; set; }
 }

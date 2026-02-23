@@ -5,11 +5,18 @@
     flex-direction: column;
     gap: 15px;
     background-color: var(--color-1);
+    container-type: inline-size;
+    container-name: release;
+
 
     .cover-info {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         gap: 30px;
+
+        @container release (min-width: 350px) {
+            flex-direction: row;
+        }
     }
 
     .actions {
