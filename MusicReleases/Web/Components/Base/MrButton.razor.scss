@@ -122,6 +122,12 @@
 }
 
 // rounded
+@mixin rounded-s {
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 16px;
+}
+
 @mixin rounded-m {
     font-size: 15px;
     padding: 5px 10px;
@@ -265,7 +271,10 @@
             @include transparent;
             @include transparent-hover;
             cursor: default;
-            // -> &-header
+
+            &.tasks {
+                cursor: pointer;
+            }
         }
         // ___SidebarHeader
         &-header {
@@ -307,7 +316,6 @@
             @include menu-mobile;
             @include transparent;
             @include fill-width;
-
         }
         // ReleaseMenuButton
         &-releases {
@@ -332,6 +340,9 @@
 
             &.user {
                 @include menu-releases;
+            }
+
+            &.tasks {
             }
         }
     }
@@ -473,6 +484,11 @@
                 @include hover-text-only;
             }
         }
+    }
+
+    &.task {
+        @include transparent;
+        @include rounded-s;
     }
 }
 

@@ -10,7 +10,7 @@
         <PlaylistList Playlists="@Playlists">
 
             <RowTemplate Context="playlist">
-                <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" />
+                <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" @key="playlist.Id"/>
             </RowTemplate>
 
         </PlaylistList>

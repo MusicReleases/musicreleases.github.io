@@ -6,9 +6,10 @@
     overflow: hidden;
     display: grid;
     grid-template-columns: var(--col-menu) var(--col-artists) var(--col-date) var(--col-main) var(--col-playlists);
-    grid-template-rows: var(--row-loader) var(--row-headers) var(--row-filters) var(--row-menu-releases) var(--row-content);
+    //grid-template-rows: var(--row-loader) var(--row-headers) var(--row-filters) var(--row-menu-releases) var(--row-content) var(--row-tasks);
+    grid-template-rows: var(--row-loader) var(--row-headers) var(--row-filters) var(--row-content) var(--row-tasks);
     grid-template-areas:
-        "loader loader loader loader loader" "logo artists-header date-header releases-filter playlists-header" "logo artists-filter date-filter releases-toolbar playlists-filter" "releases-menu artists-menu date-menu releases-content playlists-menu" "settings-menu artists-menu date-menu releases-content playlists-menu";
+        "loader loader loader loader loader" "logo artists-header date-header releases-filter playlists-header" "logo artists-filter date-filter releases-toolbar playlists-filter" "releases-menu artists-menu date-menu releases-content playlists-menu" "settings-menu artists-menu date-menu releases-content tasks";
 
     @include layout.respond(tablet) {
         grid-template-columns: var(--col-menu) var(--col-artists) var(--col-date) var(--col-main);

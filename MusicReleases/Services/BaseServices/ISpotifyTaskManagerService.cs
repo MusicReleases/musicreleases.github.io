@@ -1,15 +1,17 @@
 ﻿using JakubKastner.MusicReleases.Objects.Spotify;
-using System.Collections.ObjectModel;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public interface ISpotifyTaskManagerService
 {
+	IReadOnlyList<SpotifyBackgroundTask> AllTasks { get; }
+	ICollection<SpotifyBackgroundTask> FilteredTasks { get; }
 	bool IsAnyTaskRunning { get; }
-	ObservableCollection<SpotifyBackgroundTask> Tasks { get; }
+	ICollection<SpotifyBackgroundTask> RunningTasks { get; }
 
 	event Action? OnChange;
 
-	void DismissAllFinished();
+	void HideAllFinished();
+	void RemoveTask(SpotifyBackgroundTask task);
 	Task Run(string name, Func<SpotifyBackgroundTask, Task> work);
 }

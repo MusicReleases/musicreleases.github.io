@@ -16,16 +16,29 @@
         </MobileMenuButton>
     </li>
 
-    <li class="menu-item date">
-        <MobileMenuButton ButtonType="@MobileMenuButtonComponent.Date">
-            <span class="title">
-                Date
-            </span>
-        </MobileMenuButton>
-    </li>
+    @if (IsTasksPopupDisplayed)
+    {
+        <li class="menu-item tasks">
+            <TasksButton Class="@_buttonClass" ButtonType="@TasksButtonComponent.Mobile">
+                <span class="title">
+                    Tasks
+                </span>
+            </TasksButton>
+        </li>
+    }
+    else
+    {
+        <li class="menu-item date">
+            <MobileMenuButton ButtonType="@MobileMenuButtonComponent.Date">
+                <span class="title">
+                    Date
+                </span>
+            </MobileMenuButton>
+        </li>
+    }
 
     <li class="menu-item more">
-        <MrButton Class="@_overflowButtonClass" Title="@OverflowButtonTitle" Active="@IsOverflowMenuDisplayed" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="settings-menu">
+        <MrButton Class="@_buttonClass" Title="@OverflowButtonTitle" Active="@IsOverflowMenuDisplayed" OnClick="@ToggleOverflowMenu" aria-expanded="@IsOverflowMenuDisplayed" aria-controls="settings-menu">
             <MrIcon Icon="@OverflowIcon" />
             <span class="title">
                 Menu

@@ -1,10 +1,9 @@
-﻿using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects;
 using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
@@ -25,7 +24,11 @@ public partial class Releases : IDisposable
 	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
 
 	[Inject]
-	private ILoaderService LoaderService { get; set; } = default!;
+	private IPopupService PopupService { get; set; } = default!;
+
+	[Inject]
+	private NavigationManager NavManager { get; set; } = default!;
+
 
 
 	[Parameter]
@@ -82,23 +85,16 @@ public partial class Releases : IDisposable
 	public string? OldReleases { get; set; }
 
 
-	private ISet<SpotifyRelease>? FilteredReleases => SpotifyFilterService.FilteredReleases;
-
-	private bool Loading => LoaderService.IsLoading(LoadingType.Releases) || LoaderService.IsLoading(LoadingType.Artists);
-
-
-	private ReleaseType _type;
+	private ReleaseType _releaseType;
 
 
 	protected override void OnInitialized()
 	{
-		LoaderService.LoadingStateChanged += StateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		LoaderService.LoadingStateChanged -= StateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
@@ -114,6 +110,16 @@ public partial class Releases : IDisposable
 	}
 
 	private async Task LoadReleases()
+	{
+		if (PopupService.UrlChanged())
+		{
+			await LoadFiter();
+			await GetReleases();
+			// when is the same url as when the popup was opened - dont update
+		}
+	}
+
+	private async Task LoadFiter()
 	{
 		// TODO enable to select and display more than 1 release type
 		/*if (string.IsNullOrEmpty(Type))
@@ -137,9 +143,8 @@ public partial class Releases : IDisposable
 
 		var advancedFilter = new SpotifyFilterAdvanced(tracks, eps, notRemixes, remixes, followedArtists, savedReleases, notVariousArtists, variousArtists, newReleases, oldReleases);
 		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId, advancedFilter);
-		_type = filter.ReleaseType;
+		_releaseType = filter.ReleaseType;
 		await SpotifyFilterService.SetFilterAndSaveDb(filter);
-		await GetReleases();
 	}
 
 	private static bool IsFilterActive(string? filter)
@@ -162,7 +167,7 @@ public partial class Releases : IDisposable
 		if (serviceType == ServiceType.Spotify)
 		{
 			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! loading every time from db - prefer loading from store !!!!!
-			await SpotifyWorkflowService.StartLoadingAll(false, _type);
+			await SpotifyWorkflowService.StartLoadingAll(false, _releaseType);
 		}
 	}
 }

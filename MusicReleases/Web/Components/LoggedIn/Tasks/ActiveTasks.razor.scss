@@ -1,0 +1,28 @@
+﻿@use 'global/layout' as layout;
+
+.tasks {
+    grid-area: tasks;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+    @include layout.respond(tablet-mobile) {
+        display: none;
+    }
+
+    .header {
+        display: inline-flex;
+        gap: 2px;
+        padding: 5px;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100%;
+        min-height: 0;
+        gap: 10px;
+    }
+}

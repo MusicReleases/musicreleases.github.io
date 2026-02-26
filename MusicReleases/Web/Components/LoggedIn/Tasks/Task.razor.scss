@@ -1,0 +1,41 @@
+﻿//@use 'global/layout' as layout;
+
+.task {
+    background-color: var(--color-5);
+    margin-right: 9px;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    border-left: 4px solid #1db954;
+
+    &.failed {
+        border-left-color: #e91429;
+    }
+
+    &.finished {
+        border-left-color: #535353;
+        opacity: 0.9;
+    }
+
+    &.popup {
+    }
+
+    &.sidebar {
+        animation: slide-in 0.3s ease-out;
+    }
+
+    .header {
+        display: inline-flex;
+    }
+
+    .title {
+        align-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .status {
+        font-size: 0.8rem;
+        color: #b3b3b3;
+    }
+}

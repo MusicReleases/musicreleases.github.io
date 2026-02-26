@@ -9,8 +9,6 @@ public partial class ReleaseSection : IDisposable
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
 
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
 
 	private string ClassShow => (MobileService.MobileMenu == MobileMenuButtonComponent.Releases).ToCssClass("show");
 

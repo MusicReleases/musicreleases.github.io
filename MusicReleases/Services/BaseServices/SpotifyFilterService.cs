@@ -216,6 +216,8 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 	public void SetFilter(SpotifyFilter filter)
 	{
 		Filter = filter;
+
+		//OnFilterOrDataChanged?.Invoke();
 	}
 
 	public async Task SetFilterAndSaveDb(SpotifyFilter filter)

@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDragDropService, DragDropService>();
 		services.AddScoped<IMobileService, MobileService>();
 		services.AddScoped<IOverflowMenuService, OverflowMenuService>();
+		services.AddScoped<IPopupService, PopupService>();
 
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
@@ -51,6 +52,8 @@ public static class ServiceCollectionExtensions
 
 		// spotify services
 		services.AddScoped<ISpotifyTaskManagerService, SpotifyTaskManagerService>();
+		services.AddScoped<ISpotifyTaskFilterService, SpotifyTaskFilterService>();
+		services.AddScoped<ISpotifyTaskFilterUrlService, SpotifyTaskFilterUrlService>();
 
 		services.AddScoped<ISpotifyFilterUrlService, SpotifyFilterUrlService>();
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();

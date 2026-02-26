@@ -3,10 +3,13 @@
 public class SpotifyBackgroundTask
 {
 	public event Action? OnStateChanged;
+
 	public Guid Id { get; } = Guid.NewGuid();
+
 	public string Name { get; set; } = string.Empty;
 
 	private string _status = string.Empty;
+
 	public string Status
 	{
 		get => _status;
@@ -24,10 +27,15 @@ public class SpotifyBackgroundTask
 	public double Progress
 	{
 		get => _progress;
-		set { _progress = value; OnStateChanged?.Invoke(); }
+		set
+		{
+			_progress = value;
+			OnStateChanged?.Invoke();
+		}
 	}
 
 	private bool _isOverlayVisible = true;
+
 	public bool IsOverlayVisible
 	{
 		get => _isOverlayVisible;

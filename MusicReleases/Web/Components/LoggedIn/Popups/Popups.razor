@@ -1,0 +1,11 @@
+﻿@if (PopupService.IsAnyPopupDisplayed)
+{
+    <div class="@PopupClass">
+        @switch (PopupService.DisplayedPopup)
+        {
+             case PopupType.Tasks:
+                <TaskPopup />
+                break;
+        }
+    </div>
+}

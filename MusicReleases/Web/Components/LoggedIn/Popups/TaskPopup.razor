@@ -1,0 +1,22 @@
+﻿@using JakubKastner.MusicReleases.Objects.Spotify
+
+<h1>Tasks</h1>
+
+<div class="filters">
+
+</div>
+
+@if (DisplayedTasks.Count < 1)
+{
+    <p>0 tasks</p>
+}
+
+<div class="task-list scroll">
+
+    <Virtualize Items="@DisplayedTasks" Context="task" TItem="@SpotifyBackgroundTask">
+
+        <Task BackgroundTask="@task" ComponentType="@TaskComponent.Popup" @key="task.Id" />
+
+    </Virtualize>
+
+</div>

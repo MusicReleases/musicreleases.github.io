@@ -20,3 +20,8 @@ public enum DragDropType
 	Release,
 	Track,
 }
+
+public enum PopupType
+{
+	Tasks,
+}

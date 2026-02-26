@@ -1,0 +1,31 @@
+@use 'global/layout' as layout;
+
+.popup {
+    grid-column: artists-header-start / playlists-header-end;
+    grid-row: artists-header-start / tasks-end;
+    z-index: 10;
+    background-color: black;
+    overflow-y: auto;
+    max-height: 100%;
+
+
+    @include layout.respond(tablet) {
+        grid-column: artists-header-start / releases-filter-end;
+        grid-row: artists-header-start / releases-content-end;
+    }
+
+    @include layout.respond(mobile) {
+        grid-column: releases-content-start / releases-content-end;
+        grid-row: releases-content-start / releases-menu-end;
+
+        &.artists {
+            grid-column: artists-menu-start / artists-filter-end;
+            grid-row: artists-menu-start / artists-filter-end;
+        }
+
+        &.date {
+            grid-column: date-menu-start / date-filter-end;
+            grid-row: date-menu-start / date-filter-end;
+        }
+    }
+}

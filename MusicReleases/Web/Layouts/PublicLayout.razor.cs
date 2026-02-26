@@ -1,5 +1,5 @@
 namespace JakubKastner.MusicReleases.Web.Layouts;
 
-public partial class LayoutPublic
+public partial class PublicLayout
 {
 }

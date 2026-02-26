@@ -3,7 +3,7 @@
     <PlaylistList Playlists="@Playlists">
 
         <RowTemplate Context="playlist">
-            <PlaylistSidebarButton Playlist="@playlist" />
+            <PlaylistSidebarButton Playlist="@playlist" @key="playlist.Id" />
         </RowTemplate>
 
     </PlaylistList>

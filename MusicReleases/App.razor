@@ -2,11 +2,11 @@
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(LayoutPublic)" />
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(PublicLayout)" />
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(LayoutPublic)">
+        <LayoutView Layout="@typeof(PublicLayout)">
             <NotFound />
         </LayoutView>
     </NotFound>

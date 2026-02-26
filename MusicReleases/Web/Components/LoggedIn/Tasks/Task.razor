@@ -1,0 +1,26 @@
+﻿<div class="@TaskClass" >
+
+    <div class="header">
+
+        <span class="title">
+            @BackgroundTask.Name
+        </span>
+
+        @if (!BackgroundTask.IsRunning)
+        {
+            <MrButton Class="task" OnClick="@DeleteOrHideTask" Title="@DeleteOrHideButtonTitle">
+                <MrIcon Icon="@LucideIcon.X" />
+            </MrButton>
+        }
+        else
+        {
+            <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@BackgroundTask.IsRunning" />
+        }
+
+    </div>
+
+    <div class="status">
+        @BackgroundTask.Status
+    </div>
+
+</div>

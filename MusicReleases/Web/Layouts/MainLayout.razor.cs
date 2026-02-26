@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Layouts;
 
-public partial class LayoutMain : IDisposable
+public partial class MainLayout : IDisposable
 {
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
@@ -14,7 +14,6 @@ public partial class LayoutMain : IDisposable
 
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
-
 
 	private string BodyClass => MobileService.MobileMenu.ToLowerString();
 

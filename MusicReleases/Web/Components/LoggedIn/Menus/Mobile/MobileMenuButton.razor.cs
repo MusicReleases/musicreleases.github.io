@@ -16,6 +16,9 @@ public partial class MobileMenuButton : IDisposable
 	[Inject]
 	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
 
+	[Inject]
+	private IPopupService PopupService { get; set; } = default!;
+
 
 	[Parameter, EditorRequired]
 	public required MobileMenuButtonComponent ButtonType { get; set; }
@@ -24,7 +27,7 @@ public partial class MobileMenuButton : IDisposable
 	public RenderFragment? ChildContent { get; set; }
 
 
-	private bool IsActive => ButtonType == MobileService.MobileMenu;
+	private bool IsActive => ButtonType == MobileService.MobileMenu && !PopupService.IsAnyPopupDisplayed;
 
 	private string ButtonClass => $"menu-mobile {ButtonType.ToLowerString()}";
 
@@ -54,6 +57,7 @@ public partial class MobileMenuButton : IDisposable
 		MobileService.OnDisplayChanged += StateChanged;
 		OverflowMenuService.OnDisplayChanged += StateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		PopupService.OnChange += StateChanged;
 	}
 
 	public void Dispose()
@@ -61,6 +65,7 @@ public partial class MobileMenuButton : IDisposable
 		MobileService.OnDisplayChanged -= StateChanged;
 		OverflowMenuService.OnDisplayChanged -= StateChanged;
 		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		PopupService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -72,6 +77,7 @@ public partial class MobileMenuButton : IDisposable
 
 	public void DisplayMenu()
 	{
+		PopupService.Hide();
 		OverflowMenuService.HideMenu();
 		MobileService.ShowMenu(ButtonType);
 	}

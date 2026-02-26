@@ -68,3 +68,15 @@ public enum SidebarComponent
 	Playlists,
 	Date,
 }
+
+public enum TaskComponent
+{
+	Popup,
+	Sidebar,
+}
+
+public enum TasksButtonComponent
+{
+	Settings,
+	Mobile,
+}

@@ -1,13 +1,30 @@
 ﻿using JakubKastner.MusicReleases.Objects.Spotify;
-using System.Collections.ObjectModel;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 {
 	public event Action? OnChange;
-	public ObservableCollection<SpotifyBackgroundTask> Tasks { get; } = [];
-	public bool IsAnyTaskRunning => Tasks.Any(t => t.IsRunning);
+
+
+	public bool IsAnyTaskRunning => RunningTasks.Count > 0;
+
+	public IReadOnlyList<SpotifyBackgroundTask> AllTasks => _tasks;
+
+	public ICollection<SpotifyBackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];
+	public ICollection<SpotifyBackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
+
+
+	private readonly List<SpotifyBackgroundTask> _tasks = [];
+
+	private readonly ISpotifyTaskFilterService _filterService;
+
+
+	public SpotifyTaskManagerService(ISpotifyTaskFilterService filterService)
+	{
+		_filterService = filterService;
+		_filterService.OnFilterChanged += () => OnChange?.Invoke();
+	}
 
 	private void NotifyUI()
 	{
@@ -24,7 +41,7 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 
 		task.OnStateChanged += NotifyUI;
 
-		Tasks.Insert(0, task);
+		_tasks.Insert(0, task);
 		NotifyUI();
 
 		try
@@ -54,21 +71,26 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 		}
 	}
 
-	public void DismissAllFinished()
+	private async Task HideAfterDelay(SpotifyBackgroundTask task)
 	{
-		foreach (var task in Tasks.Where(t => !t.IsRunning))
+		await Task.Delay(task.Failed ? 10000 : 5000);
+
+		task.IsOverlayVisible = false;
+		NotifyUI();
+	}
+
+	public void HideAllFinished()
+	{
+		foreach (var task in _tasks.Where(t => !t.IsRunning))
 		{
 			task.IsOverlayVisible = false;
 		}
 		NotifyUI();
 	}
 
-
-	private async Task HideAfterDelay(SpotifyBackgroundTask task)
+	public void RemoveTask(SpotifyBackgroundTask task)
 	{
-		await Task.Delay(task.Failed ? 10000 : 5000);
-
-		task.IsOverlayVisible = false;
+		_tasks.Remove(task);
 		NotifyUI();
 	}
 }

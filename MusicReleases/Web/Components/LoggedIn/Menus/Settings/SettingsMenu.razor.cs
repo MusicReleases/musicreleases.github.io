@@ -6,7 +6,6 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Settings;
 
 public partial class SettingsMenu : IDisposable
 {
-
 	[Inject]
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 

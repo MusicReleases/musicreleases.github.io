@@ -8,7 +8,7 @@ else
 	<ul>
 		<Virtualize Items="@Artists" Context="artist">
 			<li>
-				<ArtistSidebarButton ArtistId=@artist.Id ArtistName=@artist.Name />
+				<ArtistSidebarButton ArtistId=@artist.Id ArtistName=@artist.Name @key="artist.Id"/>
 			</li>
 		</Virtualize>
 	</ul>
