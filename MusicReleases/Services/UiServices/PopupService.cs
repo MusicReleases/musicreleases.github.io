@@ -14,8 +14,8 @@ public class PopupService(NavigationManager navigationManager) : IPopupService
 
 	public PopupType? DisplayedPopup => _popupType;
 
-	public string? _lastUrl;
 
+	public string? _lastUrl;
 
 	private PopupType? _popupType = null;
 
@@ -25,7 +25,6 @@ public class PopupService(NavigationManager navigationManager) : IPopupService
 		_popupType = popupType;
 		OnChange?.Invoke();
 	}
-
 
 	public void Toggle(PopupType popupType)
 	{
@@ -41,6 +40,11 @@ public class PopupService(NavigationManager navigationManager) : IPopupService
 
 	public void Hide()
 	{
+		if (!IsAnyPopupDisplayed)
+		{
+			return;
+		}
+
 		_popupType = null;
 		ChangePopup();
 		OnChange?.Invoke();
