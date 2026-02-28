@@ -1,2 +1,18 @@
-.task-list {
+.header {
+    margin: 0 10px;
+}
+
+.filters {
+    display: inline-flex;
+    overflow: auto;
+    padding: 5px;
+    margin: 15px 0;
+    display: flex;
+}
+
+.list {
+    background-color: var(--color-4);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0 10px;
 }

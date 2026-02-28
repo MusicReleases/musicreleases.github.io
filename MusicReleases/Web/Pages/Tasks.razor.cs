@@ -5,16 +5,14 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
 
-public partial class Tasks
+public partial class Tasks : IDisposable
 {
 	[Inject]
-	private ISpotifyTaskFilterUrlService SpotifyTaskFilterUrlService { get; set; } = default!;
-
-	[Inject]
-	private ISpotifyTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
+	private ISpotifyTaskFilterUrlSynchronizer SpotifyTaskFilterUrlSynchronizer { get; set; } = default!;
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
+
 
 	[Parameter]
 	[SupplyParameterFromQuery]
@@ -25,6 +23,12 @@ public partial class Tasks
 	public string? Search { get; set; }
 
 
+	public void Dispose()
+	{
+		SpotifyTaskFilterUrlSynchronizer.Dispose();
+		GC.SuppressFinalize(this);
+	}
+
 	protected override void OnParametersSet()
 	{
 		LoadFilters();
@@ -33,8 +37,7 @@ public partial class Tasks
 
 	private void LoadFilters()
 	{
-		var filter = SpotifyTaskFilterUrlService.ParseFilterFromUrlParams(Filter);
-		SpotifyTaskFilterService.SetFilterAndSearch(filter, Search);
+		SpotifyTaskFilterUrlSynchronizer.SetFilterFromUrl(Filter, Search);
 	}
 
 	private void ShowPopup()

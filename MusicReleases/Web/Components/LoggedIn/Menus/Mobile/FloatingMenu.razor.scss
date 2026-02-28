@@ -1,0 +1,16 @@
+@use 'global/layout' as layout;
+
+.floating {
+    display: none;
+
+    @include layout.respond(mobile) {
+        z-index: 2;
+        display: flex;
+        position: fixed;
+        bottom: 240px;
+        height: 0;
+        width: 100%;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+}

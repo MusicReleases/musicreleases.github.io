@@ -19,17 +19,16 @@ public partial class TasksButton : IDisposable
 	[Parameter]
 	public string? Class { get; set; }
 
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
-
 
 	private bool IsPopupDisplayed => PopupService.IsPopupDisplayed(_popupType);
 
-	private string? ButtonText => ChildContent is null ? "Tasks" : null;
+	private string? ButtonText => ButtonType == TasksButtonComponent.Settings ? "Tasks" : null;
 
-	private string ButtonTitle => $"{(IsPopupDisplayed ? "Show" : "Hide")} tasks";
+	private string ButtonTitle => $"{(IsPopupDisplayed ? "Hide" : "Show")} tasks";
 
 	private string ButtonClass => $"tasks {Class}";
+
+	private string? IconClass => ButtonType == TasksButtonComponent.Mobile ? "fill" : null;
 
 
 	private const PopupType _popupType = PopupType.Tasks;

@@ -30,12 +30,13 @@ public class SpotifyTaskFilterUrlService : ISpotifyTaskFilterUrlService
 
 	public TaskFilter ParseFilterFromUrlParams(string? filterParams)
 	{
-		var filter = TaskFilter.All;
 
 		if (filterParams.IsNullOrEmpty())
 		{
-			return filter;
+			return TaskFilter.All;
 		}
+
+		var filter = (TaskFilter)0;
 
 		var parts = filterParams.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
@@ -48,19 +49,4 @@ public class SpotifyTaskFilterUrlService : ISpotifyTaskFilterUrlService
 		}
 		return filter;
 	}
-
-
-	public string ToggleInQuery(string? currentQuery, TaskFilter toToggle, string searchText)
-	{
-		var filter = ParseFilterFromUrlParams(currentQuery);
-		filter ^= toToggle;
-		return CreateUrlParams(filter, searchText);
-	}
-
-
-	/*public void ToggleFilter(TaskFilter filter)
-	{
-		_filter ^= filter;
-		_filter = EnsurePairsValid(_filter);
-	}*/
 }

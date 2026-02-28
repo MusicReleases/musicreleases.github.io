@@ -9,17 +9,12 @@ public partial class MobileMenuList : IDisposable
 	[Inject]
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
-	[Inject]
-	private IPopupService PopupService { get; set; } = default!;
-
 
 	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
 	private string OverflowButtonTitle => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} menu";
 
 	private LucideIcon OverflowIcon => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Menu;
-
-	private bool IsTasksPopupDisplayed => PopupService.IsPopupDisplayed(PopupType.Tasks);
 
 
 	private const OverflowMenuType _overflowMenu = OverflowMenuType.Settings;
@@ -30,13 +25,11 @@ public partial class MobileMenuList : IDisposable
 	protected override void OnInitialized()
 	{
 		OverflowMenuService.OnDisplayChanged += StateChanged;
-		PopupService.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		OverflowMenuService.OnDisplayChanged -= StateChanged;
-		PopupService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

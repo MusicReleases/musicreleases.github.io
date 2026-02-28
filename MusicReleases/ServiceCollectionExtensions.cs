@@ -54,6 +54,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyTaskManagerService, SpotifyTaskManagerService>();
 		services.AddScoped<ISpotifyTaskFilterService, SpotifyTaskFilterService>();
 		services.AddScoped<ISpotifyTaskFilterUrlService, SpotifyTaskFilterUrlService>();
+		services.AddScoped<ISpotifyTaskFilterUrlSynchronizer, SpotifyTaskFilterUrlSynchronizer>();
 
 		services.AddScoped<ISpotifyFilterUrlService, SpotifyFilterUrlService>();
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();

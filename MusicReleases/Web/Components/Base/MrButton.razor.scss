@@ -310,6 +310,14 @@
         }
     }
 
+    &.popup {
+
+        &-close {
+            @include rounded-l;
+            margin: 10px 10px 0 auto;
+        }
+    }
+
     &.menu {
         // MobileMenuButton
         &-mobile {
@@ -345,11 +353,33 @@
             &.tasks {
             }
         }
+
+        &-floating {
+            @include rounded-xl;
+            height: 45px;
+            width: 45px;
+            margin-left: auto;
+            margin-right: 10px;
+        }
     }
 
     &.filter {
         // ReleaseFilterButton
         &-releases {
+            @include rounded-l;
+            @include chip;
+
+            &.left {
+                margin-left: 5px;
+                @include chip-left;
+            }
+
+            &.right {
+                @include chip-right;
+            }
+        }
+
+        &-tasks {
             @include rounded-l;
             @include chip;
 
@@ -378,6 +408,11 @@
 
             &.releases {
                 // chips
+                @include rounded-m;
+                @include chip;
+            }
+
+            &.tasks {
                 @include rounded-m;
                 @include chip;
             }

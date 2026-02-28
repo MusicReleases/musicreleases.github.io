@@ -6,7 +6,7 @@ public enum LogoComponent
 	Header,
 }
 
-public enum ReleaseFilterButtonComponent
+public enum ChipFilterButtonComponent
 {
 	Left,
 	Right,

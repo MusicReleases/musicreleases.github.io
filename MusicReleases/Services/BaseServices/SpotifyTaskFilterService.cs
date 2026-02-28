@@ -9,8 +9,12 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 
 	public string? SearchText { get; private set; } = null;
 
+	public TaskFilter Filter { get; private set; } = _defaultFilter;
 
-	private TaskFilter _filter = TaskFilter.All;
+	public bool IsFilterActive => Filter != _defaultFilter;
+
+
+	private const TaskFilter _defaultFilter = TaskFilter.All;
 
 
 	private static readonly (TaskFilter A, TaskFilter B)[] FilterPairs =
@@ -33,41 +37,77 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		[TaskFilter.Succeeded] = t => !t.Failed,
 	};
 
-	private void NotifyUI()
+
+	private void SetFilterAndSearchInternal(TaskFilter newFilter, string? newSearchText)
 	{
+		if (newFilter == Filter && string.Equals(newSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
+		{
+			return;
+		}
+		Filter = newFilter;
+		SearchText = newSearchText;
+
+		OnFilterChanged?.Invoke();
+	}
+
+	private void SetFilterInternal(TaskFilter newFilter)
+	{
+		if (newFilter == Filter)
+		{
+			return;
+		}
+		Filter = newFilter;
+
+		OnFilterChanged?.Invoke();
+	}
+
+	private void SetSearchInternal(string? newSearchText)
+	{
+		if (string.Equals(newSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
+		{
+			return;
+		}
+		SearchText = newSearchText;
+
 		OnFilterChanged?.Invoke();
 	}
 
 	public void SetFilterAndSearch(TaskFilter filter, string? searchText)
 	{
-		SetFilterInternal(filter);
-		SetSearchInternal(searchText);
+		var newFilter = EnsureFilterPairs(filter);
+		var newSearchText = EnsudeSearchText(searchText);
 
-		NotifyUI();
+		SetFilterAndSearchInternal(newFilter, newSearchText);
 	}
 
 	public void SetSearch(string? searchText)
 	{
-		SetSearchInternal(searchText);
-		NotifyUI();
+		var newSearchText = EnsudeSearchText(searchText);
+		SetSearchInternal(newSearchText);
 	}
 
-	private void SetSearchInternal(string? searchText)
+	public void ToggleFilter(TaskFilter filter)
 	{
-		SearchText = searchText.IsNullOrEmpty() ? null : searchText.Trim();
+		var newFilter = Filter ^ filter;
+		newFilter = EnsureFilterPairs(newFilter);
+		SetFilterInternal(newFilter);
 	}
 
 	public void SetFilter(TaskFilter filter)
 	{
-		SetFilterInternal(filter);
-		NotifyUI();
+		var newFilter = Filter | filter;
+		newFilter = EnsureFilterPairs(newFilter);
+
+		SetFilterInternal(newFilter);
 	}
 
-	private void SetFilterInternal(TaskFilter filter)
+	public void UnsetFilter(TaskFilter filter)
 	{
-		_filter = EnsurePairsValid(filter);
-	}
+		var newFilter = Filter = ~filter;
+		newFilter = EnsureFilterPairs(newFilter);
 
+		SetFilterInternal(newFilter);
+	}
 
 	public IEnumerable<SpotifyBackgroundTask> Apply(IEnumerable<SpotifyBackgroundTask> source)
 	{
@@ -76,10 +116,9 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		return query;
 	}
 
-
 	private IEnumerable<SpotifyBackgroundTask> ApplyFilter(IEnumerable<SpotifyBackgroundTask> source)
 	{
-		if (_filter.HasFlag(TaskFilter.All))
+		if (Filter.HasFlag(_defaultFilter))
 		{
 			return source;
 		}
@@ -96,8 +135,8 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 
 	private IEnumerable<SpotifyBackgroundTask> ApplyFilterPair(IEnumerable<SpotifyBackgroundTask> source, (TaskFilter A, TaskFilter B) pair)
 	{
-		bool hasA = _filter.HasFlag(pair.A);
-		bool hasB = _filter.HasFlag(pair.B);
+		bool hasA = Filter.HasFlag(pair.A);
+		bool hasB = Filter.HasFlag(pair.B);
 
 		if (hasA && !hasB)
 		{
@@ -122,18 +161,34 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		return query;
 	}
 
-	private static TaskFilter EnsurePairsValid(TaskFilter value)
+	private static string? EnsudeSearchText(string? searchText)
+	{
+		return searchText.IsNullOrEmpty() ? null : searchText.Trim();
+	}
+
+	private static TaskFilter EnsureFilterPairs(TaskFilter newFilter)
 	{
 		foreach (var (pairA, pairB) in FilterPairs)
 		{
-			bool flagA = value.HasFlag(pairA);
-			bool flagB = value.HasFlag(pairB);
+			var flagA = newFilter.HasFlag(pairA);
+			var flagB = newFilter.HasFlag(pairB);
 
+			// none of pair filter is active -> turn on both of them
 			if (!flagA && !flagB)
 			{
-				value |= pairA | pairB;
+				newFilter |= pairA | pairB;
 			}
 		}
-		return value;
+		return newFilter;
+	}
+
+	public bool IsActive(TaskFilter filter)
+	{
+		return Filter.HasFlag(filter);
+	}
+
+	public void ClearFilter()
+	{
+		SetFilterInternal(_defaultFilter);
 	}
 }

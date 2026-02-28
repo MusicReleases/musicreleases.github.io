@@ -18,7 +18,7 @@ public partial class ReleaseFilterButton : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public required ReleaseFilterButtonComponent ButtonType { get; set; }
+	public required ChipFilterButtonComponent ButtonType { get; set; }
 
 	[Parameter, EditorRequired]
 	public required ReleasesFilters FilterType { get; set; }

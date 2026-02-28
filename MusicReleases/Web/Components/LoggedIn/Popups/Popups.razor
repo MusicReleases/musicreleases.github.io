@@ -1,9 +1,12 @@
 ﻿@if (PopupService.IsAnyPopupDisplayed)
 {
     <div class="@PopupClass">
+        <MrButton Class="popup-close" Title="Close popup" OnClick="@PopupService.Hide">
+            <MrIcon Icon="@LucideIcon.X"/>
+        </MrButton>
         @switch (PopupService.DisplayedPopup)
         {
-             case PopupType.Tasks:
+            case PopupType.Tasks:
                 <TaskPopup />
                 break;
         }

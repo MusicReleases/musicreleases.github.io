@@ -12,6 +12,7 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 	public IReadOnlyList<SpotifyBackgroundTask> AllTasks => _tasks;
 
 	public ICollection<SpotifyBackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];
+
 	public ICollection<SpotifyBackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
 
 

@@ -4,20 +4,20 @@
 
 @if (SpotifyFilterService.Filter?.ReleaseType == ReleaseType.Tracks || SpotifyFilterService.Filter?.ReleaseType == ReleaseType.Appears)
 {
-	<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Left" FilterType="@ReleasesFilters.Tracks" />
-	<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Right" FilterType="@ReleasesFilters.EPs" />
+	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleasesFilters.Tracks" />
+	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleasesFilters.EPs" />
 }
 
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Left" FilterType="@ReleasesFilters.NotRemixes" />
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Right" FilterType="@ReleasesFilters.Remixes" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleasesFilters.NotRemixes" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleasesFilters.Remixes" />
 
 @*
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Left" FilterType="@ReleasesFilters.FollowedArtists" />
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Right" FilterType="@ReleasesFilters.SavedReleases" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleasesFilters.FollowedArtists" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleasesFilters.SavedReleases" />
 *@
 
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Left" FilterType="@ReleasesFilters.NotVariousArtists" />
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Right" FilterType="@ReleasesFilters.VariousArtists" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleasesFilters.NotVariousArtists" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleasesFilters.VariousArtists" />
 
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Left" FilterType="@ReleasesFilters.NewReleases" />
-<ReleaseFilterButton ButtonType="@ReleaseFilterButtonComponent.Right" FilterType="@ReleasesFilters.OldReleases" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleasesFilters.NewReleases" />
+<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleasesFilters.OldReleases" />
