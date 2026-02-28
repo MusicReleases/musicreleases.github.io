@@ -3,9 +3,9 @@ using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Tasks;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 
-public partial class ActiveTasks : IDisposable
+public partial class ActiveBackgroundTasks : IDisposable
 {
 	[Inject]
 	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
@@ -30,8 +30,8 @@ public partial class ActiveTasks : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void ViewTasks()
+	private async Task ViewTasks()
 	{
-		PopupService.Toggle(PopupType.Tasks);
+		await PopupService.Toggle(PopupType.BackgroundTasks);
 	}
 }

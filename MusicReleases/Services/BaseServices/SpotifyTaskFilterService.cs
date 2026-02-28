@@ -13,6 +13,8 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 
 	public bool IsFilterActive => Filter != _defaultFilter;
 
+	public bool IsSearching => SearchText.IsNotNullOrEmpty();
+
 
 	private const TaskFilter _defaultFilter = TaskFilter.All;
 

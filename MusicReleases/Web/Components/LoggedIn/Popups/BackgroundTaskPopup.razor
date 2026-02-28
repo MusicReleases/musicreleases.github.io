@@ -1,0 +1,40 @@
+﻿@using JakubKastner.MusicReleases.Objects.Spotify
+
+<h2 class="header">
+    <MrIcon Icon="@LucideIcon.ListTodo" Title="Tasks" />
+    Tasks
+</h2>
+
+<div class="filters scroll">
+    <MrButton Class="filter-clear tasks" Title="@ClearFilterButtonTitle" OnClick="@ClearFilter">
+        <MrIcon Icon="@ClearFilterIcon" />
+    </MrButton>
+
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@TaskFilter.Running" />
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@TaskFilter.Finished" />
+
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@TaskFilter.Failed" />
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@TaskFilter.Succeeded" />
+
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@TaskFilter.Hidden" />
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@TaskFilter.Visible" />
+
+</div>
+
+<div class="search">
+    <MrSearch Placeholder="Search tasks..." SearchText="@SpotifyTaskFilterService.SearchText" ValueChanged="Search" />
+</div>
+
+<div class="list scroll">
+
+    @if (DisplayedTasks.Count < 1)
+    {
+        <p>@ZeroTasksText</p>
+    }
+    <Virtualize Items="@DisplayedTasks" Context="task" TItem="@SpotifyBackgroundTask">
+
+        <BackgroundTask SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Popup" @key="task.Id" />
+
+    </Virtualize>
+
+</div>

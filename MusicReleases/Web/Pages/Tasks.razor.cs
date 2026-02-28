@@ -29,19 +29,19 @@ public partial class Tasks : IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		LoadFilters();
+		await LoadFilters();
 		ShowPopup();
 	}
 
-	private void LoadFilters()
+	private async Task LoadFilters()
 	{
-		SpotifyTaskFilterUrlSynchronizer.SetFilterFromUrl(Filter, Search);
+		await SpotifyTaskFilterUrlSynchronizer.SetFilterFromUrl(Filter, Search);
 	}
 
 	private void ShowPopup()
 	{
-		PopupService.Show(PopupType.Tasks);
+		PopupService.Show(PopupType.BackgroundTasks);
 	}
 }

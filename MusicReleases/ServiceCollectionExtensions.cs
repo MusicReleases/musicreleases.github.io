@@ -41,6 +41,8 @@ public static class ServiceCollectionExtensions
 
 		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
 
+		services.AddScoped<IDbSpotifyUserLinkService, DbSpotifyUserLinkService>();
+
 		services.AddScoped<IDbSpotifyPlaylistService, DbSpotifyPlaylistService>();
 		services.AddScoped<IDbSpotifyUserPlaylistService, DbSpotifyUserPlaylistService>();
 		services.AddScoped<IDbSpotifyPlaylistServiceOld, DbSpotifyPlaylistServiceOld>();

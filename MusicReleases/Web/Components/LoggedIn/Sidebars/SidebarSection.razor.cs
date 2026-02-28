@@ -32,7 +32,7 @@ public partial class SidebarSection : IDisposable
 
 	private string SidebarTypeString => SidebarType.ToLowerString();
 
-	private string LoadingText => $"Loading {SidebarType.ToFriendlyString()}...";
+	private string LoadingText => SidebarType == SidebarComponent.Date ? string.Empty : $"Loading {SidebarType.ToFriendlyString()}...";
 
 	private MobileMenuButtonComponent? MobileMenuType => SidebarType switch
 	{

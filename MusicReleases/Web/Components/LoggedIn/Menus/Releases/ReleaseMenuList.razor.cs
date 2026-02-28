@@ -13,6 +13,9 @@ public partial class ReleaseMenuList : IDisposable
 	[Inject]
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
+	[Inject]
+	private IPopupService PopupService { get; set; } = default!;
+
 
 	[Parameter, EditorRequired]
 	public required ReleaseMenuComponent MenuType { get; set; }
@@ -24,7 +27,7 @@ public partial class ReleaseMenuList : IDisposable
 	public string? Class { get; set; }
 
 
-	private string ListClass => $"menu-list {MenuType.ToLowerString()}{Hidden.ToCssClass()} {Class}";
+	private string ListClass => $"menu-list {MenuType.ToLowerString()}{IsHidden.ToCssClass("hidden")} {Class}";
 
 	private string ReleaseButtonClass => $"{_buttonClass}{(MenuType == ReleaseMenuComponent.Primary ? string.Empty : "-overflow")}";
 
@@ -36,6 +39,8 @@ public partial class ReleaseMenuList : IDisposable
 
 	private LucideIcon OverflowIcon => IsOverflowMenuDisplayed ? LucideIcon.X : LucideIcon.Ellipsis;
 
+	private bool IsHidden => Hidden || PopupService.IsAnyPopupDisplayed;
+
 
 	private const string _buttonClass = "menu-releases";
 
@@ -46,12 +51,14 @@ public partial class ReleaseMenuList : IDisposable
 	{
 		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
 		OverflowMenuService.OnDisplayChanged += StateChanged;
+		PopupService.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
 		OverflowMenuService.OnDisplayChanged -= StateChanged;
+		PopupService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

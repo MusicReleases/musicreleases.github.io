@@ -1,24 +1,37 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+using JakubKastner.SpotifyApi.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, NavigationManager navManager) : IDisposable, ISpotifyTaskFilterUrlSynchronizer
+public class SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyUserLinkService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager) : IDisposable, ISpotifyTaskFilterUrlSynchronizer
 {
 	private readonly ISpotifyTaskFilterService _filterService = filterService;
 
 	private readonly ISpotifyTaskFilterUrlService _filterUrlService = filterUrlService;
 
+	private readonly IDbSpotifyUserLinkService _dbService = dbService;
+
+	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+
 	private readonly NavigationManager _navManager = navManager;
 
 
+	private const string _baseUrl = "/tasks";
+
 	private bool _isSubscribed = false;
 
-
-	public void SetFilterFromUrl(string? urlParams, string? searchParam)
+	public async Task SetFilterFromUrl(string? urlParams, string? searchParam)
 	{
 		var filter = _filterUrlService.ParseFilterFromUrlParams(urlParams);
 
 		_filterService.SetFilterAndSearch(filter, searchParam);
+
+		// url parameters for db - doesnt save search text
+		var urlDb = _filterUrlService.CreateUrlParams(_filterService.Filter, null);
+		var userId = _spotifyApiUserService.GetUserIdRequired();
+
+		await _dbService.SetTasksLink(userId, urlDb);
 
 		if (!_isSubscribed)
 		{
@@ -34,8 +47,8 @@ public class SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterSe
 
 	private void ChangeFilter()
 	{
-		var url = _filterUrlService.CreateUrlParams(_filterService.Filter, _filterService.SearchText);
-		url = $"/tasks{url}";
+		var paramaters = _filterUrlService.CreateUrlParams(_filterService.Filter, _filterService.SearchText);
+		var url = $"{_baseUrl}{paramaters}";
 		_navManager.NavigateTo(url, false);
 	}
 
@@ -49,4 +62,12 @@ public class SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterSe
 		}
 	}
 
+	public async Task<string> GetInitUrl()
+	{
+		var userId = _spotifyApiUserService.GetUserIdRequired();
+		var parameters = await _dbService.GetTasksLink(userId);
+		var url = $"{_baseUrl}{parameters}";
+
+		return url;
+	}
 }

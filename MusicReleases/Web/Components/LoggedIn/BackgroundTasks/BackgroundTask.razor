@@ -3,10 +3,10 @@
     <div class="header">
 
         <span class="title">
-            @BackgroundTask.Name
+            @SpotifyBackgroundTask.Name
         </span>
 
-        @if (!BackgroundTask.IsRunning)
+        @if (!SpotifyBackgroundTask.IsRunning)
         {
             <MrButton Class="task" OnClick="@DeleteOrHideTask" Title="@DeleteOrHideButtonTitle">
                 <MrIcon Icon="@LucideIcon.X" />
@@ -14,13 +14,13 @@
         }
         else
         {
-            <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@BackgroundTask.IsRunning" />
+            <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@SpotifyBackgroundTask.IsRunning" />
         }
 
     </div>
 
     <div class="status">
-        @BackgroundTask.Status
+        @SpotifyBackgroundTask.Status
     </div>
 
 </div>

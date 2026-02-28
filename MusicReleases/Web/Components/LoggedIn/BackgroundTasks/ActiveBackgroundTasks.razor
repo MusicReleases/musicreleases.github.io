@@ -3,26 +3,6 @@
 
 <div class="tasks">
 
-
-    <div class="list scroll">
-
-        <Virtualize Items="@SpotifyTaskManagerService.RunningTasks" Context="task" TItem="@SpotifyBackgroundTask">
-
-
-            @if (SpotifyTaskManagerService.IsAnyTaskRunning)
-            {
-                <Task BackgroundTask="@task" ComponentType="@TaskComponent.Sidebar" @key="task.Id" />
-            }
-            else
-            {
-                <p>0 active tasks</p>
-            }
-
-        </Virtualize>
-
-    </div>
-
-
     <div class="header">
         <MrButton Class="sidebar-title tasks" Text="Active tasks" OnClick="@ViewTasks">
             <MrIcon Icon="@LucideIcon.ListTodo" />
@@ -32,11 +12,24 @@
             <MrIcon Icon="@LucideIcon.ListCheck" />
         </MrButton>
 
-        @if (SpotifyTaskManagerService.IsAnyTaskRunning)
+        @if (SpotifyTaskManagerService.IsAnyTaskVisible)
         {
             <MrButton Class="sidebar-header" Title="Close finished tasks" OnClick="@SpotifyTaskManagerService.HideAllFinished">
                 <MrIcon Icon="@LucideIcon.X" />
             </MrButton>
         }
+    </div>
+
+    <div class="list scroll">
+
+        @if (!SpotifyTaskManagerService.IsAnyTaskVisible)
+        {
+            <p>No active tasks</p>
+        }
+
+        <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@SpotifyBackgroundTask">
+            <BackgroundTask SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Sidebar" @key="task.Id" />
+        </Virtualize>
+
     </div>
 </div>

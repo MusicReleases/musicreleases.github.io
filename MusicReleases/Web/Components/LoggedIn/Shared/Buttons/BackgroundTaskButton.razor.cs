@@ -1,16 +1,20 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Shared.Buttons;
 
-public partial class TasksButton : IDisposable
+public partial class BackgroundTaskButton : IDisposable
 {
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
 
 	[Inject]
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
+
+	[Inject]
+	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -28,20 +32,24 @@ public partial class TasksButton : IDisposable
 
 	private string ButtonClass => $"tasks {Class}";
 
+	private bool ButtonLoading => ButtonType == TasksButtonComponent.Mobile && SpotifyTaskManagerService.IsAnyTaskRunning;
+
 	private string? IconClass => ButtonType == TasksButtonComponent.Mobile ? "fill" : null;
 
 
-	private const PopupType _popupType = PopupType.Tasks;
+	private const PopupType _popupType = PopupType.BackgroundTasks;
 
 
 	protected override void OnInitialized()
 	{
 		PopupService.OnChange += StateChanged;
+		SpotifyTaskManagerService.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		PopupService.OnChange -= StateChanged;
+		SpotifyTaskManagerService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -50,9 +58,9 @@ public partial class TasksButton : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void ViewTasks()
+	private async Task ViewTasks()
 	{
 		OverflowMenuService.HideMenu();
-		PopupService.Toggle(_popupType);
+		await PopupService.Toggle(_popupType);
 	}
 }

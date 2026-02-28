@@ -75,9 +75,9 @@ public partial class MobileMenuButton : IDisposable
 	}
 
 
-	public void DisplayMenu()
+	public async Task DisplayMenu()
 	{
-		PopupService.Hide();
+		await PopupService.Hide();
 		OverflowMenuService.HideMenu();
 		MobileService.ShowMenu(ButtonType);
 	}

@@ -8,6 +8,8 @@ public interface ISpotifyTaskManagerService
 	ICollection<SpotifyBackgroundTask> FilteredTasks { get; }
 	bool IsAnyTaskRunning { get; }
 	ICollection<SpotifyBackgroundTask> RunningTasks { get; }
+	ICollection<SpotifyBackgroundTask> VisibleTasks { get; }
+	bool IsAnyTaskVisible { get; }
 
 	event Action? OnChange;
 

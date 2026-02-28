@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
 
-public partial class MrSearch
+public partial class MrSearch : IDisposable
 {
 	[Parameter]
 	public string ClearButtonClass { get; set; } = "search";
@@ -16,24 +16,48 @@ public partial class MrSearch
 	[Parameter]
 	public string Placeholder { get; set; } = "Search...";
 
+	private CancellationTokenSource? _cts;
+
+	public void Dispose()
+	{
+		_cts?.Cancel();
+		_cts?.Dispose();
+		GC.SuppressFinalize(this);
+	}
 
 	private async Task TextValueChanged(string? newValue)
 	{
-		await UpdateValue(newValue);
+		_cts?.Cancel();
+		_cts?.Dispose();
+		_cts = new CancellationTokenSource();
+
+		try
+		{
+			// wait 400 ms
+			await Task.Delay(400, _cts.Token);
+
+			await UpdateValue(newValue);
+		}
+		catch (TaskCanceledException)
+		{
+			// user is still writing
+		}
 	}
+
 
 	private async Task Clear()
 	{
+		_cts?.Cancel();
 		await UpdateValue(null);
 	}
 
 	private async Task UpdateValue(string? newValue)
 	{
-		SearchText = newValue;
+		//SearchText = newValue;
 
 		if (ValueChanged.HasDelegate)
 		{
-			await ValueChanged.InvokeAsync(SearchText);
+			await ValueChanged.InvokeAsync(newValue);
 		}
 	}
 }

@@ -20,9 +20,11 @@ public partial class ReleaseTrack
 
 	private const string _buttonClass = "track-info";
 
-	private const string _buttonClassAction = $"{_buttonClass}-action";
+	private const string _buttonClassAction = $"{_buttonClass} action";
 
-	private const string _artistButtonClass = $"{_buttonClass}-artist";
+	private const string _nameButtonClass = $"{_buttonClass} name";
+
+	private const string _artistButtonClass = $"{_buttonClass} artist";
 
 	private bool _renderPlaylistList = false;
 

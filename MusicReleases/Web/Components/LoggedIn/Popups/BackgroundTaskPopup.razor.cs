@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Popups;
 
-public partial class TaskPopup : IDisposable
+public partial class BackgroundTaskPopup : IDisposable
 {
 	[Inject]
 	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
@@ -16,11 +16,11 @@ public partial class TaskPopup : IDisposable
 
 	private ICollection<SpotifyBackgroundTask> DisplayedTasks => SpotifyTaskManagerService.FilteredTasks;
 
-	private string ClearFilterButtonText => SpotifyTaskFilterService.IsFilterActive ? "Clear all task filters" : "No filters enabled";
+	private string ClearFilterButtonTitle => SpotifyTaskFilterService.IsFilterActive ? "Clear all task filters" : "No task filters applied";
 
 	private LucideIcon ClearFilterIcon => SpotifyTaskFilterService.IsFilterActive ? LucideIcon.FunnelX : LucideIcon.Funnel;
 
-	private string ZeroTasksText => SpotifyTaskFilterService.IsFilterActive ? "No tasks match the current filters." : "No tasks are in history.";
+	private string ZeroTasksText => SpotifyTaskFilterService.IsFilterActive ? "No tasks match the current filters." : (SpotifyTaskFilterService.IsSearching ? "No tasks match the current searching." : "No tasks are in history.");
 
 
 	protected override void OnInitialized()
@@ -44,5 +44,10 @@ public partial class TaskPopup : IDisposable
 	private void ClearFilter()
 	{
 		SpotifyTaskFilterService.ClearFilter();
+	}
+
+	private void Search(string searchText)
+	{
+		SpotifyTaskFilterService.SetSearch(searchText);
 	}
 }

@@ -24,6 +24,9 @@ public partial class MrButton
 	public bool Hidden { get; set; }
 
 	[Parameter]
+	public bool Loading { get; set; }
+
+	[Parameter]
 	public bool Disabled { get; set; }
 
 	[Parameter]
@@ -44,5 +47,5 @@ public partial class MrButton
 
 	private string? ButtonTitle => Title.IsNullOrEmpty() ? Text : Title;
 
-	private string ButtonClass => $"button {Class}{Active.ToCssClass()}{Hidden.ToCssClass()}";
+	private string ButtonClass => $"button {Class}{Active.ToCssClass()}{Hidden.ToCssClass()}{Loading.ToCssClass()}";
 }

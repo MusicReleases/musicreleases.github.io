@@ -9,9 +9,9 @@ public interface IPopupService
 
 	event Action? OnChange;
 
-	void Hide();
+	Task Hide();
 	bool IsPopupDisplayed(PopupType popupType);
 	void Show(PopupType popupType);
-	void Toggle(PopupType popupType);
-	bool UrlChanged();
+	Task Toggle(PopupType popupType);
+	Task<bool> UrlChanged();
 }

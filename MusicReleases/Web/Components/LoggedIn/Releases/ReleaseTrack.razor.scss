@@ -3,8 +3,7 @@
     .name-artists {
         min-width: 0;
         display: grid;
-        grid-template-rows: auto auto;
-        align-content: center;
+        grid-template-rows: 1fr auto;
         gap: 0;
 
         .name {
@@ -13,6 +12,10 @@
             text-overflow: ellipsis;
             min-width: 0;
             max-width: 100%;
+            display: flex;            
+            align-self: stretch;
+            height: auto;
+            align-items: center;
         }
 
         .artists {

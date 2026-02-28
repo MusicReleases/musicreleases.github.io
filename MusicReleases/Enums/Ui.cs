@@ -23,5 +23,5 @@ public enum DragDropType
 
 public enum PopupType
 {
-	Tasks,
+	BackgroundTasks,
 }

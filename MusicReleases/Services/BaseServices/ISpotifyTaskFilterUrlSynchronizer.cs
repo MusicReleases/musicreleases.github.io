@@ -3,5 +3,6 @@
 public interface ISpotifyTaskFilterUrlSynchronizer
 {
 	void Dispose();
-	void SetFilterFromUrl(string? urlParams, string? searchParam);
+	Task<string> GetInitUrl();
+	Task SetFilterFromUrl(string? urlParams, string? searchParam);
 }

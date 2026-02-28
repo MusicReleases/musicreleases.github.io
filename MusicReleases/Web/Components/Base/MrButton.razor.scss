@@ -1,6 +1,7 @@
 @use 'global/layout' as layout;
 @use 'global/mixins' as mixins;
 
+
 @mixin chip-divider($side) {
     content: "";
     position: absolute;
@@ -99,6 +100,8 @@
 @mixin fill-height-flex {
     @include fill-height;
     display: flex;
+    align-self: stretch;
+    height: auto;
 }
 
 @mixin fill-height-flex-max {
@@ -360,6 +363,17 @@
             width: 45px;
             margin-left: auto;
             margin-right: 10px;
+            border: 2px solid transparent;
+
+            &.loading {
+                --fill: linear-gradient( var(--color-3), var(--color-3) );
+                --ring: conic-gradient( from var(--spin-angle), transparent 0deg, transparent 270deg, var(--color-project) 270deg, var(--color-project) 360deg );
+                background: var(--fill) padding-box, var(--ring) border-box;
+                animation: spin-gradient 2.5s linear infinite;
+            }
+
+            &.tasks {
+            }
         }
     }
 
@@ -471,6 +485,7 @@
                 @include fill-height-flex;
                 @include transparent;
                 @include hover-text-only;
+                padding: 0 20px;
             }
         }
         // PlaylistFilter
@@ -500,13 +515,16 @@
             @include hover-text-only;
             padding: 0;
 
-            &-action {
-                @include transparent;
-                @include hover-text-only;
+            &.name {
+                @include fill-height-flex-max;
+            }
+
+            &.action {
                 @include rounded-xl;
             }
 
-            &-artist {
+            &.artist {
+                @include hover-text-only;
                 color: dimgray;
                 white-space: nowrap;
                 overflow: hidden;
@@ -514,9 +532,6 @@
                 flex: 0 1 auto;
                 min-width: 0;
                 font-size: 14px;
-
-                @include transparent;
-                @include hover-text-only;
             }
         }
     }

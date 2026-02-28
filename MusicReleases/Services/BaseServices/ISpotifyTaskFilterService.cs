@@ -8,6 +8,7 @@ public interface ISpotifyTaskFilterService
 	string? SearchText { get; }
 	TaskFilter Filter { get; }
 	bool IsFilterActive { get; }
+	bool IsSearching { get; }
 
 	event Action? OnFilterChanged;
 

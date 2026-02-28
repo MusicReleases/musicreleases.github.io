@@ -1,11 +1,14 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.UiServices;
 
-public class PopupService(NavigationManager navigationManager) : IPopupService
+public class PopupService(ISpotifyTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, NavigationManager navManager) : IPopupService
 {
-	private readonly NavigationManager _navigationManager = navigationManager;
+	private readonly ISpotifyTaskFilterUrlSynchronizer _spotifyTaskFilterUrlSynchronizer = spotifyTaskFilterUrlSynchronizer;
+
+	private readonly NavigationManager _navManager = navManager;
 
 
 	public event Action? OnChange;
@@ -26,19 +29,19 @@ public class PopupService(NavigationManager navigationManager) : IPopupService
 		OnChange?.Invoke();
 	}
 
-	public void Toggle(PopupType popupType)
+	public async Task Toggle(PopupType popupType)
 	{
 		if (IsPopupDisplayed(popupType))
 		{
 			// close popup
-			Hide();
+			await Hide();
 			return;
 		}
 
-		ChangePopup(popupType);
+		await ChangePopup(popupType);
 	}
 
-	public void Hide()
+	public async Task Hide()
 	{
 		if (!IsAnyPopupDisplayed)
 		{
@@ -46,7 +49,7 @@ public class PopupService(NavigationManager navigationManager) : IPopupService
 		}
 
 		_popupType = null;
-		ChangePopup();
+		await ChangePopup();
 		OnChange?.Invoke();
 	}
 
@@ -55,7 +58,7 @@ public class PopupService(NavigationManager navigationManager) : IPopupService
 		return _popupType == popupType;
 	}
 
-	private void ChangePopup(PopupType? popupType = null)
+	private async Task ChangePopup(PopupType? popupType = null)
 	{
 		if (popupType is null)
 		{
@@ -63,38 +66,39 @@ public class PopupService(NavigationManager navigationManager) : IPopupService
 
 			if (_lastUrl.IsNullOrEmpty())
 			{
-				_navigationManager.NavigateTo("/");
+				_navManager.NavigateTo("/");
 			}
 			else
 			{
-				_navigationManager.NavigateTo(_lastUrl, false);
+				_navManager.NavigateTo(_lastUrl, false);
 			}
 			return;
 		}
 
 		// show popup
 
-		_lastUrl = new Uri(_navigationManager.Uri).PathAndQuery;
+		_lastUrl = new Uri(_navManager.Uri).PathAndQuery;
 
 		switch (popupType)
 		{
-			case PopupType.Tasks:
-				_navigationManager.NavigateTo("/tasks", false);
+			case PopupType.BackgroundTasks:
+				var url = await _spotifyTaskFilterUrlSynchronizer.GetInitUrl();
+				_navManager.NavigateTo(url, false);
 				break;
 			default:
 				throw new NotSupportedException(nameof(ChangePopup));
 		}
 	}
 
-	public bool UrlChanged()
+	public async Task<bool> UrlChanged()
 	{
-		var currentUrl = new Uri(_navigationManager.Uri).PathAndQuery;
+		var currentUrl = new Uri(_navManager.Uri).PathAndQuery;
 
 		var changed = _lastUrl != currentUrl;
 		if (!changed)
 		{
 			// when current url is the same when popup was displayed, then hide popup
-			Hide();
+			await Hide();
 		}
 
 		return changed;

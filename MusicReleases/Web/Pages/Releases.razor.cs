@@ -111,7 +111,8 @@ public partial class Releases : IDisposable
 
 	private async Task LoadReleases()
 	{
-		if (PopupService.UrlChanged())
+		var urlChanged = await PopupService.UrlChanged();
+		if (urlChanged)
 		{
 			await LoadFiter();
 			await GetReleases();

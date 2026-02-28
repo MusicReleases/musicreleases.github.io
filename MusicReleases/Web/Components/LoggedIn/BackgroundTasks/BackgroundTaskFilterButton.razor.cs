@@ -2,9 +2,9 @@ using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Tasks;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 
-public partial class TaskFilterButton : IDisposable
+public partial class BackgroundTaskFilterButton : IDisposable
 {
 	[Inject]
 	private ISpotifyTaskFilterService SpotifyTaskFilterService { get; set; } = default!;

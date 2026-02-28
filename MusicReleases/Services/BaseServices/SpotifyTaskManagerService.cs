@@ -9,9 +9,13 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 
 	public bool IsAnyTaskRunning => RunningTasks.Count > 0;
 
+	public bool IsAnyTaskVisible => VisibleTasks.Count > 0;
+
 	public IReadOnlyList<SpotifyBackgroundTask> AllTasks => _tasks;
 
 	public ICollection<SpotifyBackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];
+
+	public ICollection<SpotifyBackgroundTask> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible)];
 
 	public ICollection<SpotifyBackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
 
@@ -68,7 +72,7 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 			task.OnStateChanged -= NotifyUI;
 			NotifyUI();
 
-			_ = HideAfterDelay(task);
+			await HideAfterDelay(task);
 		}
 	}
 

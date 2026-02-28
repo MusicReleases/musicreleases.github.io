@@ -4,9 +4,9 @@ using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Tasks;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 
-public partial class Task : IDisposable
+public partial class BackgroundTask : IDisposable
 {
 	[Inject]
 	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
@@ -16,7 +16,7 @@ public partial class Task : IDisposable
 
 
 	[Parameter]
-	public required SpotifyBackgroundTask BackgroundTask { get; set; }
+	public required SpotifyBackgroundTask SpotifyBackgroundTask { get; set; }
 
 	[Parameter]
 	public required TaskComponent ComponentType { get; set; }
@@ -26,7 +26,7 @@ public partial class Task : IDisposable
 
 	private string DeleteOrHideButtonTitle => $"{(CanDeleteTask ? "Delete" : "Hide")} task";
 
-	private string TaskClass => $"task {ComponentType.ToLowerString()} {(BackgroundTask.Failed ? "failed" : "")} {(BackgroundTask.IsRunning ? "running" : "finished")}";
+	private string TaskClass => $"task {ComponentType.ToLowerString()} {(SpotifyBackgroundTask.Failed ? "failed" : "")} {(SpotifyBackgroundTask.IsRunning ? "running" : "finished")}";
 
 
 	protected override void OnInitialized()
@@ -58,11 +58,11 @@ public partial class Task : IDisposable
 
 	private void HideTask()
 	{
-		BackgroundTask.IsOverlayVisible = false;
+		SpotifyBackgroundTask.IsOverlayVisible = false;
 	}
 
 	private void DeleteTask()
 	{
-		SpotifyTaskManagerService.RemoveTask(BackgroundTask);
+		SpotifyTaskManagerService.RemoveTask(SpotifyBackgroundTask);
 	}
 }
