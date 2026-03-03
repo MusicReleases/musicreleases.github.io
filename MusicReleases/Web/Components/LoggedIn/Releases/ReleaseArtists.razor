@@ -4,7 +4,7 @@
 
     @* TODO artist filter <ArtistSidebarButton ArtistId="@artist.Id" ArtistName="@artist.Name" />*@
 
-    <MrButton Class="@ButtonClass" Href="@SettingsService.GetUrl(artist)" Text="@artist.Name" Title="@SettingsService.GetUrlTitle($"artist '{artist.Name}'")" />
+    <MrButton Class="@ButtonClass" Href="@SettingsService.GetUrl(artist)" NewTab="@(!SettingsService.UserSettings.OpenLinksInApp)" Text="@artist.Name" Title="@SettingsService.GetUrlTitle($"artist '{artist.Name}'")" />
 
     @if (i < Artists.Count - 1)
     {
