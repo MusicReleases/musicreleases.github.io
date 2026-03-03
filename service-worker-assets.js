@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "hQ6zipVE",
+  "version": "yrGT4gk0",
   "assets": [
     {
       "hash": "sha256-8TpqA28w98549rCBY+UieWMV+Ms8G65CIp5WC2rfoac=",
@@ -14,8 +14,8 @@ self.assetsManifest = {
       "url": "_framework/Blazored.LocalStorage.12n6dz54qr.wasm"
     },
     {
-      "hash": "sha256-/mbKYm3+AxhskO+5f6Mcs5j7D0ocYuNOiPkY5u09jd0=",
-      "url": "_framework/Extensions.e8p54dgice.wasm"
+      "hash": "sha256-TCADSjxgzA/l4+BK6XvdfELgeeYLXyDqAosVoZM/QnE=",
+      "url": "_framework/Extensions.s6ky9f00q5.wasm"
     },
     {
       "hash": "sha256-EyZNzAdAfeWdGQ9Ceu1+J5Mh13y+urh7gboBgPZGICE=",
@@ -82,20 +82,20 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.ttiy25wj3z.wasm"
     },
     {
-      "hash": "sha256-Jrabzw06nBlfhxS3rwxVSXJ7qUkJnhvxrUUWo4LLafA=",
-      "url": "_framework/MusicReleases.q7pejbwder.wasm"
+      "hash": "sha256-7An8D3eCjSjRs82SyvS2bF3Nc9RsOpM456Fc2A94AQg=",
+      "url": "_framework/MusicReleases.k8ybozvwt2.wasm"
     },
     {
       "hash": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
       "url": "_framework/Newtonsoft.Json.qkbufwhni2.wasm"
     },
     {
-      "hash": "sha256-f0bvMefyX47jOehl9H9hGwtvB8g91B8tP//cJyLX71o=",
-      "url": "_framework/SpotifyAPI.Web.dd69tlc3sa.wasm"
+      "hash": "sha256-fP3dRfW+7RjTw8/Km9dl0jcF1L1mClnPj9Q0lECcEeE=",
+      "url": "_framework/SpotifyAPI.Web.wh08mugh68.wasm"
     },
     {
-      "hash": "sha256-CWJZSMeDHDBA4CzoT1QPhVbZx+dFmTWgXurCQvmnhys=",
-      "url": "_framework/SpotifyApi.ldu1mfim85.wasm"
+      "hash": "sha256-4FU6wHHckL0eUM7Ql4NlwBmxUV5xOgnmJ47RZ6d58oY=",
+      "url": "_framework/SpotifyApi.g4gtvw29cr.wasm"
     },
     {
       "hash": "sha256-QxmaB8L6D0nyxTsbf41z2NIBxuoX1HpGGu2UzwQPGUY=",
@@ -186,8 +186,8 @@ self.assetsManifest = {
       "url": "_framework/System.ObjectModel.px81tly9fg.wasm"
     },
     {
-      "hash": "sha256-BfKfCYx57xO8XlpaDMjvKYkr8HIZXlHvs+lfPiVVyTs=",
-      "url": "_framework/System.Private.CoreLib.7hdfotb3ll.wasm"
+      "hash": "sha256-i3HxjqFHhB/Z1she9RSKPDhXnV8pAwIUBd3bRJa5Y0g=",
+      "url": "_framework/System.Private.CoreLib.teihvy95r1.wasm"
     },
     {
       "hash": "sha256-PvH/pdqDEhdpXZ3sPoAkL12mOQVVBMTSGi1WqPEp9vM=",
@@ -290,7 +290,7 @@ self.assetsManifest = {
       "url": "_framework/Tavenem.DataStore.d21jns0ond.wasm"
     },
     {
-      "hash": "sha256-ibDHmXXGtNdTro9ycNS4pISBVx4wxrbobGu5fuc8NpQ=",
+      "hash": "sha256-bbozVYBJ//wK1HxUoVBQU4weeLZGIxei7TDZs/26vOw=",
       "url": "_framework/blazor.boot.json"
     },
     {
