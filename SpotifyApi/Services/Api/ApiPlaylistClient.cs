@@ -39,7 +39,7 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		};
 
 		var spotifyClient = _client.GetClient();
-		var playlistApi = await spotifyClient.Playlists.Create(userId, request);
+		var playlistApi = await spotifyClient.Playlists.Create(request);
 		var playlist = new SpotifyPlaylist(playlistApi);
 
 		return playlist;
@@ -53,7 +53,7 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		};
 
 		var spotifyClient = _client.GetClient();
-		var snapshot = await spotifyClient.Playlists.AddItems(playlistId, request);
+		var snapshot = await spotifyClient.Playlists.AddPlaylistItems(playlistId, request);
 		return snapshot.SnapshotId;
 	}
 
@@ -65,7 +65,7 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		};
 
 		var spotifyClient = _client.GetClient();
-		var snapshot = await spotifyClient.Playlists.RemoveItems(playlistId, request);
+		var snapshot = await spotifyClient.Playlists.RemovePlaylistItems(playlistId, request);
 		return snapshot.SnapshotId;
 	}
 }

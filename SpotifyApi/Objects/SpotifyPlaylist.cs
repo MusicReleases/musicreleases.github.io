@@ -13,7 +13,7 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 
 	public required string OwnerId { get; init; }
 
-	public int? TotalTracks { get; init; }
+	public int? TotalItems { get; init; }
 	// TODO private set
 	public HashSet<string> Tracks { get; set; } = [];
 
@@ -30,7 +30,7 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		// TODO null
 		Id = fullPlaylist.Id ?? "";
 		Name = fullPlaylist.Name ?? "";
-		TotalTracks = fullPlaylist.Tracks?.Total;
+		TotalItems = fullPlaylist.Items?.Total;
 		Collaborative = fullPlaylist.Collaborative ?? false;
 		//CurrentUserOwned = currentUserOwned;
 		SnapshotId = fullPlaylist.SnapshotId ?? "";
@@ -47,7 +47,7 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		// TODO null
 		Id = fullPlaylist.Id ?? "";
 		Name = fullPlaylist.Name ?? "";
-		TotalTracks = fullPlaylist.Items?.Total;
+		TotalItems = fullPlaylist.Items?.Total;
 		Collaborative = fullPlaylist.Collaborative ?? false;
 		CurrentUserOwned = currentUserOwned;
 		SnapshotId = fullPlaylist.SnapshotId ?? "";
