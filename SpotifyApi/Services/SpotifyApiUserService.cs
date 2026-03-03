@@ -1,6 +1,6 @@
-﻿using JakubKastner.SpotifyApi.SpotifyEnums;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services.Api;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services;
@@ -19,6 +19,8 @@ internal class SpotifyApiUserService(ISpotifyApiClient client, IApiUserService c
 			Scopes.UserLibraryRead,
 			Scopes.PlaylistReadPrivate,
 			Scopes.PlaylistReadCollaborative,
+			Scopes.PlaylistModifyPrivate,
+			Scopes.PlaylistModifyPublic,
 			Scopes.UserFollowRead,
 			Scopes.UserReadPrivate, // user country
 		};

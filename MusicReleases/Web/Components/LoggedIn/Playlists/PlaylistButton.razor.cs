@@ -52,6 +52,17 @@ public partial class PlaylistButton : IDisposable
 		SettingsService.OnChange += StateChanged;
 	}
 
+	public void Dispose()
+	{
+		SettingsService.OnChange -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
+
 	protected override void OnParametersSet()
 	{
 		if (Release is null && Track is null)
@@ -64,18 +75,6 @@ public partial class PlaylistButton : IDisposable
 			throw new InvalidOperationException($"You must provide only {nameof(Release)} or {nameof(Track)}, not both.");
 		}
 	}
-
-	public void Dispose()
-	{
-		SettingsService.OnChange -= StateChanged;
-		GC.SuppressFinalize(this);
-	}
-
-	private void StateChanged()
-	{
-		InvokeAsync(StateHasChanged);
-	}
-
 
 	private string ButtonTitle(bool positionTop)
 	{

@@ -72,7 +72,7 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 			task.OnStateChanged -= NotifyUI;
 			NotifyUI();
 
-			await HideAfterDelay(task);
+			_ = HideAfterDelay(task);
 		}
 	}
 
