@@ -126,7 +126,7 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 		request.Fields.Add("items(track(id, type)), next");
 
 		var spotifyClient = _client.GetClient();
-		var response = await spotifyClient.Playlists.GetItems(playlistId, request);
+		var response = await spotifyClient.Playlists.GetPlaylistItems(playlistId, request);
 		var tracks = await spotifyClient.PaginateAll(response);
 
 		return tracks;
@@ -202,7 +202,7 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 			Description = string.Empty,
 		};
 
-		var playlistApi = await spotifyClient.Playlists.Create(userId, request);
+		var playlistApi = await spotifyClient.Playlists.Create(request);
 		var playlist = new SpotifyPlaylist(playlistApi, [], true);
 
 		return playlist;
@@ -220,7 +220,7 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 			Position = position,
 		};
 
-		var snapshot = await spotifyClient.Playlists.AddItems(playlistId, request);
+		var snapshot = await spotifyClient.Playlists.AddPlaylistItems(playlistId, request);
 		var snapshotId = snapshot.SnapshotId;
 
 		return snapshotId;
@@ -237,7 +237,7 @@ internal class ApiPlaylistService(ISpotifyApiClient client, ISpotifyUserService 
 			Tracks = [.. tracksRequest],
 		};
 
-		var snapshot = await spotifyClient.Playlists.RemoveItems(playlistId, request);
+		var snapshot = await spotifyClient.Playlists.RemovePlaylistItems(playlistId, request);
 		var snapshotId = snapshot.SnapshotId;
 
 		return snapshotId;
