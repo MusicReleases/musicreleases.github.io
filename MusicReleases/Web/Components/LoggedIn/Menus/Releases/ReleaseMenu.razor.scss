@@ -6,6 +6,8 @@
 
     &-main {
         grid-area: releases-menu;
+        overflow-y: auto;
+        min-height: 80px;
 
         @include layout.respond(mobile) {
             &:not(.show) {

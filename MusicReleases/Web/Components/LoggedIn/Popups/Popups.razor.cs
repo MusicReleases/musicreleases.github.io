@@ -11,7 +11,7 @@ public partial class Popups : IDisposable
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
 
-	private string PopupClass => $"popup {MobileService.MobileMenu.ToLowerString()}";
+	private string PopupClass => $"popup mobile-{MobileService.MobileMenu.ToLowerString()}";
 
 
 	protected override void OnInitialized()

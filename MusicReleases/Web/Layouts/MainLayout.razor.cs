@@ -19,7 +19,7 @@ public partial class MainLayout : IDisposable
 	[Inject]
 	private ISettingsService SettingsService { get; set; } = default!;
 
-	private string BodyClass => $"{MobileService.MobileMenu.ToLowerString()} {SettingsService.UserSettings.Theme.ToLowerString()}";
+	private string BodyClass => $"mobile-{MobileService.MobileMenu.ToLowerString()} {SettingsService.UserSettings.Theme.ToLowerString()}";
 
 	protected override void OnInitialized()
 	{

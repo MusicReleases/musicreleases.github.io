@@ -2,53 +2,11 @@
 @use 'global/layout' as layout;
 @use 'global/mixins' as mixins;
 
-$themes: 
-( 
-    light: 
-    ( 
-        color-1: rgb(255, 255, 255), 
-        color-2: rgb(245, 245, 245),
-        color-3: rgb(235, 235, 235),
-        color-4: rgb(225, 225, 225),
-        color-5: rgb(215, 215, 215), 
-        color-6: rgb(205, 205, 205), 
-        color-7: rgb(195, 195, 195),
-        color-text-1: rgb(0, 0, 0), 
-        color-text-2: rgb(150, 150, 150),
-        color-text-button: rgb(0, 0, 0),
-    ), 
-    dark: 
-    (
-        color-1: rgb(6, 6, 6), 
-        color-2: rgb(16, 16, 16), 
-        color-3: rgb(26, 26, 26),
-        color-4: rgb(36, 36, 36), 
-        color-5: rgb(46, 46, 46), 
-        color-6: rgb(56, 56, 56), 
-        color-7: rgb(66, 66, 66), 
-        color-text-1: rgb(255, 255, 255), 
-        color-text-2: rgb(105, 105, 105),   
-        color-text-button: rgb(26, 178, 107),
-    ), 
-    color:
-    (
-      color-1: rgb(232, 248, 238),
-      color-2: rgb(209, 241, 222),
-      color-3: rgb(177, 242, 177),
-      color-4: rgb(111, 220, 124),
-      color-5: rgb(29, 185, 84),
-      color-6: rgb(24, 150, 70),
-      color-7: rgb(7, 61, 29),
-      color-text-1: rgb(0, 0, 0),
-      color-text-2: rgb(60, 60, 60),
-      color-text-button: rgb(255, 255, 255),
-    ),
-);
+$themes: ( light: ( color-1: rgb(255, 255, 255), color-2: rgb(245, 245, 245), color-3: rgb(235, 235, 235), color-4: rgb(225, 225, 225), color-5: rgb(215, 215, 215), color-6: rgb(205, 205, 205), color-7: rgb(195, 195, 195), color-text-1: rgb(0, 0, 0), color-text-2: rgb(150, 150, 150), color-text-button: rgb(0, 0, 0), ), dark: ( color-1: rgb(6, 6, 6), color-2: rgb(16, 16, 16), color-3: rgb(26, 26, 26), color-4: rgb(36, 36, 36), color-5: rgb(46, 46, 46), color-6: rgb(56, 56, 56), color-7: rgb(66, 66, 66), color-text-1: rgb(255, 255, 255), color-text-2: rgb(105, 105, 105), color-text-button: rgb(26, 178, 107), ), color: ( color-1: rgb(232, 248, 238), color-2: rgb(209, 241, 222), color-3: rgb(177, 242, 177), color-4: rgb(111, 220, 124), color-5: rgb(29, 185, 84), color-6: rgb(24, 150, 70), color-7: rgb(7, 61, 29), color-text-1: rgb(0, 0, 0), color-text-2: rgb(60, 60, 60), color-text-button: rgb(255, 255, 255), ), );
 
 .body {
     background-color: var(--color-2);
     color: var(--color-text-1);
-
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -72,19 +30,21 @@ $themes:
         grid-template-areas:
             "loader" "releases-content" "releases-toolbar" "releases-filter" "releases-menu" "mobile-menu";
 
-        &.artists,
-        &.date {
-            grid-template-rows: var(--row-loader) var(--row-content) var(--row-filters) var(--row-menu-main-mobile);
-        }
+        &.mobile {
+            &-artists,
+            &-date {
+                grid-template-rows: var(--row-loader) var(--row-content) var(--row-filters) var(--row-menu-main-mobile);
+            }
 
-        &.artists {
-            grid-template-areas:
-                "loader" "artists-menu" "artists-filter" "mobile-menu";
-        }
+            &-artists {
+                grid-template-areas:
+                    "loader" "artists-menu" "artists-filter" "mobile-menu";
+            }
 
-        &.date {
-            grid-template-areas:
-                "loader" "date-menu" "date-filter" "mobile-menu";
+            &-date {
+                grid-template-areas:
+                    "loader" "date-menu" "date-filter" "mobile-menu";
+            }
         }
     }
     // default themes

@@ -5,8 +5,10 @@
     grid-row: artists-header-start / tasks-end;
     z-index: 10;
     background-color: var(--color-3);
-    overflow-y: auto;
+    overflow: hidden;
     max-height: 100%;
+    display: flex;
+    flex-direction: column;
 
     @include layout.respond(tablet) {
         grid-column: artists-header-start / releases-filter-end;
@@ -17,14 +19,16 @@
         grid-column: releases-content-start / releases-content-end;
         grid-row: releases-content-start / releases-menu-end;
 
-        &.artists {
-            grid-column: artists-menu-start / artists-filter-end;
-            grid-row: artists-menu-start / artists-filter-end;
-        }
+        &.mobile {
+            &-artists {
+                grid-column: artists-menu-start / artists-filter-end;
+                grid-row: artists-menu-start / artists-filter-end;
+            }
 
-        &.date {
-            grid-column: date-menu-start / date-filter-end;
-            grid-row: date-menu-start / date-filter-end;
+            &-date {
+                grid-column: date-menu-start / date-filter-end;
+                grid-row: date-menu-start / date-filter-end;
+            }
         }
     }
 }
