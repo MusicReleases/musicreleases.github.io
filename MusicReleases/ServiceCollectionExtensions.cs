@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
 	{
 		// base services
 		services.AddScoped<ILoginService, LoginService>();
+		services.AddScoped<ISettingsService, SettingsService>();
 
 		// ui services
 		services.AddScoped<IIconService, IconService>();
@@ -33,6 +34,9 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDbSpotifyFilterService, DbSpotifyFilterService>();
 
 		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
+		services.AddScoped<IDbSpotifyUserSettingsService, DbSpotifyUserSettingsService>();
+		services.AddScoped<IDbSpotifyUserLinkService, DbSpotifyUserLinkService>();
+
 		services.AddScoped<IDbSpotifyUserArtistService, DbSpotifyUserArtistService>();
 		services.AddScoped<IDbSpotifyUserArtistServiceOld, DbSpotifyUserArtistServiceOld>();
 
@@ -40,8 +44,6 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDbSpotifyArtistReleaseService, DbSpotifyArtistReleaseService>();
 
 		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
-
-		services.AddScoped<IDbSpotifyUserLinkService, DbSpotifyUserLinkService>();
 
 		services.AddScoped<IDbSpotifyPlaylistService, DbSpotifyPlaylistService>();
 		services.AddScoped<IDbSpotifyUserPlaylistService, DbSpotifyUserPlaylistService>();

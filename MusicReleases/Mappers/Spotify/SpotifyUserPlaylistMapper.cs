@@ -6,6 +6,6 @@ public static class SpotifyUserPlaylistMapper
 {
 	public static SpotifyUserPlaylistEntity ToUserPlaylistEntity(this string playlistId, string userId, int order)
 	{
-		return new SpotifyUserPlaylistEntity(userId, playlistId, order);
+		return new(userId, playlistId, order);
 	}
 }

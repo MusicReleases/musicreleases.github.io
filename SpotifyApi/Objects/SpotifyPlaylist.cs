@@ -35,7 +35,7 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		//CurrentUserOwned = currentUserOwned;
 		SnapshotId = fullPlaylist.SnapshotId ?? "";
 		UrlApp = fullPlaylist.Uri ?? "";
-		UrlWeb = fullPlaylist.Href ?? "";
+		UrlWeb = fullPlaylist.ExternalUrls?["spotify"] ?? "";
 		//Tracks = [];
 
 		OwnerId = fullPlaylist.Owner?.Id ?? "";
@@ -52,7 +52,7 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		CurrentUserOwned = currentUserOwned;
 		SnapshotId = fullPlaylist.SnapshotId ?? "";
 		UrlApp = fullPlaylist.Uri ?? "";
-		UrlWeb = fullPlaylist.Href ?? "";
+		UrlWeb = fullPlaylist.ExternalUrls?["spotify"] ?? "";
 		Tracks = tracks;
 
 		OwnerId = "";

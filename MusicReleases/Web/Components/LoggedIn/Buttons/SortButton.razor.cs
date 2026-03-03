@@ -1,7 +1,7 @@
 using JakubKastner.MusicReleases.Enums;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Shared.Buttons;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 
 public partial class SortButton
 {

@@ -9,7 +9,7 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService, IApiPlaylistClient api, IDbSpotifyPlaylistService playlistsDb, IDbSpotifyUserPlaylistService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyPlaylistState state, ISpotifyTaskManagerService taskManager) : ISpotifyPlaylistService
+public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService, IApiPlaylistClient api, IDbSpotifyPlaylistService playlistsDb, IDbSpotifyUserPlaylistService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyPlaylistState state, ISpotifyTaskManagerService taskManager, ISettingsService settingsService) : ISpotifyPlaylistService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly IApiPlaylistClient _api = api;
@@ -18,6 +18,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 	private readonly IDbSpotifyUpdateService _metaDb = metaDb;
 	private readonly ISpotifyPlaylistState _state = state;
 	private readonly ISpotifyTaskManagerService _taskManager = taskManager;
+	private readonly ISettingsService _settingsService = settingsService;
 
 	private CancellationTokenSource? _cts;
 
@@ -96,9 +97,10 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		await _taskManager.Run($"Creating playlist '{name}'", async (task) =>
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
+			var addToProfile = _settingsService.UserSettings.PlaylistAddToProfile;
 
 			task.Status = "Sending request to Spotify...";
-			var newPlaylist = await _api.CreatePlaylist(userId, name);
+			var newPlaylist = await _api.CreatePlaylist(userId, name, addToProfile);
 
 			task.Status = "Saving playlist to local database...";
 			await _playlistDb.Add(newPlaylist);

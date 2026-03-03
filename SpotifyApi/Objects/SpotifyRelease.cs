@@ -58,7 +58,7 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 			UrlImage = "";
 		}
 		UrlApp = simpleAlbum.Uri;
-		UrlWeb = simpleAlbum.Href;
+		UrlWeb = simpleAlbum.ExternalUrls["spotify"];
 		Artists = simpleAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
 		ReleaseType = releaseType;
 		New = true;
@@ -88,7 +88,7 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 			UrlImage = "";
 		}
 		UrlApp = fullAlbum.Uri;
-		UrlWeb = fullAlbum.Href;
+		UrlWeb = fullAlbum.ExternalUrls["spotify"];
 		Artists = fullAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
 		ReleaseType = releaseType;
 		New = true;
@@ -119,7 +119,7 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 			UrlImage = "";
 		}
 		UrlApp = simpleShow.Uri;
-		UrlWeb = simpleShow.Href;
+		UrlWeb = simpleShow.ExternalUrls["spotify"];
 		// TODO artist for simple show
 		Artists =
 		[

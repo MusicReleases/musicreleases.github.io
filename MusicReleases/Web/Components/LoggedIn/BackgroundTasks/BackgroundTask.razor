@@ -1,26 +1,26 @@
-﻿<div class="@TaskClass" >
+﻿    <div class="@TaskClass" >
 
-    <div class="header">
+        <div class="header">
 
-        <span class="title">
-            @SpotifyBackgroundTask.Name
-        </span>
+            <span class="title">
+                @SpotifyBackgroundTask.Name
+            </span>
 
-        @if (!SpotifyBackgroundTask.IsRunning)
-        {
-            <MrButton Class="task" OnClick="@DeleteOrHideTask" Title="@DeleteOrHideButtonTitle">
-                <MrIcon Icon="@LucideIcon.X" />
-            </MrButton>
-        }
-        else
-        {
-            <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@SpotifyBackgroundTask.IsRunning" />
-        }
+            @if (!SpotifyBackgroundTask.IsRunning)
+            {
+                <MrButton Class="task" OnClick="@DeleteOrHideTask" Title="@DeleteOrHideButtonTitle">
+                    <MrIcon Icon="@LucideIcon.X" />
+                </MrButton>
+            }
+            else
+            {
+                <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@SpotifyBackgroundTask.IsRunning" />
+            }
+
+        </div>
+
+        <div class="status">
+            @SpotifyBackgroundTask.Status
+        </div>
 
     </div>
-
-    <div class="status">
-        @SpotifyBackgroundTask.Status
-    </div>
-
-</div>

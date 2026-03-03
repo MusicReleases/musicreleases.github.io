@@ -98,4 +98,10 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 		_tasks.Remove(task);
 		NotifyUI();
 	}
+
+	public void HideTask(SpotifyBackgroundTask task)
+	{
+		task.IsOverlayVisible = false;
+		NotifyUI();
+	}
 }

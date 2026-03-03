@@ -1,5 +1,4 @@
-﻿using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Objects;
@@ -9,7 +8,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyFilterUrlService filterUrlService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyFilterUrlService filterUrlService, ISettingsService settingsService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
@@ -17,6 +16,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;
 	private readonly ISpotifyFilterUrlService _filterUrlService = filterUrlService;
+	private readonly ISettingsService _settingsService = settingsService;
 
 	public ServiceType GetServiceType()
 	{
@@ -83,22 +83,21 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 		var userLogged = _spotifyUserService.IsLoggedIn();
 
-		if (userLogged)
-		{
-			// navigate to releases page
-			if (!localStorageUser)
-			{
-				await SaveUser();
-			}
-
-			var url = await _filterUrlService.GetFilterUrl();
-			_navManager.NavigateTo(url);
-		}
-		else
+		if (!userLogged)
 		{
 			// user is not logged in (error)
 			_navManager.NavigateTo("");
+			return;
 		}
+
+		if (!localStorageUser)
+		{
+			await SaveUser();
+		}
+
+		// navigate to releases page
+		var url = await _filterUrlService.GetFilterUrl();
+		_navManager.NavigateTo(url);
 	}
 
 
@@ -121,6 +120,9 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 			await LogoutUser();
 			return false;
 		}
+
+		// load settings from db
+		await _settingsService.Initialize();
 
 		await SaveUser();
 
@@ -152,6 +154,12 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 		var codeString = code.ToString();
 		var clientId = _spotifyConfig.ClientId;
 		var userLogged = await _spotifyUserService.LoginUser(clientId, codeString, loginVerifier, baseUrl + "login/spotify");
+
+		if (userLogged)
+		{
+			// load settings from db
+			await _settingsService.Initialize();
+		}
 	}
 
 	public async Task LogoutUser()

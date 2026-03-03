@@ -19,7 +19,7 @@ public class SpotifyUserInfo : SpotifyIdNameUrlObject
 		Name = userApi.DisplayName;
 		Country = userApi.Country;
 		UrlApp = userApi.Uri;
-		UrlWeb = userApi.Href;
+		UrlWeb = userApi.ExternalUrls["spotify"];
 		ProfilePictureUrl = userApi.Images?.LastOrDefault()?.Url;
 		LastUpdate = DateTime.Now;
 	}

@@ -5,7 +5,7 @@
 
 	<div class="name">
 
-		<MrButton Class="@_buttonClass" Href="@SpotifyRelease.UrlApp" Text="@SpotifyRelease.Name" Title="Open album in Spotify app" draggable="true" @ondragstart="@OnDragStart">
+		<MrButton Class="@_buttonClass" Href="@SettingsService.GetUrl(SpotifyRelease)" Text="@SpotifyRelease.Name" Title="@SettingsService.GetUrlTitle($"{SpotifyRelease.ReleaseType.ToFriendlyString()} '{SpotifyRelease.Name}'")" draggable="true" @ondragstart="@OnDragStart">
 
 			<MrIcon Icon="@ReleaseTypeIcon" Title="@ReleaseTypeIconTitle" />
 

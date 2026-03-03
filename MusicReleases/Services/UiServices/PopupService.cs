@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.UiServices;
 
-public class PopupService(ISpotifyTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, NavigationManager navManager) : IPopupService
+public class PopupService(ISpotifyTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, ISettingsService settingsService, NavigationManager navManager) : IPopupService
 {
 	private readonly ISpotifyTaskFilterUrlSynchronizer _spotifyTaskFilterUrlSynchronizer = spotifyTaskFilterUrlSynchronizer;
+
+	private readonly ISettingsService _settingsService = settingsService;
 
 	private readonly NavigationManager _navManager = navManager;
 
@@ -76,18 +78,20 @@ public class PopupService(ISpotifyTaskFilterUrlSynchronizer spotifyTaskFilterUrl
 		}
 
 		// show popup
-
-		_lastUrl = new Uri(_navManager.Uri).PathAndQuery;
-
-		switch (popupType)
+		var currentUri = new Uri(_navManager.Uri);
+		if (currentUri.AbsolutePath.StartsWith("/releases"))
 		{
-			case PopupType.BackgroundTasks:
-				var url = await _spotifyTaskFilterUrlSynchronizer.GetInitUrl();
-				_navManager.NavigateTo(url, false);
-				break;
-			default:
-				throw new NotSupportedException(nameof(ChangePopup));
+			_lastUrl = currentUri.PathAndQuery;
 		}
+
+		var url = popupType switch
+		{
+			PopupType.BackgroundTasks => await _spotifyTaskFilterUrlSynchronizer.GetInitUrl(),
+			PopupType.Settings => _settingsService.GetInitUrl(),
+			_ => throw new NotSupportedException(nameof(ChangePopup)),
+		};
+
+		_navManager.NavigateTo(url, false);
 	}
 
 	public async Task<bool> UrlChanged()

@@ -30,7 +30,7 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Duration = TimeSpan.FromMilliseconds(simpleTrack.DurationMs);
 		Explicit = simpleTrack.Explicit;
 		UrlApp = simpleTrack.Uri;
-		UrlWeb = simpleTrack.Href;
+		UrlWeb = simpleTrack.ExternalUrls["spotify"];
 		// TODO empty??
 		//Album = null;
 		Artists = [];
@@ -57,7 +57,7 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Duration = TimeSpan.FromMilliseconds(fullTrack.DurationMs);
 		Explicit = fullTrack.Explicit;
 		UrlApp = fullTrack.Uri;
-		UrlWeb = fullTrack.Href;
+		UrlWeb = fullTrack.ExternalUrls["spotify"];
 		//Album = new(fullTrack.Album, ReleaseType.Tracks);
 		Artists = [];
 		foreach (var simpleArtist in fullTrack.Artists)
@@ -77,7 +77,7 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Duration = TimeSpan.FromMilliseconds(fullEpisode.DurationMs);
 		Explicit = fullEpisode.Explicit;
 		UrlApp = fullEpisode.Uri;
-		UrlWeb = fullEpisode.Href;
+		UrlWeb = fullEpisode.ExternalUrls["spotify"];
 		//Album = new(fullEpisode.Show);
 		// TODO podcast url
 		Artists =

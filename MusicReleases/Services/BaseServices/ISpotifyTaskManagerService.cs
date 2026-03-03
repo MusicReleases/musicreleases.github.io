@@ -14,6 +14,7 @@ public interface ISpotifyTaskManagerService
 	event Action? OnChange;
 
 	void HideAllFinished();
+	void HideTask(SpotifyBackgroundTask task);
 	void RemoveTask(SpotifyBackgroundTask task);
 	Task Run(string name, Func<SpotifyBackgroundTask, Task> work);
 }

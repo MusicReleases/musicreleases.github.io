@@ -1,18 +1,22 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.ApiServices;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Shared.Buttons;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 
-public partial class UserButton
+public partial class UserButton : IDisposable
 {
 	[Inject]
 	private ISpotifyApiUserService SpotifyUserService { get; set; } = default!;
 
 	[Inject]
 	private IApiLoginService ApiLoginService { get; set; } = default!;
+
+	[Inject]
+	private ISettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter]
@@ -24,10 +28,22 @@ public partial class UserButton
 
 	private SpotifyUserInfo? _spotifyUser;
 
-
 	protected override void OnInitialized()
 	{
+		SettingsService.OnChange += StateChanged;
+
 		SetUser();
+	}
+
+	public void Dispose()
+	{
+		SettingsService.OnChange -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 
 	private void SetUser()

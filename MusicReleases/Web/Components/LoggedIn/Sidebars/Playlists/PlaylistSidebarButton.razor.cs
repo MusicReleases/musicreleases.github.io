@@ -1,11 +1,12 @@
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Playlists;
 
-public partial class PlaylistSidebarButton
+public partial class PlaylistSidebarButton : IDisposable
 {
 	[Inject]
 	private IDragDropService DragDropService { get; set; } = default!;
@@ -16,6 +17,9 @@ public partial class PlaylistSidebarButton
 	[Inject]
 	private ISpotifyTracksService SpotifyTracksService { get; set; } = default!;
 
+	[Inject]
+	private ISettingsService SettingsService { get; set; } = default!;
+
 
 	[Parameter, EditorRequired]
 	public required SpotifyPlaylist Playlist { get; set; }
@@ -23,14 +27,31 @@ public partial class PlaylistSidebarButton
 
 	private bool IsDragOver => _dragCounter > 0;
 
+	private bool PositionTop => !SettingsService.UserSettings.PlaylistNewTrackPositionLast;
+
 
 	private const string _buttonClass = "sidebar-content";
-
-	private const bool _positionTop = true;
 
 	private bool _isLoading = false;
 
 	private int _dragCounter = 0;
+
+
+	protected override void OnInitialized()
+	{
+		SettingsService.OnChange += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		SettingsService.OnChange -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
 
 
 	private void HandleDragEnter()
@@ -61,7 +82,7 @@ public partial class PlaylistSidebarButton
 			var payload = DragDropService.Payload;
 			if (payload is SpotifyTrack track)
 			{
-				await SpotifyPlaylistService.AddTrack(Playlist.Id, track, _positionTop);
+				await SpotifyPlaylistService.AddTrack(Playlist.Id, track, PositionTop);
 			}
 			else if (payload is SpotifyRelease release)
 			{
@@ -76,7 +97,7 @@ public partial class PlaylistSidebarButton
 					return;
 				}
 
-				await SpotifyPlaylistService.AddTracks(Playlist.Id, release.Tracks, _positionTop);
+				await SpotifyPlaylistService.AddTracks(Playlist.Id, release.Tracks, PositionTop);
 			}
 		}
 		finally

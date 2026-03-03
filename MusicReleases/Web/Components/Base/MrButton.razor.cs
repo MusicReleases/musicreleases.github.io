@@ -41,6 +41,9 @@ public partial class MrButton
 	[Parameter]
 	public string? Href { get; set; }
 
+	[Parameter]
+	public bool NewTab { get; set; } = true;
+
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object>? Attributes { get; set; }
 
@@ -48,4 +51,8 @@ public partial class MrButton
 	private string? ButtonTitle => Title.IsNullOrEmpty() ? Text : Title;
 
 	private string ButtonClass => $"button {Class}{Active.ToCssClass()}{Hidden.ToCssClass()}{Loading.ToCssClass()}";
+
+	private string HrefTarget => NewTab ? "_blank" : "_self";
+
+	private string HrefRel => NewTab ? "noopener noreferrer" : string.Empty;
 }

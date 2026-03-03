@@ -1,14 +1,18 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
 
-public partial class ReleaseTrack
+public partial class ReleaseTrack : IDisposable
 {
 	[Inject]
 	private IDragDropService DragDropService { get; set; } = default!;
+
+	[Inject]
+	private ISettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -30,6 +34,22 @@ public partial class ReleaseTrack
 
 	private bool _isPlaylistListDisplayed = false;
 
+
+	protected override void OnInitialized()
+	{
+		SettingsService.OnChange += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		SettingsService.OnChange -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
 
 	private void OnDragStart()
 	{

@@ -3,7 +3,7 @@ using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Shared.Buttons;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 
 public partial class BackgroundTaskButton : IDisposable
 {

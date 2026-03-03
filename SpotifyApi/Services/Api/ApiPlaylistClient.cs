@@ -1,5 +1,5 @@
-﻿using JakubKastner.SpotifyApi.SpotifyEnums;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
@@ -29,12 +29,12 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		return playlists;
 	}
 
-	public async Task<SpotifyPlaylist> CreatePlaylist(string userId, string name)
+	public async Task<SpotifyPlaylist> CreatePlaylist(string userId, string name, bool addToProfile)
 	{
 		var request = new PlaylistCreateRequest(name)
 		{
 			Collaborative = false,
-			Public = false,
+			Public = addToProfile, // Public in api = add to user profile - playlist will be public every time
 			Description = string.Empty,
 		};
 

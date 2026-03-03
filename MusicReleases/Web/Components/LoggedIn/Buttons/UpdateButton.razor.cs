@@ -4,7 +4,7 @@ using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Shared.Buttons;
+namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 
 public partial class UpdateButton : IDisposable
 {

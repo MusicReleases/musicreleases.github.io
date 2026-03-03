@@ -1,0 +1,95 @@
+﻿@using JakubKastner.MusicReleases.Objects.Spotify
+
+<h1 class="header">
+	<MrIcon Icon="@LucideIcon.Settings" Title="Settings" />
+	Settings
+</h1>
+
+<div class="settings scroll">
+
+	<h2 class="title">Application</h2>
+
+
+	<div class="box">
+		<h3 class="name">Theme</h3>
+		<p>Select your favourite theme.</p>
+
+		<MrButton Class="@_buttonClass" Text="@Theme.System.ToFriendlyString(true)" OnClick="() => ChangeTheme(Theme.System)" Active="@IsActive(UserSettings.Theme, Theme.System)">
+			<MrIcon Icon="@LucideIcon.Cog" />
+		</MrButton>
+		<MrButton Class="@_buttonClass" Text="@Theme.Light.ToFriendlyString(true)" OnClick="() => ChangeTheme(Theme.Light)" Active="@IsActive(UserSettings.Theme, Theme.Light)">
+			<MrIcon Icon="@LucideIcon.Sun" />
+		</MrButton>
+		<MrButton Class="@_buttonClass" Text="@Theme.Dark.ToFriendlyString(true)" OnClick="() => ChangeTheme(Theme.Dark)" Active="@IsActive(UserSettings.Theme, Theme.Dark)">
+			<MrIcon Icon="@LucideIcon.Moon" />
+		</MrButton>
+		<MrButton Class="@_buttonClass" Text="@Theme.Color.ToFriendlyString(true)" OnClick="() => ChangeTheme(Theme.Color)" Active="@IsActive(UserSettings.Theme, Theme.Color)">
+			<MrIcon Icon="@LucideIcon.Palette" />
+		</MrButton>
+	</div>
+	<div class="box">
+		<h3 class="name">Spotify links</h3>
+		<p class="info">Open the Spotify links in Spotify application or browser.</p>
+
+		<MrButton Class="@_buttonClass" Text="Spotify application" OnClick="() => ChangeOpenLinksInApp(true)" Active="@IsActive(UserSettings.OpenLinksInApp, true)">
+			<MrIcon Icon="@SpotifyIcon.SmallGreen" />
+		</MrButton>
+		<MrButton Class="@_buttonClass" Text="Browser" OnClick="() => ChangeOpenLinksInApp(false)" Active="@IsActive(UserSettings.OpenLinksInApp, false)">
+			<MrIcon Icon="@LucideIcon.Globe" />
+		</MrButton>
+	</div>
+
+	<h2 class="title">Playlists</h2>
+	
+	<div class="box">
+		<h3 class="name">New playlist on profile</h3>
+		<p class="info">Show newly created playlists on your user profile.</p>
+		<MrButton Class="@_buttonClass" Text="Show" OnClick="() => ChangePlaylistAddToProfile(true)" Active="@IsActive(UserSettings.PlaylistAddToProfile, true)">
+			<MrIcon Icon="@LucideIcon.Eye" />
+		</MrButton>
+		<MrButton Class="@_buttonClass" Text="Hide" OnClick="() => ChangePlaylistAddToProfile(false)" Active="@IsActive(UserSettings.PlaylistAddToProfile, false)">
+			<MrIcon Icon="@LucideIcon.EyeOff" />
+		</MrButton>
+	</div>
+
+	<div class="box">
+		<h3 class="name">Track position</h3>
+		<p class="info">Position of new tracks in the playlist when adding to the playlist.</p>
+
+		<MrButton Class="@_buttonClass" Text="First position" OnClick="() => ChangePlaylistNewTrackPositionLast(false)" Active="@IsActive(UserSettings.PlaylistNewTrackPositionLast, false)">
+			<MrIcon Icon="@LucideIcon.ChevronUp" />
+		</MrButton>
+		<MrButton Class="@_buttonClass" Text="Last position" OnClick="() => ChangePlaylistNewTrackPositionLast(true)" Active="@IsActive(UserSettings.PlaylistNewTrackPositionLast, true)">
+			<MrIcon Icon="@LucideIcon.ChevronDown" />
+		</MrButton>
+	</div>
+
+</div>
+
+
+
+
+@* <h2>Application</h2>
+	<div class="list box">
+		<h4>Notifications</h4>
+		<p>Enable or disable browser notifications.</p>
+		<button class="notifications active" title=""><i class="fas fa-check" aria-hidden="true"></i><span>Notifications enabled</span></button>
+		<button class="notifications disabled skrejto" title=""><i class="fas fa-times" aria-hidden="true"></i><span>Notifications disabled</span></button>
+	</div> 
+
+	<h2>Playlists</h2>
+	<div class="playlist-default list box">
+		<h4>Favourite playlist</h4>
+		<p>Set your favourite playlist as default. It will be at the top of the playlists list for quick addition.</p>
+		<button class="select" data-release_type="playlist" data-release_id="2UKqPRsvnx7sQjt5EmHxpm" title="Select 'Playlist 1'"><i class="fas fa-plus" aria-hidden="true"></i>Playlist 1</button>
+		<button class="select" data-release_type="playlist" data-release_id="2UKqPRsvn456sQjt5EmHxpm" title="Select 'Playlist 2'"><i class="fas fa-plus" aria-hidden="true"></i>Playlist 2</button>
+	</div>
+
+	<h2>About</h2>
+	<div class="about list box">
+		<h4>About application</h4>
+		<div class="row">
+			<a href="https://jakubkastner.github.io/" target="_blank" rel="noopener noreferrer"><i class="fas fa-copyright" aria-hidden="true"></i>Jakub Kastner 2018-2021</a>
+			<a href="https://github.com/jakubkastner" target="_blank" rel="noopener noreferrer" class="right"><i class="fab fa-github" aria-hidden="true"></i></a>
+		</div>
+	</div> *@

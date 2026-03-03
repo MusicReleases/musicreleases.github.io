@@ -20,7 +20,7 @@ public class SpotifyArtist : SpotifyIdNameUrlObject, IComparable
 		Id = simpleArtist.Id;
 		Name = simpleArtist.Name;
 		UrlApp = simpleArtist.Uri;
-		UrlWeb = simpleArtist.Href;
+		UrlWeb = simpleArtist.ExternalUrls["spotify"];
 		New = true;
 	}
 
@@ -30,7 +30,7 @@ public class SpotifyArtist : SpotifyIdNameUrlObject, IComparable
 		Id = fullArtist.Id;
 		Name = fullArtist.Name;
 		UrlApp = fullArtist.Uri;
-		UrlWeb = fullArtist.Href;
+		UrlWeb = fullArtist.ExternalUrls["spotify"];
 		New = true;
 	}
 

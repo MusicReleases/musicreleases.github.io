@@ -1,0 +1,33 @@
+.header, .settings {
+    margin: 0 10px;
+}
+
+.settings {
+    background-color: var(--color-4);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .title {
+    }
+
+    .box {
+        background-color: var(--color-2);
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .name {
+            color: var(--color-project);
+        }
+
+        .info {
+            margin: 10px;
+        }
+    }
+}

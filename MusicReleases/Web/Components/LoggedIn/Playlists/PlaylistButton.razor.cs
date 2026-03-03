@@ -1,12 +1,13 @@
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
 
-public partial class PlaylistButton
+public partial class PlaylistButton : IDisposable
 {
 	[Inject]
 	private ISpotifyPlaylistService SpotifyPlaylistService { get; set; } = default!;
@@ -16,6 +17,9 @@ public partial class PlaylistButton
 
 	[Inject]
 	private ISpotifyPlaylistState SpotifyPlaylistState { get; set; } = default!;
+
+	[Inject]
+	private ISettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -30,6 +34,9 @@ public partial class PlaylistButton
 
 	private LucideIcon Icon => _isWorking ? LucideIcon.LoaderCircle : (IsInPlaylist ? LucideIcon.Minus : LucideIcon.Plus);
 
+	private LucideIcon PositionIcon => SettingsService.UserSettings.PlaylistNewTrackPositionLast ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
+
+
 	private bool IsReleaseInPlaylist => Release?.Tracks is not null && Release.Tracks.Any(track => Playlist.Tracks.Contains(track.Id));
 
 	private bool IsTrackInPlaylist => Track is not null && Playlist.Tracks.Contains(Track.Id);
@@ -39,6 +46,11 @@ public partial class PlaylistButton
 
 	private bool _isWorking = false;
 
+
+	protected override void OnInitialized()
+	{
+		SettingsService.OnChange += StateChanged;
+	}
 
 	protected override void OnParametersSet()
 	{
@@ -52,6 +64,18 @@ public partial class PlaylistButton
 			throw new InvalidOperationException($"You must provide only {nameof(Release)} or {nameof(Track)}, not both.");
 		}
 	}
+
+	public void Dispose()
+	{
+		SettingsService.OnChange -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
+
 
 	private string ButtonTitle(bool positionTop)
 	{

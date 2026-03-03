@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
 
-public partial class ReleaseInfo
+public partial class ReleaseInfo : IDisposable
 {
 	[Inject]
 	private IDragDropService DragDropService { get; set; } = default!;
@@ -16,6 +16,9 @@ public partial class ReleaseInfo
 
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
+
+	[Inject]
+	private ISettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -51,5 +54,20 @@ public partial class ReleaseInfo
 	{
 		var url = await SpotifyFilterUrlService.GetFilterUrl(SpotifyRelease.ReleaseDate.Year);
 		NavManager.NavigateTo(url);
+	}
+	protected override void OnInitialized()
+	{
+		SettingsService.OnChange += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		SettingsService.OnChange -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
+
+	private void StateChanged()
+	{
+		InvokeAsync(StateHasChanged);
 	}
 }

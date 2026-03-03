@@ -1,4 +1,5 @@
 using JakubKastner.MusicReleases.Services.ApiServices;
+using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
@@ -15,11 +16,15 @@ public partial class MainLayout : IDisposable
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
 
-	private string BodyClass => MobileService.MobileMenu.ToLowerString();
+	[Inject]
+	private ISettingsService SettingsService { get; set; } = default!;
+
+	private string BodyClass => $"{MobileService.MobileMenu.ToLowerString()} {SettingsService.UserSettings.Theme.ToLowerString()}";
 
 	protected override void OnInitialized()
 	{
 		MobileService.OnDisplayChanged += StateChanged;
+		SettingsService.OnChange += StateChanged;
 
 		if (!CheckLoggedInUser())
 		{
@@ -30,6 +35,7 @@ public partial class MainLayout : IDisposable
 	public void Dispose()
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
+		SettingsService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

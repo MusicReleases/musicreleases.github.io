@@ -119,6 +119,11 @@
 }
 
 // size
+@mixin l {
+    padding: 10px;
+    border-radius: 10px;
+}
+
 @mixin xl {
     padding: 18px;
     border-radius: 25px;
@@ -318,6 +323,11 @@
         &-close {
             @include rounded-l;
             margin: 10px 10px 0 auto;
+        }
+
+        &-settings {
+            @include l;
+            margin: 0 10px;
         }
     }
 
