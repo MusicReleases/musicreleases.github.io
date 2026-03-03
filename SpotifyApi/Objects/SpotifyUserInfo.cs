@@ -6,7 +6,6 @@ namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyUserInfo : SpotifyIdNameUrlObject
 {
-	public required string Country { get; set; }
 	public required string? ProfilePictureUrl { get; set; }
 	public required DateTime LastUpdate { get; set; }
 
@@ -17,7 +16,6 @@ public class SpotifyUserInfo : SpotifyIdNameUrlObject
 	{
 		Id = userApi.Id;
 		Name = userApi.DisplayName;
-		Country = userApi.Country;
 		UrlApp = userApi.Uri;
 		UrlWeb = userApi.ExternalUrls["spotify"];
 		ProfilePictureUrl = userApi.Images?.LastOrDefault()?.Url;
