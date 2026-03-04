@@ -27,7 +27,7 @@ public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
 		// TODO null
 		Id = fullPlaylist.Id ?? "";
 		Name = fullPlaylist.Name ?? "";
-		TotalTracks = fullPlaylist.Items?.Total;
+		TotalTracks = fullPlaylist.Tracks?.Total;
 		Collaborative = fullPlaylist.Collaborative ?? false;
 		CurrentUserOwned = currentUserOwned;
 		SnapshotId = fullPlaylist.SnapshotId ?? "";

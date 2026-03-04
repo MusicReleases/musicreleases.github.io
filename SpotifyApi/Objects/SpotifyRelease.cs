@@ -123,7 +123,7 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 		// TODO artist for simple show
 		Artists =
 		[
-			new("0", "Podcast", "", "")
+			new("0", simpleShow.Publisher, "", "")
 		];
 		ReleaseType = ReleaseType.Podcasts;
 		New = true;
