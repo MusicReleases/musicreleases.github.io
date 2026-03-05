@@ -19,6 +19,8 @@ internal class SpotifyUserService(ISpotifyApiClient client, IApiUserService cont
 			Scopes.UserLibraryRead,
 			Scopes.PlaylistReadPrivate,
 			Scopes.PlaylistReadCollaborative,
+			Scopes.PlaylistModifyPrivate,
+			Scopes.PlaylistModifyPublic,
 			Scopes.UserFollowRead,
 			Scopes.UserReadPrivate, // user country
 		};
