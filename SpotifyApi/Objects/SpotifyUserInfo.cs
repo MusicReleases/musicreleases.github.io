@@ -7,7 +7,6 @@ public class SpotifyUserInfo
 {
 	public required string Id { get; set; }
 	public required string Name { get; set; }
-	public required string Country { get; set; }
 	public required string? ProfilePictureUrl { get; set; }
 	public required DateTime LastUpdate { get; set; }
 
@@ -18,7 +17,6 @@ public class SpotifyUserInfo
 	{
 		Id = userApi.Id;
 		Name = userApi.DisplayName;
-		Country = userApi.Country;
 		ProfilePictureUrl = userApi.Images?.LastOrDefault()?.Url;
 		LastUpdate = DateTime.Now;
 	}

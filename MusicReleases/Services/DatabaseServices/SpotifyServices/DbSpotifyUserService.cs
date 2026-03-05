@@ -27,7 +27,6 @@ public class DbSpotifyUserService(IDbSpotifyService dbService, IDbSpotifyUpdateS
 		{
 			Id = updateEntity.Entity.Id,
 			Name = updateEntity.Entity.Name,
-			Country = updateEntity.Entity.Country,
 			ProfilePictureUrl = updateEntity.Entity.ProfilePictureUrl,
 			LastUpdate = updateEntity.Update,
 		};
