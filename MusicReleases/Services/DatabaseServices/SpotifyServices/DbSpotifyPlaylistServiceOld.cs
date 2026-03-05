@@ -13,7 +13,7 @@ public class DbSpotifyPlaylistServiceOld(IDbSpotifyServiceOld dbService) : IDbSp
 	{
 		// get playlists from db
 		Console.WriteLine("db: get playlists - start");
-		var playlistsDb = _dbTable.GetAllAsync<SpotifyPlaylistEntity>();
+		var playlistsDb = _dbTable.GetAllAsync<SpotifyPlaylistEntityOld>();
 		var playlists = new HashSet<SpotifyPlaylist>();
 
 		await foreach (var playlistDb in playlistsDb)
@@ -42,7 +42,7 @@ public class DbSpotifyPlaylistServiceOld(IDbSpotifyServiceOld dbService) : IDbSp
 		Console.WriteLine("db: save playlists - start");
 		foreach (var playlist in playlists)
 		{
-			var artistEntity = new SpotifyPlaylistEntity(playlist);
+			var artistEntity = new SpotifyPlaylistEntityOld(playlist);
 			await _dbTable.StoreAsync(artistEntity);
 		}
 		Console.WriteLine("db: save playlists - end");

@@ -15,6 +15,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 	public SpotifyFilter? Filter { get; private set; } = null;
 
 	private ISet<SpotifyRelease>? _allReleases = null;
+	private Dictionary<MainReleasesType, ISet<SpotifyRelease>>? _allReleasesByType = null;
 	private ISet<SpotifyArtist>? _allArtists = null;
 
 	public SortedSet<SpotifyRelease> FilteredReleases { get; private set; } = [];
@@ -27,7 +28,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 	{
 		_allArtists = artists;
 		// clear releases when artists are set
-		_allReleases = null;
+		_allReleasesByType = null;
 		ApplyFilter();
 	}
 	public void SetReleases(ISet<SpotifyRelease> releases)
@@ -35,15 +36,25 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 		_allReleases = releases;
 		ApplyFilter();
 	}
+	public void SetReleases(Dictionary<MainReleasesType, IReadOnlyList<SpotifyRelease>> releasesByType)
+	{
+		_allReleasesByType = [];
+		foreach (var kvp in releasesByType)
+		{
+			// create new copy
+			_allReleasesByType[kvp.Key] = kvp.Value.ToHashSet();
+		}
+		ApplyFilter();
+	}
 
 	private void ApplyFilter()
 	{
-		if (_allReleases is null && _allArtists is null)
+		if (_allReleasesByType is null && _allArtists is null)
 		{
 			return;
 		}
 
-		if (_allReleases is null)
+		if (_allReleasesByType is null)
 		{
 			FilteredArtists = [.. _allArtists!];
 			OnFilterOrDataChanged?.Invoke();
@@ -70,22 +81,30 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 			throw new NullReferenceException(nameof(Filter));
 		}
 
-		if (_allReleases is null)
+		if (_allReleasesByType is null)
 		{
-			throw new NullReferenceException(nameof(_allReleases));
+			throw new NullReferenceException(nameof(_allReleasesByType));
 		}
 
 		// releases by type
-		var releasesByType = _allReleases.Where(r => r.ReleaseType == Filter.ReleaseType);
+		var releasesByType = _allReleasesByType.TryGetValue(Filter.ReleaseType, out var set) ? set : new HashSet<SpotifyRelease>();
 
 		// releases by advanced filter
 		var releasesByTypeAdvanced = FilterReleasesAdvanced(releasesByType);
 
 		// releases by artist
-		var releasesByTypeAdvancedArtist
-			= Filter.Artist.IsNullOrEmpty()
-			? releasesByTypeAdvanced
-			: releasesByTypeAdvanced.Where(r => r.Artists.Any(a => a.Id == Filter.Artist));
+		var releasesByTypeAdvancedArtist = releasesByTypeAdvanced;
+		if (Filter.Artist.IsNotNullOrEmpty())
+		{
+			if (Filter.ReleaseType == MainReleasesType.Appears)
+			{
+				releasesByTypeAdvancedArtist = releasesByTypeAdvanced.Where(r => r.FeaturedArtists.Any(a => a.Id == Filter.Artist));
+			}
+			else
+			{
+				releasesByTypeAdvancedArtist = releasesByTypeAdvanced.Where(r => r.Artists.Any(a => a.Id == Filter.Artist));
+			}
+		}
 
 		// releases by date
 		IEnumerable<SpotifyRelease>? releasesByTypeAdvancedArtistDate = null;
@@ -121,7 +140,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 		}
 
 		var releasesByTypeAdvanced = releasesByType;
-		if (Filter.ReleaseType == ReleaseType.Tracks || Filter.ReleaseType == ReleaseType.Appears)
+		if (Filter.ReleaseType == MainReleasesType.Tracks || Filter.ReleaseType == MainReleasesType.Appears)
 		{
 			// tracks and eps filter only for tracks and appears
 			if (!Filter.Advanced.Tracks)
@@ -178,6 +197,11 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 
 	private void FilterArtists(ISet<SpotifyRelease> releasesByTypeDate)
 	{
+		if (Filter is null)
+		{
+			throw new NullReferenceException(nameof(Filter));
+		}
+
 		Console.WriteLine("filter: artists - start");
 
 		if (_allArtists is null)
@@ -186,7 +210,11 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 			return;
 		}
 
-		var artistIdsInFilteredReleases = releasesByTypeDate.SelectMany(r => r.Artists.Select(a => a.Id)).ToHashSet();
+		var artistIdsInFilteredReleases
+			= Filter.ReleaseType == MainReleasesType.Appears
+			? releasesByTypeDate.SelectMany(r => r.FeaturedArtists.Select(a => a.Id)).ToHashSet()
+			: releasesByTypeDate.SelectMany(r => r.Artists.Select(a => a.Id)).ToHashSet();
+
 		var filteredArtists = _allArtists.Where(a => artistIdsInFilteredReleases.Contains(a.Id));
 
 		FilteredArtists = [.. filteredArtists];

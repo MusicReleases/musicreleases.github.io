@@ -10,7 +10,7 @@ public class SpotifyUser
 
 	public SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? Playlists { get; set; }
 	public SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? FollowedArtists { get; set; }
-	public SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? FollowedArtistReleases { get; set; }
+	public SpotifyUserList<SpotifyReleaseOld, SpotifyUserListUpdateRelease>? FollowedArtistReleases { get; set; }
 
 	public SpotifyUser() { }
 

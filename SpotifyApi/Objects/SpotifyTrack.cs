@@ -1,5 +1,4 @@
 ﻿using JakubKastner.SpotifyApi.Objects.Base;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 using SpotifyAPI.Web;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,16 +7,41 @@ namespace JakubKastner.SpotifyApi.Objects;
 public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 {
 	public int TrackNumber { get; init; }
+
 	public int DiscNumber { get; init; }
+
 	public TimeSpan Duration { get; init; }
 
 	public bool Explicit { get; init; }
 
+	public required string ReleaseId { get; init; }
+
 	// TODO album
 	//public SpotifyRelease? Album { get; private set; }
-	public HashSet<SpotifyArtist> Artists { get; init; }
+	public HashSet<SpotifyArtist>? Artists { get; init; }
 
 	public string DurationString => string.Format("{0:D2}:{1:D2}", (int)Duration.TotalMinutes, Duration.Seconds);
+
+	public SpotifyTrack()
+	{
+		// TODO ctor for json
+	}
+
+	[SetsRequiredMembers]
+	public SpotifyTrack(string id, string name, string releaseId, int trackNumber, int discNumber, TimeSpan duration, bool explicitLyrics, string urlApp, string urlWeb)
+	{
+		Id = id;
+		Name = name;
+		ReleaseId = releaseId;
+		TrackNumber = trackNumber;
+		DiscNumber = discNumber;
+		Duration = duration;
+		Explicit = explicitLyrics;
+		UrlApp = urlApp;
+		UrlWeb = urlWeb;
+
+		// TODO artists
+	}
 
 	// TODO artists - GetArtists
 	[SetsRequiredMembers]
@@ -31,14 +55,15 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Explicit = simpleTrack.Explicit;
 		UrlApp = simpleTrack.Uri;
 		UrlWeb = simpleTrack.ExternalUrls["spotify"];
+		ReleaseId = release.Id;
 		// TODO empty??
 		//Album = null;
 		Artists = [];
 		foreach (var simpleArtist in simpleTrack.Artists)
 		{
-			if (release.ReleaseType != ReleaseType.Appears && release.Artists.Any(x => x.Id == simpleArtist.Id))
+			if (release.Artists.Any(x => x.Id == simpleArtist.Id))
 			{
-				// skip artists from album (no for appears)
+				// skip for artists from album
 				continue;
 			}
 
@@ -58,6 +83,7 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Explicit = fullTrack.Explicit;
 		UrlApp = fullTrack.Uri;
 		UrlWeb = fullTrack.ExternalUrls["spotify"];
+		ReleaseId = fullTrack.Album.Id;
 		//Album = new(fullTrack.Album, ReleaseType.Tracks);
 		Artists = [];
 		foreach (var simpleArtist in fullTrack.Artists)
@@ -78,6 +104,7 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Explicit = fullEpisode.Explicit;
 		UrlApp = fullEpisode.Uri;
 		UrlWeb = fullEpisode.ExternalUrls["spotify"];
+		ReleaseId = fullEpisode.Show.Id;
 		//Album = new(fullEpisode.Show);
 		// TODO podcast url
 		Artists =

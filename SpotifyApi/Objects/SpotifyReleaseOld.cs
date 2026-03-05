@@ -6,9 +6,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
+public class SpotifyReleaseOld : SpotifyIdNameUrlObject, IComparable
 {
-	public ReleaseType ReleaseType { get; init; }
+	public MainReleasesType ReleaseType { get; init; }
 
 	public required DateTime ReleaseDate { get; init; }
 
@@ -18,24 +18,25 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 
 	public bool New { get; init; } = false;
 
+
+	public HashSet<string>? ArtistIds { get; init; }
+
 	//public List<Image> Images { get; init; }
 
 	// TODO not null - after implementation of saving to db
-	public required HashSet<SpotifyArtist> Artists { get; init; }
-
-	public required HashSet<SpotifyArtist> FeaturedArtists { get; init; }
+	public HashSet<SpotifyArtist>? Artists { get; init; }
 
 	public SortedSet<SpotifyTrack>? Tracks { get; set; }
 
 	// TODO artists - GetArtists
 	// TODO images (0), default
-	public SpotifyRelease()
+	public SpotifyReleaseOld()
 	{
 		// TODO ctor for json
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyRelease(string id, string name, ReleaseType releaseType, DateTime releaseDate, string urlApp, string urlWeb, string urlImage, int totalTracks, HashSet<SpotifyArtist> artists, HashSet<SpotifyArtist> featuredArtists)
+	public SpotifyReleaseOld(string id, string name, MainReleasesType releaseType, DateTime releaseDate, string urlApp, string urlWeb, string urlImage, int totalTracks)
 	{
 		Id = id;
 		Name = name;
@@ -45,19 +46,18 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 		UrlWeb = urlWeb;
 		UrlImage = urlImage;
 		TotalTracks = totalTracks;
-		New = false; // from db
-		Artists = artists;
-		FeaturedArtists = featuredArtists;
+		New = true;
+
+		// TODO artists
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyRelease(SimpleAlbum simpleAlbum, HashSet<SpotifyArtist> featuredArtists)
+	public SpotifyReleaseOld(SimpleAlbum simpleAlbum, MainReleasesType releaseType)
 	{
 		Id = simpleAlbum.Id;
 		Name = simpleAlbum.Name;
 		ReleaseDate = simpleAlbum.ReleaseDate.ToDateTimeNullable() ?? new(1900, 1, 1);
 		TotalTracks = simpleAlbum.TotalTracks;
-
 		//Images = simpleAlbum.Images;
 		if (simpleAlbum.Images.Count > 0)
 		{
@@ -77,13 +77,13 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 		UrlApp = simpleAlbum.Uri;
 		UrlWeb = simpleAlbum.ExternalUrls["spotify"];
 		Artists = simpleAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
-		FeaturedArtists = featuredArtists;
-		ReleaseType = MapReleaseTypeFromApi(simpleAlbum.AlbumType);
+		ArtistIds = simpleAlbum.Artists.Select(a => a.Id).ToHashSet();
+		ReleaseType = releaseType;
 		New = true;
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyRelease(FullAlbum fullAlbum, HashSet<SpotifyArtist> featuredArtists)
+	public SpotifyReleaseOld(FullAlbum fullAlbum, MainReleasesType releaseType)
 	{
 		Id = fullAlbum.Id;
 		Name = fullAlbum.Name;
@@ -108,13 +108,13 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 		UrlApp = fullAlbum.Uri;
 		UrlWeb = fullAlbum.ExternalUrls["spotify"];
 		Artists = fullAlbum.Artists.Select(simpleArtist => new SpotifyArtist(simpleArtist)).ToHashSet();
-		FeaturedArtists = featuredArtists;
-		ReleaseType = MapReleaseTypeFromApi(fullAlbum.AlbumType);
+		ArtistIds = fullAlbum.Artists.Select(a => a.Id).ToHashSet();
+		ReleaseType = releaseType;
 		New = true;
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyRelease(SimpleShow simpleShow)
+	public SpotifyReleaseOld(SimpleShow simpleShow)
 	{
 		Id = simpleShow.Id;
 		Name = simpleShow.Name;
@@ -144,8 +144,8 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 		[
 			new("0", "Podcast", "", "")
 		];
-		FeaturedArtists = [];
-		ReleaseType = ReleaseType.Podcast;
+		ArtistIds = ["0"];
+		ReleaseType = MainReleasesType.Podcasts;
 		New = true;
 	}
 
@@ -156,17 +156,9 @@ public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
 			return -1;
 		}
 
-		var other = (SpotifyRelease)obj;
+		var other = (SpotifyReleaseOld)obj;
 		var dateComparison = other.ReleaseDate.CompareTo(ReleaseDate);
 
 		return (dateComparison != 0) ? dateComparison : Name.CompareTo(other.Name);
 	}
-
-	private static ReleaseType MapReleaseTypeFromApi(string releaseTypeApi) => releaseTypeApi switch
-	{
-		"album" => ReleaseType.Album,
-		"single" => ReleaseType.Track,
-		"compilation" => ReleaseType.Compilation,
-		_ => throw new ArgumentOutOfRangeException(nameof(releaseTypeApi), $"Not expected release type value: {releaseTypeApi}"),
-	};
 }

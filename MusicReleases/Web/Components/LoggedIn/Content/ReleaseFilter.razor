@@ -2,7 +2,7 @@
 
 <ClearFilterButton ButtonType="@ClearFilterButtonComponent.Releases" />
 
-@if (SpotifyFilterService.Filter?.ReleaseType == ReleaseType.Tracks || SpotifyFilterService.Filter?.ReleaseType == ReleaseType.Appears)
+@if (SpotifyFilterService.Filter?.ReleaseType == MainReleasesType.Tracks || SpotifyFilterService.Filter?.ReleaseType == MainReleasesType.Appears)
 {
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleasesFilters.Tracks" />
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleasesFilters.EPs" />

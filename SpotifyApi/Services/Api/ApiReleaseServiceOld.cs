@@ -5,15 +5,15 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
-internal class ApiReleaseService(ISpotifyApiClient client) : IApiReleaseService
+internal class ApiReleaseServiceOld(ISpotifyApiClient client) : IApiReleaseService
 {
 	private readonly ISpotifyApiClient _client = client;
 
-	public async Task<ISet<SpotifyRelease>> GetArtistReleasesFromApi(SpotifyArtist artist, ReleaseType releaseType)
+	public async Task<ISet<SpotifyReleaseOld>> GetArtistReleasesFromApi(SpotifyArtist artist, MainReleasesType releaseType)
 	{
 		// TODO podcasts
 
-		var albums = new SortedSet<SpotifyRelease>();
+		var albums = new SortedSet<SpotifyReleaseOld>();
 		var releasesFromApi = await GetArtistReleasesApi(artist.Id, releaseType);
 
 		if (releasesFromApi == null)
@@ -23,9 +23,9 @@ internal class ApiReleaseService(ISpotifyApiClient client) : IApiReleaseService
 
 		foreach (var releaseApi in releasesFromApi)
 		{
-			var album = new SpotifyRelease(releaseApi, releaseType);
+			var album = new SpotifyReleaseOld(releaseApi, releaseType);
 
-			if (releaseType == ReleaseType.Appears)
+			if (releaseType == MainReleasesType.Appears)
 			{
 				// add current artist to album on appears
 				album.Artists.Add(artist);
@@ -36,9 +36,9 @@ internal class ApiReleaseService(ISpotifyApiClient client) : IApiReleaseService
 		return albums;
 	}
 
-	private async Task<IList<SimpleAlbum>?> GetArtistReleasesApi(string artistId, ReleaseType releaseType)
+	private async Task<IList<SimpleAlbum>?> GetArtistReleasesApi(string artistId, MainReleasesType releaseType)
 	{
-		if (releaseType == ReleaseType.Podcasts)
+		if (releaseType == MainReleasesType.Podcasts)
 		{
 			// TODO podcasts
 			throw new NotImplementedException();

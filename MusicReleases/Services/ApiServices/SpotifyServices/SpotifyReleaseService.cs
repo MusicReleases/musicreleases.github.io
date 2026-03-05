@@ -1,0 +1,153 @@
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
+using JakubKastner.SpotifyApi.SpotifyEnums;
+
+namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+
+public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterService filterService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, ISpotifyTaskManagerService taskManager) : ISpotifyReleaseService
+{
+	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+	private readonly ISpotifyFilterService _filterService = filterService;
+	private readonly IApiReleaseClient _api = api;
+	private readonly IDbSpotifyReleaseService _releaseDb = releaseDb;
+	private readonly IDbSpotifyArtistService _artistDb = artistDb;
+	private readonly IDbSpotifyArtistReleaseService _linkDb = linkDb;
+	private readonly IDbSpotifyUpdateService _metaDb = metaDb;
+	private readonly ISpotifyArtistState _artistState = artistState;
+	private readonly ISpotifyReleaseState _state = state;
+	private readonly ISpotifyTaskManagerService _taskManager = taskManager;
+
+	private CancellationTokenSource? _cts;
+
+	public async Task Get(MainReleasesType releaseType, bool forceUpdate = false)
+	{
+		if (releaseType == MainReleasesType.Podcasts)
+		{
+			// TODO podcasts
+			throw new NotSupportedException();
+		}
+
+		// cancel any ongoing sync
+		Cancel();
+		_cts = new CancellationTokenSource();
+		var token = _cts.Token;
+
+		try
+		{
+			var userId = _spotifyApiUserService.GetUserIdRequired();
+			// load data from db to state
+			await LoadFromDbToState(releaseType);
+
+			Console.WriteLine("last sync get");
+			var metaDbType = MapToDbUpdateType(releaseType);
+			var lastSync = await _metaDb.Get(userId, metaDbType);
+			Console.WriteLine("last sync  - " + lastSync);
+
+			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
+
+			if (shouldSync)
+			{
+				await _taskManager.Run($"Getting {releaseType.ToFriendlyString()} releases", async (task) =>
+				{
+					await SyncProcess(userId, releaseType, task, token);
+				});
+			}
+		}
+		catch (OperationCanceledException)
+		{
+			// cancelled
+		}
+	}
+
+	private async Task LoadFromDbToState(MainReleasesType releaseType)
+	{
+		var artists = _artistState.SortedFollowedArtists;
+		if (artists.Count == 0)
+		{
+			return;
+		}
+
+		var artistIds = artists.Select(a => a.Id);
+		var artistRole = EnumReleaseTypeExtensions.MapReleaseRole(releaseType);
+		var releaseIds = await _linkDb.GetReleaseIds(artistIds, artistRole);
+		var releases = await _releaseDb.GetByIds(releaseIds, releaseType);
+
+		_state.Set(releaseType, releases);
+		_filterService.SetReleases(_state.GetByType().ToDictionary());
+	}
+
+	private async Task SyncProcess(string userId, MainReleasesType releaseType, SpotifyBackgroundTask task, CancellationToken ct)
+	{
+		// get artists from state
+		var artists = _artistState.SortedFollowedArtists;
+		if (artists.Count == 0)
+		{
+			return;
+		}
+
+		task.Status = $"Getting {releaseType.ToFriendlyString()} releases from api...";
+
+		var allNewReleases = new List<SpotifyRelease>();
+		var artistRole = EnumReleaseTypeExtensions.MapReleaseRole(releaseType);
+
+		foreach (var artist in artists)
+		{
+			ct.ThrowIfCancellationRequested();
+
+			// get releases from api
+			var apiReleases = await _api.GetByArtist(artist, releaseType, ct);
+
+			if (apiReleases.Count == 0)
+			{
+				continue;
+			}
+
+			allNewReleases.AddRange(apiReleases);
+
+			// save release to db
+			await _releaseDb.Save(apiReleases);
+
+			// save links to db
+			var releaseIds = apiReleases.Select(r => r.Id);
+			await _linkDb.SetArtistReleases(artist.Id, releaseType, releaseIds);
+
+			// save featuring artists to
+			var releasesWithArtists = apiReleases.Where(r => r.Artists is not null);
+			var releaseArtists = releasesWithArtists.SelectMany(r => r.Artists!).ToHashSet();
+			await _artistDb.Save(releaseArtists.ToList());
+			await _linkDb.SetArtistReleases(releasesWithArtists, artistRole);
+		}
+
+		ct.ThrowIfCancellationRequested();
+
+		// update meta db
+		var metaDbType = MapToDbUpdateType(releaseType);
+		await _metaDb.Save(userId, metaDbType);
+
+		// update state
+		task.Status = "Displaying releases...";
+
+		_state.Set(releaseType, allNewReleases);
+		_filterService.SetReleases(_state.GetByType().ToDictionary());
+	}
+
+	private static SpotifyDbUpdateType MapToDbUpdateType(MainReleasesType releasesType) => releasesType switch
+	{
+		MainReleasesType.Albums => SpotifyDbUpdateType.ReleasesAlbums,
+		MainReleasesType.Tracks => SpotifyDbUpdateType.ReleasesTracks,
+		MainReleasesType.Appears => SpotifyDbUpdateType.ReleasesAppears,
+		MainReleasesType.Compilations => SpotifyDbUpdateType.ReleasesCompilations,
+		MainReleasesType.Podcasts => throw new NotSupportedException(),
+		_ => throw new NotSupportedException(nameof(releasesType))
+	};
+	public void Cancel()
+	{
+		_cts?.Cancel();
+	}
+}

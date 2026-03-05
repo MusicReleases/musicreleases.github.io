@@ -6,11 +6,11 @@ using JakubKastner.SpotifyApi.Services;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyTracksService(ISpotifyApiTrackService spotifyTrackService, ISpotifyApiUserService spotifyUserService, IDbSpotifyArtistReleaseService dbSpotifyArtistReleaseService, ILoaderService loaderService) : ISpotifyTracksService
+public class SpotifyTracksService(ISpotifyApiTrackService spotifyTrackService, ISpotifyApiUserService spotifyUserService, IDbSpotifyArtistReleaseServiceOld dbSpotifyArtistReleaseService, ILoaderService loaderService) : ISpotifyTracksService
 {
 	private readonly ISpotifyApiTrackService _spotifyTrackService = spotifyTrackService;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
-	private readonly IDbSpotifyArtistReleaseService _dbSpotifyArtistReleaseService = dbSpotifyArtistReleaseService;
+	private readonly IDbSpotifyArtistReleaseServiceOld _dbSpotifyArtistReleaseService = dbSpotifyArtistReleaseService;
 	private readonly ILoaderService _loaderService = loaderService;
 
 	public SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases { get; private set; } = null;

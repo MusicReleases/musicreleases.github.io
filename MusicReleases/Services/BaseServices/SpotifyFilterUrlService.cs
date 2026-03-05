@@ -135,7 +135,7 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService,
 	{
 		return await GetFilterUrl(null, null, null, null);
 	}
-	public async Task<string> GetFilterUrl(ReleaseType releaseType)
+	public async Task<string> GetFilterUrl(MainReleasesType releaseType)
 	{
 		var releaseTypeUrl = releaseType.ToString().ToLower();
 		return await GetFilterUrl(releaseTypeUrl, null, null, null);
@@ -164,9 +164,9 @@ public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService,
 
 	public SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter)
 	{
-		if (!Enum.TryParse(releaseType, true, out ReleaseType type))
+		if (!Enum.TryParse(releaseType, true, out MainReleasesType type))
 		{
-			type = ReleaseType.Albums;
+			type = MainReleasesType.Albums;
 		}
 		int? yearFilter = int.TryParse(year, out var yearValue) ? yearValue : null;
 		int? monthInt = int.TryParse(month, out var monthValue) ? monthValue : null;

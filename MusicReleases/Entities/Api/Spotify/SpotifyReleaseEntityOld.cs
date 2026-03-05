@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-public class SpotifyReleaseEntity : SpotifyIdNameUrlEntity
+public class SpotifyReleaseEntityOld : SpotifyIdNameUrlEntity
 {
 	public DateTime ReleaseDate { get; init; }
 	public int TotalTracks { get; init; }
@@ -17,12 +17,12 @@ public class SpotifyReleaseEntity : SpotifyIdNameUrlEntity
 	//public HashSet<SpotifyArtist> Artists { get; init; }
 	//public SortedSet<SpotifyTrack>? Tracks { get; init; }
 
-	public ReleaseType ReleaseType { get; init; }
+	public MainReleasesType ReleaseType { get; init; }
 
-	public SpotifyReleaseEntity() { }
+	public SpotifyReleaseEntityOld() { }
 
 	[SetsRequiredMembers]
-	public SpotifyReleaseEntity(SpotifyRelease spotifyRelease)
+	public SpotifyReleaseEntityOld(SpotifyReleaseOld spotifyRelease)
 	{
 		Id = spotifyRelease.Id;
 		Name = spotifyRelease.Name;

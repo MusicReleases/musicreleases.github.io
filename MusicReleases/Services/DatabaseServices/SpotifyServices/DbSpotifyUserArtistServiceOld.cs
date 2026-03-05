@@ -59,14 +59,14 @@ public class DbSpotifyUserArtistServiceOld(IDbSpotifyServiceOld dbService, IDbSp
 	}
 
 
-	private async Task<ISet<SpotifyUserArtistEntity>> GetFollowedDb(string userId)
+	private async Task<ISet<SpotifyUserArtistEntityOld>> GetFollowedDb(string userId)
 	{
 		// TODO user artist db table
 		Console.WriteLine("db: get user artists - start");
 
 		// get artists from db
-		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntity>();
-		var artistsDb = new HashSet<SpotifyUserArtistEntity>();
+		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntityOld>();
+		var artistsDb = new HashSet<SpotifyUserArtistEntityOld>();
 
 
 		await foreach (var userArtistDb in userArtistsDb)
@@ -151,7 +151,7 @@ public class DbSpotifyUserArtistServiceOld(IDbSpotifyServiceOld dbService, IDbSp
 		Console.WriteLine("db: save user artists - start");
 		foreach (var artist in newFollowedArtists)
 		{
-			var artistEntity = new SpotifyUserArtistEntity(userId, artist.Id);
+			var artistEntity = new SpotifyUserArtistEntityOld(userId, artist.Id);
 			await _dbTable.StoreAsync(artistEntity);
 		}
 		Console.WriteLine("db: save user artists - end");
@@ -160,7 +160,7 @@ public class DbSpotifyUserArtistServiceOld(IDbSpotifyServiceOld dbService, IDbSp
 		await Delete(unfollowedArtists);
 	}
 
-	private async Task Delete(ISet<SpotifyUserArtistEntity> userArtistsDb)
+	private async Task Delete(ISet<SpotifyUserArtistEntityOld> userArtistsDb)
 	{
 		Console.WriteLine("db: delete user artists - start");
 		foreach (var userArtistDb in userArtistsDb)
@@ -173,7 +173,7 @@ public class DbSpotifyUserArtistServiceOld(IDbSpotifyServiceOld dbService, IDbSp
 	public async Task Delete(string userId)
 	{
 		Console.WriteLine("db: delete user artists by user id - start");
-		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntity>();
+		var userArtistsDb = _dbTable.GetAllAsync<SpotifyUserArtistEntityOld>();
 		await foreach (var userArtistDb in userArtistsDb)
 		{
 			if (userArtistDb.UserId != userId)

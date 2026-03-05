@@ -1,228 +1,116 @@
-﻿using JakubKastner.MusicReleases.Entities.Api.Spotify;
-using JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
-using JakubKastner.MusicReleases.Enums;
+﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Objects.Base;
-using Tavenem.Blazor.IndexedDB;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyArtistReleaseService(IDbSpotifyServiceOld dbService, IDbSpotifyReleaseService dbReleaseService, IDbSpotifyUpdateServiceOld dbUpdateService, IDbSpotifyArtistService dbArtistService) : IDbSpotifyArtistReleaseService
+public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService) : IDbSpotifyArtistReleaseService
 {
-	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyArtistRelease);
+	private readonly IDbSpotifyService _dbService = dbService;
 
-	private readonly IDbSpotifyReleaseService _dbReleaseService = dbReleaseService;
-	private readonly IDbSpotifyUpdateServiceOld _dbUpdateService = dbUpdateService;
-	private readonly IDbSpotifyArtistService _dbArtistService = dbArtistService;
-
-	public async Task<SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>?> Get(ISet<SpotifyArtist> artists, string userId)
+	public async Task<HashSet<string>> GetReleaseIds(string artistId, ArtistReleaseRole artistRole)
 	{
-		// update
-		var update = await GetUpdateDb(userId);
-		if (update is null)
-		{
-			return null;
-		}
+		var db = await _dbService.GetDb();
 
-		// artists
-		var releaseIds = await GetReleaseIds(artists);
-		if (releaseIds.Count < 1)
-		{
-			return null;
-		}
+		var links = await db.ArtistRelease.Where(x => x.ArtistId, artistId).And(x => x.Role == artistRole).ToArray();
 
-		var releases = await _dbReleaseService.Get(releaseIds);
-		if (releases is null)
-		{
-			return null;
-		}
-
-		var releasesUpdate = new SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>(releases, update);
-
-		return releasesUpdate;
-	}
-	private async Task<SpotifyUserListUpdateRelease?> GetUpdateDb(string userId)
-	{
-		var updateDb = await _dbUpdateService.Get(userId);
-		if (updateDb is null)
-		{
-			// TODO delete user artists
-			return null;
-		}
-
-		// TODO change SpotifyUserListUpdateArtists
-		var update = new SpotifyUserListUpdateRelease
-		{
-			LastUpdateAlbums = updateDb.ReleasesAlbums,
-			LastUpdateTracks = updateDb.ReleasesTracks,
-			LastUpdateAppears = updateDb.ReleasesAppears,
-			LastUpdateCompilations = updateDb.ReleasesCompilations,
-			LastUpdatePodcasts = updateDb.ReleasesPodcasts,
-		};
-
-		return update;
+		return links.Select(x => x.ReleaseId).ToHashSet();
 	}
 
-	private async Task<ISet<SpotifyReleaseArtistsDbObject>> GetReleaseIds(ISet<SpotifyArtist> followedArtists)
+	public async Task<HashSet<string>> GetReleaseIds(IEnumerable<string> artistIds, ArtistReleaseRole artistRole)
 	{
-		var artistReleasesDb = await GetAllDb();
-		var artistsDb = await _dbArtistService.GetAll() ?? throw new NullReferenceException("artistsDb");
-		var artistDict = artistsDb.ToDictionary(a => a.Id);
-		var followedArtistIds = followedArtists.Select(a => a.Id).ToHashSet();
+		var db = await _dbService.GetDb();
 
-		// releases from followed artist
+		var links = await db.ArtistRelease.Where(x => x.ArtistId).AnyOf([.. artistIds]).And(x => x.Role == artistRole).ToArray();
 
-		var releasesWithFollowed = artistReleasesDb
-			.Where(ar => followedArtistIds.Contains(ar.ArtistId))
-			.Select(ar => ar.ReleaseId)
-			.ToHashSet();
-
-		// releases from followed artist with all release artists
-		var releaseArtistsDb = artistReleasesDb
-			.Where(ar => releasesWithFollowed.Contains(ar.ReleaseId))
-			.GroupBy(ar => ar.ReleaseId)
-			.Select(g => new SpotifyReleaseArtistsDbObject(
-				g.Key,
-				g.Select(ar => artistDict.GetValueOrDefault(ar.ArtistId))
-				 .Where(a => a is not null)
-				 .Select(a => a!)
-				 .ToHashSet()
-			))
-			.ToHashSet();
-
-		return releaseArtistsDb;
+		return links.Select(x => x.ReleaseId).ToHashSet();
 	}
 
-	private async Task<ISet<SpotifyArtistReleaseEntity>> GetAllDb()
+	public async Task<HashSet<string>> GetArtistIds(string releaseId, ArtistReleaseRole artistRole)
 	{
-		Console.WriteLine("db: get artist releases - start");
-		var artistReleasesDb = _dbTable.GetAllAsync<SpotifyArtistReleaseEntity>();
+		var db = await _dbService.GetDb();
 
-		var artistReleases = new HashSet<SpotifyArtistReleaseEntity>();
-		await foreach (var artistReleaseDb in artistReleasesDb)
-		{
-			artistReleases.Add(artistReleaseDb);
-		}
+		var links = await db.ArtistRelease.Where(x => x.ReleaseId, releaseId).And(x => x.Role == artistRole).ToArray();
 
-		Console.WriteLine("db: get artist releases - end");
-		return artistReleases;
+		return links.Select(x => x.ArtistId).ToHashSet();
 	}
 
-	public async Task Save(string userId, SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease> releases)
+	public async Task<HashSet<string>> GetArtistIds(string releaseId)
 	{
-		// TODO remove unfollowed artists and deleted releases
+		var db = await _dbService.GetDb();
 
-		if (releases.Update is null)
-		{
-			// TODO
-			throw new NullReferenceException(nameof(releases.Update));
-		}
-		if (releases.List is null)
-		{
-			// TODO
-			throw new NullReferenceException(nameof(releases.List));
-		}
+		var links = await db.ArtistRelease.Where(x => x.ReleaseId, releaseId).ToArray();
 
-		// update db
-		await SaveUpdateDb(userId, releases.Update);
-
-		// user releases db
-		await SaveDb(releases.List, userId);
+		return links.Select(x => x.ArtistId).ToHashSet();
 	}
 
-	private async Task SaveUpdateDb(string userId, SpotifyUserListUpdateRelease update)
+
+	public async Task SetArtistReleases(string artistId, MainReleasesType mainReleaseType, IEnumerable<string> releaseApiIdsEnumerable)
 	{
-		var updateDb = await _dbUpdateService.Get(userId);
+		var artistRole = EnumReleaseTypeExtensions.MapReleaseRole(mainReleaseType);
 
-		if (updateDb is null)
+		var db = await _dbService.GetDb();
+
+		var apiIds = releaseApiIdsEnumerable.ToList();
+		var currentIds = await GetReleaseIds(artistId, artistRole);
+
+		// remove old
+		var otherArtistRoleReleaseIds = currentIds.Except(apiIds).ToArray();
+		if (otherArtistRoleReleaseIds.Length > 0)
 		{
-			// TODO
-			throw new NullReferenceException(nameof(updateDb));
-		}
+			var releasesDb = await db.Release.Where(x => x.Id).AnyOf(otherArtistRoleReleaseIds).ToArray();
 
-		// update - update times
-		updateDb.ReleasesAlbums = update.LastUpdateAlbums;
-		updateDb.ReleasesTracks = update.LastUpdateTracks;
-		updateDb.ReleasesAppears = update.LastUpdateAppears;
-		updateDb.ReleasesCompilations = update.LastUpdateCompilations;
-		updateDb.ReleasesPodcasts = update.LastUpdatePodcasts;
-
-		await _dbUpdateService.Update(updateDb);
-	}
-
-	private async Task SaveDb(ISet<SpotifyRelease> releases, string userId)
-	{
-
-		var artistReleasesDb = await GetAllDb();
-
-		var existingReleaseIds = artistReleasesDb.Select(x => x.ReleaseId).ToHashSet();
-		var newReleases = releases.Where(x => !existingReleaseIds.Contains(x.Id)).ToHashSet();
-		var newArtists = new HashSet<SpotifyArtist>();
-
-		// save new releases
-		await _dbReleaseService.Save(newReleases);
-
-		var artistReleaseEntities = new HashSet<SpotifyArtistReleaseEntity>();
-		foreach (var release in newReleases)
-		{
-			foreach (var artist in release.Artists)
+			if (mainReleaseType != MainReleasesType.Appears)
 			{
-				var artistReleaseEntity = new SpotifyArtistReleaseEntity(artist.Id, release.Id);
-				artistReleaseEntities.Add(artistReleaseEntity);
-				newArtists.Add(artist);
+				var releaseType = EnumReleaseTypeExtensions.MapFromMain(mainReleaseType);
+				releasesDb = releasesDb.Where(x => x.ReleaseType == releaseType);
+			}
+			var toRemoveIds = releasesDb.Select(x => x.Id);
+			if (toRemoveIds.Any())
+			{
+				await db.ArtistRelease.Where(x => x.ArtistId, artistId).Filter(x => toRemoveIds.Contains(x.ReleaseId)).Delete();
 			}
 		}
 
-		Console.WriteLine("db: save artist releases - start");
-		var tasks = artistReleaseEntities.Select(e => _dbTable.StoreAsync(e));
-		await Task.WhenAll(tasks);
-		Console.WriteLine("db: save artist releases - end");
-
-		// save release artists
-		await _dbArtistService.Save(newArtists.ToList());
-
-
-		// delete or keep releases
-		var artists = releases.SelectMany(x => x.Artists).ToHashSet();
-
-		var artistIds = artists.Select(a => a.Id).ToHashSet();
-		var releaseIds = releases.Select(r => r.Id).ToHashSet();
-
-		var artistReleasesFromFollowedArtists = artistReleasesDb.Where(x => artistIds.Contains(x.ArtistId)).ToHashSet();
-
-		var deletedReleases = artistReleasesFromFollowedArtists.Where(x => !releaseIds.Contains(x.ReleaseId)).ToHashSet();
-
-		// delete releases from followed artists
-		await Delete(deletedReleases);
-	}
-
-	private async Task Delete(ISet<SpotifyArtistReleaseEntity> artistReleasesDb)
-	{
-		Console.WriteLine("db: delete artist releases - start");
-		foreach (var artistReleaseDb in artistReleasesDb)
+		// add new
+		var currentArtistRoleReleaseIds = apiIds.Except(currentIds).Select(rid => rid.ToArtistReleaseEntity(artistId, artistRole)).ToList();
+		if (currentArtistRoleReleaseIds.Count > 0)
 		{
-			// delete releases from followed artists (= probably deleted from spotify)
-			await _dbTable.RemoveItemAsync(artistReleaseDb);
-			await _dbReleaseService.Delete(artistReleaseDb.ReleaseId);
+			await db.ArtistRelease.BulkPutSafe(currentArtistRoleReleaseIds);
 		}
-		Console.WriteLine("db: delete artist releases - end");
 	}
 
-	/*
-private async Task Delete(ISet<SpotifyArtistReleaseEntity> artistReleasesDb)
-{
-	Console.WriteLine("db: delete artist releases - start");
+	public async Task SetArtistReleases(IEnumerable<SpotifyRelease> releases, ArtistReleaseRole artistRole)
+	{
+		var db = await _dbService.GetDb();
+		var linksToAdd = new List<SpotifyArtistReleaseEntity>();
 
-	await Task.WhenAll(artistReleasesDb.Select(DeleteItem));
+		foreach (var release in releases)
+		{
+			var artists = artistRole == ArtistReleaseRole.Main ? release.FeaturedArtists : release.Artists;
+			var artistRoleSave = artistRole == ArtistReleaseRole.Main ? ArtistReleaseRole.Featured : ArtistReleaseRole.Main;
+			foreach (var artist in artists)
+			{
+				var link = release.Id.ToArtistReleaseEntity(artist.Id, artistRoleSave);
+				linksToAdd.Add(link);
+			}
+		}
+		await db.ArtistRelease.BulkPutSafe(linksToAdd);
+	}
 
-	Console.WriteLine("db: delete artist releases - end");
-}
+	public async Task DeleteAllForArtist(string artistId)
+	{
+		var db = await _dbService.GetDb();
+		await db.ArtistRelease.Where(x => x.ArtistId, artistId).Delete();
+	}
 
-private async Task DeleteItem(SpotifyArtistReleaseEntity artistReleaseDb)
-{
-	// delete releases from followed artists (= probably deleted from spotify)
-	await _dbTable.RemoveItemAsync(artistReleaseDb);
-	await _dbReleaseService.Delete(artistReleaseDb.ReleaseId);
-}
-	*/
+
+	public async Task AddArtistRelease(string artistId, string releaseId, ArtistReleaseRole artistRole)
+	{
+		var db = await _dbService.GetDb();
+		var playlistDb = releaseId.ToArtistReleaseEntity(artistId, artistRole);
+		await db.ArtistRelease.PutSafe(playlistDb);
+	}
 }

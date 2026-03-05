@@ -7,6 +7,6 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 public partial record SpotifyUserPlaylistEntity
 (
 	[property: Index] string UserId,
-	string PlaylistId,
+	[property: Index] string PlaylistId,
 	int Order
 ) : ISpotifyDb;

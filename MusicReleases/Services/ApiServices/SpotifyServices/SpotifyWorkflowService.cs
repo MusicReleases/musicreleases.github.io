@@ -8,23 +8,22 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpotifyPlaylistState spotifyPlaylistState, ISpotifyFilterService spotifyFilterService, ILoaderService loaderService, ISpotifyArtistService spotifyArtistService, ISpotifyReleasesService spotifyReleasesService, ISpotifyPlaylistService spotifyPlaylistService) : ISpotifyWorkflowService
+public class SpotifyWorkflowService(ISpotifyReleaseState spotifyReleaseState, ISpotifyPlaylistState spotifyPlaylistState, ILoaderService loaderService, ISpotifyArtistService spotifyArtistService, ISpotifyReleaseService spotifyReleaseService, ISpotifyPlaylistService spotifyPlaylistService) : ISpotifyWorkflowService
 {
-	private readonly ISpotifyArtistState _spotifyArtistState = spotifyArtistState;
+	private readonly ISpotifyReleaseState _spotifyReleaseState = spotifyReleaseState;
 	private readonly ISpotifyPlaylistState _spotifyPlaylistState = spotifyPlaylistState;
 
-	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
 	private readonly ILoaderService _loaderService = loaderService;
 
 	private readonly ISpotifyArtistService _spotifyArtistService = spotifyArtistService;
-	private readonly ISpotifyReleasesService _spotifyReleasesService = spotifyReleasesService;
+	private readonly ISpotifyReleaseService _spotifyReleaseService = spotifyReleaseService;
 	private readonly ISpotifyPlaylistService _spotifyPlaylistService = spotifyPlaylistService;
 
 	private const int DateForceHours = 24;
 
-	public async Task StartLoadingAll(bool forceUpdate, ReleaseType releaseType)
+	public async Task StartLoadingAll(MainReleasesType releaseType, bool forceUpdate)
 	{
-		await StartLoadingArtistsWithReleases(forceUpdate, releaseType);
+		await StartLoadingArtistsWithReleases(releaseType, forceUpdate);
 		await StartLoadingPlaylistsWithTracks(forceUpdate);
 	}
 
@@ -75,17 +74,10 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 
 
 	// artists
-	public async Task StartLoadingArtistsWithReleases(bool forceUpdate, ReleaseType releaseType)
+	public async Task StartLoadingArtistsWithReleases(MainReleasesType releaseType, bool forceUpdate)
 	{
 		await StartLoadingArtists(forceUpdate);
-
-
-		var artists = _spotifyArtistState.SortedFollowedArtists;
-		if (artists is null)
-		{
-			return;
-		}
-		await StartLoadingReleases(forceUpdate, releaseType, artists.ToHashSet());
+		await StartLoadingReleases(releaseType, forceUpdate);
 	}
 
 	private async Task StartLoadingArtists(bool forceUpdate)
@@ -97,36 +89,16 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 		Console.WriteLine("workflow: artists - end");
 	}
 
-	public async Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, ISet<SpotifyArtist> artists)
+	public async Task StartLoadingReleases(MainReleasesType releaseType, bool forceUpdate)
 	{
 		Console.WriteLine("workflow: releases - start");
-		var forceUpdateAuto = false;
-		if (_loaderService.IsLoading(LoadingType.Artists) || _loaderService.IsLoading(LoadingType.Releases))
-		{
-			return;
-		}
 
-		if (!forceUpdate)
-		{
-			forceUpdateAuto = ForceUpdate(_spotifyReleasesService.Releases, releaseType);
-		}
+		await _spotifyReleaseService.Get(releaseType, forceUpdate);
 
-		if (forceUpdate || forceUpdateAuto)
-		{
-			await _spotifyReleasesService.Get(releaseType, artists, forceUpdate);
-		}
-		var releases = _spotifyReleasesService.Releases?.List;
-		if (releases is null)
-		{
-			return;
-		}
-
-		// filter releases
-		_spotifyFilterService.SetReleases(releases);
 		Console.WriteLine("workflow: releases - end");
 	}
 
-	private bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, ReleaseType? releaseType = null) where T : SpotifyIdNameUrlObject where U : SpotifyUserListUpdate
+	private bool ForceUpdate<T, U>(SpotifyUserList<T, U>? userList, MainReleasesType? releaseType = null) where T : SpotifyIdNameUrlObject where U : SpotifyUserListUpdate
 	{
 		if (userList is null || userList.List is null || userList.Update is null || userList.List.Count < 1)
 		{
@@ -157,18 +129,18 @@ public class SpotifyWorkflowService(ISpotifyArtistState spotifyArtistState, ISpo
 		return false;
 	}
 
-	public async Task Update(UpdateButtonComponent updateType, ReleaseType releaseType)
+	public async Task Update(UpdateButtonComponent updateType, MainReleasesType releaseType)
 	{
 		switch (updateType)
 		{
 			case UpdateButtonComponent.Artists:
 				// TODO load only releases for new artists
-				await StartLoadingArtistsWithReleases(true, releaseType);
+				await StartLoadingArtistsWithReleases(releaseType, true);
 				// TODO !!!!!!! set old update date for other release types - for update later
 				break;
 			case UpdateButtonComponent.Releases:
 				// TODO load only releases without updating artists
-				await StartLoadingArtistsWithReleases(true, releaseType);
+				await StartLoadingArtistsWithReleases(releaseType, true);
 				break;
 			case UpdateButtonComponent.Playlists:
 				await StartLoadingPlaylistsWithTracks(true);

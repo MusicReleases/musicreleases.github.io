@@ -70,14 +70,14 @@ public class DbSpotifyUserPlaylistServiceOld(IDbSpotifyServiceOld dbService, IDb
 	}
 
 
-	private async Task<ISet<SpotifyUserPlaylistEntity>> GetSavedDb(string userId)
+	private async Task<ISet<SpotifyUserPlaylistEntityOld>> GetSavedDb(string userId)
 	{
 		// TODO user artist db table
 		Console.WriteLine("db: get user playlists - start");
 
 		// get artists from db
-		var userPlaylistsDb = _dbTable.GetAllAsync<SpotifyUserPlaylistEntity>();
-		var playlistsDb = new HashSet<SpotifyUserPlaylistEntity>();
+		var userPlaylistsDb = _dbTable.GetAllAsync<SpotifyUserPlaylistEntityOld>();
+		var playlistsDb = new HashSet<SpotifyUserPlaylistEntityOld>();
 
 
 		await foreach (var userPlaylistDb in userPlaylistsDb)
@@ -164,7 +164,7 @@ public class DbSpotifyUserPlaylistServiceOld(IDbSpotifyServiceOld dbService, IDb
 		Console.WriteLine("db: save user playlists - start");
 		foreach (var playlist in newPlaylists)
 		{
-			var playlistEntity = new SpotifyUserPlaylistEntity(userId, playlist.Id);
+			var playlistEntity = new SpotifyUserPlaylistEntityOld(userId, playlist.Id);
 			await _dbTable.StoreAsync(playlistEntity);
 		}
 		Console.WriteLine("db: save user playlists - end");
@@ -173,7 +173,7 @@ public class DbSpotifyUserPlaylistServiceOld(IDbSpotifyServiceOld dbService, IDb
 		await Delete(deletedPlaylists);
 	}
 
-	private async Task Delete(ISet<SpotifyUserPlaylistEntity> userPlaylistsDb)
+	private async Task Delete(ISet<SpotifyUserPlaylistEntityOld> userPlaylistsDb)
 	{
 		Console.WriteLine("db: delete user playlists - start");
 		foreach (var userPlaylistDb in userPlaylistsDb)
@@ -200,7 +200,7 @@ public class DbSpotifyUserPlaylistServiceOld(IDbSpotifyServiceOld dbService, IDb
 	public async Task Delete(string userId)
 	{
 		Console.WriteLine("db: delete user playlists by user id - start");
-		var userPlaylistsDb = _dbTable.GetAllAsync<SpotifyUserPlaylistEntity>();
+		var userPlaylistsDb = _dbTable.GetAllAsync<SpotifyUserPlaylistEntityOld>();
 		await foreach (var userPlaylistDb in userPlaylistsDb)
 		{
 			if (userPlaylistDb.UserId != userId)

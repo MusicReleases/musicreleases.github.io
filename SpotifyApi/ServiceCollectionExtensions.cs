@@ -1,7 +1,7 @@
-﻿using JakubKastner.SpotifyApi.SpotifyEnums;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JakubKastner.SpotifyApi;
@@ -20,11 +20,12 @@ public static class ServiceCollectionExtensions
 		// api clients
 		services.AddScoped<IApiArtistClient, ApiArtistClient>();
 		services.AddScoped<IApiPlaylistClient, ApiPlaylistClient>();
+		services.AddScoped<IApiReleaseClient, ApiReleaseClient>();
 
 		// api controllers
 		services.AddScoped<IApiArtistServiceOld, ApiArtistServiceOld>();
 		services.AddScoped<IApiPlaylistServiceOld, ApiPlaylistServiceOld>();
-		services.AddScoped<IApiReleaseService, ApiReleaseService>();
+		services.AddScoped<IApiReleaseService, ApiReleaseServiceOld>();
 		services.AddScoped<IApiUserService, ApiUserService>();
 		services.AddScoped<IApiTrackService, ApiTrackService>();
 

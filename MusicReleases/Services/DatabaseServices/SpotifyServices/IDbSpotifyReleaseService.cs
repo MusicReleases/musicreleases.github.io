@@ -1,11 +1,12 @@
-﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
-namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
-
-public interface IDbSpotifyReleaseService
+namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices
 {
-	Task<ISet<SpotifyRelease>?> Get(ISet<SpotifyReleaseArtistsDbObject> releaseIds);
-	Task Save(ISet<SpotifyRelease> releases);
-	Task Delete(string releaseId);
+	public interface IDbSpotifyReleaseService
+	{
+		Task Add(SpotifyRelease release);
+		Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, MainReleasesType mainReleaseType);
+		Task Save(IReadOnlyList<SpotifyRelease> releases);
+	}
 }

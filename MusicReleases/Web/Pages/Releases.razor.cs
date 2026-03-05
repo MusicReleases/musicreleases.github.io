@@ -85,7 +85,7 @@ public partial class Releases : IDisposable
 	public string? OldReleases { get; set; }
 
 
-	private ReleaseType _releaseType;
+	private MainReleasesType _releaseType;
 
 
 	protected override void OnInitialized()
@@ -168,7 +168,7 @@ public partial class Releases : IDisposable
 		if (serviceType == ServiceType.Spotify)
 		{
 			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! loading every time from db - prefer loading from store !!!!!
-			await SpotifyWorkflowService.StartLoadingAll(false, _releaseType);
+			await SpotifyWorkflowService.StartLoadingAll(_releaseType, false);
 		}
 	}
 }

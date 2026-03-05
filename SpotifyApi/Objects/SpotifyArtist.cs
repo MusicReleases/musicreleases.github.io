@@ -6,7 +6,7 @@ namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyArtist : SpotifyIdNameUrlObject, IComparable
 {
-	public SortedSet<SpotifyRelease>? Releases { get; set; }
+	public SortedSet<SpotifyReleaseOld>? Releases { get; set; }
 	public bool New { get; init; } = false;
 
 	public SpotifyArtist()

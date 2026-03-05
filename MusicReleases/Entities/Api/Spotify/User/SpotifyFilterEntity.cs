@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
 public class SpotifyFilterEntity : SpotifyIdEntity
 {
-	public ReleaseType ReleaseType { get; init; }
+	public MainReleasesType ReleaseType { get; init; }
 	public string? Artist { get; init; }
 	public int? Year { get; init; }
 	public DateTime? Month { get; init; }

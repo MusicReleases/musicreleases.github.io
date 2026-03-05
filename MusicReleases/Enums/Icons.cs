@@ -86,28 +86,28 @@ public static class EnumIconsExtensions
 		};
 	}
 
-	public static LucideIcon GetIconForRelease(ReleaseType releaseType)
+	public static LucideIcon GetIconForReleaseType(ReleaseType releaseType)
 	{
 		return releaseType switch
 		{
-			ReleaseType.Albums => LucideIcon.Disc3,
-			ReleaseType.Tracks => LucideIcon.Music,
-			ReleaseType.Appears => LucideIcon.Users,
-			ReleaseType.Compilations => LucideIcon.DiscAlbum,
-			ReleaseType.Podcasts => LucideIcon.Podcast,
+			ReleaseType.Album => LucideIcon.Disc3,
+			ReleaseType.Track => LucideIcon.Music,
+			ReleaseType.Compilation => LucideIcon.DiscAlbum,
+			ReleaseType.Podcast => LucideIcon.Podcast,
 			_ => throw new NotSupportedException(nameof(releaseType)),
 		};
 	}
-	public static string GetIconForReleaseOld(ReleaseType releaseType)
+
+	public static LucideIcon GetIconForRelease(MainReleasesType mainReleasesType)
 	{
-		return releaseType switch
+		return mainReleasesType switch
 		{
-			ReleaseType.Albums => "compact-disc",
-			ReleaseType.Tracks => "music",
-			ReleaseType.Appears => "user-friends",
-			ReleaseType.Compilations => "th-large",
-			ReleaseType.Podcasts => "podcast",
-			_ => throw new NotSupportedException(nameof(releaseType)),
+			MainReleasesType.Albums => LucideIcon.Disc3,
+			MainReleasesType.Tracks => LucideIcon.Music,
+			MainReleasesType.Appears => LucideIcon.Users,
+			MainReleasesType.Compilations => LucideIcon.DiscAlbum,
+			MainReleasesType.Podcasts => LucideIcon.Podcast,
+			_ => throw new NotSupportedException(nameof(mainReleasesType)),
 		};
 	}
 }

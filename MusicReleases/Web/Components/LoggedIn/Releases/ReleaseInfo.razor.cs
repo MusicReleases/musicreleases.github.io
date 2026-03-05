@@ -31,7 +31,7 @@ public partial class ReleaseInfo : IDisposable
 
 	private string ReleaseDateYear => $"{SpotifyRelease.ReleaseDate:yyyy}";
 
-	private LucideIcon ReleaseTypeIcon => EnumIconsExtensions.GetIconForRelease(SpotifyRelease.ReleaseType);
+	private LucideIcon ReleaseTypeIcon => EnumIconsExtensions.GetIconForReleaseType(SpotifyRelease.ReleaseType);
 
 	private string ReleaseTypeIconTitle => $"{SpotifyRelease.ReleaseType} release";
 

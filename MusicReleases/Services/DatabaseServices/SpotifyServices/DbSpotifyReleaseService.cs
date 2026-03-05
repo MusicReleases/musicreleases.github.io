@@ -1,79 +1,132 @@
-﻿using JakubKastner.MusicReleases.Entities.Api.Spotify;
-using JakubKastner.MusicReleases.Entities.Api.Spotify.Objects;
-using JakubKastner.MusicReleases.Enums;
+﻿using DexieNET;
+using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
-using Tavenem.Blazor.IndexedDB;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyReleaseService(IDbSpotifyServiceOld dbService) : IDbSpotifyReleaseService
+public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArtistReleaseService linkArtistDb, IDbSpotifyArtistService artistsDb) : IDbSpotifyReleaseService
 {
-	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyRelease);
+	private readonly IDbSpotifyService _dbService = dbService;
+	private readonly IDbSpotifyArtistReleaseService _linkArtistDb = linkArtistDb;
+	private readonly IDbSpotifyArtistService _artistDb = artistsDb;
 
-	public async Task<ISet<SpotifyRelease>?> Get(ISet<SpotifyReleaseArtistsDbObject> releaseIdsArtists)
+	/*public async Task<IReadOnlyList<SpotifyRelease>?> GetAll()
 	{
-		// artists
-		var releases = await GetDb(releaseIdsArtists);
-		if (releases.Count < 1)
-		{
-			return null;
-		}
+		Console.WriteLine("db: get all releases - start");
+
+		var db = await _dbService.GetDb();
+		var releasesDb = await db.Release.ToArray();
+
+		var releases = releasesDb.Select(e => e.ToModel()).ToList();
+
+		Console.WriteLine($"db: get all releases - end");
 		return releases;
-	}
+	}*/
 
-	private async Task<ISet<SpotifyRelease>> GetDb(ISet<SpotifyReleaseArtistsDbObject> releaseIdsArtists)
+	/*public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, MainReleasesType releaseType)
 	{
-		Console.WriteLine("db: get releases - start");
+		Console.WriteLine("db: get releases by ids - start");
 
-		var releasesDb = _dbTable.GetAllAsync<SpotifyReleaseEntity>();
+		var db = await _dbService.GetDb();
 
-		var releases = new HashSet<SpotifyRelease>();
+		var releases = new List<SpotifyRelease>();
+		var releasesDb = await db.Release.BulkGet(ids);
 
-		var releaseIdsArtistsDict = releaseIdsArtists.ToDictionary(x => x.ReleaseId);
-
-		await foreach (var releaseDb in releasesDb)
+		foreach (var releaseDb in releasesDb)
 		{
-			if (!releaseIdsArtistsDict.TryGetValue(releaseDb.Id, out var releaseIdArtist))
+			var mainArtistIds = await _linkArtistDb.GetArtistIds(releaseDb.Id, ArtistReleaseRole.Main);
+			var featuredArtistIds = await _linkArtistDb.GetArtistIds(releaseDb.Id, ArtistReleaseRole.Featured);
+
+			var artistIds = mainArtistIds;
+			artistIds.UnionWith(featuredArtistIds);
+
+			var artists = await _artistDb.GetByIds(artistIds);
+			var mainArtists = artists.Where(a => mainArtistIds.Contains(a.Id)).ToHashSet();
+			var featuredArtists = artists.Where(a => featuredArtistIds.Contains(a.Id)).ToHashSet();
+
+			var release = releaseDb.ToModel(mainArtists, featuredArtists);
+		}
+
+		Console.WriteLine($"db: get releases by ids - end");
+		return releases;
+	}*/
+
+	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, MainReleasesType mainReleaseType)
+	{
+		Console.WriteLine("db: get releases by ids - start");
+
+		var db = await _dbService.GetDb();
+
+		var releasesDb = await db.Release.BulkGet(ids);
+		var filteredReleasesDb
+			= mainReleaseType == MainReleasesType.Appears
+			? releasesDb
+			: releasesDb.Where(r => r.ReleaseType == EnumReleaseTypeExtensions.MapFromMain(mainReleaseType));
+
+		var releaseIds = filteredReleasesDb.Select(x => x.Id).ToArray();
+
+
+		// get links
+		var allLinks = await db.ArtistRelease.Where(x => x.ReleaseId).AnyOf(releaseIds).ToArray();
+
+		// get artists
+		var artistIds = allLinks.Select(l => l.ArtistId).ToHashSet();
+		var artists = await _artistDb.GetByIds(artistIds);
+		var artistsDict = artists.ToDictionary(a => a.Id);
+
+		var xyz = allLinks.Where(x => x.Role == ArtistReleaseRole.Main).ToList();
+
+		// map releases
+		var releaseRole = EnumReleaseTypeExtensions.MapReleaseRole(mainReleaseType);
+		var releases = new List<SpotifyRelease>();
+
+		foreach (var releaseDb in filteredReleasesDb)
+		{
+			/*var releaseLinks = allLinks.Where(l => l.Role == releaseRole && l.ReleaseId == releaseDb.Id);
+
+			if (!releaseLinks.Any())
 			{
 				continue;
-			}
+			}*/
 
-			var release = new SpotifyRelease()
-			{
-				Id = releaseDb.Id,
-				Name = releaseDb.Name,
-				ReleaseDate = releaseDb.ReleaseDate,
-				TotalTracks = releaseDb.TotalTracks,
-				UrlApp = releaseDb.UrlApp,
-				UrlWeb = releaseDb.UrlWeb,
-				UrlImage = releaseDb.UrlImage,
-				ReleaseType = releaseDb.ReleaseType,
-				Artists = [.. releaseIdArtist.Artists],
-			};
+			var releaseLinks = allLinks.Where(l => l.ReleaseId == releaseDb.Id);
 
+			var mainArtistIds = releaseLinks.Where(l => l.Role == ArtistReleaseRole.Main).Select(l => l.ArtistId);
+			var featuredArtistIds = releaseLinks.Where(l => l.Role == ArtistReleaseRole.Featured).Select(l => l.ArtistId);
+
+			var mainArtists = mainArtistIds.Select(id => artistsDict[id]).ToHashSet();
+			var featuredArtists = featuredArtistIds.Select(id => artistsDict[id]).ToHashSet();
+
+			var release = releaseDb.ToModel(mainArtists, featuredArtists);
 			releases.Add(release);
 		}
-		Console.WriteLine("db: get releases - end");
 
+		Console.WriteLine($"db: get releases by ids - end");
 		return releases;
 	}
 
-	public async Task Save(ISet<SpotifyRelease> releases)
+	public async Task Save(IReadOnlyList<SpotifyRelease> releases)
 	{
 		Console.WriteLine("db: save releases - start");
 
-		foreach (var release in releases)
+		if (releases.Count == 0)
 		{
-			var releaseEntity = new SpotifyReleaseEntity(release);
-			await _dbTable.StoreAsync(releaseEntity);
+			return;
 		}
+
+		var releasesDb = releases.Select(a => a.ToEntity());
+
+		var db = await _dbService.GetDb();
+		await db.Release.BulkPutSafe(releasesDb);
+
 		Console.WriteLine("db: save releases - end");
 	}
 
-	public async Task Delete(string releaseId)
+	public async Task Add(SpotifyRelease release)
 	{
-		Console.WriteLine("db: delete release - start");
-		await _dbTable.RemoveItemAsync(releaseId);
-		Console.WriteLine("db: delete release - end");
+		var db = await _dbService.GetDb();
+		var releaseDb = release.ToEntity();
+		await db.Release.PutSafe(releaseDb);
 	}
 }

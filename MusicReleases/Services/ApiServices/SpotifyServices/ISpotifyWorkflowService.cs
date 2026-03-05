@@ -1,14 +1,13 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
 public interface ISpotifyWorkflowService
 {
-	Task StartLoadingAll(bool forceUpdate, ReleaseType releaseType);
+	Task StartLoadingAll(MainReleasesType releaseType, bool forceUpdate);
 	Task StartLoadingPlaylistsWithTracks(bool forceUpdate);
-	Task StartLoadingArtistsWithReleases(bool forceUpdate, ReleaseType releaseType);
-	Task StartLoadingReleases(bool forceUpdate, ReleaseType releaseType, ISet<SpotifyArtist> artists);
-	Task Update(UpdateButtonComponent updateType, ReleaseType releaseType);
+	Task StartLoadingArtistsWithReleases(MainReleasesType releaseType, bool forceUpdate);
+	Task StartLoadingReleases(MainReleasesType releaseType, bool forceUpdate);
+	Task Update(UpdateButtonComponent updateType, MainReleasesType releaseType);
 }

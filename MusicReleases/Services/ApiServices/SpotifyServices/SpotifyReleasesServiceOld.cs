@@ -8,18 +8,18 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleasesService(ISpotifyApiReleaseService spotifyReleaseService, ISpotifyApiUserService spotifyUserService, IDbSpotifyArtistReleaseService dbSpotifyArtistReleaseService, ILoaderService loaderService) : ISpotifyReleasesService
+public class SpotifyReleasesServiceOld(ISpotifyApiReleaseService spotifyReleaseService, ISpotifyApiUserService spotifyUserService, IDbSpotifyArtistReleaseServiceOld dbSpotifyArtistReleaseService, ILoaderService loaderService) : ISpotifyReleasesServiceOld
 {
 	private readonly ISpotifyApiReleaseService _spotifyReleaseService = spotifyReleaseService;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
-	private readonly IDbSpotifyArtistReleaseService _dbSpotifyArtistReleaseService = dbSpotifyArtistReleaseService;
+	private readonly IDbSpotifyArtistReleaseServiceOld _dbSpotifyArtistReleaseService = dbSpotifyArtistReleaseService;
 	private readonly ILoaderService _loaderService = loaderService;
 
-	public SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases { get; private set; } = null;
+	public SpotifyUserList<SpotifyReleaseOld, SpotifyUserListUpdateRelease>? Releases { get; private set; } = null;
 
 	public event Action? OnTracksDataChanged;
 
-	public async Task Get(ReleaseType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate)
+	public async Task Get(MainReleasesType releaseType, ISet<SpotifyArtist> artists, bool forceUpdate)
 	{
 		if (artists is null)
 		{

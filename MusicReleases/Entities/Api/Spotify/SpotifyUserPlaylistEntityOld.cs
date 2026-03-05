@@ -4,19 +4,19 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify;
 
-public class SpotifyUserArtistEntity : SpotifyIdEntity
+public class SpotifyUserPlaylistEntityOld : SpotifyIdEntity
 {
 	public required string UserId { get; set; }
 
-	public required string ArtistId { get; set; }
+	public required string PlaylistId { get; set; }
 
-	public SpotifyUserArtistEntity()
+	public SpotifyUserPlaylistEntityOld()
 	{ }
 
 	[SetsRequiredMembers]
-	public SpotifyUserArtistEntity(string userId, string artistId)
+	public SpotifyUserPlaylistEntityOld(string userId, string playlistId)
 	{
 		UserId = userId;
-		ArtistId = artistId;
+		PlaylistId = playlistId;
 	}
 }
