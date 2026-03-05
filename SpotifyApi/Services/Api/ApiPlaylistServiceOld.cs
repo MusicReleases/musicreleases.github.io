@@ -1,8 +1,8 @@
 ﻿using JakubKastner.Extensions;
-using JakubKastner.SpotifyApi.SpotifyEnums;
-using JakubKastner.SpotifyApi.Objects;
-using SpotifyAPI.Web;
 using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.SpotifyEnums;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
@@ -231,11 +231,11 @@ internal class ApiPlaylistServiceOld(ISpotifyApiClient client, ISpotifyApiUserSe
 	{
 		var spotifyClient = _client.GetClient();
 
-		var tracksRequest = tracks.Select(track => new PlaylistRemoveItemsRequest.Item() { Uri = track.UrlApp }).ToHashSet();
+		var tracksRequest = tracks.Select(track => new PlaylistRemoveItemsRequestV2.Item() { Uri = track.UrlApp }).ToHashSet();
 
-		var request = new PlaylistRemoveItemsRequest()
+		var request = new PlaylistRemoveItemsRequestV2()
 		{
-			Tracks = [.. tracksRequest],
+			Items = [.. tracksRequest],
 		};
 
 		var snapshot = await spotifyClient.Playlists.RemovePlaylistItems(playlistId, request);

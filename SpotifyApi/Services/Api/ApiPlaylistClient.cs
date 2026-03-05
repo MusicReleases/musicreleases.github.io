@@ -60,9 +60,9 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 
 	public async Task<string> RemoveTracksFromPlaylist(string playlistId, IEnumerable<string> trackUris)
 	{
-		var request = new PlaylistRemoveItemsRequest
+		var request = new PlaylistRemoveItemsRequestV2
 		{
-			Tracks = [.. trackUris.Select(uri => new PlaylistRemoveItemsRequest.Item { Uri = uri })],
+			Items = [.. trackUris.Select(uri => new PlaylistRemoveItemsRequestV2.Item { Uri = uri })],
 		};
 
 		var spotifyClient = _client.GetClient();
