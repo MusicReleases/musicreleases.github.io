@@ -9,6 +9,7 @@ public enum LogoComponent
 public enum ChipFilterButtonComponent
 {
 	Left,
+	Middle,
 	Right,
 }
 

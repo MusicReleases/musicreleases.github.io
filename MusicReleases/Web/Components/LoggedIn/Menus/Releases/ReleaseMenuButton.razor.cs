@@ -8,14 +8,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 public partial class ReleaseMenuButton : IDisposable
 {
 	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
-
-	[Inject]
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
-
-	[Inject]
-	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
-
 
 	[Parameter, EditorRequired]
 	public required MainReleasesType ReleaseType { get; set; }
@@ -53,8 +46,5 @@ public partial class ReleaseMenuButton : IDisposable
 	private async Task DisplayReleases()
 	{
 		SpotifyReleaseFilterService.FilterReleaseType(ReleaseType);
-
-		/*var url = await SpotifyFilterUrlService.GetFilterUrl(ReleaseType);
-		NavManager.NavigateTo(url);*/
 	}
 }

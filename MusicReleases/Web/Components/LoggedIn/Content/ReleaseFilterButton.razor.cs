@@ -7,13 +7,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Content;
 public partial class ReleaseFilterButton : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
-
-	[Inject]
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
-
-	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -25,14 +19,19 @@ public partial class ReleaseFilterButton : IDisposable
 
 	private string ButtonClass => $"filter-releases {ButtonType.ToLowerString()}";
 
-	private string ButtonTitle => $"{(IsFilterActive ? "Hide" : "Show")} {GetTypeName(false)}";
+	private string ButtonTitle => $"{(IsFilterActive ? "Hide" : "Show")} {FilterType.ToFriendlyString(false)}";
 
-	private string ButtonText => GetTypeName(true);
+	private string ButtonText => FilterType.ToFriendlyString(true);
 
 	private bool IsFilterActive => SpotifyReleaseFilterService.IsAdvancedFilterActive(FilterType);
 
 	protected override void OnInitialized()
 	{
+		if (FilterType == ReleaseAdvancedFilter.All)
+		{
+			throw new NotImplementedException();
+		}
+
 		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
@@ -48,40 +47,8 @@ public partial class ReleaseFilterButton : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private string GetTypeName(bool capitalizeFirstLetter)
-	{
-		if (FilterType == ReleaseAdvancedFilter.All)
-		{
-			throw new NotImplementedException();
-		}
-
-		var name = FilterType.ToFriendlyString(capitalizeFirstLetter);
-		/*if (FilterType == ReleasesFilters.EPs && SpotifyReleaseFilterService.Filter?.ReleaseType == MainReleasesType.Appears)
-		{
-			name = $"Albums and {name}";
-		}*/
-
-		return name;
-	}
-
 	private async Task ChangeFilter()
 	{
 		SpotifyReleaseFilterService.ToggleAdvancedFilter(FilterType);
-
-		/*var url = await SpotifyFilterUrlService.GetFilterUrl(FilterType, !IsFilterActive());
-		NavManager.NavigateTo(url);*/
 	}
-
-	/*private bool IsFilterActive()
-
-	{
-		// this names must be same as in the URL and in Enums.ReleasesFilters
-		var filterProperty = SpotifyReleaseFilterService.Filter!.Advanced.GetType().GetProperty(FilterType.ToString());
-		if (filterProperty is null || filterProperty.PropertyType != typeof(bool))
-		{
-			throw new NotSupportedException(nameof(filterProperty));
-		}
-
-		return (bool)filterProperty.GetValue(SpotifyReleaseFilterService.Filter.Advanced)!;
-	}*/
 }

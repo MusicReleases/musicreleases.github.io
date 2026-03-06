@@ -15,9 +15,6 @@ public partial class ReleaseInfo : IDisposable
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
-
-	[Inject]
 	private ISettingsService SettingsService { get; set; } = default!;
 
 
@@ -39,26 +36,6 @@ public partial class ReleaseInfo : IDisposable
 	private const string _buttonClass = "release-info";
 
 
-	private void OnDragStart()
-	{
-		DragDropService.StartDrag(SpotifyRelease, DragDropType.Release);
-	}
-
-	private async Task FilterMonth()
-	{
-		SpotifyReleaseFilterService.FilterMonth(SpotifyRelease.ReleaseDate.Year, SpotifyRelease.ReleaseDate.Month);
-
-		/*var url = await SpotifyFilterUrlService.GetFilterUrl(SpotifyRelease.ReleaseDate.Year, SpotifyRelease.ReleaseDate.Month);
-		NavManager.NavigateTo(url);*/
-	}
-
-	private async Task FilterYear()
-	{
-		SpotifyReleaseFilterService.FilterYear(SpotifyRelease.ReleaseDate.Year);
-
-		/*var url = await SpotifyFilterUrlService.GetFilterUrl(SpotifyRelease.ReleaseDate.Year);
-		NavManager.NavigateTo(url);*/
-	}
 	protected override void OnInitialized()
 	{
 		SettingsService.OnChange += StateChanged;
@@ -73,5 +50,20 @@ public partial class ReleaseInfo : IDisposable
 	private void StateChanged()
 	{
 		InvokeAsync(StateHasChanged);
+	}
+
+	private void OnDragStart()
+	{
+		DragDropService.StartDrag(SpotifyRelease, DragDropType.Release);
+	}
+
+	private async Task FilterMonth()
+	{
+		SpotifyReleaseFilterService.FilterMonth(SpotifyRelease.ReleaseDate.Year, SpotifyRelease.ReleaseDate.Month);
+	}
+
+	private async Task FilterYear()
+	{
+		SpotifyReleaseFilterService.FilterYear(SpotifyRelease.ReleaseDate.Year);
 	}
 }

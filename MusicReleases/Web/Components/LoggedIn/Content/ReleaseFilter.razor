@@ -2,11 +2,17 @@
 
 <ClearFilterButton ButtonType="@ClearFilterButtonComponent.Releases" />
 
-@if (SpotifyFilterService.Filter?.ReleaseType == MainReleasesType.Tracks || SpotifyFilterService.Filter?.ReleaseType == MainReleasesType.Appears)
+@if (SpotifyReleaseFilterService.Filter.ReleaseType == MainReleasesType.Tracks)
 {
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleaseAdvancedFilter.Tracks" />
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleaseAdvancedFilter.EPs" />
-	@* <ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleaseAdvancedFilter.Albums" /> *@
+}
+else if (SpotifyReleaseFilterService.Filter.ReleaseType == MainReleasesType.Appears)
+{
+	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleaseAdvancedFilter.Albums" />
+	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Middle" FilterType="@ReleaseAdvancedFilter.Tracks" />
+	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Middle" FilterType="@ReleaseAdvancedFilter.EPs" />
+	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleaseAdvancedFilter.Compilations" />
 }
 
 <ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleaseAdvancedFilter.NotRemixes" />

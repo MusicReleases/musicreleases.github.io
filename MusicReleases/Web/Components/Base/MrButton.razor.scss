@@ -183,6 +183,20 @@
     }
 }
 
+@mixin chip-middle {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 0;
+
+    &::before {
+        @include chip-divider(left);
+    }
+
+    &::after {
+        @include chip-divider(right);
+    }
+}
+
 @mixin chip-right {
     padding-left: 5px;
     border-top-left-radius: 0;
@@ -392,10 +406,13 @@
         &-releases {
             @include rounded-l;
             @include chip;
-
+            
             &.left {
                 margin-left: 5px;
                 @include chip-left;
+            }
+            &.middle {
+                @include chip-middle;
             }
 
             &.right {

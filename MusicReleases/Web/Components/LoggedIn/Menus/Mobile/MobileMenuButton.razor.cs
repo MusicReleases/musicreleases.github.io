@@ -75,7 +75,6 @@ public partial class MobileMenuButton : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-
 	public async Task DisplayMenu()
 	{
 		await PopupService.Hide();

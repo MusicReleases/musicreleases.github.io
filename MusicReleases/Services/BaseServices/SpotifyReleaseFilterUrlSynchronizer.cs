@@ -80,10 +80,5 @@ public class SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService fi
 		var filter = await _dbService.Get(userId) ?? new();
 
 		_filterService.SetFilterAndSearch(filter, null, true);
-
-		/*var parameters = _filterUrlService.CreateUrl(filter);
-
-		var url = $"{_baseUrl}{parameters}";
-		return url;*/
 	}
 }

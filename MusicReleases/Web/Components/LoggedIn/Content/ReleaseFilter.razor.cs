@@ -6,17 +6,18 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Content;
 public partial class ReleaseFilter : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterServiceOld SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.Dispose();
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

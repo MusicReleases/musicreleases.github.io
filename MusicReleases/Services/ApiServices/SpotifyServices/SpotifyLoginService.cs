@@ -51,8 +51,6 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 					}
 
 					await _releaseFilterUrlSynchronizer.SetInitFilter();
-					/*var url = await _releaseFilterUrlSynchronizer.GetFilterUrl();
-					_navManager.NavigateTo(url);*/
 				}
 				else
 				{
@@ -98,9 +96,6 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 		// navigate to releases page
 		await _releaseFilterUrlSynchronizer.SetInitFilter();
-
-		/*var url = await _filterUrlService.GetFilterUrl();
-		_navManager.NavigateTo(url);*/
 	}
 
 

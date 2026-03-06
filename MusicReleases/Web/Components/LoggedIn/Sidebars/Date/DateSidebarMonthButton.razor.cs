@@ -7,12 +7,6 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Date;
 public partial class DateSidebarMonthButton : IDisposable
 {
 	[Inject]
-	public NavigationManager NavManager { get; set; } = default!;
-
-	[Inject]
-	public ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
-
-	[Inject]
 	public ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
@@ -52,12 +46,6 @@ public partial class DateSidebarMonthButton : IDisposable
 	private async Task FilterMonth()
 	{
 		SpotifyReleaseFilterService.FilterMonth(Year, Month);
-
-		/*int? monthFilter = IsFilterActive ? null : Month;
-		int? yearFilter = IsFilterActive ? null : Year;
-
-		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter, monthFilter);
-		NavManager.NavigateTo(url);*/
 
 		MobileService.HideMenu();
 	}

@@ -7,13 +7,8 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 public partial class ClearFilterButton : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
-
-	[Inject]
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
-	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -74,8 +69,5 @@ public partial class ClearFilterButton : IDisposable
 			return;
 		}
 		SpotifyReleaseFilterService.ClearFilter(FilterType);
-
-		/*var url = await SpotifyFilterUrlService.ClearFilter(ButtonType);
-		NavManager.NavigateTo(url);*/
 	}
 }

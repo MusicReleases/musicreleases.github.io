@@ -1,10 +1,6 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects;
-using JakubKastner.MusicReleases.Services.ApiServices;
-using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+﻿using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
@@ -15,23 +11,13 @@ public partial class Releases : IDisposable
 	private ISpotifyWorkflowService SpotifyWorkflowService { get; set; } = default!;
 
 	[Inject]
-	private IApiLoginService ApiLoginService { get; set; } = default!;
-
-	[Inject]
-	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
-
-	[Inject]
-	private ISpotifyFilterServiceOld SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
 	private ISpotifyReleaseFilterUrlSynchronizer SpotifyReleaseFilterUrlSynchronizer { get; set; } = default!;
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
-
-	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
-
 
 
 	[Parameter]
@@ -56,60 +42,16 @@ public partial class Releases : IDisposable
 	public string? Search { get; set; }
 
 
-	// this names must be same as in the URL and in Enums.ReleasesFilters
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? Tracks { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? EPs { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? NotRemixes { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? Remixes { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? FollowedArtists { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? SavedReleases { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? NotVariousArtists { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? VariousArtists { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? NewReleases { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public string? OldReleases { get; set; }
-
-
-	private MainReleasesType _releaseType;
-
-
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.Dispose();
 		SpotifyReleaseFilterUrlSynchronizer.Dispose();
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -120,14 +62,15 @@ public partial class Releases : IDisposable
 
 	protected override async Task OnParametersSetAsync()
 	{
-		await LoadReleases();
+		await Load();
 	}
 
-	private async Task LoadReleases()
+	private async Task Load()
 	{
 		var urlChanged = await PopupService.UrlChanged();
 		if (!urlChanged)
 		{
+			// when is the same url as when the popup was opened - dont update
 			return;
 		}
 
@@ -135,9 +78,7 @@ public partial class Releases : IDisposable
 
 		if (loadReleases)
 		{
-			//await LoadFiterOld();
-			await GetReleases();
-			// when is the same url as when the popup was opened - dont update
+			await LoadReleases();
 		}
 	}
 
@@ -153,55 +94,8 @@ public partial class Releases : IDisposable
 		return true;
 	}
 
-	private async Task LoadFiterOld()
+	private async Task LoadReleases()
 	{
-		// TODO enable to select and display more than 1 release type
-		/*if (string.IsNullOrEmpty(Type))
-		{
-			// TODO display all releases and remember last selection
-			//navManager.NavigateTo("/releases/albums");
-			// TODO if is return here, code doesnt refresh the content
-			// TODO but if is not here, code just continue and doesnt get the right Type (for example)
-			return;
-		}*/
-		var tracks = IsFilterActive(Tracks);
-		var eps = IsFilterActive(EPs);
-		var notRemixes = IsFilterActive(NotRemixes);
-		var remixes = IsFilterActive(Remixes);
-		var followedArtists = IsFilterActive(FollowedArtists);
-		var savedReleases = IsFilterActive(SavedReleases);
-		var notVariousArtists = IsFilterActive(NotVariousArtists);
-		var variousArtists = IsFilterActive(VariousArtists);
-		var newReleases = IsFilterActive(NewReleases);
-		var oldReleases = IsFilterActive(OldReleases);
-
-		var advancedFilter = new SpotifyFilterAdvanced(tracks, eps, notRemixes, remixes, followedArtists, savedReleases, notVariousArtists, variousArtists, newReleases, oldReleases);
-		var filter = SpotifyFilterUrlService.ParseFilterUrl(Type, Year, Month, ArtistId, advancedFilter);
-		_releaseType = filter.ReleaseType;
-		await SpotifyFilterService.SetFilterAndSaveDb(filter);
-	}
-
-	private static bool IsFilterActive(string? filter)
-	{
-		var active = filter is not null && (filter.IsNullOrEmpty() || bool.TryParse(filter, out var val) && val);
-		return active;
-	}
-
-	private async Task GetReleases()
-	{
-		var userLoggedIn = ApiLoginService.IsUserLoggedIn();
-
-		if (!userLoggedIn)
-		{
-			return;
-		}
-
-		var serviceType = ApiLoginService.GetServiceType();
-
-		if (serviceType == ServiceType.Spotify)
-		{
-			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! loading every time from db - prefer loading from store !!!!!
-			await SpotifyWorkflowService.StartLoadingAll(_releaseType, false);
-		}
+		await SpotifyWorkflowService.StartLoadingAll(SpotifyReleaseFilterService.Filter.ReleaseType, false);
 	}
 }
