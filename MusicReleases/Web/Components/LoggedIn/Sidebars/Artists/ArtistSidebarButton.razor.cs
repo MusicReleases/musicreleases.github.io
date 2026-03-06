@@ -10,10 +10,10 @@ public partial class ArtistSidebarButton : IDisposable
 	private NavigationManager NavManager { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
@@ -26,7 +26,7 @@ public partial class ArtistSidebarButton : IDisposable
 	public required string ArtistName { get; set; }
 
 
-	private bool FilterActive => SpotifyFilterService.Filter?.Artist == ArtistId;
+	private bool FilterActive => SpotifyReleaseFilterService.Filter?.Artist == ArtistId;
 
 
 	private const string _buttonClass = "sidebar-content";
@@ -34,12 +34,12 @@ public partial class ArtistSidebarButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -50,11 +50,13 @@ public partial class ArtistSidebarButton : IDisposable
 
 	private async Task FilterArtist()
 	{
-		var artistIdFilter = FilterActive ? null : ArtistId;
+		SpotifyReleaseFilterService.FilterArtist(ArtistId);
+
+		/*var artistIdFilter = FilterActive ? null : ArtistId;
 
 		var url = await SpotifyFilterUrlService.GetFilterUrl(artistIdFilter);
 		NavManager.NavigateTo(url);
 
-		MobileService.HideMenu();
+		MobileService.HideMenu();*/
 	}
 }

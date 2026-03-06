@@ -18,7 +18,7 @@ public partial class UpdateButton : IDisposable
 	private ISpotifyWorkflowService SpotifyWorkflowService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyFilterServiceOld SpotifyFilterService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]

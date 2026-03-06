@@ -17,7 +17,7 @@ public partial class LoginButton
 	public required ServiceType ServiceType { get; set; }
 
 
-	private string ButtonText => $"Login via {ServiceType.ToFriendlyString()}";
+	private string ButtonText => $"Login via {ServiceType.ToFriendlyString(true)}";
 
 	private Enum ServiceTypeIcon => EnumIconsExtensions.GetIconForServiceType(ServiceType);
 

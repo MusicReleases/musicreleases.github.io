@@ -7,14 +7,13 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpotifyApiUserService spotifyUserService) : ISpotifyFilterService
+public class SpotifyFilterServiceOld(IDbSpotifyReleaseFilterService filterDbService, ISpotifyApiUserService spotifyUserService) : ISpotifyFilterServiceOld
 {
-	private readonly IDbSpotifyFilterService _filterDbService = filterDbService;
+	private readonly IDbSpotifyReleaseFilterService _filterDbService = filterDbService;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 
 	public SpotifyFilter? Filter { get; private set; } = null;
 
-	private ISet<SpotifyRelease>? _allReleases = null;
 	private Dictionary<MainReleasesType, ISet<SpotifyRelease>>? _allReleasesByType = null;
 	private ISet<SpotifyArtist>? _allArtists = null;
 
@@ -31,11 +30,7 @@ public class SpotifyFilterService(IDbSpotifyFilterService filterDbService, ISpot
 		_allReleasesByType = null;
 		ApplyFilter();
 	}
-	public void SetReleases(ISet<SpotifyRelease> releases)
-	{
-		_allReleases = releases;
-		ApplyFilter();
-	}
+
 	public void SetReleases(Dictionary<MainReleasesType, IReadOnlyList<SpotifyRelease>> releasesByType)
 	{
 		_allReleasesByType = [];

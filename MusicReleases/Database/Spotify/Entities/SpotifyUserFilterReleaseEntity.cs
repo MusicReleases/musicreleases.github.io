@@ -1,15 +1,17 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 using JakubKastner.MusicReleases.Enums;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
-[Schema(StoreName = "Settings")]
-public partial record SpotifyUserSettingsEntity
+[Schema(StoreName = "UserFilterRelease")]
+public partial record SpotifyUserFilterReleaseEntity
 	(
 		[property: Index(IsPrimary = true)] string UserId,
-		Theme Theme,
-		bool OpenLinksInApp,
-		bool PlaylistNewTrackPositionLast,
-		bool PlaylistAddToProfile
+		MainReleasesType ReleaseType,
+		ReleaseAdvancedFilter ReleaseAdvancedFilter,
+		string? ArtistId,
+		int? Year,
+		DateTime? Month
 	) : ISpotifyDb, ISpotifyUserIdEntity;

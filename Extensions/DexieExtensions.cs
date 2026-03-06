@@ -1,4 +1,5 @@
 ﻿using DexieNET;
+using System.Linq.Expressions;
 
 namespace JakubKastner.Extensions;
 
@@ -46,4 +47,40 @@ public static class DexieExtensions
 			await table.BulkDelete(keysArray);
 		}
 	}
+
+
+	public static string For<T>(Expression<Func<T, object>> a, Expression<Func<T, object>> b)
+	{
+		return $"[{NameOf(a)}+{NameOf(b)}]";
+	}
+
+	public static string For<T>(Expression<Func<T, object>> a, Expression<Func<T, object>> b, Expression<Func<T, object>> c)
+	{
+		return $"[{NameOf(a)}+{NameOf(b)}+{NameOf(c)}]";
+	}
+
+	private static string NameOf<T>(Expression<Func<T, object>> e)
+	{
+		return ExtractMemberName(e.Body)
+		   ?? throw new ArgumentException("Expression must be a simple property access (e.g., x => x.Prop).", nameof(e));
+	}
+
+	private static string? ExtractMemberName(Expression expr) => expr switch
+	{
+		// x => x.Prop
+		MemberExpression m => m.Member.Name,
+
+		// x => (object)x.Prop  (boxing value type / implicit Convert)
+		UnaryExpression
+		{
+			NodeType: ExpressionType.Convert
+		} u => (u.Operand is MemberExpression um) ? um.Member.Name : ExtractMemberName(u.Operand),
+
+		// x => ((SomeType)x.Sub).Prop  (nested conversions – fallback)
+		UnaryExpression u => ExtractMemberName(u.Operand),
+
+		_ => null
+	};
+
+
 }

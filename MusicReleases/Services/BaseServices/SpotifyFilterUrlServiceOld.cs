@@ -6,10 +6,10 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyFilterUrlService(ISpotifyFilterService spotifyFilterService, IDbSpotifyFilterService dbSpotifyFilterService, ISpotifyApiUserService spotifyUserService) : ISpotifyFilterUrlService
+public class SpotifyFilterUrlServiceOld(ISpotifyFilterServiceOld spotifyFilterService, IDbSpotifyReleaseFilterService dbSpotifyFilterService, ISpotifyApiUserService spotifyUserService) : ISpotifyFilterUrlServiceOld
 {
-	private readonly ISpotifyFilterService _spotifyFilterService = spotifyFilterService;
-	private readonly IDbSpotifyFilterService _dbSpotifyFilterService = dbSpotifyFilterService;
+	private readonly ISpotifyFilterServiceOld _spotifyFilterService = spotifyFilterService;
+	private readonly IDbSpotifyReleaseFilterService _dbSpotifyFilterService = dbSpotifyFilterService;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 
 	private const string _urlNull = "_";

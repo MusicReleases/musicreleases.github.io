@@ -6,14 +6,14 @@ using Tavenem.Blazor.IndexedDB;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpdateServiceOld dbUpdateService, IDbSpotifyUserArtistServiceOld dbUserArtistService, IDbSpotifyUserPlaylistServiceOld dbUserPlaylistService, IDbSpotifyFilterService dbFilterService) : IDbSpotifyUserService
+public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpdateServiceOld dbUpdateService, IDbSpotifyUserArtistServiceOld dbUserArtistService, IDbSpotifyUserPlaylistServiceOld dbUserPlaylistService, IDbSpotifyFilterServiceOld dbFilterService) : IDbSpotifyUserService
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyUser);
 
 	private readonly IDbSpotifyUpdateServiceOld _dbUpdateService = dbUpdateService;
 	private readonly IDbSpotifyUserArtistServiceOld _dbUserArtistService = dbUserArtistService;
 	private readonly IDbSpotifyUserPlaylistServiceOld _dbUserPlaylistService = dbUserPlaylistService;
-	private readonly IDbSpotifyFilterService _dbFilterService = dbFilterService;
+	private readonly IDbSpotifyFilterServiceOld _dbFilterService = dbFilterService;
 
 	public async Task<SpotifyUser?> Get(string userId)
 	{

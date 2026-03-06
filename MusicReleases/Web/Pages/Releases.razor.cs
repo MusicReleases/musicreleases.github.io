@@ -18,10 +18,13 @@ public partial class Releases : IDisposable
 	private IApiLoginService ApiLoginService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyFilterServiceOld SpotifyFilterService { get; set; } = default!;
+
+	[Inject]
+	private ISpotifyReleaseFilterUrlSynchronizer SpotifyReleaseFilterUrlSynchronizer { get; set; } = default!;
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
@@ -42,6 +45,16 @@ public partial class Releases : IDisposable
 
 	[Parameter]
 	public string? ArtistId { get; set; }
+
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? Filter { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? Search { get; set; }
+
 
 	// this names must be same as in the URL and in Enums.ReleasesFilters
 	[Parameter]
@@ -96,6 +109,7 @@ public partial class Releases : IDisposable
 	public void Dispose()
 	{
 		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterUrlSynchronizer.Dispose();
 		GC.SuppressFinalize(this);
 	}
 
@@ -112,15 +126,34 @@ public partial class Releases : IDisposable
 	private async Task LoadReleases()
 	{
 		var urlChanged = await PopupService.UrlChanged();
-		if (urlChanged)
+		if (!urlChanged)
 		{
-			await LoadFiter();
+			return;
+		}
+
+		var loadReleases = await LoadFiter();
+
+		if (loadReleases)
+		{
+			//await LoadFiterOld();
 			await GetReleases();
 			// when is the same url as when the popup was opened - dont update
 		}
 	}
 
-	private async Task LoadFiter()
+	private async Task<bool> LoadFiter()
+	{
+		if (Type.IsNullOrEmpty())
+		{
+			await SpotifyReleaseFilterUrlSynchronizer.SetInitFilter();
+			return false;
+		}
+		await SpotifyReleaseFilterUrlSynchronizer.SetFilterFromUrl(Type, Year, Month, ArtistId, Filter, Search);
+
+		return true;
+	}
+
+	private async Task LoadFiterOld()
 	{
 		// TODO enable to select and display more than 1 release type
 		/*if (string.IsNullOrEmpty(Type))

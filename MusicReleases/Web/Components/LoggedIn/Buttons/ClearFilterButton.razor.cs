@@ -7,10 +7,10 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 public partial class ClearFilterButton : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
@@ -45,19 +45,20 @@ public partial class ClearFilterButton : IDisposable
 		_ => throw new NotImplementedException(),
 	};
 
-	private bool IsFilterActive => SpotifyFilterService.IsFilterActive(FilterType);
+	private bool IsFilterActive => SpotifyReleaseFilterService.IsFilterActive(FilterType);
 
 	private LucideIcon Icon => IsFilterActive ? LucideIcon.FunnelX : LucideIcon.Funnel;
 
 
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.Dispose();
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -72,8 +73,9 @@ public partial class ClearFilterButton : IDisposable
 		{
 			return;
 		}
+		SpotifyReleaseFilterService.ClearFilter(FilterType);
 
-		var url = await SpotifyFilterUrlService.ClearFilter(ButtonType);
-		NavManager.NavigateTo(url);
+		/*var url = await SpotifyFilterUrlService.ClearFilter(ButtonType);
+		NavManager.NavigateTo(url);*/
 	}
 }

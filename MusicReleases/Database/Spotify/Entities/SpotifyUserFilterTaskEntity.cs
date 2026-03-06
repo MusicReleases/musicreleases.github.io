@@ -4,12 +4,9 @@ using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
-[Schema(StoreName = "Settings")]
-public partial record SpotifyUserSettingsEntity
+[Schema(StoreName = "UserFilterTask")]
+public partial record SpotifyUserFilterTaskEntity
 	(
 		[property: Index(IsPrimary = true)] string UserId,
-		Theme Theme,
-		bool OpenLinksInApp,
-		bool PlaylistNewTrackPositionLast,
-		bool PlaylistAddToProfile
+		TaskFilter Filter
 	) : ISpotifyDb, ISpotifyUserIdEntity;

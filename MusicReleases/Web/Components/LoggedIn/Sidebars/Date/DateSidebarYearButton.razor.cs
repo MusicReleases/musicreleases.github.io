@@ -11,10 +11,10 @@ public partial class DateSidebarYearButton : IDisposable
 	private NavigationManager NavManager { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
 
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
@@ -27,7 +27,7 @@ public partial class DateSidebarYearButton : IDisposable
 	public required SortedSet<int> Months { get; set; }
 
 
-	private bool IsFilterActive => SpotifyFilterService.Filter?.Year == Year;
+	private bool IsFilterActive => SpotifyReleaseFilterService.Filter?.Year == Year;
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
 
@@ -52,12 +52,13 @@ public partial class DateSidebarYearButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.Dispose();
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -77,9 +78,11 @@ public partial class DateSidebarYearButton : IDisposable
 
 	private async Task FilterYear()
 	{
-		int? yearFilter = IsFilterActive ? null : Year;
+		SpotifyReleaseFilterService.FilterYear(Year);
+
+		/*int? yearFilter = IsFilterActive ? null : Year;
 		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter);
-		NavManager.NavigateTo(url);
+		NavManager.NavigateTo(url);*/
 
 		MobileService.HideMenu();
 	}

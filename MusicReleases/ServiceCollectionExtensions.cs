@@ -32,7 +32,10 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDbSpotifyUpdateService, DbSpotifyUpdateService>();
 		services.AddScoped<IDbSpotifyUpdateServiceOld, DbSpotifyUpdateServiceOld>();
 
-		services.AddScoped<IDbSpotifyFilterService, DbSpotifyFilterService>();
+		services.AddScoped<IDbSpotifyReleaseFilterService, DbSpotifyReleaseFilterService>();
+		services.AddScoped<ISpotifyReleaseFilterService, SpotifyReleaseFilterService>();
+		services.AddScoped<ISpotifyReleaseFilterUrlSynchronizer, SpotifyReleaseFilterUrlSynchronizer>();
+		services.AddScoped<IDbSpotifyFilterServiceOld, DbSpotifyFilterServiceOld>();
 
 		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
 
@@ -72,14 +75,15 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyTaskFilterUrlService, SpotifyTaskFilterUrlService>();
 		services.AddScoped<ISpotifyTaskFilterUrlSynchronizer, SpotifyTaskFilterUrlSynchronizer>();
 
-		services.AddScoped<ISpotifyFilterUrlService, SpotifyFilterUrlService>();
+		services.AddScoped<ISpotifyReleaseFilterUrlService, SpotifyReleaseFilterUrlService>();
+		services.AddScoped<ISpotifyFilterUrlServiceOld, SpotifyFilterUrlServiceOld>();
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
 
 		services.AddScoped<IApiLoginService, SpotifyLoginService>();
 		services.AddScoped<ISpotifyLoginService, SpotifyLoginService>();
 		services.AddScoped<ISpotifyLoginStorageService, SpotifyLoginStorageService>();
 
-		services.AddScoped<ISpotifyFilterService, SpotifyFilterService>();
+		services.AddScoped<ISpotifyFilterServiceOld, SpotifyFilterServiceOld>();
 		services.AddScoped<ISpotifyFilterPlaylistService, SpotifyFilterPlaylistService>();
 		services.AddScoped<ILoaderService, LoaderService>();
 

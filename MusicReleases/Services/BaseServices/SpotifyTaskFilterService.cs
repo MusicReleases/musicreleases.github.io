@@ -77,14 +77,14 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 	public void SetFilterAndSearch(TaskFilter filter, string? searchText)
 	{
 		var newFilter = EnsureFilterPairs(filter);
-		var newSearchText = EnsudeSearchText(searchText);
+		var newSearchText = EnsureSearchText(searchText);
 
 		SetFilterAndSearchInternal(newFilter, newSearchText);
 	}
 
 	public void SetSearch(string? searchText)
 	{
-		var newSearchText = EnsudeSearchText(searchText);
+		var newSearchText = EnsureSearchText(searchText);
 		SetSearchInternal(newSearchText);
 	}
 
@@ -105,7 +105,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 
 	public void UnsetFilter(TaskFilter filter)
 	{
-		var newFilter = Filter = ~filter;
+		var newFilter = Filter & ~filter;
 		newFilter = EnsureFilterPairs(newFilter);
 
 		SetFilterInternal(newFilter);
@@ -163,7 +163,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		return query;
 	}
 
-	private static string? EnsudeSearchText(string? searchText)
+	private static string? EnsureSearchText(string? searchText)
 	{
 		return searchText.IsNullOrEmpty() ? null : searchText.Trim();
 	}

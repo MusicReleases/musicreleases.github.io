@@ -14,7 +14,7 @@ public partial class MobileMenuButton : IDisposable
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
@@ -49,14 +49,14 @@ public partial class MobileMenuButton : IDisposable
 		_ => throw new NotImplementedException(),
 	};
 
-	private bool IsFilterActive => SpotifyFilterService.IsFilterActive(FilterType);
+	private bool IsFilterActive => SpotifyReleaseFilterService.IsFilterActive(FilterType);
 
 
 	protected override void OnInitialized()
 	{
 		MobileService.OnDisplayChanged += StateChanged;
 		OverflowMenuService.OnDisplayChanged += StateChanged;
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 		PopupService.OnChange += StateChanged;
 	}
 
@@ -64,7 +64,8 @@ public partial class MobileMenuButton : IDisposable
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
 		OverflowMenuService.OnDisplayChanged -= StateChanged;
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.Dispose();
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		PopupService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}

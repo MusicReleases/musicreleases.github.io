@@ -22,7 +22,7 @@ internal class SpotifyApiUserService(ISpotifyApiClient client, IApiUserService c
 			Scopes.PlaylistModifyPrivate,
 			Scopes.PlaylistModifyPublic,
 			Scopes.UserFollowRead,
-			Scopes.UserReadPrivate, // user country
+			Scopes.UserReadPrivate,
 		};
 
 		var (verifier, challenge) = PKCEUtil.GenerateCodes(120);

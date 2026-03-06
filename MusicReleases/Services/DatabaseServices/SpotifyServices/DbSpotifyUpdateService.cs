@@ -1,5 +1,5 @@
 ﻿using DexieNET;
-using JakubKastner.Extensions;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Mappers.Spotify;
 
@@ -9,12 +9,12 @@ public class DbSpotifyUpdateService(IDbSpotifyService dbService) : IDbSpotifyUpd
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<DateTime> Get(string userId, SpotifyDbUpdateType dbType)
+	public async Task<DateTime> Get(string userId, SpotifyDbUpdateType updateType)
 	{
-		var key = userId.ToSpotifyUpdateKey(dbType);
-
 		var db = await _dbService.GetDb();
-		var meta = await db.Update.Get(key);
+		var key = SpotifyUserUpdateEntity.MakeKey(userId, updateType);
+
+		var meta = await db.UserUpdate.Get(key);
 
 		var lastUpdate = meta?.LastUpdate ?? DateTime.MinValue;
 		return lastUpdate;
@@ -23,6 +23,7 @@ public class DbSpotifyUpdateService(IDbSpotifyService dbService) : IDbSpotifyUpd
 	public async Task Save(string userId, SpotifyDbUpdateType dbType)
 	{
 		var db = await _dbService.GetDb();
-		await db.Update.PutSafe(userId.ToSpotifyUpdateEntity(dbType));
+		var entity = userId.ToSpotifyUpdateEntity(dbType);
+		await db.UserUpdate.PutSafe(entity);
 	}
 }

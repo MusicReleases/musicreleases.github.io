@@ -10,10 +10,10 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterService filterService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, ISpotifyTaskManagerService taskManager) : ISpotifyReleaseService
+public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterServiceOld filterService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, ISpotifyTaskManagerService taskManager) : ISpotifyReleaseService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
-	private readonly ISpotifyFilterService _filterService = filterService;
+	private readonly ISpotifyFilterServiceOld _filterService = filterService;
 	private readonly IApiReleaseClient _api = api;
 	private readonly IDbSpotifyReleaseService _releaseDb = releaseDb;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
@@ -79,7 +79,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		var releases = await _releaseDb.GetByIds(releaseIds, releaseType);
 
 		_state.Set(releaseType, releases);
-		_filterService.SetReleases(_state.GetByType().ToDictionary());
+		//_filterService.SetReleases(_state.GetByType().ToDictionary());
 	}
 
 	private async Task SyncProcess(string userId, MainReleasesType releaseType, SpotifyBackgroundTask task, CancellationToken ct)
@@ -134,7 +134,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		task.Status = "Displaying releases...";
 
 		_state.Set(releaseType, allNewReleases);
-		_filterService.SetReleases(_state.GetByType().ToDictionary());
+		//_filterService.SetReleases(_state.GetByType().ToDictionary());
 	}
 
 	private static SpotifyDbUpdateType MapToDbUpdateType(MainReleasesType releasesType) => releasesType switch

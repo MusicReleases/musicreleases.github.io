@@ -10,10 +10,10 @@ public partial class DateSidebarMonthButton : IDisposable
 	public NavigationManager NavManager { get; set; } = default!;
 
 	[Inject]
-	public ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+	public ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
 
 	[Inject]
-	public ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	public ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
@@ -26,7 +26,7 @@ public partial class DateSidebarMonthButton : IDisposable
 	public required int Month { get; set; }
 
 
-	private bool IsFilterActive => SpotifyFilterService.Filter is not null && SpotifyFilterService.Filter.Month.HasValue && SpotifyFilterService.Filter.Month.Value.Year == Year && SpotifyFilterService.Filter.Month.Value.Month == Month;
+	private bool IsFilterActive => SpotifyReleaseFilterService.Filter is not null && SpotifyReleaseFilterService.Filter.Month.HasValue && SpotifyReleaseFilterService.Filter.Month.Value.Year == Year && SpotifyReleaseFilterService.Filter.Month.Value.Month == Month;
 
 
 	private const string _buttonClass = "sidebar-content date-month";
@@ -34,12 +34,13 @@ public partial class DateSidebarMonthButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.Dispose();
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -50,11 +51,13 @@ public partial class DateSidebarMonthButton : IDisposable
 
 	private async Task FilterMonth()
 	{
-		int? monthFilter = IsFilterActive ? null : Month;
+		SpotifyReleaseFilterService.FilterMonth(Year, Month);
+
+		/*int? monthFilter = IsFilterActive ? null : Month;
 		int? yearFilter = IsFilterActive ? null : Year;
 
 		var url = await SpotifyFilterUrlService.GetFilterUrl(yearFilter, monthFilter);
-		NavManager.NavigateTo(url);
+		NavManager.NavigateTo(url);*/
 
 		MobileService.HideMenu();
 	}

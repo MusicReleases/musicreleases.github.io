@@ -36,7 +36,7 @@ public sealed record class SpotifyFilterAdvanced
 		OldReleases = oldReleases;
 	}
 
-	public SpotifyFilterAdvanced(SpotifyFilterEntity spotifyFilterDb)
+	public SpotifyFilterAdvanced(SpotifyFilterEntityOld spotifyFilterDb)
 	{
 		Tracks = spotifyFilterDb.Tracks;
 		EPs = spotifyFilterDb.EPs;

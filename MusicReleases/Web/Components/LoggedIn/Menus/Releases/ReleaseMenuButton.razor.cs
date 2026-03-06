@@ -11,10 +11,10 @@ public partial class ReleaseMenuButton : IDisposable
 	private NavigationManager NavManager { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+	private ISpotifyFilterUrlServiceOld SpotifyFilterUrlService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -24,7 +24,7 @@ public partial class ReleaseMenuButton : IDisposable
 	public string? Class { get; set; }
 
 
-	private bool IsActive => SpotifyFilterService.Filter?.ReleaseType == ReleaseType;
+	private bool IsActive => SpotifyReleaseFilterService.Filter?.ReleaseType == ReleaseType;
 
 	private string ButtonText => ReleaseType.ToFriendlyString(true);
 
@@ -35,12 +35,13 @@ public partial class ReleaseMenuButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.Dispose();
+		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -51,7 +52,9 @@ public partial class ReleaseMenuButton : IDisposable
 
 	private async Task DisplayReleases()
 	{
-		var url = await SpotifyFilterUrlService.GetFilterUrl(ReleaseType);
-		NavManager.NavigateTo(url);
+		SpotifyReleaseFilterService.FilterReleaseType(ReleaseType);
+
+		/*var url = await SpotifyFilterUrlService.GetFilterUrl(ReleaseType);
+		NavManager.NavigateTo(url);*/
 	}
 }

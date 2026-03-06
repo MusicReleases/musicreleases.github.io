@@ -8,7 +8,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 public partial class ReleaseMenuList : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterService SpotifyFilterService { get; set; } = default!;
+	private ISpotifyFilterServiceOld SpotifyFilterService { get; set; } = default!;
 
 	[Inject]
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;

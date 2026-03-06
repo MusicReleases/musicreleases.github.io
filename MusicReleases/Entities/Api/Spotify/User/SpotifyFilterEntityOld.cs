@@ -4,7 +4,7 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
-public class SpotifyFilterEntity : SpotifyIdEntity
+public class SpotifyFilterEntityOld : SpotifyIdEntity
 {
 	public MainReleasesType ReleaseType { get; init; }
 	public string? Artist { get; init; }
@@ -21,10 +21,10 @@ public class SpotifyFilterEntity : SpotifyIdEntity
 	public bool NewReleases { get; init; }
 	public bool OldReleases { get; init; }
 
-	public SpotifyFilterEntity()
+	public SpotifyFilterEntityOld()
 	{ }
 
-	public SpotifyFilterEntity(SpotifyFilter filter, string userId)
+	public SpotifyFilterEntityOld(SpotifyFilter filter, string userId)
 	{
 		Id = userId;
 		ReleaseType = filter.ReleaseType;

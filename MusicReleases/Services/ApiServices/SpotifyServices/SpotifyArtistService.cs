@@ -8,10 +8,10 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterService filterService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState state, ISpotifyTaskManagerService taskManager) : ISpotifyArtistService
+public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, ISpotifyFilterServiceOld filterService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState state, ISpotifyTaskManagerService taskManager) : ISpotifyArtistService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
-	private readonly ISpotifyFilterService _filterService = filterService;
+	private readonly ISpotifyFilterServiceOld _filterService = filterService;
 	private readonly IApiArtistClient _api = api;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
 	private readonly IDbSpotifyUserArtistService _linkDb = linkDb;
@@ -65,7 +65,7 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 
 		_state.SetFollowed(artists);
 
-		_filterService.SetArtists(_state.SortedFollowedArtists.ToHashSet());
+		//_filterService.SetArtists(_state.SortedFollowedArtists.ToHashSet());
 	}
 
 	private async Task SyncProcess(string userId, SpotifyBackgroundTask task, CancellationToken ct)
@@ -92,7 +92,7 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 		task.Status = "Displaying artists...";
 		_state.SetFollowed(apiArtists);
 
-		_filterService.SetArtists(_state.SortedFollowedArtists.ToHashSet());
+		//_filterService.SetArtists(_state.SortedFollowedArtists.ToHashSet());
 	}
 
 	public void Cancel()

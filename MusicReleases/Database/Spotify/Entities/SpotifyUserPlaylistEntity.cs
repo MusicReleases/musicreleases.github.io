@@ -1,4 +1,5 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
@@ -9,4 +10,4 @@ public partial record SpotifyUserPlaylistEntity
 	[property: Index] string UserId,
 	[property: Index] string PlaylistId,
 	int Order
-) : ISpotifyDb;
+) : ISpotifyDb, ISpotifyUserIdEntity;

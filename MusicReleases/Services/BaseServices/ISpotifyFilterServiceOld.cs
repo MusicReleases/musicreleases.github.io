@@ -5,7 +5,7 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public interface ISpotifyFilterService
+public interface ISpotifyFilterServiceOld
 {
 	SpotifyFilter? Filter { get; }
 
@@ -16,7 +16,6 @@ public interface ISpotifyFilterService
 	event Action? OnFilterOrDataChanged;
 
 	void SetArtists(ISet<SpotifyArtist> artists);
-	void SetReleases(ISet<SpotifyRelease> releases);
 	void SetFilter(SpotifyFilter filter);
 	Task SetFilterAndSaveDb(SpotifyFilter filter);
 	void ClearFilter();

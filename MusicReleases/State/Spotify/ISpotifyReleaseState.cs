@@ -6,11 +6,10 @@ namespace JakubKastner.MusicReleases.State.Spotify
 {
 	public interface ISpotifyReleaseState
 	{
-		event Action? OnChange;
+		ConcurrentDictionary<MainReleasesType, IReadOnlyList<SpotifyRelease>> ReleasesByType { get; }
 
-		SpotifyRelease? GetById(string id);
+		event Action? OnChange;
 		ConcurrentDictionary<MainReleasesType, IReadOnlyList<SpotifyRelease>> GetByType();
-		IReadOnlyList<SpotifyRelease> GetSorted(MainReleasesType releaseType);
 		void Set(MainReleasesType releaseType, IEnumerable<SpotifyRelease> releases);
 	}
 }

@@ -1,20 +1,40 @@
 ﻿using JakubKastner.MusicReleases.Entities.Api.Spotify.User;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Objects;
 
 public class SpotifyFilter
 {
-	public MainReleasesType ReleaseType { get; init; } = MainReleasesType.Albums;
-	public string? Artist { get; init; }
-	public int? Year { get; init; }
-	public DateTime? Month { get; init; }
+	public MainReleasesType ReleaseType { get; set; } = MainReleasesType.Albums;
+
+	public ReleaseAdvancedFilter ReleaseAdvancedFilter { get; set; } = ReleaseAdvancedFilter.All;
+
+	public string? Artist { get; set; }
+
+	public int? Year { get; set; }
+
+	public DateTime? Month { get; set; }
+
+	public string? SearchText { get; set; }
+
 	public SpotifyFilterAdvanced Advanced { get; init; } = new();
 
 	public SpotifyFilter()
 	{
 
 	}
+
+	public SpotifyFilter(MainReleasesType releaseType, ReleaseAdvancedFilter advancedFilter, string? artist, int? year, DateTime? month, string? searchText = null)
+	{
+		ReleaseType = releaseType;
+		ReleaseAdvancedFilter = advancedFilter;
+		Artist = artist;
+		Year = year;
+		Month = month;
+		SearchText = searchText;
+	}
+
 	public SpotifyFilter(SpotifyFilter filter)
 	{
 		ReleaseType = filter.ReleaseType;
@@ -31,7 +51,7 @@ public class SpotifyFilter
 		Month = month;
 		Advanced = advancedFilter;
 	}
-	public SpotifyFilter(SpotifyFilterEntity filterDn, SpotifyFilterAdvanced advancedFilter)
+	public SpotifyFilter(SpotifyFilterEntityOld filterDn, SpotifyFilterAdvanced advancedFilter)
 	{
 		ReleaseType = filterDn.ReleaseType;
 		Artist = filterDn.Artist;

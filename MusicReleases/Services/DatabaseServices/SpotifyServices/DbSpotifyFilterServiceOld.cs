@@ -5,7 +5,7 @@ using Tavenem.Blazor.IndexedDB;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyFilterService(IDbSpotifyServiceOld dbService) : IDbSpotifyFilterService
+public class DbSpotifyFilterServiceOld(IDbSpotifyServiceOld dbService) : IDbSpotifyFilterServiceOld
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyFilter);
 
@@ -22,10 +22,10 @@ public class DbSpotifyFilterService(IDbSpotifyServiceOld dbService) : IDbSpotify
 		return filter;
 	}
 
-	private async Task<SpotifyFilterEntity?> GetDb(string userId)
+	private async Task<SpotifyFilterEntityOld?> GetDb(string userId)
 	{
 		Console.WriteLine("db: get filter - start");
-		var filterDb = await _dbTable.GetItemAsync<SpotifyFilterEntity>(userId);
+		var filterDb = await _dbTable.GetItemAsync<SpotifyFilterEntityOld>(userId);
 		Console.WriteLine("db: get filter - end");
 		return filterDb;
 	}
@@ -39,11 +39,11 @@ public class DbSpotifyFilterService(IDbSpotifyServiceOld dbService) : IDbSpotify
 
 	public async Task Save(SpotifyFilter filter, string userId)
 	{
-		var filterDb = new SpotifyFilterEntity(filter, userId);
+		var filterDb = new SpotifyFilterEntityOld(filter, userId);
 		await SaveDb(filterDb);
 	}
 
-	private async Task SaveDb(SpotifyFilterEntity filterDb)
+	private async Task SaveDb(SpotifyFilterEntityOld filterDb)
 	{
 		Console.WriteLine("db: save filter");
 		await _dbTable.StoreItemAsync(filterDb);

@@ -8,14 +8,14 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyFilterUrlService filterUrlService, ISettingsService settingsService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;
-	private readonly ISpotifyFilterUrlService _filterUrlService = filterUrlService;
+	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
 	private readonly ISettingsService _settingsService = settingsService;
 
 	public ServiceType GetServiceType()
@@ -50,8 +50,9 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 						await SaveUser();
 					}
 
-					var url = await _filterUrlService.GetFilterUrl();
-					_navManager.NavigateTo(url);
+					await _releaseFilterUrlSynchronizer.SetInitFilter();
+					/*var url = await _releaseFilterUrlSynchronizer.GetFilterUrl();
+					_navManager.NavigateTo(url);*/
 				}
 				else
 				{
@@ -96,8 +97,10 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 		}
 
 		// navigate to releases page
-		var url = await _filterUrlService.GetFilterUrl();
-		_navManager.NavigateTo(url);
+		await _releaseFilterUrlSynchronizer.SetInitFilter();
+
+		/*var url = await _filterUrlService.GetFilterUrl();
+		_navManager.NavigateTo(url);*/
 	}
 
 

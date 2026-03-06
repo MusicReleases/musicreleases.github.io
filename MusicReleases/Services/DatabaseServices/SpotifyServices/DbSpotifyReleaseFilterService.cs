@@ -1,0 +1,35 @@
+﻿using DexieNET;
+using JakubKastner.MusicReleases.Mappers.Spotify;
+using JakubKastner.MusicReleases.Objects;
+
+namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+
+public class DbSpotifyReleaseFilterService(IDbSpotifyService dbService) : IDbSpotifyReleaseFilterService
+{
+	private readonly IDbSpotifyService _dbService = dbService;
+
+	public async Task<SpotifyFilter?> Get(string userId)
+	{
+		var db = await _dbService.GetDb();
+
+		var filterDb = await db.UserFilterRelease.Get(userId);
+		var filter = filterDb?.ToModel();
+
+		return filter;
+	}
+
+	public async Task Save(SpotifyFilter filter, string userId)
+	{
+		var db = await _dbService.GetDb();
+		var filterDb = filter.ToEntity(userId);
+
+		await db.UserFilterRelease.PutSafe(filterDb);
+	}
+
+	public async Task Delete(string userId)
+	{
+		var db = await _dbService.GetDb();
+
+		await db.UserFilterRelease.Delete(userId);
+	}
+}

@@ -12,7 +12,7 @@ public partial class ReleaseInfo : IDisposable
 	private IDragDropService DragDropService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterUrlService SpotifyFilterUrlService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
@@ -46,14 +46,18 @@ public partial class ReleaseInfo : IDisposable
 
 	private async Task FilterMonth()
 	{
-		var url = await SpotifyFilterUrlService.GetFilterUrl(SpotifyRelease.ReleaseDate.Year, SpotifyRelease.ReleaseDate.Month);
-		NavManager.NavigateTo(url);
+		SpotifyReleaseFilterService.FilterMonth(SpotifyRelease.ReleaseDate.Year, SpotifyRelease.ReleaseDate.Month);
+
+		/*var url = await SpotifyFilterUrlService.GetFilterUrl(SpotifyRelease.ReleaseDate.Year, SpotifyRelease.ReleaseDate.Month);
+		NavManager.NavigateTo(url);*/
 	}
 
 	private async Task FilterYear()
 	{
-		var url = await SpotifyFilterUrlService.GetFilterUrl(SpotifyRelease.ReleaseDate.Year);
-		NavManager.NavigateTo(url);
+		SpotifyReleaseFilterService.FilterYear(SpotifyRelease.ReleaseDate.Year);
+
+		/*var url = await SpotifyFilterUrlService.GetFilterUrl(SpotifyRelease.ReleaseDate.Year);
+		NavManager.NavigateTo(url);*/
 	}
 	protected override void OnInitialized()
 	{

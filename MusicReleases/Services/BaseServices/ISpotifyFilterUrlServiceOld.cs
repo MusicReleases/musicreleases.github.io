@@ -4,7 +4,7 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public interface ISpotifyFilterUrlService
+public interface ISpotifyFilterUrlServiceOld
 {
 	Task<string> ClearFilter(ClearFilterButtonComponent type);
 	Task<string> GetFilterUrl();

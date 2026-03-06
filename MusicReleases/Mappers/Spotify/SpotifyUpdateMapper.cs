@@ -5,14 +5,9 @@ namespace JakubKastner.MusicReleases.Mappers.Spotify;
 
 public static class SpotifyUpdateMapper
 {
-	public static SpotifyUserUpdateEntity ToSpotifyUpdateEntity(this string userId, SpotifyDbUpdateType type)
+	public static SpotifyUserUpdateEntity ToSpotifyUpdateEntity(this string userId, SpotifyDbUpdateType updateType)
 	{
-		var key = userId.ToSpotifyUpdateKey(type);
-		return new(key, DateTime.Now);
-	}
-
-	public static string ToSpotifyUpdateKey(this string userId, SpotifyDbUpdateType type)
-	{
-		return $"{userId}_{type}";
+		var key = SpotifyUserUpdateEntity.MakeKey(userId, updateType);
+		return new(key, userId, updateType, DateTime.Now);
 	}
 }
