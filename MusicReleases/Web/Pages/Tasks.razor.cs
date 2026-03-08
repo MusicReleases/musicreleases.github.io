@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
 
-public partial class Tasks : IDisposable
+public partial class Tasks
 {
 	[Inject]
 	private ISpotifyTaskFilterUrlSynchronizer SpotifyTaskFilterUrlSynchronizer { get; set; } = default!;
@@ -21,13 +21,6 @@ public partial class Tasks : IDisposable
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public string? Search { get; set; }
-
-
-	public void Dispose()
-	{
-		SpotifyTaskFilterUrlSynchronizer.Dispose();
-		GC.SuppressFinalize(this);
-	}
 
 	protected override async Task OnParametersSetAsync()
 	{

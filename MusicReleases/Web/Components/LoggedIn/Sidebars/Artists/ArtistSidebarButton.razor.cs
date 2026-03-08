@@ -24,13 +24,12 @@ public partial class ArtistSidebarButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyReleaseFilterService.Dispose();
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

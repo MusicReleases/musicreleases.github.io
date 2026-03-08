@@ -31,12 +31,21 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		try
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
-			// load data from db to state
-			await LoadFromDbToState(userId);
+
 			Console.WriteLine("last sync get");
 			var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Playlists);
 			Console.WriteLine("last sync  - " + lastSync);
+
+			var isInState = _state.Playlists is not null;
+
+			if (!isInState)
+			{
+				// load data from db to state
+				await LoadFromDbToState(userId);
+			}
+
 			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
+
 			if (shouldSync)
 			{
 				await _taskManager.Run("Getting playlists", async (t) =>

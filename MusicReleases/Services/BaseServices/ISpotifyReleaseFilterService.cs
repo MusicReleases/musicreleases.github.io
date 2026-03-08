@@ -12,13 +12,15 @@ namespace JakubKastner.MusicReleases.Services.BaseServices
 		Dictionary<int, SortedSet<int>>? FilteredDate { get; }
 		SortedSet<SpotifyRelease>? FilteredReleases { get; }
 
-		event Action? OnFilterOrDataChanged;
+		//event Action? OnFilterOrDataChanged;
+		event Action? OnFilterChanged;
+		event Action? OnDataFiltered;
 
 		void ApplyFilterAndSearch();
-		void ClearAdvancedFilter();
-		void ClearAllFilters();
 		void ClearFilter(FilterType type);
-		void Dispose();
+		ReleaseAdvancedFilter EnsureAdvancedFilter(ReleaseAdvancedFilter newFilter);
+		void EnsureFilter(SpotifyFilter filter);
+		string? EnsureSearchText(string? searchText);
 		void FilterArtist(string? artistId);
 		void FilterMonth(int? year, int? month);
 		void FilterReleaseType(MainReleasesType releaseType);
@@ -26,8 +28,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices
 		bool IsAdvancedFilterActive(ReleaseAdvancedFilter advancedFilter);
 		bool IsFilterActive(FilterType filterType);
 		void SeAdvancedFilter(ReleaseAdvancedFilter advancedFilter);
-		void SetFilterAndSearch(SpotifyFilter newFilter, string? newSearchText, bool onChange = false);
-		void SetSearch(string? newSearchText);
+		void SetFromUrl(SpotifyFilter newFilter);
 		void ToggleAdvancedFilter(ReleaseAdvancedFilter advancedFilter);
 		void UnsetAdvancedFilter(ReleaseAdvancedFilter advancedFilter);
 	}

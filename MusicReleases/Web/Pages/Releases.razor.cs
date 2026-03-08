@@ -1,11 +1,12 @@
 ﻿using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
 
-public partial class Releases : IDisposable
+public partial class Releases
 {
 	[Inject]
 	private ISpotifyWorkflowService SpotifyWorkflowService { get; set; } = default!;
@@ -18,6 +19,9 @@ public partial class Releases : IDisposable
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
+
+	[Inject]
+	private NavigationManager NavManager { get; set; } = default!;
 
 
 	[Parameter]
@@ -42,26 +46,11 @@ public partial class Releases : IDisposable
 	public string? Search { get; set; }
 
 
-	protected override void OnInitialized()
-	{
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
-	}
-
-	public void Dispose()
-	{
-		SpotifyReleaseFilterService.Dispose();
-		SpotifyReleaseFilterUrlSynchronizer.Dispose();
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
-		GC.SuppressFinalize(this);
-	}
-
-	private void StateChanged()
-	{
-		InvokeAsync(StateHasChanged);
-	}
+	private MainReleasesType? _lastReleaseType = null;
 
 	protected override async Task OnParametersSetAsync()
 	{
+		Console.WriteLine(NavManager.Uri);
 		await Load();
 	}
 
@@ -89,9 +78,15 @@ public partial class Releases : IDisposable
 			await SpotifyReleaseFilterUrlSynchronizer.SetInitFilter();
 			return false;
 		}
+
 		await SpotifyReleaseFilterUrlSynchronizer.SetFilterFromUrl(Type, Year, Month, ArtistId, Filter, Search);
 
-		return true;
+		// type doesnt changed - dont update
+		var currentReleaseType = SpotifyReleaseFilterService.Filter.ReleaseType;
+		var typeChanged = _lastReleaseType != currentReleaseType;
+		_lastReleaseType = currentReleaseType;
+
+		return typeChanged;
 	}
 
 	private async Task LoadReleases()

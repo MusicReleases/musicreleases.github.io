@@ -35,14 +35,6 @@ public class SpotifyFilter
 		SearchText = searchText;
 	}
 
-	public SpotifyFilter(SpotifyFilter filter)
-	{
-		ReleaseType = filter.ReleaseType;
-		Artist = filter.Artist;
-		Year = filter.Year;
-		Month = filter.Month;
-		Advanced = filter.Advanced;
-	}
 	public SpotifyFilter(MainReleasesType releaseType, int? year, DateTime? month, string? artist, SpotifyFilterAdvanced advancedFilter)
 	{
 		ReleaseType = releaseType;

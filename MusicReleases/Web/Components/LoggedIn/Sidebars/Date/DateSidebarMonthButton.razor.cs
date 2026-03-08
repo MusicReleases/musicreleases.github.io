@@ -20,7 +20,7 @@ public partial class DateSidebarMonthButton : IDisposable
 	public required int Month { get; set; }
 
 
-	private bool IsFilterActive => SpotifyReleaseFilterService.Filter is not null && SpotifyReleaseFilterService.Filter.Month.HasValue && SpotifyReleaseFilterService.Filter.Month.Value.Year == Year && SpotifyReleaseFilterService.Filter.Month.Value.Month == Month;
+	private bool IsFilterActive => SpotifyReleaseFilterService.Filter.Month.HasValue && SpotifyReleaseFilterService.Filter.Month.Value.Year == Year && SpotifyReleaseFilterService.Filter.Month.Value.Month == Month;
 
 
 	private const string _buttonClass = "sidebar-content date-month";
@@ -28,13 +28,12 @@ public partial class DateSidebarMonthButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyReleaseFilterService.Dispose();
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

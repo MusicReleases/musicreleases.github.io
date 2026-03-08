@@ -30,11 +30,19 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 		try
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
-			// load data from db to state
-			await LoadFromDbToState(userId);
+
 			Console.WriteLine("last sync get");
 			var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Artists);
 			Console.WriteLine("last sync  - " + lastSync);
+
+			var isInState = _state.SortedFollowedArtists.Any();
+
+			if (!isInState)
+			{
+				// load data from db to state
+				await LoadFromDbToState(userId);
+			}
+
 			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
 
 			if (shouldSync)

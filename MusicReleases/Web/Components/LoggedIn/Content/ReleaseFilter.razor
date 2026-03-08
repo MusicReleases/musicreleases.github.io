@@ -2,12 +2,12 @@
 
 <ClearFilterButton ButtonType="@ClearFilterButtonComponent.Releases" />
 
-@if (SpotifyReleaseFilterService.Filter.ReleaseType == MainReleasesType.Tracks)
+@if (ReleaseType == MainReleasesType.Tracks)
 {
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleaseAdvancedFilter.Tracks" />
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleaseAdvancedFilter.EPs" />
 }
-else if (SpotifyReleaseFilterService.Filter.ReleaseType == MainReleasesType.Appears)
+else if (ReleaseType == MainReleasesType.Appears)
 {
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleaseAdvancedFilter.Albums" />
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Middle" FilterType="@ReleaseAdvancedFilter.Tracks" />

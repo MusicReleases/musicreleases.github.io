@@ -17,7 +17,7 @@ public partial class ReleaseMenuButton : IDisposable
 	public string? Class { get; set; }
 
 
-	private bool IsActive => SpotifyReleaseFilterService.Filter?.ReleaseType == ReleaseType;
+	private bool IsActive => SpotifyReleaseFilterService.Filter.ReleaseType == ReleaseType;
 
 	private string ButtonText => ReleaseType.ToFriendlyString(true);
 
@@ -28,13 +28,12 @@ public partial class ReleaseMenuButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyReleaseFilterService.Dispose();
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

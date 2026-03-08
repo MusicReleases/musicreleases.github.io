@@ -4,22 +4,31 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyUserLinkService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager) : IDisposable, ISpotifyTaskFilterUrlSynchronizer
+public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterUrlSynchronizer
 {
-	private readonly ISpotifyTaskFilterService _filterService = filterService;
+	private readonly ISpotifyTaskFilterService _filterService;
 
-	private readonly ISpotifyTaskFilterUrlService _filterUrlService = filterUrlService;
+	private readonly ISpotifyTaskFilterUrlService _filterUrlService;
 
-	private readonly IDbSpotifyUserLinkService _dbService = dbService;
+	private readonly IDbSpotifyUserLinkService _dbService;
 
-	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+	private readonly ISpotifyApiUserService _spotifyApiUserService;
 
-	private readonly NavigationManager _navManager = navManager;
+	private readonly NavigationManager _navManager;
 
+
+	public SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyUserLinkService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	{
+		_filterService = filterService;
+		_filterUrlService = filterUrlService;
+		_dbService = dbService;
+		_spotifyApiUserService = spotifyApiUserService;
+		_navManager = navManager;
+
+		_filterService.OnFilterChanged += OnFilterChanged;
+	}
 
 	private const string _baseUrl = "/tasks";
-
-	private bool _isSubscribed = false;
 
 	public async Task SetFilterFromUrl(string? urlParams, string? searchParam)
 	{
@@ -32,12 +41,6 @@ public class SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterSe
 		var userId = _spotifyApiUserService.GetUserIdRequired();
 
 		await _dbService.SetTasksLink(userId, urlDb);
-
-		if (!_isSubscribed)
-		{
-			_filterService.OnFilterChanged += OnFilterChanged;
-			_isSubscribed = true;
-		}
 	}
 
 	private void OnFilterChanged()
@@ -54,12 +57,8 @@ public class SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterSe
 
 	public void Dispose()
 	{
-		if (_isSubscribed)
-		{
-			_filterService.OnFilterChanged -= OnFilterChanged;
-			GC.SuppressFinalize(this);
-			_isSubscribed = false;
-		}
+		_filterService.OnFilterChanged -= OnFilterChanged;
+		GC.SuppressFinalize(this);
 	}
 
 	public async Task<string> GetInitUrl()

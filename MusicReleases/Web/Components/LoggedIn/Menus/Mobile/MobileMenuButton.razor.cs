@@ -56,7 +56,7 @@ public partial class MobileMenuButton : IDisposable
 	{
 		MobileService.OnDisplayChanged += StateChanged;
 		OverflowMenuService.OnDisplayChanged += StateChanged;
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged += StateChanged;
 		PopupService.OnChange += StateChanged;
 	}
 
@@ -64,8 +64,7 @@ public partial class MobileMenuButton : IDisposable
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
 		OverflowMenuService.OnDisplayChanged -= StateChanged;
-		SpotifyReleaseFilterService.Dispose();
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged -= StateChanged;
 		PopupService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}

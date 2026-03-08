@@ -27,7 +27,7 @@ public class SpotifyPlaylistState : ISpotifyPlaylistState
 
 	public void Add(SpotifyPlaylist playlist)
 	{
-		Playlists = Playlists is null ? [] : Playlists;
+		Playlists ??= [];
 		var list = Playlists.ToList();
 		list.Insert(0, playlist);
 		Playlists = list.AsReadOnly();

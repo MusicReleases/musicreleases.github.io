@@ -22,7 +22,7 @@ public partial class DateSidebarYearButton : IDisposable
 	public required SortedSet<int> Months { get; set; }
 
 
-	private bool IsFilterActive => SpotifyReleaseFilterService.Filter?.Year == Year;
+	private bool IsFilterActive => SpotifyReleaseFilterService.Filter.Year == Year;
 
 	private LucideIcon Icon => _showMonths ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
 
@@ -47,13 +47,12 @@ public partial class DateSidebarYearButton : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyReleaseFilterService.Dispose();
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

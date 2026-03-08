@@ -22,14 +22,13 @@ public partial class ReleaseContent : IDisposable
 	protected override void OnInitialized()
 	{
 		LoaderService.LoadingStateChanged += StateChanged;
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnDataFiltered += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyReleaseFilterService.Dispose();
 		LoaderService.LoadingStateChanged -= StateChanged;
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnDataFiltered -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

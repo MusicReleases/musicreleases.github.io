@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Content;
@@ -9,15 +10,17 @@ public partial class ReleaseFilter : IDisposable
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 
+	private MainReleasesType ReleaseType => SpotifyReleaseFilterService.Filter.ReleaseType;
+
+
 	protected override void OnInitialized()
 	{
-		SpotifyReleaseFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyReleaseFilterService.Dispose();
-		SpotifyReleaseFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

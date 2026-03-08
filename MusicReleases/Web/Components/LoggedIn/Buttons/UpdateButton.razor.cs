@@ -18,7 +18,7 @@ public partial class UpdateButton : IDisposable
 	private ISpotifyWorkflowService SpotifyWorkflowService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyFilterServiceOld SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -68,12 +68,7 @@ public partial class UpdateButton : IDisposable
 
 		if (serviceType == ServiceType.Spotify)
 		{
-			if (SpotifyFilterService.Filter is null)
-			{
-				throw new NullReferenceException(nameof(SpotifyFilterService.Filter));
-			}
-
-			SpotifyWorkflowService.Update(ButtonType, SpotifyFilterService.Filter.ReleaseType);
+			SpotifyWorkflowService.Update(ButtonType, SpotifyReleaseFilterService.Filter.ReleaseType);
 		}
 	}
 }

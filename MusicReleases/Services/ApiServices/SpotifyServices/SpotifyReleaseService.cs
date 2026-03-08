@@ -39,20 +39,27 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 
 		try
 		{
-			var userId = _spotifyApiUserService.GetUserIdRequired();
-			// load data from db to state
-			await LoadFromDbToState(releaseType);
-
 			Console.WriteLine("last sync get");
+
+			var userId = _spotifyApiUserService.GetUserIdRequired();
 			var metaDbType = MapToDbUpdateType(releaseType);
 			var lastSync = await _metaDb.Get(userId, metaDbType);
+
 			Console.WriteLine("last sync  - " + lastSync);
+
+			var isInState = _state.ReleasesByType.GetValueOrDefault(releaseType) is not null;
+
+			if (!isInState)
+			{
+				// load data from db to state
+				await LoadFromDbToState(releaseType);
+			}
 
 			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
 
 			if (shouldSync)
 			{
-				await _taskManager.Run($"Getting {releaseType.ToFriendlyString()} releases", async (task) =>
+				await _taskManager.Run($"Getting {releaseType.ToFriendlyString()}", async (task) =>
 				{
 					await SyncProcess(userId, releaseType, task, token);
 				});

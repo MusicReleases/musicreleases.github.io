@@ -1,84 +1,84 @@
-﻿using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+﻿using JakubKastner.MusicReleases.Objects;
+using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.SpotifyApi.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyReleaseFilterService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager) : IDisposable, ISpotifyReleaseFilterUrlSynchronizer
+public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseFilterUrlSynchronizer
 {
-	private readonly ISpotifyReleaseFilterService _filterService = filterService;
+	private readonly ISpotifyReleaseFilterService _filterService;
 
-	private readonly ISpotifyReleaseFilterUrlService _filterUrlService = filterUrlService;
+	private readonly ISpotifyReleaseFilterUrlService _filterUrlService;
 
-	private readonly IDbSpotifyReleaseFilterService _dbService = dbService;
+	private readonly IDbSpotifyReleaseFilterService _dbService;
 
-	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+	private readonly ISpotifyApiUserService _spotifyApiUserService;
 
-	private readonly NavigationManager _navManager = navManager;
+	private readonly NavigationManager _navManager;
 
+	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyReleaseFilterService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	{
+		_filterService = filterService;
+		_filterUrlService = filterUrlService;
+		_dbService = dbService;
+		_spotifyApiUserService = spotifyApiUserService;
+		_navManager = navManager;
+
+		_filterService.OnFilterChanged += OnFilterChanged;
+	}
+
+	public void Dispose()
+	{
+		_filterService.OnFilterChanged -= OnFilterChanged;
+		GC.SuppressFinalize(this);
+	}
 
 	private const string _baseUrl = "/releases/";
 
-	private bool _isSubscribed = false;
-
-	public async Task SetFilterFromUrl(string? releaseType, string? year, string? month, string? artist, string? advancedFilterParams, string? searchParam)
+	public async Task SetFilterFromUrl(string? releaseType, string? year, string? month, string? artist, string? advancedFilterParams, string? searchTextParam)
 	{
-		SubscribeFilterChanges();
+		Console.WriteLine("SetFilterFromUrl - start");
 
-		var filter = _filterUrlService.ParseFilterFromUrlParams(releaseType, year, month, artist, advancedFilterParams);
+		var filter = _filterUrlService.ParseFilterFromUrlParams(releaseType, year, month, artist, advancedFilterParams, searchTextParam);
 
-		_filterService.SetFilterAndSearch(filter, searchParam);
+		if (filter == _filterService.Filter)
+		{
+			// when the same filter is already set - dont update
+			return;
+		}
+
+		_filterService.SetFromUrl(filter);
 
 		var userId = _spotifyApiUserService.GetUserIdRequired();
 
 		await _dbService.Save(filter, userId);
 
+		Console.WriteLine("SetFilterFromUrl - end");
 	}
 
 	private void OnFilterChanged()
 	{
-		ChangeFilter();
+		ChangeUrl(_filterService.Filter);
 	}
 
-	private void ChangeFilter()
+	private void ChangeUrl(SpotifyFilter filter)
 	{
-		var paramaters = _filterUrlService.CreateUrl(_filterService.Filter);
+		var paramaters = _filterUrlService.CreateUrl(filter);
 		var url = $"{_baseUrl}{paramaters}";
+		Console.WriteLine($"Navigate to: {url}");
 		_navManager.NavigateTo(url, false);
-	}
-
-	public void Dispose()
-	{
-		if (!_isSubscribed)
-		{
-			return;
-		}
-
-		_filterService.Dispose();
-		_filterService.OnFilterOrDataChanged -= OnFilterChanged;
-		GC.SuppressFinalize(this);
-		_isSubscribed = false;
-	}
-
-	private void SubscribeFilterChanges()
-	{
-		if (_isSubscribed)
-		{
-			return;
-		}
-
-		_filterService.OnFilterOrDataChanged += OnFilterChanged;
-		_isSubscribed = true;
-
 	}
 
 	public async Task SetInitFilter()
 	{
-		SubscribeFilterChanges();
-
+		Console.WriteLine("SetInitFilter - start");
 		var userId = _spotifyApiUserService.GetUserIdRequired();
 		var filter = await _dbService.Get(userId) ?? new();
+		_filterService.EnsureFilter(filter);
 
-		_filterService.SetFilterAndSearch(filter, null, true);
+
+		ChangeUrl(filter);
+		Console.WriteLine("SetInitFilter - end");
 	}
 }

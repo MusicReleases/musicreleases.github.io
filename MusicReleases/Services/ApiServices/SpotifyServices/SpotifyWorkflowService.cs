@@ -9,11 +9,8 @@ public class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, 
 	private readonly ISpotifyReleaseService _spotifyReleaseService = spotifyReleaseService;
 	private readonly ISpotifyPlaylistService _spotifyPlaylistService = spotifyPlaylistService;
 
-	private const int DateForceHours = 24;
-
 	public async Task StartLoadingAll(MainReleasesType releaseType, bool forceUpdate)
 	{
-		// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! loading every time from db - prefer loading from store !!!!!
 		await StartLoadingArtistsWithReleases(releaseType, forceUpdate);
 		await StartLoadingPlaylistsWithTracks(forceUpdate);
 	}

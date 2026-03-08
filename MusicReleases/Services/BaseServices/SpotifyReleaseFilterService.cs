@@ -29,8 +29,10 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		GC.SuppressFinalize(this);
 	}
 
+	public event Action? OnFilterChanged;
 
-	public event Action? OnFilterOrDataChanged;
+	public event Action? OnDataFiltered;
+
 
 	public SpotifyFilter Filter { get; private set; } = new();
 
@@ -93,7 +95,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 		if (filterApplied || searchApplied)
 		{
-			OnFilterOrDataChanged?.Invoke();
+			OnDataFiltered?.Invoke();
 		}
 	}
 
@@ -317,7 +319,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 	}
 
 
-	private static ReleaseAdvancedFilter EnsureAdvancedFilterGroups(ReleaseAdvancedFilter newFilter)
+	public ReleaseAdvancedFilter EnsureAdvancedFilter(ReleaseAdvancedFilter newFilter)
 	{
 		foreach (var group in AdvancedFilterGroups)
 		{
@@ -335,7 +337,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 	private bool SetAdvancedFilterInternal(ReleaseAdvancedFilter newFilter)
 	{
-		var newFilterEnsured = EnsureAdvancedFilterGroups(newFilter);
+		var newFilterEnsured = EnsureAdvancedFilter(newFilter);
 
 		if (newFilterEnsured == Filter.ReleaseAdvancedFilter)
 		{
@@ -344,14 +346,14 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 		Filter.ReleaseAdvancedFilter = newFilterEnsured;
 
-		ApplyFilterAndSearch();
+		OnFilterChanged?.Invoke();
 
 		return true;
 	}
 
 	private bool SetFilterInternal(SpotifyFilter newFilter, bool onChange = true)
 	{
-		var advancedFilter = EnsureAdvancedFilterGroups(newFilter.ReleaseAdvancedFilter);
+		var advancedFilter = EnsureAdvancedFilter(newFilter.ReleaseAdvancedFilter);
 		newFilter.ReleaseAdvancedFilter = advancedFilter;
 
 		if (newFilter == Filter)
@@ -364,19 +366,9 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 		if (onChange)
 		{
-			ApplyFilterAndSearch();
+			OnFilterChanged?.Invoke();
 		}
 		return true;
-	}
-
-	public void ClearAllFilters()
-	{
-		SetFilterInternal(new());
-	}
-
-	public void ClearAdvancedFilter()
-	{
-		SetAdvancedFilterInternal(_defaultAdvancedFilter);
 	}
 
 	public bool IsFilterActive(FilterType filterType)
@@ -392,30 +384,26 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 	}
 
 
-	public void SetFilterAndSearch(SpotifyFilter newFilter, string? newSearchText, bool onChange = false)
-	{
-		SetFilterAndSearchInternal(newFilter, newSearchText, onChange);
-	}
-
-	private void SetFilterAndSearchInternal(SpotifyFilter newFilter, string? newSearchText, bool onChange = false)
+	public void SetFromUrl(SpotifyFilter newFilter)
 	{
 		var filterChanged = SetFilterInternal(newFilter, false);
-		var searchChanged = SetSearchInternal(newSearchText, false);
+		var searchChanged = SetSearchInternal(newFilter.SearchText, false);
 
-		if (onChange || filterChanged || searchChanged)
+		if (filterChanged || searchChanged)
 		{
-			OnFilterOrDataChanged?.Invoke();
+			ApplyFilterAndSearch();
 		}
 	}
 
-	private static string? EnsureSearchText(string? searchText)
+	public string? EnsureSearchText(string? searchText)
 	{
 		return searchText.IsNullOrEmpty() ? null : searchText.Trim();
 	}
 
-	public void SetSearch(string? newSearchText)
+	public void EnsureFilter(SpotifyFilter filter)
 	{
-		SetSearchInternal(newSearchText);
+		filter.ReleaseAdvancedFilter = EnsureAdvancedFilter(filter.ReleaseAdvancedFilter);
+		filter.SearchText = EnsureSearchText(filter.SearchText);
 	}
 
 	private bool SetSearchInternal(string? newSearchText, bool onChange = true)
@@ -431,7 +419,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 		if (onChange)
 		{
-			OnFilterOrDataChanged?.Invoke();
+			OnFilterChanged?.Invoke();
 		}
 		return true;
 	}
@@ -455,17 +443,19 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		switch (type)
 		{
 			case FilterType.Any:
-				ClearAllFilters();
+				SetFilterInternal(new());
 				break;
 			case FilterType.Artist:
 				Filter.Artist = null;
+				OnFilterChanged?.Invoke();
 				break;
 			case FilterType.Date:
 				Filter.Year = null;
 				Filter.Month = null;
+				OnFilterChanged?.Invoke();
 				break;
 			case FilterType.Advanced:
-				ClearAdvancedFilter();
+				SetAdvancedFilterInternal(_defaultAdvancedFilter);
 				break;
 			default:
 				throw new NotImplementedException();
@@ -480,7 +470,8 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		}
 
 		Filter.Artist = artistId;
-		ApplyFilterAndSearch();
+
+		OnFilterChanged?.Invoke();
 	}
 
 	public void FilterYear(int? year)
@@ -498,7 +489,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		Filter.Year = year;
 		Filter.Month = year.HasValue && month.HasValue ? new(year.Value, month.Value, 1) : null;
 
-		ApplyFilterAndSearch();
+		OnFilterChanged?.Invoke();
 	}
 
 	public void FilterReleaseType(MainReleasesType releaseType)
@@ -509,6 +500,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		}
 
 		Filter.ReleaseType = releaseType;
-		ApplyFilterAndSearch();
+
+		OnFilterChanged?.Invoke();
 	}
 }

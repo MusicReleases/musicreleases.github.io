@@ -4,29 +4,13 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SpotifyReleaseFilterUrlService() : ISpotifyReleaseFilterUrlService
+public class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterService) : ISpotifyReleaseFilterUrlService
 {
+	private readonly ISpotifyReleaseFilterService _filterService = filterService;
+
 
 	private const string _urlSeparator = "/";
 	private const string _urlNull = "_";
-
-
-	public string CreateUrl(MainReleasesType releaseType, string? year, string? month, string? artist, ReleaseAdvancedFilter advancedFilter, string? searchText)
-	{
-		var urlPathList = new List<string>
-		{
-			releaseType.ToLowerString(),
-			year.IsNullOrEmpty() ? _urlNull : year,
-			month.IsNullOrEmpty() ? _urlNull : month,
-			artist.IsNullOrEmpty() ? _urlNull : artist
-		};
-
-		var urlPath = string.Join(_urlSeparator, urlPathList);
-		var urlParams = CreateUrlParams(advancedFilter, searchText);
-
-		var url = $"{urlPath}{urlParams}";
-		return url;
-	}
 
 	public string CreateUrl(SpotifyFilter filter)
 	{
@@ -45,7 +29,7 @@ public class SpotifyReleaseFilterUrlService() : ISpotifyReleaseFilterUrlService
 		return url;
 	}
 
-	private static string CreateUrlParams(ReleaseAdvancedFilter advancedFilter, string? searchText)
+	private string CreateUrlParams(ReleaseAdvancedFilter advancedFilter, string? searchText)
 	{
 		var urlParams = new List<string>();
 
@@ -69,23 +53,23 @@ public class SpotifyReleaseFilterUrlService() : ISpotifyReleaseFilterUrlService
 		return $"?{string.Join("&", urlParams)}";
 	}
 
-	public SpotifyFilter ParseFilterFromUrlParams(string? releaseType, string? year, string? month, string? artist, string? advancedFilterParams)
+	public SpotifyFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam)
 	{
-		if (!Enum.TryParse(releaseType, true, out MainReleasesType releaseTypeFilter))
+		if (!Enum.TryParse(releaseTypeParam, true, out MainReleasesType releaseType))
 		{
-			releaseTypeFilter = MainReleasesType.Albums;
+			releaseType = MainReleasesType.Albums;
 		}
-		int? yearFilter = int.TryParse(year, out var yearValue) ? yearValue : null;
-		int? monthInt = int.TryParse(month, out var monthValue) ? monthValue : null;
-		DateTime? monthFilter = yearFilter.HasValue ? (monthInt.HasValue ? new(yearFilter.Value, monthInt.Value, 1) : null) : null;
-		var artistFilter = artist == _urlNull ? null : artist;
-
+		int? year = int.TryParse(yearParam, out var yearParsed) ? yearParsed : null;
+		int? monthValue = int.TryParse(monthParam, out var monthParsed) ? monthParsed : null;
+		DateTime? month = year.HasValue ? (monthValue.HasValue ? new(year.Value, monthValue.Value, 1) : null) : null;
+		var artist = artistParam == _urlNull ? null : artistParam;
+		var searchText = _filterService.EnsureSearchText(searchTextParam);
 
 		var advancedFilter = ParseAdvancedFilterFromUrlParams(advancedFilterParams);
-		return new(releaseTypeFilter, advancedFilter, artistFilter, yearFilter, monthFilter);
+		return new(releaseType, advancedFilter, artist, year, month, searchText);
 	}
 
-	private static ReleaseAdvancedFilter ParseAdvancedFilterFromUrlParams(string? advancedFilterParams)
+	private ReleaseAdvancedFilter ParseAdvancedFilterFromUrlParams(string? advancedFilterParams)
 	{
 
 		if (advancedFilterParams.IsNullOrEmpty())
@@ -104,6 +88,9 @@ public class SpotifyReleaseFilterUrlService() : ISpotifyReleaseFilterUrlService
 				filter |= parsed;
 			}
 		}
+
+		filter = _filterService.EnsureAdvancedFilter(filter);
+
 		return filter;
 	}
 }
