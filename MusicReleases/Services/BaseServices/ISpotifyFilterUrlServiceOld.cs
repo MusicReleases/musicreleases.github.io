@@ -13,5 +13,5 @@ public interface ISpotifyFilterUrlServiceOld
 	Task<string> GetFilterUrl(MainReleasesType releaseType);
 	Task<string> GetFilterUrl(string? artistId);
 	Task<string> GetFilterUrl(ReleasesFilters advancedFilterType, bool advancedFilterActive);
-	SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter);
+	SpotifyReleaseFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter);
 }

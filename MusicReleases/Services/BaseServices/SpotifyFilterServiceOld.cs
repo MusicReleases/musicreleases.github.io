@@ -12,7 +12,7 @@ public class SpotifyFilterServiceOld(IDbSpotifyReleaseFilterService filterDbServ
 	private readonly IDbSpotifyReleaseFilterService _filterDbService = filterDbService;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 
-	public SpotifyFilter? Filter { get; private set; } = null;
+	public SpotifyReleaseFilter? Filter { get; private set; } = null;
 
 	private Dictionary<MainReleasesType, ISet<SpotifyRelease>>? _allReleasesByType = null;
 	private ISet<SpotifyArtist>? _allArtists = null;
@@ -236,14 +236,14 @@ public class SpotifyFilterServiceOld(IDbSpotifyReleaseFilterService filterDbServ
 		Console.WriteLine("filter: date - end");
 	}
 
-	public void SetFilter(SpotifyFilter filter)
+	public void SetFilter(SpotifyReleaseFilter filter)
 	{
 		Filter = filter;
 
 		//OnFilterOrDataChanged?.Invoke();
 	}
 
-	public async Task SetFilterAndSaveDb(SpotifyFilter filter)
+	public async Task SetFilterAndSaveDb(SpotifyReleaseFilter filter)
 	{
 		var userId = _spotifyUserService.GetUserIdRequired();
 		await _filterDbService.Save(filter, userId);

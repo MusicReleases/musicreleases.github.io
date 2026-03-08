@@ -8,7 +8,7 @@ public class DbSpotifyReleaseFilterService(IDbSpotifyService dbService) : IDbSpo
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<SpotifyFilter?> Get(string userId)
+	public async Task<SpotifyReleaseFilter?> Get(string userId)
 	{
 		var db = await _dbService.GetDb();
 
@@ -18,7 +18,7 @@ public class DbSpotifyReleaseFilterService(IDbSpotifyService dbService) : IDbSpo
 		return filter;
 	}
 
-	public async Task Save(SpotifyFilter filter, string userId)
+	public async Task Save(SpotifyReleaseFilter filter, string userId)
 	{
 		var db = await _dbService.GetDb();
 		var filterDb = filter.ToEntity(userId);

@@ -4,7 +4,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices
 {
 	public interface ISpotifyReleaseFilterUrlService
 	{
-		string CreateUrl(SpotifyFilter filter);
-		SpotifyFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam);
+		string CreateUrl(SpotifyReleaseFilter filter);
+		SpotifyReleaseFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam);
 	}
 }

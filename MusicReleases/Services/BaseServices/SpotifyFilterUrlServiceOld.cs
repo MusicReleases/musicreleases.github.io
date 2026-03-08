@@ -14,7 +14,7 @@ public class SpotifyFilterUrlServiceOld(ISpotifyFilterServiceOld spotifyFilterSe
 
 	private const string _urlNull = "_";
 
-	private SpotifyFilter? Filter => _spotifyFilterService.Filter;
+	private SpotifyReleaseFilter? Filter => _spotifyFilterService.Filter;
 
 	private async Task<string> GetFilterUrl(string? releaseTypeUrl, string? yearUrl, string? monthUrl, string? artistUrl, ReleasesFilters? advancedFilterType = null, bool advancedFilterActive = false)
 	{
@@ -162,7 +162,7 @@ public class SpotifyFilterUrlServiceOld(ISpotifyFilterServiceOld spotifyFilterSe
 		return await GetFilterUrl(null, null, null, null, advancedFilterType, advancedFilterActive);
 	}
 
-	public SpotifyFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter)
+	public SpotifyReleaseFilter ParseFilterUrl(string? releaseType, string? year, string? month, string? artist, SpotifyFilterAdvanced advancedFilter)
 	{
 		if (!Enum.TryParse(releaseType, true, out MainReleasesType type))
 		{

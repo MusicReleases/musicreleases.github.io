@@ -7,7 +7,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public interface ISpotifyFilterServiceOld
 {
-	SpotifyFilter? Filter { get; }
+	SpotifyReleaseFilter? Filter { get; }
 
 	SortedSet<SpotifyArtist>? FilteredArtists { get; }
 	SortedSet<SpotifyRelease> FilteredReleases { get; }
@@ -16,8 +16,8 @@ public interface ISpotifyFilterServiceOld
 	event Action? OnFilterOrDataChanged;
 
 	void SetArtists(ISet<SpotifyArtist> artists);
-	void SetFilter(SpotifyFilter filter);
-	Task SetFilterAndSaveDb(SpotifyFilter filter);
+	void SetFilter(SpotifyReleaseFilter filter);
+	Task SetFilterAndSaveDb(SpotifyReleaseFilter filter);
 	void ClearFilter();
 	bool IsFilterActive(FilterType filterType);
 	void SetReleases(Dictionary<MainReleasesType, IReadOnlyList<SpotifyRelease>> releasesByType);

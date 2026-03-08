@@ -25,12 +25,12 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 		_spotifyApiUserService = spotifyApiUserService;
 		_navManager = navManager;
 
-		_filterService.OnFilterChanged += OnFilterChanged;
+		_filterService.NotifySynchronizer += OnFilterChanged;
 	}
 
 	public void Dispose()
 	{
-		_filterService.OnFilterChanged -= OnFilterChanged;
+		_filterService.NotifySynchronizer -= OnFilterChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -62,7 +62,7 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 		ChangeUrl(_filterService.Filter);
 	}
 
-	private void ChangeUrl(SpotifyFilter filter)
+	private void ChangeUrl(SpotifyReleaseFilter filter)
 	{
 		var paramaters = _filterUrlService.CreateUrl(filter);
 		var url = $"{_baseUrl}{paramaters}";

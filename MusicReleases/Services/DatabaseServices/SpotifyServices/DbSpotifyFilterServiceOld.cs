@@ -9,7 +9,7 @@ public class DbSpotifyFilterServiceOld(IDbSpotifyServiceOld dbService) : IDbSpot
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyFilter);
 
-	public async Task<SpotifyFilter?> Get(string userId)
+	public async Task<SpotifyReleaseFilter?> Get(string userId)
 	{
 		var filterDb = await GetDb(userId);
 		if (filterDb is null)
@@ -18,7 +18,7 @@ public class DbSpotifyFilterServiceOld(IDbSpotifyServiceOld dbService) : IDbSpot
 		}
 
 		var advancedFilter = new SpotifyFilterAdvanced(filterDb);
-		var filter = new SpotifyFilter(filterDb, advancedFilter);
+		var filter = new SpotifyReleaseFilter(filterDb, advancedFilter);
 		return filter;
 	}
 
@@ -37,7 +37,7 @@ public class DbSpotifyFilterServiceOld(IDbSpotifyServiceOld dbService) : IDbSpot
 		Console.WriteLine("db: delete filter - end");
 	}
 
-	public async Task Save(SpotifyFilter filter, string userId)
+	public async Task Save(SpotifyReleaseFilter filter, string userId)
 	{
 		var filterDb = new SpotifyFilterEntityOld(filter, userId);
 		await SaveDb(filterDb);

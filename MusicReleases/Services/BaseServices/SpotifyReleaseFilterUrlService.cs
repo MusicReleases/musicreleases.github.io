@@ -12,7 +12,7 @@ public class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterS
 	private const string _urlSeparator = "/";
 	private const string _urlNull = "_";
 
-	public string CreateUrl(SpotifyFilter filter)
+	public string CreateUrl(SpotifyReleaseFilter filter)
 	{
 		var urlPathList = new List<string>
 		{
@@ -53,7 +53,7 @@ public class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterS
 		return $"?{string.Join("&", urlParams)}";
 	}
 
-	public SpotifyFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam)
+	public SpotifyReleaseFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam)
 	{
 		if (!Enum.TryParse(releaseTypeParam, true, out MainReleasesType releaseType))
 		{

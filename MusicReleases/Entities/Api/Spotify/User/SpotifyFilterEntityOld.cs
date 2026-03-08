@@ -24,7 +24,7 @@ public class SpotifyFilterEntityOld : SpotifyIdEntity
 	public SpotifyFilterEntityOld()
 	{ }
 
-	public SpotifyFilterEntityOld(SpotifyFilter filter, string userId)
+	public SpotifyFilterEntityOld(SpotifyReleaseFilter filter, string userId)
 	{
 		Id = userId;
 		ReleaseType = filter.ReleaseType;
