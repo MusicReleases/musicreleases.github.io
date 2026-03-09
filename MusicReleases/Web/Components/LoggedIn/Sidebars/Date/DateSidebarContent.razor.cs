@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.Services.SpotifyServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Date;

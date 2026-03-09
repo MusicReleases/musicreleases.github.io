@@ -1,4 +1,4 @@
-using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 

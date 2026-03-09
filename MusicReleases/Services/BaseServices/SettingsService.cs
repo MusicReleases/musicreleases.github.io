@@ -1,5 +1,5 @@
-﻿using JakubKastner.MusicReleases.Objects.User;
-using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
+using JakubKastner.MusicReleases.Objects.User;
 using JakubKastner.SpotifyApi.Objects.Base;
 using JakubKastner.SpotifyApi.Services;
 
