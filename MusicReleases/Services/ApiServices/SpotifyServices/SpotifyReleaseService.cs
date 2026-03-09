@@ -12,23 +12,23 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, ISpotifyTaskManagerService taskManager) : ISpotifyReleaseService
+public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, ISpotifyTaskManagerService taskManager) : ISpotifyReleaseService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly IApiReleaseClient _api = api;
 	private readonly IDbSpotifyReleaseService _releaseDb = releaseDb;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
 	private readonly IDbSpotifyArtistReleaseService _linkDb = linkDb;
-	private readonly IDbSpotifyUpdateService _metaDb = metaDb;
+	private readonly IDbSpotifyUserUpdateService _metaDb = metaDb;
 	private readonly ISpotifyArtistState _artistState = artistState;
 	private readonly ISpotifyReleaseState _state = state;
 	private readonly ISpotifyTaskManagerService _taskManager = taskManager;
 
 	private CancellationTokenSource? _cts;
 
-	public async Task Get(MainReleasesType releaseType, bool forceUpdate = false)
+	public async Task Get(ReleaseGroup releaseType, bool forceUpdate = false)
 	{
-		if (releaseType == MainReleasesType.Podcasts)
+		if (releaseType == ReleaseGroup.Podcasts)
 		{
 			// TODO podcasts
 			throw new NotSupportedException();
@@ -68,7 +68,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		}
 	}
 
-	private async Task LoadFromDbToState(MainReleasesType releaseType)
+	private async Task LoadFromDbToState(ReleaseGroup releaseType)
 	{
 		var artists = _artistState.SortedFollowedArtists;
 		if (artists.Count == 0)
@@ -77,7 +77,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		}
 
 		var artistIds = artists.Select(a => a.Id);
-		var artistRole = EnumReleaseTypeExtensions.MapReleaseRole(releaseType);
+		var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(releaseType);
 		var releaseIds = await _linkDb.GetReleaseIds(artistIds, artistRole);
 		var releases = await _releaseDb.GetByIds(releaseIds, releaseType);
 
@@ -92,7 +92,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		_state.Set(releaseType, releases, lastSync);
 	}
 
-	private async Task SyncProcess(string userId, MainReleasesType releaseType, SpotifyBackgroundTask task, CancellationToken ct)
+	private async Task SyncProcess(string userId, ReleaseGroup releaseType, SpotifyBackgroundTask task, CancellationToken ct)
 	{
 		// get artists from state
 		var artists = _artistState.SortedFollowedArtists;
@@ -156,13 +156,13 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		_state.Set(releaseType, allReleasesToSave, DateTime.Now);
 	}
 
-	private static SpotifyDbUpdateType MapToDbUpdateType(MainReleasesType releasesType) => releasesType switch
+	private static SpotifyDbUpdateType MapToDbUpdateType(ReleaseGroup releasesType) => releasesType switch
 	{
-		MainReleasesType.Albums => SpotifyDbUpdateType.ReleasesAlbums,
-		MainReleasesType.Tracks => SpotifyDbUpdateType.ReleasesTracks,
-		MainReleasesType.Appears => SpotifyDbUpdateType.ReleasesAppears,
-		MainReleasesType.Compilations => SpotifyDbUpdateType.ReleasesCompilations,
-		MainReleasesType.Podcasts => throw new NotSupportedException(),
+		ReleaseGroup.Albums => SpotifyDbUpdateType.ReleasesAlbums,
+		ReleaseGroup.Tracks => SpotifyDbUpdateType.ReleasesTracks,
+		ReleaseGroup.Appears => SpotifyDbUpdateType.ReleasesAppears,
+		ReleaseGroup.Compilations => SpotifyDbUpdateType.ReleasesCompilations,
+		ReleaseGroup.Podcasts => throw new NotSupportedException(),
 		_ => throw new NotSupportedException(nameof(releasesType))
 	};
 

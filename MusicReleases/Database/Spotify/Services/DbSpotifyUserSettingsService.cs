@@ -8,12 +8,12 @@ public class DbSpotifyUserSettingsService(IDbSpotifyService dbService) : IDbSpot
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<UserSettings> Get(string userId)
+	public async Task<UserSettings?> Get(string userId)
 	{
 		var db = await _dbService.GetDb();
 
-		Entities.SpotifyUserSettingsEntity? entity = await db.Settings.Get(userId);
-		var userSettings = entity is null ? new() : entity.ToModel();
+		Entities.SpotifyUserSettingsEntity? entity = await db.UserSettings.Get(userId);
+		var userSettings = entity?.ToModel();
 
 		return userSettings;
 	}
@@ -23,6 +23,6 @@ public class DbSpotifyUserSettingsService(IDbSpotifyService dbService) : IDbSpot
 		var entity = userSettings.ToEntity(userID);
 		var db = await _dbService.GetDb();
 
-		await db.Settings.PutSafe(entity);
+		await db.UserSettings.PutSafe(entity);
 	}
 }

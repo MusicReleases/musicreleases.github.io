@@ -3,12 +3,9 @@ using JakubKastner.MusicReleases.Services.SpotifyServices;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class LoaderService : ILoaderService
+public class LoaderService : ILoaderService, IDisposable
 {
 	private readonly ISpotifyTaskManagerService _spotifyTaskManagerService;
-
-
-	private readonly Dictionary<(LoadingType Type, LoadingCategory Category), bool> _loadingStates = [];
 
 	public LoaderService(ISpotifyTaskManagerService spotifyTaskManagerService)
 	{
@@ -16,20 +13,25 @@ public class LoaderService : ILoaderService
 		_spotifyTaskManagerService.OnChange += OnTaskManagerChanged;
 	}
 
+	public void Dispose()
+	{
+		_spotifyTaskManagerService.OnChange -= OnTaskManagerChanged;
+		GC.SuppressFinalize(this);
+	}
 
 	public event Action? LoadingStateChanged;
 
 	public bool Loading => _loadingStates.Values.Any(x => x) || _spotifyTaskManagerService.IsAnyTaskRunning;
+
 	public string ActiveClass => Loading.ToCssClass("active");
+
+
+	private readonly Dictionary<(LoadingType Type, LoadingCategory Category), bool> _loadingStates = [];
+
 
 	private void OnTaskManagerChanged()
 	{
 		LoadingStateChanged?.Invoke();
-	}
-
-	public void Dispose()
-	{
-		_spotifyTaskManagerService.OnChange -= OnTaskManagerChanged;
 	}
 
 	public void StartLoading(LoadingType type, LoadingCategory category)

@@ -7,7 +7,7 @@ public interface ISpotifyFilterPlaylistService
 {
 	IReadOnlyList<SpotifyPlaylist>? FilteredPlaylists { get; }
 	string SearchText { get; }
-	PlaylistType TypeFilter { get; }
+	PlaylistType FilterType { get; }
 
 	event Action? OnFilterChanged;
 

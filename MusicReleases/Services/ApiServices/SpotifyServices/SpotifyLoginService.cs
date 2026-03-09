@@ -9,14 +9,14 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;
-	private readonly IDbSpotifyUpdateService _databaseUpdateService = databaseUpdateService;
+	private readonly IDbSpotifyUserUpdateService _databaseUpdateService = databaseUpdateService;
 	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
 	private readonly ISettingsService _settingsService = settingsService;
 

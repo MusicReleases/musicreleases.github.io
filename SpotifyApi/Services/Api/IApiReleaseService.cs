@@ -5,5 +5,5 @@ namespace JakubKastner.SpotifyApi.Services.Api;
 
 internal interface IApiReleaseService
 {
-	Task<ISet<SpotifyReleaseOld>> GetArtistReleasesFromApi(SpotifyArtist artist, MainReleasesType releaseType);
+	Task<ISet<SpotifyReleaseOld>> GetArtistReleasesFromApi(SpotifyArtist artist, ReleaseGroup releaseType);
 }

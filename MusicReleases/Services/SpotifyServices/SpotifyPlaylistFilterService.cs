@@ -5,9 +5,13 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyFilterPlaylistService : IDisposable, ISpotifyFilterPlaylistService
+public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistService
 {
-	public SpotifyFilterPlaylistService(ISpotifyPlaylistState state, ISpotifyApiUserService userService)
+	private readonly ISpotifyPlaylistState _state;
+
+	private readonly ISpotifyApiUserService _userService;
+
+	public SpotifyPlaylistFilterService(ISpotifyPlaylistState state, ISpotifyApiUserService userService)
 	{
 		_state = state;
 		_userService = userService;
@@ -15,16 +19,11 @@ public class SpotifyFilterPlaylistService : IDisposable, ISpotifyFilterPlaylistS
 		_state.OnChange += ApplyFilter;
 	}
 
-
-	private readonly ISpotifyPlaylistState _state;
-	private readonly ISpotifyApiUserService _userService;
-
-
 	public IReadOnlyList<SpotifyPlaylist>? FilteredPlaylists { get; private set; }
 
-
 	public string SearchText { get; private set; } = string.Empty;
-	public PlaylistType TypeFilter { get; private set; } = PlaylistType.All;
+
+	public PlaylistType FilterType { get; private set; } = PlaylistType.All;
 
 	public event Action? OnFilterChanged;
 
@@ -41,24 +40,25 @@ public class SpotifyFilterPlaylistService : IDisposable, ISpotifyFilterPlaylistS
 
 	public void SetTypeFilter(PlaylistType type)
 	{
-		if (TypeFilter == type)
+		if (FilterType == type)
 		{
 			return;
 		}
-		TypeFilter = type;
+		FilterType = type;
 		ApplyFilter();
 	}
 
 	private void ApplyFilter()
 	{
 		// filter and save
-		FilteredPlaylists = GetFilteredPlaylists(SearchText, TypeFilter)?.ToList().AsReadOnly();
+		FilteredPlaylists = GetFilteredPlaylists(SearchText, FilterType)?.ToList().AsReadOnly();
 		OnFilterChanged?.Invoke();
 	}
 
 	public void Dispose()
 	{
 		_state.OnChange -= ApplyFilter;
+		GC.SuppressFinalize(this);
 	}
 
 

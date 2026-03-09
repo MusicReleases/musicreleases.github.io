@@ -9,7 +9,7 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 public partial record SpotifyUserFilterReleaseEntity
 	(
 		[property: Index(IsPrimary = true)] string UserId,
-		MainReleasesType ReleaseType,
+		ReleaseGroup ReleaseType,
 		ReleaseAdvancedFilter ReleaseAdvancedFilter,
 		string? ArtistId,
 		int? Year,

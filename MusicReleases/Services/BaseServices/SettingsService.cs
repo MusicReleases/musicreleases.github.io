@@ -30,7 +30,7 @@ public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyAp
 	{
 		var userId = _spotifyUserService.GetUserIdRequired();
 
-		UserSettings = await _dbService.Get(userId);
+		UserSettings = await _dbService.Get(userId) ?? new();
 		OnChange?.Invoke();
 	}
 

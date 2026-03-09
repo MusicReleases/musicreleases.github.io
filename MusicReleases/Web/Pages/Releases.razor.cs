@@ -46,7 +46,7 @@ public partial class Releases
 	public string? Search { get; set; }
 
 
-	private MainReleasesType? _lastReleaseType = null;
+	private ReleaseGroup? _lastReleaseType = null;
 
 	protected override async Task OnParametersSetAsync()
 	{

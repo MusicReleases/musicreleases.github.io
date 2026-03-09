@@ -11,13 +11,13 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 
 	private readonly ISpotifyReleaseFilterUrlService _filterUrlService;
 
-	private readonly IDbSpotifyReleaseFilterService _dbService;
+	private readonly IDbSpotifyUserFilterReleaseService _dbService;
 
 	private readonly ISpotifyApiUserService _spotifyApiUserService;
 
 	private readonly NavigationManager _navManager;
 
-	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyReleaseFilterService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyUserFilterReleaseService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;

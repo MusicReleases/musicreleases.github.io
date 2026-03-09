@@ -4,7 +4,7 @@ using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
-[Schema(StoreName = "Settings")]
+[Schema(StoreName = "UserSettings")]
 public partial record SpotifyUserSettingsEntity
 	(
 		[property: Index(IsPrimary = true)] string UserId,

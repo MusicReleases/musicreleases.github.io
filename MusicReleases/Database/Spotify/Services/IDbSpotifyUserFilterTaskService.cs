@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Services
 {
-	public interface IDbSpotifyTaskFilterService
+	public interface IDbSpotifyUserFilterTaskService
 	{
 		Task Delete(string userId);
 		Task<TaskFilter?> Get(string userId);

@@ -2,9 +2,9 @@
 
 <ul class="@ListClass">
 
-    @foreach (var releaseType in EnumReleaseTypeExtensions.GetAllReleaseTypes())
+    @foreach (var releaseType in EnumExtensions.GetValues<ReleaseGroup>())
     {
-        if (releaseType == MainReleasesType.Podcasts)
+        if (releaseType == ReleaseGroup.Podcasts)
         {
             // TODO podcasts
             continue;

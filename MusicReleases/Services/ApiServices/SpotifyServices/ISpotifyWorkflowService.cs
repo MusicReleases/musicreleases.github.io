@@ -5,9 +5,9 @@ namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
 public interface ISpotifyWorkflowService
 {
-	Task StartLoadingAll(MainReleasesType releaseType, bool forceUpdate);
+	Task StartLoadingAll(ReleaseGroup releaseType, bool forceUpdate);
 	Task StartLoadingPlaylistsWithTracks(bool forceUpdate);
-	Task StartLoadingArtistsWithReleases(MainReleasesType releaseType, bool forceUpdate);
-	Task StartLoadingReleases(MainReleasesType releaseType, bool forceUpdate);
-	Task Update(UpdateButtonComponent updateType, MainReleasesType releaseType);
+	Task StartLoadingArtistsWithReleases(ReleaseGroup releaseType, bool forceUpdate);
+	Task StartLoadingReleases(ReleaseGroup releaseType, bool forceUpdate);
+	Task Update(UpdateButtonComponent updateType, ReleaseGroup releaseType);
 }

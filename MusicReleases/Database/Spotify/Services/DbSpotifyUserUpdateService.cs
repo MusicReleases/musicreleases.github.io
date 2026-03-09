@@ -5,7 +5,7 @@ using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
-public class DbSpotifyUpdateService(IDbSpotifyService dbService) : IDbSpotifyUpdateService
+public class DbSpotifyUserUpdateService(IDbSpotifyService dbService) : IDbSpotifyUserUpdateService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 

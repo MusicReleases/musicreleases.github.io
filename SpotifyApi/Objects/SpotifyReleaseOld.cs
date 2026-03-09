@@ -8,7 +8,7 @@ namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyReleaseOld : SpotifyIdNameUrlObject, IComparable
 {
-	public MainReleasesType ReleaseType { get; init; }
+	public ReleaseGroup ReleaseType { get; init; }
 
 	public required DateTime ReleaseDate { get; init; }
 
@@ -36,7 +36,7 @@ public class SpotifyReleaseOld : SpotifyIdNameUrlObject, IComparable
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyReleaseOld(string id, string name, MainReleasesType releaseType, DateTime releaseDate, string urlApp, string urlWeb, string urlImage, int totalTracks)
+	public SpotifyReleaseOld(string id, string name, ReleaseGroup releaseType, DateTime releaseDate, string urlApp, string urlWeb, string urlImage, int totalTracks)
 	{
 		Id = id;
 		Name = name;
@@ -52,7 +52,7 @@ public class SpotifyReleaseOld : SpotifyIdNameUrlObject, IComparable
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyReleaseOld(SimpleAlbum simpleAlbum, MainReleasesType releaseType)
+	public SpotifyReleaseOld(SimpleAlbum simpleAlbum, ReleaseGroup releaseType)
 	{
 		Id = simpleAlbum.Id;
 		Name = simpleAlbum.Name;
@@ -83,7 +83,7 @@ public class SpotifyReleaseOld : SpotifyIdNameUrlObject, IComparable
 	}
 
 	[SetsRequiredMembers]
-	public SpotifyReleaseOld(FullAlbum fullAlbum, MainReleasesType releaseType)
+	public SpotifyReleaseOld(FullAlbum fullAlbum, ReleaseGroup releaseType)
 	{
 		Id = fullAlbum.Id;
 		Name = fullAlbum.Name;
@@ -145,7 +145,7 @@ public class SpotifyReleaseOld : SpotifyIdNameUrlObject, IComparable
 			new("0", "Podcast", "", "")
 		];
 		ArtistIds = ["0"];
-		ReleaseType = MainReleasesType.Podcasts;
+		ReleaseType = ReleaseGroup.Podcasts;
 		New = true;
 	}
 

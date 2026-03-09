@@ -2,12 +2,12 @@
 
 <ClearFilterButton ButtonType="@ClearFilterButtonComponent.Releases" />
 
-@if (ReleaseType == MainReleasesType.Tracks)
+@if (ReleaseType == ReleaseGroup.Tracks)
 {
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleaseAdvancedFilter.Tracks" />
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@ReleaseAdvancedFilter.EPs" />
 }
-else if (ReleaseType == MainReleasesType.Appears)
+else if (ReleaseType == ReleaseGroup.Appears)
 {
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@ReleaseAdvancedFilter.Albums" />
 	<ReleaseFilterButton ButtonType="@ChipFilterButtonComponent.Middle" FilterType="@ReleaseAdvancedFilter.Tracks" />

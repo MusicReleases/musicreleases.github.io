@@ -11,7 +11,7 @@ public partial class ReleaseMenuButton : IDisposable
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Parameter, EditorRequired]
-	public required MainReleasesType ReleaseType { get; set; }
+	public required ReleaseGroup ReleaseType { get; set; }
 
 	[Parameter]
 	public string? Class { get; set; }

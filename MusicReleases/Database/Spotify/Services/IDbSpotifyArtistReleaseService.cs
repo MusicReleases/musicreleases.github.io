@@ -13,7 +13,7 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Services
 		Task<HashSet<string>> GetReleaseIds(IEnumerable<string> artistIds, ArtistReleaseRole artistRole);
 		Task<HashSet<string>> GetReleaseIds(string artistId, ArtistReleaseRole artistRole);
 		Task Save(IEnumerable<SpotifyArtistReleaseEntity> links);
-		Task SetArtistReleases(string artistId, MainReleasesType mainReleaseType, IEnumerable<string> releaseApiIdsEnumerable);
+		Task SetArtistReleases(string artistId, ReleaseGroup mainReleaseType, IEnumerable<string> releaseApiIdsEnumerable);
 		Task SetArtistReleases(IEnumerable<SpotifyRelease> releasesWithArtists, ArtistReleaseRole artistRole);
 	}
 }

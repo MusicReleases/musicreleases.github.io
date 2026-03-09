@@ -8,12 +8,12 @@ public class SpotifyReleaseState : ISpotifyReleaseState
 {
 	public event Action? OnChange;
 
-	public ConcurrentDictionary<MainReleasesType, IReadOnlyList<SpotifyRelease>> ReleasesByType { get; private set; } = new();
+	public ConcurrentDictionary<ReleaseGroup, IReadOnlyList<SpotifyRelease>> ReleasesByType { get; private set; } = new();
 
-	public ConcurrentDictionary<MainReleasesType, DateTime> LastSyncByType { get; private set; } = new();
+	public ConcurrentDictionary<ReleaseGroup, DateTime> LastSyncByType { get; private set; } = new();
 
 
-	public void Set(MainReleasesType releaseType, IEnumerable<SpotifyRelease> releases, DateTime lastSync)
+	public void Set(ReleaseGroup releaseType, IEnumerable<SpotifyRelease> releases, DateTime lastSync)
 	{
 		var sorted = releases.OrderByDescending(r => r.ReleaseDate).ToList().AsReadOnly();
 

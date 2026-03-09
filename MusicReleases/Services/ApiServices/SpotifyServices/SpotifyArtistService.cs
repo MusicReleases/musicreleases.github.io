@@ -8,13 +8,13 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUpdateService metaDb, ISpotifyArtistState state, ISpotifyTaskManagerService taskManager) : ISpotifyArtistService
+public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState state, ISpotifyTaskManagerService taskManager) : ISpotifyArtistService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly IApiArtistClient _api = api;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
 	private readonly IDbSpotifyUserArtistService _linkDb = linkDb;
-	private readonly IDbSpotifyUpdateService _metaDb = metaDb;
+	private readonly IDbSpotifyUserUpdateService _metaDb = metaDb;
 	private readonly ISpotifyArtistState _state = state;
 	private readonly ISpotifyTaskManagerService _taskManager = taskManager;
 

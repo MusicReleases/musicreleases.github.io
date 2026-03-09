@@ -13,23 +13,23 @@ public class SpotifyUserListUpdateRelease : SpotifyUserListUpdate
 	public SpotifyUserListUpdateRelease()
 	{ }
 
-	public SpotifyUserListUpdateRelease(DateTime lastUpdate, MainReleasesType releaseType)
+	public SpotifyUserListUpdateRelease(DateTime lastUpdate, ReleaseGroup releaseType)
 	{
 		switch (releaseType)
 		{
-			case MainReleasesType.Albums:
+			case ReleaseGroup.Albums:
 				LastUpdateAlbums = lastUpdate;
 				break;
-			case MainReleasesType.Tracks:
+			case ReleaseGroup.Tracks:
 				LastUpdateTracks = lastUpdate;
 				break;
-			case MainReleasesType.Appears:
+			case ReleaseGroup.Appears:
 				LastUpdateAppears = lastUpdate;
 				break;
-			case MainReleasesType.Compilations:
+			case ReleaseGroup.Compilations:
 				LastUpdateCompilations = lastUpdate;
 				break;
-			case MainReleasesType.Podcasts:
+			case ReleaseGroup.Podcasts:
 				LastUpdatePodcasts = lastUpdate;
 				break;
 			default:

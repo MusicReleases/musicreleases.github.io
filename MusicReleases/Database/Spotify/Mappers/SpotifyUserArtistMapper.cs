@@ -10,7 +10,7 @@ public static class SpotifyUserArtistMapper
 		return new(userId, artistId);
 	}
 
-	public static SpotifyUserArtistEntity ToSpotifyUserArtistEntity(this SpotifyArtist artist, string userId)
+	public static SpotifyUserArtistEntity ToEntity(this SpotifyArtist artist, string userId)
 	{
 		return new(userId, artist.Id);
 	}

@@ -13,7 +13,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 	private readonly IDbSpotifyArtistReleaseService _linkArtistDb = linkArtistDb;
 	private readonly IDbSpotifyArtistService _artistDb = artistsDb;
 
-	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, MainReleasesType mainReleaseType)
+	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseGroup mainReleaseType)
 	{
 		Console.WriteLine("db: get releases by ids - start");
 
@@ -22,13 +22,13 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 		// get releases
 		IEnumerable<SpotifyReleaseEntity> releasesDb;
 
-		if (mainReleaseType == MainReleasesType.Appears)
+		if (mainReleaseType == ReleaseGroup.Appears)
 		{
 			releasesDb = await db.Release.BulkGet(ids);
 		}
 		else
 		{
-			var releaseType = EnumReleaseTypeExtensions.MapFromMain(mainReleaseType);
+			var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(mainReleaseType);
 			releasesDb = await db.Release.Where(x => x.Id, x => x.ReleaseType).AnyOf([.. ids.Select(id => (id, releaseType))]).ToArray();
 		}
 

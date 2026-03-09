@@ -11,14 +11,14 @@ public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterU
 
 	private readonly ISpotifyTaskFilterUrlService _filterUrlService;
 
-	private readonly IDbSpotifyTaskFilterService _dbService;
+	private readonly IDbSpotifyUserFilterTaskService _dbService;
 
 	private readonly ISpotifyApiUserService _spotifyApiUserService;
 
 	private readonly NavigationManager _navManager;
 
 
-	public SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyTaskFilterService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	public SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;

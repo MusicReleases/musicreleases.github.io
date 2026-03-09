@@ -9,8 +9,8 @@ public class SpotifyLoginStorageService(ILocalStorageService localStorageService
 
 	private readonly ILocalStorageService _localStorageService = localStorageService;
 
-	private readonly string _localStorageKeyLoggedInUser = EnumDatabaseExtensions.GetLocalStorageKey(serviceType, LocalStorageKey.LoggedInUser);
-	private readonly string _localStorageKeyVerifier = EnumDatabaseExtensions.GetLocalStorageKey(serviceType, LocalStorageKey.LoginVerifier);
+	private readonly string _localStorageKeyLoggedInUser = EnumStorageExtensions.GetLocalStorageKey(serviceType, LocalStorageKey.LoggedInUser);
+	private readonly string _localStorageKeyVerifier = EnumStorageExtensions.GetLocalStorageKey(serviceType, LocalStorageKey.LoginVerifier);
 
 	public async Task SaveUserId(string userId)
 	{
@@ -25,7 +25,7 @@ public class SpotifyLoginStorageService(ILocalStorageService localStorageService
 
 	public async Task DeleteSavedUser()
 	{
-		var localStorageKeys = EnumDatabaseExtensions.GetAllLocalStorageKeys(serviceType);
+		var localStorageKeys = EnumStorageExtensions.GetAllLocalStorageKeys(serviceType);
 		foreach (var localStorageKey in localStorageKeys)
 		{
 			await _localStorageService.RemoveItemAsync(localStorageKey);

@@ -9,7 +9,7 @@ public class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, 
 	private readonly ISpotifyReleaseService _spotifyReleaseService = spotifyReleaseService;
 	private readonly ISpotifyPlaylistService _spotifyPlaylistService = spotifyPlaylistService;
 
-	public async Task StartLoadingAll(MainReleasesType releaseType, bool forceUpdate)
+	public async Task StartLoadingAll(ReleaseGroup releaseType, bool forceUpdate)
 	{
 		await StartLoadingArtistsWithReleases(releaseType, forceUpdate);
 		await StartLoadingPlaylistsWithTracks(forceUpdate);
@@ -43,7 +43,7 @@ public class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, 
 
 
 	// artists
-	public async Task StartLoadingArtistsWithReleases(MainReleasesType releaseType, bool forceUpdate)
+	public async Task StartLoadingArtistsWithReleases(ReleaseGroup releaseType, bool forceUpdate)
 	{
 		await StartLoadingArtists(forceUpdate);
 		await StartLoadingReleases(releaseType, forceUpdate);
@@ -58,7 +58,7 @@ public class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, 
 		Console.WriteLine("workflow: artists - end");
 	}
 
-	public async Task StartLoadingReleases(MainReleasesType releaseType, bool forceUpdate)
+	public async Task StartLoadingReleases(ReleaseGroup releaseType, bool forceUpdate)
 	{
 		Console.WriteLine("workflow: releases - start");
 
@@ -67,7 +67,7 @@ public class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, 
 		Console.WriteLine("workflow: releases - end");
 	}
 
-	public async Task Update(UpdateButtonComponent updateType, MainReleasesType releaseType)
+	public async Task Update(UpdateButtonComponent updateType, ReleaseGroup releaseType)
 	{
 		switch (updateType)
 		{
