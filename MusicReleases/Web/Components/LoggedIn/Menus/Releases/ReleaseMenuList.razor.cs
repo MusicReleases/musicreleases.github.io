@@ -8,7 +8,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Menus.Releases;
 public partial class ReleaseMenuList : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterServiceOld SpotifyFilterService { get; set; } = default!;
+	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
@@ -33,7 +33,7 @@ public partial class ReleaseMenuList : IDisposable
 
 	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
-	private string OverflowListItemClass => $"more {SpotifyFilterService.Filter?.ReleaseType.ToLowerString()}-more";
+	private string OverflowListItemClass => $"more {SpotifyReleaseFilterService.Filter.ReleaseType.ToLowerString()}-more";
 
 	private string OverflowButtonTitle => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} more";
 
@@ -49,14 +49,14 @@ public partial class ReleaseMenuList : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged += StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged += StateChanged;
 		OverflowMenuService.OnDisplayChanged += StateChanged;
 		PopupService.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyFilterService.OnFilterOrDataChanged -= StateChanged;
+		SpotifyReleaseFilterService.OnFilterChanged -= StateChanged;
 		OverflowMenuService.OnDisplayChanged -= StateChanged;
 		PopupService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);

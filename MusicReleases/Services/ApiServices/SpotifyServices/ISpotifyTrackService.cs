@@ -1,12 +1,9 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public interface ISpotifyTracksService
+public interface ISpotifyTrackService
 {
-	SpotifyUserList<SpotifyRelease, SpotifyUserListUpdateRelease>? Releases { get; }
-
 	event Action? OnTracksDataChanged;
 
 	Task Get(SpotifyRelease release);

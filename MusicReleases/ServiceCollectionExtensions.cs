@@ -2,7 +2,6 @@
 using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.MusicReleases.State.Spotify;
@@ -29,43 +28,32 @@ public static class ServiceCollectionExtensions
 
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
-		services.AddScoped<IDbSpotifyServiceOld, DbSpotifyServiceOld>();
 
 		services.AddScoped<IDbSpotifyUpdateService, DbSpotifyUpdateService>();
-		services.AddScoped<IDbSpotifyUpdateServiceOld, DbSpotifyUpdateServiceOld>();
 
-		services.AddScoped<IDbSpotifyFilterServiceOld, DbSpotifyFilterServiceOld>();
 		services.AddScoped<IDbSpotifyReleaseFilterService, DbSpotifyReleaseFilterService>();
 
 		services.AddScoped<IDbSpotifyTaskFilterService, DbSpotifyTaskFilterService>();
 
 		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
-		services.AddScoped<IDbSpotifyUserServiceOld, DbSpotifyUserServiceOld>();
 
 		services.AddScoped<IDbSpotifyUserSettingsService, DbSpotifyUserSettingsService>();
 
-		services.AddScoped<IDbSpotifyUserLinkService, DbSpotifyUserLinkService>();
-
 		services.AddScoped<IDbSpotifyUserArtistService, DbSpotifyUserArtistService>();
-		services.AddScoped<IDbSpotifyUserArtistServiceOld, DbSpotifyUserArtistServiceOld>();
 
 		services.AddScoped<IDbSpotifyArtistService, DbSpotifyArtistService>();
 
 		services.AddScoped<IDbSpotifyArtistReleaseService, DbSpotifyArtistReleaseService>();
-		services.AddScoped<IDbSpotifyArtistReleaseServiceOld, DbSpotifyArtistReleaseServiceOld>();
 
 		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
-		services.AddScoped<IDbSpotifyReleaseServiceOld, DbSpotifyReleaseServiceOld>();
 
 		services.AddScoped<IDbSpotifyTrackService, DbSpotifyTrackService>();
 
 		services.AddScoped<IDbSpotifyArtistTrackService, DbSpotifyArtistTrackService>();
 
 		services.AddScoped<IDbSpotifyPlaylistService, DbSpotifyPlaylistService>();
-		services.AddScoped<IDbSpotifyPlaylistServiceOld, DbSpotifyPlaylistServiceOld>();
 
 		services.AddScoped<IDbSpotifyUserPlaylistService, DbSpotifyUserPlaylistService>();
-		services.AddScoped<IDbSpotifyUserPlaylistServiceOld, DbSpotifyUserPlaylistServiceOld>();
 
 		// spotify state
 		services.AddScoped<ISpotifyArtistState, SpotifyArtistState>();
@@ -81,7 +69,6 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyReleaseFilterService, SpotifyReleaseFilterService>();
 		services.AddScoped<ISpotifyReleaseFilterUrlSynchronizer, SpotifyReleaseFilterUrlSynchronizer>();
 		services.AddScoped<ISpotifyReleaseFilterUrlService, SpotifyReleaseFilterUrlService>();
-		services.AddScoped<ISpotifyFilterUrlServiceOld, SpotifyFilterUrlServiceOld>();
 
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
 
@@ -89,17 +76,13 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyLoginService, SpotifyLoginService>();
 		services.AddScoped<ISpotifyLoginStorageService, SpotifyLoginStorageService>();
 
-		services.AddScoped<ISpotifyFilterServiceOld, SpotifyFilterServiceOld>();
 		services.AddScoped<ISpotifyFilterPlaylistService, SpotifyFilterPlaylistService>();
 		services.AddScoped<ILoaderService, LoaderService>();
 
 		services.AddScoped<ISpotifyReleaseService, SpotifyReleaseService>();
-		services.AddScoped<ISpotifyReleasesServiceOld, SpotifyReleasesServiceOld>();
 		services.AddScoped<ISpotifyArtistService, SpotifyArtistService>();
-		services.AddScoped<ISpotifyArtistsServiceOld, SpotifyArtistsServiceOld>();
 		services.AddScoped<ISpotifyPlaylistService, SpotifyPlaylistService>();
-		services.AddScoped<ISpotifyPlaylistsServiceOld, SpotifyPlaylistsServiceOld>();
-		services.AddScoped<ISpotifyTracksService, SpotifyTracksService>();
+		services.AddScoped<ISpotifyTrackService, SpotifyTrackService>();
 
 		return services;
 	}

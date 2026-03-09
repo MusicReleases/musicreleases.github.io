@@ -13,7 +13,7 @@ public partial class PlaylistButton : IDisposable
 	private ISpotifyPlaylistService SpotifyPlaylistService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyTracksService SpotifyTracksService { get; set; } = default!;
+	private ISpotifyTrackService SpotifyTracksService { get; set; } = default!;
 
 	[Inject]
 	private ISpotifyPlaylistState SpotifyPlaylistState { get; set; } = default!;

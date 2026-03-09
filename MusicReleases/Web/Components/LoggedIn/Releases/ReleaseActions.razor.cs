@@ -8,7 +8,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
 public partial class ReleaseActions
 {
 	[Inject]
-	private ISpotifyTracksService SpotifyTracksService { get; set; } = default!;
+	private ISpotifyTrackService SpotifyTracksService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]

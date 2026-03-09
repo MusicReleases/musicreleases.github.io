@@ -1,7 +1,6 @@
 using Blazored.LocalStorage;
 using DexieNET;
 using JakubKastner.MusicReleases;
-using JakubKastner.MusicReleases.Database;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.SpotifyApi;
 using JakubKastner.SpotifyApi.Objects;
@@ -34,10 +33,6 @@ builder.Services.AddBlazoredLocalStorage(config =>
 {
 	config.JsonSerializerOptions.WriteIndented = true;
 });
-
-// indexed db (old)
-builder.Services.AddIndexedDbService();
-builder.Services.AddIndexedDb(SpotifyReleasesDb.Name, SpotifyReleasesDb.GetAllTables(), SpotifyReleasesDb.Version);
 
 // indexed db
 builder.Services.AddDexieNET<SpotifyDb>();

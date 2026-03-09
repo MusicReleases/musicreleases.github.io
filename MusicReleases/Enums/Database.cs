@@ -7,27 +7,6 @@ public enum LocalStorageKey
 	UserPlaylists,
 }
 
-public enum DbStorageTablesSpotify
-{
-	SpotifyUpdate,
-	SpotifyFilter,
-
-	SpotifyUser,
-	SpotifyUserArtist,
-	SpotifyUserPlaylist,
-
-	SpotifyPlaylist,
-	SpotifyPlaylistTrack,
-
-	SpotifyArtist,
-	SpotifyArtistRelease,
-
-	SpotifyRelease,
-	SpotifyReleaseTrack,
-
-	SpotifyTrack,
-}
-
 public enum SpotifyDbUpdateType
 {
 	User,

@@ -15,7 +15,7 @@ public partial class PlaylistSidebarButton : IDisposable
 	private ISpotifyPlaylistService SpotifyPlaylistService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyTracksService SpotifyTracksService { get; set; } = default!;
+	private ISpotifyTrackService SpotifyTracksService { get; set; } = default!;
 
 	[Inject]
 	private ISettingsService SettingsService { get; set; } = default!;
