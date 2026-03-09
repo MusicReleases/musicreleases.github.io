@@ -1,6 +1,6 @@
-﻿using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
@@ -9,13 +9,14 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;
+	private readonly IDbSpotifyUpdateService _databaseUpdateService = databaseUpdateService;
 	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
 	private readonly ISettingsService _settingsService = settingsService;
 
@@ -172,8 +173,9 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 			return;
 		}
 
-		await _databaseUserService.DeleteAllUserDatabases(user.Info.Id);
 		await _spotifyLoginStorageService.DeleteSavedUser();
+		await _databaseUserService.Delete(user.Info.Id);
+		await _databaseUpdateService.Delete(user.Info.Id, SpotifyDbUpdateType.User);
 
 		_navManager.NavigateTo(_navManager.BaseUri);
 	}
@@ -188,6 +190,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 		await _spotifyLoginStorageService.SaveUserId(user.Info.Id);
 		await _databaseUserService.Save(user);
+		await _databaseUpdateService.Save(user.Info.Id, SpotifyDbUpdateType.User);
 	}
 
 	private async Task<SpotifyUser?> GetUserFromDatabase()
@@ -198,7 +201,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 			return null;
 		}
 
-		var user = await _databaseUserService.Get(userId!);
+		var user = await _databaseUserService.Get(userId);
 		return user;
 	}
 }

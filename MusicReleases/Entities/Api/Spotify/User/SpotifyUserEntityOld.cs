@@ -4,15 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.MusicReleases.Entities.Api.Spotify.User;
 
-public class SpotifyUserEntity : SpotifyIdNameUrlEntity
+public class SpotifyUserEntityOld : SpotifyIdNameUrlEntity
 {
 	public string? ProfilePictureUrl { get; init; }
 	public required string RefreshToken { get; init; }
 
-	public SpotifyUserEntity() { }
+	public SpotifyUserEntityOld() { }
 
 	[SetsRequiredMembers]
-	public SpotifyUserEntity(SpotifyUserInfo spotifyUserInfo, string refreshToken)
+	public SpotifyUserEntityOld(SpotifyUserInfo spotifyUserInfo, string refreshToken)
 	{
 		Id = spotifyUserInfo.Id;
 		Name = spotifyUserInfo.Name;

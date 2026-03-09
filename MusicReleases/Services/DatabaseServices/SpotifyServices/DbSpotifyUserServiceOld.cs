@@ -6,7 +6,7 @@ using Tavenem.Blazor.IndexedDB;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
-public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpdateServiceOld dbUpdateService, IDbSpotifyUserArtistServiceOld dbUserArtistService, IDbSpotifyUserPlaylistServiceOld dbUserPlaylistService, IDbSpotifyFilterServiceOld dbFilterService) : IDbSpotifyUserService
+public class DbSpotifyUserServiceOld(IDbSpotifyServiceOld dbService, IDbSpotifyUpdateServiceOld dbUpdateService, IDbSpotifyUserArtistServiceOld dbUserArtistService, IDbSpotifyUserPlaylistServiceOld dbUserPlaylistService, IDbSpotifyFilterServiceOld dbFilterService) : IDbSpotifyUserServiceOld
 {
 	private readonly IndexedDbStore _dbTable = dbService.GetTable(DbStorageTablesSpotify.SpotifyUser);
 
@@ -38,11 +38,11 @@ public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpda
 		return user;
 	}
 
-	private async Task<SpotifyUpdateDbObject<SpotifyUserEntity>?> GetDb(string userId)
+	private async Task<SpotifyUpdateDbObject<SpotifyUserEntityOld>?> GetDb(string userId)
 	{
 		// get user db
 		Console.WriteLine("dB: get user - start");
-		var userDb = await _dbTable.GetItemAsync<SpotifyUserEntity>(userId);
+		var userDb = await _dbTable.GetItemAsync<SpotifyUserEntityOld>(userId);
 		Console.WriteLine("dB: get user - end");
 
 		if (userDb is null)
@@ -65,7 +65,7 @@ public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpda
 		}
 
 		// create new update entity
-		var updateEntity = new SpotifyUpdateDbObject<SpotifyUserEntity>(userDb, updateDbUser.Value);
+		var updateEntity = new SpotifyUpdateDbObject<SpotifyUserEntityOld>(userDb, updateDbUser.Value);
 		return updateEntity;
 	}
 
@@ -78,7 +78,7 @@ public class DbSpotifyUserService(IDbSpotifyServiceOld dbService, IDbSpotifyUpda
 
 		// user db
 		Console.WriteLine("db: save user - start");
-		var userDb = new SpotifyUserEntity(user.Info, user.Credentials.RefreshToken);
+		var userDb = new SpotifyUserEntityOld(user.Info, user.Credentials.RefreshToken);
 		await _dbTable.StoreItemAsync(userDb);
 		Console.WriteLine("db: save user - end");
 

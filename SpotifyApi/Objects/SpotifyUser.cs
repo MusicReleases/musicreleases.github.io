@@ -14,6 +14,7 @@ public class SpotifyUser
 
 	public SpotifyUser() { }
 
+
 	public SpotifyUser(PrivateUser userApi, SpotifyUserCredentials credentials)
 	{
 		Info = new(userApi);

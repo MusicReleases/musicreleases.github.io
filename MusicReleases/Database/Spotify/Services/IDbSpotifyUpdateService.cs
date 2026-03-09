@@ -4,6 +4,7 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
 public interface IDbSpotifyUpdateService
 {
+	Task Delete(string userId, SpotifyDbUpdateType updateType);
 	Task<DateTime> Get(string userId, SpotifyDbUpdateType dbType);
 	Task Save(string userId, SpotifyDbUpdateType dbType);
 }

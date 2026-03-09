@@ -20,10 +20,17 @@ public class DbSpotifyUpdateService(IDbSpotifyService dbService) : IDbSpotifyUpd
 		return lastUpdate;
 	}
 
-	public async Task Save(string userId, SpotifyDbUpdateType dbType)
+	public async Task Save(string userId, SpotifyDbUpdateType updateType)
 	{
 		var db = await _dbService.GetDb();
-		var entity = userId.ToSpotifyUpdateEntity(dbType);
+		var entity = userId.ToSpotifyUpdateEntity(updateType);
 		await db.UserUpdate.PutSafe(entity);
+	}
+
+	public async Task Delete(string userId, SpotifyDbUpdateType updateType)
+	{
+		var db = await _dbService.GetDb();
+		var key = SpotifyUserUpdateEntity.MakeKey(userId, updateType);
+		await db.UserUpdate.Delete(key);
 	}
 }

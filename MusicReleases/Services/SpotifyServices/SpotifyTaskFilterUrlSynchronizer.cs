@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -10,14 +11,14 @@ public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterU
 
 	private readonly ISpotifyTaskFilterUrlService _filterUrlService;
 
-	private readonly IDbSpotifyUserLinkService _dbService;
+	private readonly IDbSpotifyTaskFilterService _dbService;
 
 	private readonly ISpotifyApiUserService _spotifyApiUserService;
 
 	private readonly NavigationManager _navManager;
 
 
-	public SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyUserLinkService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	public SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyTaskFilterService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;
@@ -28,7 +29,15 @@ public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterU
 		_filterService.OnFilterChanged += OnFilterChanged;
 	}
 
+	public void Dispose()
+	{
+		_filterService.OnFilterChanged -= OnFilterChanged;
+		GC.SuppressFinalize(this);
+	}
+
+
 	private const string _baseUrl = "/tasks";
+
 
 	public async Task SetFilterFromUrl(string? urlParams, string? searchParam)
 	{
@@ -36,11 +45,9 @@ public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterU
 
 		_filterService.SetFilterAndSearch(filter, searchParam);
 
-		// url parameters for db - doesnt save search text
-		var urlDb = _filterUrlService.CreateUrlParams(_filterService.Filter, null);
+		// save to db
 		var userId = _spotifyApiUserService.GetUserIdRequired();
-
-		await _dbService.SetTasksLink(userId, urlDb);
+		await _dbService.Save(filter, userId);
 	}
 
 	private void OnFilterChanged()
@@ -55,16 +62,13 @@ public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterU
 		_navManager.NavigateTo(url, false);
 	}
 
-	public void Dispose()
-	{
-		_filterService.OnFilterChanged -= OnFilterChanged;
-		GC.SuppressFinalize(this);
-	}
-
 	public async Task<string> GetInitUrl()
 	{
 		var userId = _spotifyApiUserService.GetUserIdRequired();
-		var parameters = await _dbService.GetTasksLink(userId);
+
+		var filterDb = await _dbService.Get(userId) ?? TaskFilter.All;
+		var parameters = _filterUrlService.CreateUrlParams(filterDb, null);
+
 		var url = $"{_baseUrl}{parameters}";
 
 		return url;

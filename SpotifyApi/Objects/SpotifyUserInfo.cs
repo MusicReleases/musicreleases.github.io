@@ -7,9 +7,19 @@ namespace JakubKastner.SpotifyApi.Objects;
 public class SpotifyUserInfo : SpotifyIdNameUrlObject
 {
 	public required string? ProfilePictureUrl { get; set; }
-	public required DateTime LastUpdate { get; set; }
+	public DateTime LastUpdate { get; set; }
 
 	public SpotifyUserInfo() { }
+
+	[SetsRequiredMembers]
+	public SpotifyUserInfo(string id, string name, string urlApp, string urlWeb, string? urlProfilePicture)
+	{
+		Id = id;
+		Name = name;
+		UrlApp = urlApp;
+		UrlWeb = urlWeb;
+		ProfilePictureUrl = urlProfilePicture;
+	}
 
 	[SetsRequiredMembers]
 	public SpotifyUserInfo(PrivateUser userApi)
