@@ -1,4 +1,6 @@
-﻿using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.MusicReleases.Objects.Spotify;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
@@ -98,8 +100,9 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 
 		task.Status = $"Getting {releaseType.ToFriendlyString()} releases from api...";
 
-		var allNewReleases = new List<SpotifyRelease>();
-		var artistRole = EnumReleaseTypeExtensions.MapReleaseRole(releaseType);
+		var allReleasesToSave = new List<SpotifyRelease>();
+		var allLinksToSave = new List<SpotifyArtistReleaseEntity>();
+		var allArtistsToSave = new HashSet<SpotifyArtist>();
 
 		foreach (var artist in artists)
 		{
@@ -113,23 +116,32 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 				continue;
 			}
 
-			allNewReleases.AddRange(apiReleases);
-
 			// save release to db
-			await _releaseDb.Save(apiReleases);
+			allReleasesToSave.AddRange(apiReleases);
 
-			// save links to db
-			var releaseIds = apiReleases.Select(r => r.Id);
-			await _linkDb.SetArtistReleases(artist.Id, releaseType, releaseIds);
+			// save artists and links to db
+			foreach (var release in apiReleases)
+			{
+				foreach (var releaseArtist in release.Artists)
+				{
+					allArtistsToSave.Add(releaseArtist);
+					allLinksToSave.Add(release.Id.ToArtistReleaseEntity(releaseArtist.Id, ArtistReleaseRole.Main));
+				}
 
-			// save featuring artists to
-			var releasesWithArtists = apiReleases.Where(r => r.Artists is not null);
-			var releaseArtists = releasesWithArtists.SelectMany(r => r.Artists!).ToHashSet();
-			await _artistDb.Save(releaseArtists.ToList());
-			await _linkDb.SetArtistReleases(releasesWithArtists, artistRole);
+				foreach (var featArtist in release.FeaturedArtists)
+				{
+					allArtistsToSave.Add(featArtist);
+					allLinksToSave.Add(release.Id.ToArtistReleaseEntity(featArtist.Id, ArtistReleaseRole.Featured));
+				}
+			}
 		}
 
 		ct.ThrowIfCancellationRequested();
+
+		// save to db
+		await _releaseDb.Save(allReleasesToSave);
+		await _artistDb.Save(allArtistsToSave.ToList());
+		await _linkDb.Save(allLinksToSave);
 
 		// update meta db
 		var metaDbType = MapToDbUpdateType(releaseType);
@@ -138,7 +150,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		// update state
 		task.Status = "Displaying releases...";
 
-		_state.Set(releaseType, allNewReleases);
+		_state.Set(releaseType, allReleasesToSave);
 	}
 
 	private static SpotifyDbUpdateType MapToDbUpdateType(MainReleasesType releasesType) => releasesType switch
@@ -150,6 +162,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		MainReleasesType.Podcasts => throw new NotSupportedException(),
 		_ => throw new NotSupportedException(nameof(releasesType))
 	};
+
 	public void Cancel()
 	{
 		_cts?.Cancel();

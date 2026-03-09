@@ -19,6 +19,15 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService) : IDbSpo
 		return links.Select(x => x.ReleaseId).ToHashSet();
 	}
 
+	public async Task<HashSet<SpotifyArtistReleaseEntity>> GetByReleaseIds(IEnumerable<string> releaseIds)
+	{
+		var db = await _dbService.GetDb();
+
+		var links = await db.ArtistRelease.Where(x => x.ReleaseId).AnyOf([.. releaseIds]).ToArray();
+
+		return links.ToHashSet();
+	}
+
 	public async Task<HashSet<string>> GetReleaseIds(IEnumerable<string> artistIds, ArtistReleaseRole artistRole)
 	{
 		var db = await _dbService.GetDb();
@@ -80,6 +89,12 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService) : IDbSpo
 		{
 			await db.ArtistRelease.BulkPutSafe(currentArtistRoleReleaseIds);
 		}
+	}
+
+	public async Task Save(IEnumerable<SpotifyArtistReleaseEntity> links)
+	{
+		var db = await _dbService.GetDb();
+		await db.ArtistRelease.BulkPutSafe(links);
 	}
 
 	public async Task SetArtistReleases(IEnumerable<SpotifyRelease> releases, ArtistReleaseRole artistRole)
