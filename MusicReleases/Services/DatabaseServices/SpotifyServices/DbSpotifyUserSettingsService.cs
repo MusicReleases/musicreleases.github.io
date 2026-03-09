@@ -23,6 +23,6 @@ public class DbSpotifyUserSettingsService(IDbSpotifyService dbService) : IDbSpot
 		var entity = userSettings.ToEntity(userID);
 		var db = await _dbService.GetDb();
 
-		await db.Settings.Put(entity);
+		await db.Settings.PutSafe(entity);
 	}
 }

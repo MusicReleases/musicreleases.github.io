@@ -32,10 +32,6 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
 
-			Console.WriteLine("last sync get");
-			var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Playlists);
-			Console.WriteLine("last sync  - " + lastSync);
-
 			var isInState = _state.Playlists is not null;
 
 			if (!isInState)
@@ -44,6 +40,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 				await LoadFromDbToState(userId);
 			}
 
+			var lastSync = _state.LastSync ?? DateTime.MinValue;
 			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
 
 			if (shouldSync)
@@ -63,9 +60,13 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 	{
 		var orderMap = await _linkDb.GetUserPlaylistOrder(userId);
 
+		Console.WriteLine("last sync get");
+		var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Playlists);
+		Console.WriteLine("last sync  - " + lastSync);
+
 		if (orderMap.Count == 0)
 		{
-			_state.SetPlaylists([]);
+			_state.SetPlaylists([], lastSync);
 			return;
 		}
 
@@ -75,7 +76,8 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		// sort by order (unkown to end)
 		var sortedPlaylists = playlists.OrderBy(p => orderMap.GetValueOrDefault(p.Id, int.MaxValue)).ToList();
 
-		_state.SetPlaylists(sortedPlaylists);
+
+		_state.SetPlaylists(sortedPlaylists, lastSync);
 	}
 
 	private async Task SyncProcess(string userId, SpotifyBackgroundTask task, CancellationToken ct)
@@ -98,7 +100,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 		// update ui
 		task.Status = "Displaying playlists...";
-		_state.SetPlaylists(apiPlaylists);
+		_state.SetPlaylists(apiPlaylists, DateTime.Now);
 	}
 
 	public async Task CreatePlaylist(string name)
@@ -146,7 +148,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			task.Status = "Sending request to Spotify...";
 
 			var trackUris = tracksList.Select(t => t.UrlApp).ToList();
-			var snapshotId = await _api.AddTracksToPlaylist(playlistId, trackUris, positionTop);
+			var snapshotId = await _api.AddTracksToPlaylist(playlist.Id, trackUris, positionTop);
 
 			var ids = tracksList.Select(t => t.Id).ToList();
 			// TODO save to db

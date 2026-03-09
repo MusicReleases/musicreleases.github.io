@@ -1,5 +1,4 @@
 ﻿using DexieNET;
-using JakubKastner.Extensions;
 using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 
@@ -29,7 +28,7 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		var db = await _dbService.GetDb();
 		var artistsDb = await db.Artist.BulkGet(ids);
 
-		var artists = artistsDb.Select(e => e!.ToModel()).ToArray();
+		var artists = artistsDb.Select(e => e.ToModel()).ToArray();
 
 		Console.WriteLine($"db: get artists by ids - end");
 		return artists;

@@ -1,7 +1,9 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.SpotifyEnums;
+using System.Data;
 
 namespace JakubKastner.MusicReleases.Services.DatabaseServices.SpotifyServices;
 
@@ -18,16 +20,24 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 		var db = await _dbService.GetDb();
 
 		// get releases
-		var releasesDb = await db.Release.BulkGet(ids);
+		IEnumerable<SpotifyReleaseEntity> releasesDb;
 
-		var filteredReleasesDb = releasesDb.Where(r => mainReleaseType == MainReleasesType.Appears || r.ReleaseType == EnumReleaseTypeExtensions.MapFromMain(mainReleaseType)).ToList();
+		if (mainReleaseType == MainReleasesType.Appears)
+		{
+			releasesDb = await db.Release.BulkGet(ids);
+		}
+		else
+		{
+			var releaseType = EnumReleaseTypeExtensions.MapFromMain(mainReleaseType);
+			releasesDb = await db.Release.Where(x => x.Id, x => x.ReleaseType).AnyOf([.. ids.Select(id => (id, releaseType))]).ToArray();
+		}
 
-		if (filteredReleasesDb.Count == 0)
+		if (!releasesDb.Any())
 		{
 			return [];
 		}
 
-		var releaseIds = filteredReleasesDb.Select(x => x.Id).ToArray();
+		var releaseIds = releasesDb.Select(x => x.Id).ToArray();
 
 		// get links
 		var allLinks = await _linkArtistDb.GetByReleaseIds(releaseIds);
@@ -40,9 +50,9 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 		// map releases
 		var linksByRelease = allLinks.ToLookup(l => l.ReleaseId);
 
-		var releases = new List<SpotifyRelease>(filteredReleasesDb.Count);
+		var releases = new List<SpotifyRelease>(releasesDb.Count());
 
-		foreach (var releaseDb in filteredReleasesDb)
+		foreach (var releaseDb in releasesDb)
 		{
 			var releaseLinks = linksByRelease[releaseDb.Id];
 
@@ -97,8 +107,10 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 
 	public async Task Add(SpotifyRelease release)
 	{
+		Console.WriteLine("db: add release - start");
 		var db = await _dbService.GetDb();
 		var releaseDb = release.ToEntity();
 		await db.Release.PutSafe(releaseDb);
+		Console.WriteLine("db: add release - end");
 	}
 }

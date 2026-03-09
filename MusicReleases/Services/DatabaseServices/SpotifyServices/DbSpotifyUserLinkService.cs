@@ -42,7 +42,7 @@ public class DbSpotifyUserLinkService(IDbSpotifyService dbService) : IDbSpotifyU
 		};
 
 		var db = await _dbService.GetDb();
-		await db.Link.Put(entity);
+		await db.Link.PutSafe(entity);
 	}
 
 	public async Task SetReleasesLink(string userId, string? link)
@@ -53,6 +53,6 @@ public class DbSpotifyUserLinkService(IDbSpotifyService dbService) : IDbSpotifyU
 		};
 
 		var db = await _dbService.GetDb();
-		await db.Link.Put(entity);
+		await db.Link.PutSafe(entity);
 	}
 }

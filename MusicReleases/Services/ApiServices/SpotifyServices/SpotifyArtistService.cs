@@ -31,10 +31,6 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
 
-			Console.WriteLine("last sync get");
-			var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Artists);
-			Console.WriteLine("last sync  - " + lastSync);
-
 			var isInState = _state.SortedFollowedArtists.Any();
 
 			if (!isInState)
@@ -42,6 +38,8 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 				// load data from db to state
 				await LoadFromDbToState(userId);
 			}
+
+			var lastSync = _state.LastSync ?? DateTime.MinValue;
 
 			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
 
@@ -70,7 +68,11 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 
 		var artists = await _artistDb.GetByIds(artistIds);
 
-		_state.SetFollowed(artists);
+		Console.WriteLine("last sync get");
+		var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Artists);
+		Console.WriteLine("last sync  - " + lastSync);
+
+		_state.SetFollowed(artists, lastSync);
 	}
 
 	private async Task SyncProcess(string userId, SpotifyBackgroundTask task, CancellationToken ct)
@@ -95,7 +97,7 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 
 		// update ui
 		task.Status = "Displaying artists...";
-		_state.SetFollowed(apiArtists);
+		_state.SetFollowed(apiArtists, DateTime.Now);
 	}
 
 	public void Cancel()

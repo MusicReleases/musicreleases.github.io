@@ -34,11 +34,11 @@ public class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, 
 
 	private async Task StartLoadingPlaylistsTracks(bool forceUpdate)
 	{
-		Console.WriteLine("workflow: playlist tracks - start");
+		//Console.WriteLine("workflow: playlist tracks - start");
 
 		// TODO load playlists tracks
 
-		Console.WriteLine("workflow: playlist tracks - end");
+		//Console.WriteLine("workflow: playlist tracks - end");
 	}
 
 

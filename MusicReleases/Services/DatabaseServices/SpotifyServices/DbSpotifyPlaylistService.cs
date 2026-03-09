@@ -1,6 +1,4 @@
 ﻿using DexieNET;
-using JakubKastner.Extensions;
-using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Mappers.Spotify;
 using JakubKastner.SpotifyApi.Objects;
 
@@ -30,7 +28,7 @@ public class DbSpotifyPlaylistService(IDbSpotifyService dbService) : IDbSpotifyP
 		var db = await _dbService.GetDb();
 		var playlistsDb = await db.Playlist.BulkGet(ids);
 
-		var playlists = playlistsDb.Select(e => e!.ToModel()).ToArray();
+		var playlists = playlistsDb.Select(e => e.ToModel()).ToArray();
 
 		Console.WriteLine($"db: get playlists by ids - end");
 		return playlists;
@@ -55,16 +53,20 @@ public class DbSpotifyPlaylistService(IDbSpotifyService dbService) : IDbSpotifyP
 
 	public async Task Add(SpotifyPlaylist playlist)
 	{
+		Console.WriteLine("db: add playlist - start");
 		var db = await _dbService.GetDb();
 		var playlistDb = playlist.ToEntity();
 		await db.Playlist.PutSafe(playlistDb);
+		Console.WriteLine("db: add playlist - end");
 	}
 
 
 	public async Task UpdateSnapshot(string playlistId, string newSnapshotId)
 	{
+		Console.WriteLine("db: update playlist snapshot - start");
 		var db = await _dbService.GetDb();
 
 		await db.Playlist.Update(playlistId, p => p.SnapshotId, newSnapshotId);
+		Console.WriteLine("db: update playlist snapshot - end");
 	}
 }

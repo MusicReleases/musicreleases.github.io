@@ -41,14 +41,6 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 
 		try
 		{
-			Console.WriteLine("last sync get");
-
-			var userId = _spotifyApiUserService.GetUserIdRequired();
-			var metaDbType = MapToDbUpdateType(releaseType);
-			var lastSync = await _metaDb.Get(userId, metaDbType);
-
-			Console.WriteLine("last sync  - " + lastSync);
-
 			var isInState = _state.ReleasesByType.GetValueOrDefault(releaseType) is not null;
 
 			if (!isInState)
@@ -56,11 +48,14 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 				// load data from db to state
 				await LoadFromDbToState(releaseType);
 			}
+			var lastSync = _state.LastSyncByType.GetValueOrDefault(releaseType);
 
 			var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
 
 			if (shouldSync)
 			{
+				var userId = _spotifyApiUserService.GetUserIdRequired();
+
 				await _taskManager.Run($"Getting {releaseType.ToFriendlyString()}", async (task) =>
 				{
 					await SyncProcess(userId, releaseType, task, token);
@@ -86,7 +81,15 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		var releaseIds = await _linkDb.GetReleaseIds(artistIds, artistRole);
 		var releases = await _releaseDb.GetByIds(releaseIds, releaseType);
 
-		_state.Set(releaseType, releases);
+		Console.WriteLine("last sync get");
+
+		var userId = _spotifyApiUserService.GetUserIdRequired();
+		var metaDbType = MapToDbUpdateType(releaseType);
+		var lastSync = await _metaDb.Get(userId, metaDbType);
+
+		Console.WriteLine("last sync  - " + lastSync);
+
+		_state.Set(releaseType, releases, lastSync);
 	}
 
 	private async Task SyncProcess(string userId, MainReleasesType releaseType, SpotifyBackgroundTask task, CancellationToken ct)
@@ -150,7 +153,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		// update state
 		task.Status = "Displaying releases...";
 
-		_state.Set(releaseType, allReleasesToSave);
+		_state.Set(releaseType, allReleasesToSave, DateTime.Now);
 	}
 
 	private static SpotifyDbUpdateType MapToDbUpdateType(MainReleasesType releasesType) => releasesType switch

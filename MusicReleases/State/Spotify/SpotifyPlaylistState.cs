@@ -9,9 +9,13 @@ public class SpotifyPlaylistState : ISpotifyPlaylistState
 
 	public IReadOnlyList<SpotifyPlaylist>? Playlists { get; private set; } = null;
 
+	public DateTime? LastSync { get; private set; }
+
+
 	private readonly ConcurrentDictionary<string, SpotifyPlaylist> _lookup = new();
 
-	public void SetPlaylists(IEnumerable<SpotifyPlaylist> playlists)
+
+	public void SetPlaylists(IEnumerable<SpotifyPlaylist> playlists, DateTime lastSync)
 	{
 		var playlistsList = playlists.ToList();
 		Playlists = playlistsList.AsReadOnly();
@@ -21,6 +25,7 @@ public class SpotifyPlaylistState : ISpotifyPlaylistState
 		{
 			_lookup[playlist.Id] = playlist;
 		}
+		LastSync = lastSync;
 
 		NotifyStateChanged();
 	}
