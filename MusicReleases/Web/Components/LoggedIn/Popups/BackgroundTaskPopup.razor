@@ -31,7 +31,7 @@
     {
         <p>@ZeroTasksText</p>
     }
-    <Virtualize Items="@DisplayedTasks" Context="task" TItem="@SpotifyBackgroundTask">
+    <Virtualize Items="@DisplayedTasks" Context="task" TItem="@JakubKastner.MusicReleases.Objects.Spotify.BackgroundTask">
 
         <BackgroundTask SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Popup" @key="task.Id" />
 

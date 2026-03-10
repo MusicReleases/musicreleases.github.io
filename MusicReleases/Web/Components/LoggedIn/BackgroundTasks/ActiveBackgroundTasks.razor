@@ -27,7 +27,7 @@
             <p>No active tasks</p>
         }
 
-        <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@SpotifyBackgroundTask">
+        <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@JakubKastner.MusicReleases.Objects.Spotify.BackgroundTask">
             <BackgroundTask SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Sidebar" @key="task.Id" />
         </Virtualize>
 

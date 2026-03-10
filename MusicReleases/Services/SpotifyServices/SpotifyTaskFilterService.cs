@@ -26,7 +26,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		(TaskFilter.Failed,    TaskFilter.Succeeded)
 	];
 
-	private static readonly Dictionary<TaskFilter, Func<SpotifyBackgroundTask, bool>> FilterPredicates =
+	private static readonly Dictionary<TaskFilter, Func<BackgroundTask, bool>> FilterPredicates =
 	new()
 	{
 		[TaskFilter.Visible] = t => t.IsOverlayVisible,
@@ -111,14 +111,14 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		SetFilterInternal(newFilter);
 	}
 
-	public IEnumerable<SpotifyBackgroundTask> Apply(IEnumerable<SpotifyBackgroundTask> source)
+	public IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source)
 	{
 		var query = ApplyFilter(source);
 		query = ApplySearch(query);
 		return query;
 	}
 
-	private IEnumerable<SpotifyBackgroundTask> ApplyFilter(IEnumerable<SpotifyBackgroundTask> source)
+	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)
 	{
 		if (Filter.HasFlag(_defaultFilter))
 		{
@@ -135,7 +135,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		return query;
 	}
 
-	private IEnumerable<SpotifyBackgroundTask> ApplyFilterPair(IEnumerable<SpotifyBackgroundTask> source, (TaskFilter A, TaskFilter B) pair)
+	private IEnumerable<BackgroundTask> ApplyFilterPair(IEnumerable<BackgroundTask> source, (TaskFilter A, TaskFilter B) pair)
 	{
 		bool hasA = Filter.HasFlag(pair.A);
 		bool hasB = Filter.HasFlag(pair.B);
@@ -152,7 +152,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		return source;
 	}
 
-	private IEnumerable<SpotifyBackgroundTask> ApplySearch(IEnumerable<SpotifyBackgroundTask> source)
+	private IEnumerable<BackgroundTask> ApplySearch(IEnumerable<BackgroundTask> source)
 	{
 		if (SearchText.IsNullOrEmpty())
 		{

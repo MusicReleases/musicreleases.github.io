@@ -26,7 +26,7 @@ public class LoaderService : ILoaderService, IDisposable
 	public string ActiveClass => Loading.ToCssClass("active");
 
 
-	private readonly Dictionary<(LoadingType Type, LoadingCategory Category), bool> _loadingStates = [];
+	private readonly Dictionary<(BackgroundTaskType Type, BackgroundTaskCategory Category), bool> _loadingStates = [];
 
 
 	private void OnTaskManagerChanged()
@@ -34,27 +34,27 @@ public class LoaderService : ILoaderService, IDisposable
 		LoadingStateChanged?.Invoke();
 	}
 
-	public void StartLoading(LoadingType type, LoadingCategory category)
+	public void StartLoading(BackgroundTaskType type, BackgroundTaskCategory category)
 	{
 		SetLoading(type, category, true);
 	}
 
-	public void StopLoading(LoadingType type, LoadingCategory category)
+	public void StopLoading(BackgroundTaskType type, BackgroundTaskCategory category)
 	{
 		SetLoading(type, category, false);
 	}
 
-	private void SetLoading(LoadingType type, LoadingCategory category, bool loading)
+	private void SetLoading(BackgroundTaskType type, BackgroundTaskCategory category, bool loading)
 	{
 		_loadingStates[(type, category)] = loading;
 		LoadingStateChanged?.Invoke();
 	}
 
-	public bool IsLoading(LoadingType type, LoadingCategory category)
+	public bool IsLoading(BackgroundTaskType type, BackgroundTaskCategory category)
 	{
 		return _loadingStates.TryGetValue((type, category), out var value) && value;
 	}
-	public bool IsLoading(LoadingType type)
+	public bool IsLoading(BackgroundTaskType type)
 	{
 		return _loadingStates.Where(x => x.Key.Type == type).Any(x => x.Value);
 	}

@@ -12,7 +12,7 @@ public interface ISpotifyTaskFilterService
 
 	event Action? OnFilterChanged;
 
-	IEnumerable<SpotifyBackgroundTask> Apply(IEnumerable<SpotifyBackgroundTask> source);
+	IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source);
 	void ClearFilter();
 	bool IsActive(TaskFilter filter);
 	void SetFilter(TaskFilter filter);

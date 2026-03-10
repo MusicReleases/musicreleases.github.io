@@ -9,8 +9,8 @@ public interface ILoaderService
 
 	event Action? LoadingStateChanged;
 
-	bool IsLoading(LoadingType type);
-	bool IsLoading(LoadingType type, LoadingCategory category);
-	void StartLoading(LoadingType type, LoadingCategory category);
-	void StopLoading(LoadingType type, LoadingCategory category);
+	bool IsLoading(BackgroundTaskType type);
+	bool IsLoading(BackgroundTaskType type, BackgroundTaskCategory category);
+	void StartLoading(BackgroundTaskType type, BackgroundTaskCategory category);
+	void StopLoading(BackgroundTaskType type, BackgroundTaskCategory category);
 }

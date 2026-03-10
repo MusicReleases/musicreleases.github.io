@@ -11,7 +11,7 @@ public partial class BackgroundTask : IDisposable
 	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 	[Parameter]
-	public required SpotifyBackgroundTask SpotifyBackgroundTask { get; set; }
+	public required Objects.Spotify.BackgroundTask SpotifyBackgroundTask { get; set; }
 
 	[Parameter]
 	public required TaskComponent ComponentType { get; set; }

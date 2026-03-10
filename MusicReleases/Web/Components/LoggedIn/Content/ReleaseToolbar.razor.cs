@@ -10,7 +10,7 @@ public partial class ReleaseToolbar : IDisposable
 	public ILoaderService LoaderService { get; set; } = default!;
 
 
-	private bool Loading => LoaderService.IsLoading(LoadingType.Releases);
+	private bool Loading => LoaderService.IsLoading(BackgroundTaskType.Releases);
 
 
 	private const string _buttonClass = "toolbar-releases";

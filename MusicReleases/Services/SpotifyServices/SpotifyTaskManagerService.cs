@@ -1,48 +1,52 @@
-﻿using JakubKastner.MusicReleases.Objects.Spotify;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Services.BaseServices;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyTaskManagerService : ISpotifyTaskManagerService
+public class SpotifyTaskManagerService : IDisposable, ISpotifyTaskManagerService
 {
-	public event Action? OnChange;
+	private readonly ISpotifyTaskFilterService _filterService;
 
+	public SpotifyTaskManagerService(ISpotifyTaskFilterService filterService)
+	{
+		_filterService = filterService;
+		_filterService.OnFilterChanged += NotifyUI;
+	}
+
+	public void Dispose()
+	{
+		_filterService.OnFilterChanged -= NotifyUI;
+		GC.SuppressFinalize(this);
+	}
+
+
+	public event Action? OnChange;
 
 	public bool IsAnyTaskRunning => RunningTasks.Count > 0;
 
 	public bool IsAnyTaskVisible => VisibleTasks.Count > 0;
 
-	public IReadOnlyList<SpotifyBackgroundTask> AllTasks => _tasks;
+	public IReadOnlyList<BackgroundTask> AllTasks => _tasks;
 
-	public ICollection<SpotifyBackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];
+	public ICollection<BackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];
 
-	public ICollection<SpotifyBackgroundTask> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible)];
+	public ICollection<BackgroundTask> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible)];
 
-	public ICollection<SpotifyBackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
-
-
-	private readonly List<SpotifyBackgroundTask> _tasks = [];
-
-	private readonly ISpotifyTaskFilterService _filterService;
+	public ICollection<BackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
 
 
-	public SpotifyTaskManagerService(ISpotifyTaskFilterService filterService)
-	{
-		_filterService = filterService;
-		_filterService.OnFilterChanged += () => OnChange?.Invoke();
-	}
+	private readonly List<BackgroundTask> _tasks = [];
+
 
 	private void NotifyUI()
 	{
 		OnChange?.Invoke();
 	}
 
-	public async Task Run(string name, Func<SpotifyBackgroundTask, Task> work)
+	public async Task Run(string name, BackgroundTaskType type, Func<BackgroundTask, Task> work)
 	{
-		var task = new SpotifyBackgroundTask
-		{
-			Name = name,
-			Status = "Starting..."
-		};
+		var task = new BackgroundTask(name, type);
 
 		task.OnStateChanged += NotifyUI;
 
@@ -54,16 +58,40 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 			await work(task);
 			task.Status = "Finished";
 			task.Progress = 1.0;
+
+
+			var current = task.Steps.ElementAtOrDefault(task.CurrentStepIndex);
+			if (current is not null && current.Status == BackgroundTaskStatus.Running)
+			{
+				current.MarkCanceled();
+			}
+
 		}
 		catch (OperationCanceledException)
 		{
 			task.Status = "Canceled by user";
 			task.Failed = true;
+
+
+			var current = task.Steps.ElementAtOrDefault(task.CurrentStepIndex);
+			if (current is not null && current.Status == BackgroundTaskStatus.Running)
+			{
+				current.MarkCanceled();
+			}
 		}
 		catch (Exception ex)
 		{
 			task.Status = $"Error: {ex.Message}";
 			task.Failed = true;
+
+
+			var current = task.Steps.ElementAtOrDefault(task.CurrentStepIndex);
+			if (current is not null && current.Status == BackgroundTaskStatus.Running)
+			{
+				current.MarkFailed(ex);
+			}
+
+
 			Console.WriteLine(ex);
 		}
 		finally
@@ -76,7 +104,7 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 		}
 	}
 
-	private async Task HideAfterDelay(SpotifyBackgroundTask task)
+	private async Task HideAfterDelay(BackgroundTask task)
 	{
 		await Task.Delay(task.Failed ? 10000 : 5000);
 
@@ -93,13 +121,13 @@ public class SpotifyTaskManagerService : ISpotifyTaskManagerService
 		NotifyUI();
 	}
 
-	public void RemoveTask(SpotifyBackgroundTask task)
+	public void RemoveTask(BackgroundTask task)
 	{
 		_tasks.Remove(task);
 		NotifyUI();
 	}
 
-	public void HideTask(SpotifyBackgroundTask task)
+	public void HideTask(BackgroundTask task)
 	{
 		task.IsOverlayVisible = false;
 		NotifyUI();

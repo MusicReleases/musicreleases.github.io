@@ -40,9 +40,9 @@ public partial class UpdateButton : IDisposable
 
 	private bool IsLoading => ButtonType switch
 	{
-		UpdateButtonComponent.Artists => LoaderService.IsLoading(LoadingType.Artists),
-		UpdateButtonComponent.Releases => LoaderService.IsLoading(LoadingType.Releases),
-		UpdateButtonComponent.Playlists => LoaderService.IsLoading(LoadingType.Playlists) || LoaderService.IsLoading(LoadingType.PlaylistTracks),
+		UpdateButtonComponent.Artists => LoaderService.IsLoading(BackgroundTaskType.Artists),
+		UpdateButtonComponent.Releases => LoaderService.IsLoading(BackgroundTaskType.Releases),
+		UpdateButtonComponent.Playlists => LoaderService.IsLoading(BackgroundTaskType.Playlists) || LoaderService.IsLoading(BackgroundTaskType.PlaylistTracks),
 		_ => throw new NotImplementedException(),
 	};
 

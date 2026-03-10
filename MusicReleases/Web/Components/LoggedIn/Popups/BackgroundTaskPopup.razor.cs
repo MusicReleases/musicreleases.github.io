@@ -14,7 +14,7 @@ public partial class BackgroundTaskPopup : IDisposable
 	private ISpotifyTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
 
 
-	private ICollection<SpotifyBackgroundTask> DisplayedTasks => SpotifyTaskManagerService.FilteredTasks;
+	private ICollection<BackgroundTask> DisplayedTasks => SpotifyTaskManagerService.FilteredTasks;
 
 	private string ClearFilterButtonTitle => SpotifyTaskFilterService.IsFilterActive ? "Clear all task filters" : "No task filters applied";
 

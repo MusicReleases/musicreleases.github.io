@@ -1,20 +1,23 @@
-﻿using JakubKastner.MusicReleases.Objects.Spotify;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Objects.Spotify;
 
-namespace JakubKastner.MusicReleases.Services.SpotifyServices;
-
-public interface ISpotifyTaskManagerService
+namespace JakubKastner.MusicReleases.Services.SpotifyServices
 {
-	IReadOnlyList<SpotifyBackgroundTask> AllTasks { get; }
-	ICollection<SpotifyBackgroundTask> FilteredTasks { get; }
-	bool IsAnyTaskRunning { get; }
-	ICollection<SpotifyBackgroundTask> RunningTasks { get; }
-	ICollection<SpotifyBackgroundTask> VisibleTasks { get; }
-	bool IsAnyTaskVisible { get; }
+	public interface ISpotifyTaskManagerService
+	{
+		IReadOnlyList<BackgroundTask> AllTasks { get; }
+		ICollection<BackgroundTask> FilteredTasks { get; }
+		bool IsAnyTaskRunning { get; }
+		bool IsAnyTaskVisible { get; }
+		ICollection<BackgroundTask> RunningTasks { get; }
+		ICollection<BackgroundTask> VisibleTasks { get; }
 
-	event Action? OnChange;
+		event Action? OnChange;
 
-	void HideAllFinished();
-	void HideTask(SpotifyBackgroundTask task);
-	void RemoveTask(SpotifyBackgroundTask task);
-	Task Run(string name, Func<SpotifyBackgroundTask, Task> work);
+		void Dispose();
+		void HideAllFinished();
+		void HideTask(BackgroundTask task);
+		void RemoveTask(BackgroundTask task);
+		Task Run(string name, BackgroundTaskType type, Func<BackgroundTask, Task> work);
+	}
 }
