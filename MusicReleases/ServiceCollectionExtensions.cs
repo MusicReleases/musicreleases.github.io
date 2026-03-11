@@ -71,6 +71,8 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyReleaseFilterUrlSynchronizer, SpotifyReleaseFilterUrlSynchronizer>();
 		services.AddScoped<ISpotifyReleaseFilterUrlService, SpotifyReleaseFilterUrlService>();
 
+		services.AddScoped<ISpotifyArtistFilterService, SpotifyArtistFilterService>();
+
 		services.AddScoped<ISpotifyFilterPlaylistService, SpotifyPlaylistFilterService>();
 
 		services.AddScoped<ISpotifyReleaseService, SpotifyReleaseService>();

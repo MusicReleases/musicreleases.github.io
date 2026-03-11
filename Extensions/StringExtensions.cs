@@ -18,7 +18,7 @@ public static class StringExtensions
 	{
 		if (value.IsNullOrEmpty())
 		{
-			return "";
+			return string.Empty;
 		}
 
 		var sb = new StringBuilder(value.Length + 8);
@@ -36,5 +36,10 @@ public static class StringExtensions
 			sb.Append(char.ToLowerInvariant(c));
 		}
 		return sb.ToString();
+	}
+
+	public static string? EnsureText(this string? value)
+	{
+		return value.IsNullOrEmpty() ? null : value.Trim();
 	}
 }

@@ -2,6 +2,11 @@
 
 <UpdateButton Class="@_buttonClass" ButtonType="@UpdateButtonComponent.Artists" />
 
-<ClearFilterButton Class="@_buttonClass" ButtonType="@ClearFilterButtonComponent.Artists" />
+@if (!IsLoading)
+{
+    <ClearFilterButton Class="@_buttonClass" ButtonType="@ClearFilterButtonComponent.Artists" />
+
+    <MrSearch SearchText="@SearchText" Placeholder="Search artists..." ValueChanged="@Search" ClearButtonClass="@_buttonClass" />
+}
 
 @* <SortButton Class="@_buttonClass" ButtonType="@SortButtonComponent.Artists" /> *@

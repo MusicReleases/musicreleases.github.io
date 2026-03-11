@@ -407,7 +407,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 	public string? EnsureSearchText(string? searchText)
 	{
-		return searchText.IsNullOrEmpty() ? null : searchText.Trim();
+		return searchText.EnsureText();
 	}
 
 	public void EnsureFilter(SpotifyReleaseFilter filter)
