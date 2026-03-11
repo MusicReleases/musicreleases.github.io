@@ -19,7 +19,7 @@ public partial class ClearFilterButton : IDisposable
 
 	private string ButtonClass => $"filter-clear {ButtonType.ToLowerString()} {Class}";
 
-	private string ButtonText => ButtonType == ClearFilterButtonComponent.All ? (IsFilterActive ? "Clear all filters" : "No filters applied") : string.Empty;
+	private string ButtonText => ButtonType == ClearFilterButtonComponent.All ? ButtonTitle : string.Empty;
 
 	private string ButtonTitle => ButtonType switch
 	{

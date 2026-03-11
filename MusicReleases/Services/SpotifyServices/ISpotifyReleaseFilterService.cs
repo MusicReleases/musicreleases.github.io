@@ -30,6 +30,7 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		bool IsFilterActive(FilterType filterType);
 		void SeAdvancedFilter(ReleaseAdvancedFilter advancedFilter);
 		void SetFromUrl(SpotifyReleaseFilter newFilter);
+		void SetSearch(string? searchText);
 		void ToggleAdvancedFilter(ReleaseAdvancedFilter advancedFilter);
 		void UnsetAdvancedFilter(ReleaseAdvancedFilter advancedFilter);
 	}

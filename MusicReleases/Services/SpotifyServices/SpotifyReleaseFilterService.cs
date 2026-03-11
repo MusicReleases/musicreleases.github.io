@@ -400,6 +400,11 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		}
 	}
 
+	public void SetSearch(string? searchText)
+	{
+		SetSearchInternal(searchText);
+	}
+
 	public string? EnsureSearchText(string? searchText)
 	{
 		return searchText.IsNullOrEmpty() ? null : searchText.Trim();
