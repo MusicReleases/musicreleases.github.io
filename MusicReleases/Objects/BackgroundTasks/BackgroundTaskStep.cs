@@ -23,6 +23,9 @@ public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory categ
 		}
 	}
 
+	public bool Ended => _status.HasAnyFlag(BackgroundTaskStatus.Finished, BackgroundTaskStatus.Failed, BackgroundTaskStatus.Canceled);
+	public bool IsRunning => !Ended;
+
 	private DateTimeOffset _startedAt = DateTimeOffset.UtcNow;
 	public DateTimeOffset StartedAt
 	{

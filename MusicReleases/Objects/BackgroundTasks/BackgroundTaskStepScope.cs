@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.Services.BaseServices;
 
 namespace JakubKastner.MusicReleases.Objects.BackgroundTasks;
 
@@ -22,39 +21,13 @@ public sealed class BackgroundTaskStepScope(BackgroundTask task, BackgroundTaskS
 		_disposed = true;
 		_ctr?.Dispose();
 
-		if (_step.Status == BackgroundTaskStatus.Running && (_task.IsCancelRequested || (_ct.CanBeCanceled && _ct.IsCancellationRequested)))
+
+		if (_step.IsRunning && (_task.IsCancelRequested || (_ct.CanBeCanceled && _ct.IsCancellationRequested)))
 		{
 			_step.MarkCanceled();
-		}
-		else
-		{
-			_step.MarkFinished();
+			_step.NotifyChange();
 		}
 
-		/*if (_step.Status == BackgroundTaskStatus.Running)
-		{
-			if (_task.Status == BackgroundTaskStatus.Canceled)
-			{
-				_step.MarkCanceled();
-			}
-			else
-			{
-				_step.MarkFinished();
-			}
-		}*/
-		/*if (_step.Status == BackgroundTaskStatus.Running)
-		{
-			if (_task.IsCancelRequested)
-			{
-				_step.MarkCanceled();
-			}
-			else
-			{
-				_step.MarkFinished();
-			}
-		}*/
-
-		_step.NotifyChange();
 		_task.RecalculateProgress();
 		_task.NotifyChange();
 

@@ -25,8 +25,29 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 	public TimeSpan? Duration => FinishedAt.HasValue ? FinishedAt.Value - StartedAt : null;
 
 
-	private string _statusText = "Loading...";
+	private string? _statusText = null;
 	public string StatusText
+	{
+		get
+		{
+			var text = Status switch
+			{
+				BackgroundTaskStatus.Running => "Running",
+				BackgroundTaskStatus.Finished => "Finished",
+				BackgroundTaskStatus.Failed => "Failed",
+				BackgroundTaskStatus.Canceled => "Canceled by user",
+				_ => "Unknown"
+			};
+
+			if (_statusText.IsNotNullOrEmpty())
+			{
+				text += $": {_statusText}";
+			}
+
+			return text;
+		}
+	}
+	/*public string StatusText
 	{
 		get => _statusText;
 		set
@@ -37,12 +58,12 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 				NotifyChange();
 			}
 		}
-	}
+	}*/
 	public bool IsCancelRequested { get; internal set; }
 
-	public BackgroundTaskStatus Status { get; private set; } = BackgroundTaskStatus.Running;
+	//public BackgroundTaskStatus Status { get; private set; } = BackgroundTaskStatus.Running;
 
-	/*public BackgroundTaskStatus Status
+	public BackgroundTaskStatus Status
 	{
 		get
 		{
@@ -68,7 +89,7 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 
 			return BackgroundTaskStatus.Running;
 		}
-	}*/
+	}
 
 	public bool Ended => Status.HasAnyFlag(BackgroundTaskStatus.Finished, BackgroundTaskStatus.Failed, BackgroundTaskStatus.Canceled);
 	public bool IsRunning => !Ended;
@@ -103,13 +124,17 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 		}
 	}
 
-	public int CurrentStepIndex { get; set; }
+	public int CurrentStepIndex { get; private set; }
 
 	public IReadOnlyList<BackgroundTaskStep> Steps => _steps;
 	private readonly List<BackgroundTaskStep> _steps = [];
 
 	public IReadOnlyList<BackgroundTaskLink> Links => _links;
 	private readonly List<BackgroundTaskLink> _links = [];
+
+
+	public CancellationTokenSource Cts { get; } = new();
+	public CancellationToken Token => Cts.Token;
 
 	public void NotifyChange()
 	{
@@ -166,11 +191,30 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 	}
 
 
+
+	public void RequestCancel()
+	{
+		if (!IsCancelRequested)
+		{
+			IsCancelRequested = true;
+			try
+			{
+				Cts.Cancel();
+			}
+			catch
+			{
+				// ignore
+			}
+			NotifyChange();
+		}
+	}
+
+
 	public void MarkCanceled()
 	{
 		IsCancelRequested = true;
-		Status = BackgroundTaskStatus.Canceled;
-		StatusText = "Canceled by user";
+		//Status = BackgroundTaskStatus.Canceled;
+		//_statusText = "Canceled by user";
 
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
 		{
@@ -182,8 +226,8 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 
 	public void MarkFailed(Exception ex)
 	{
-		Status = BackgroundTaskStatus.Failed;
-		StatusText = $"Error: {ex.Message}";
+		//Status = BackgroundTaskStatus.Failed;
+		_statusText = ex.Message;
 
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
 		{
@@ -199,8 +243,8 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 			return;
 		}
 
-		Status = BackgroundTaskStatus.Finished;
-		StatusText = "Finished";
+		//Status = BackgroundTaskStatus.Finished;
+		//_statusText = "Finished";
 
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
 		{

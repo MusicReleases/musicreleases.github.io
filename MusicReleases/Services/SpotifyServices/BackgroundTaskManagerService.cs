@@ -60,10 +60,8 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 		try
 		{
 			await work(task);
-			if (!task.IsCancelRequested)
-			{
-				task.MarkFinished();
-			}
+
+			task.MarkFinished();
 			task.RecalculateProgress();
 		}
 		catch (OperationCanceledException)

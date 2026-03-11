@@ -56,17 +56,17 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 				}
 			}
 
-			await _taskManager.Run(BackgroundTaskType.Releases, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()}", async task =>
+			await _taskManager.Run(BackgroundTaskType.Releases, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()} from followed artists", async task =>
 			{
 				var userId = _spotifyApiUserService.GetUserIdRequired();
 
 				if (!isInState)
 				{
 					// load data from db to state
-					await using (await task.BeginStepAsync("Loading from DB", BackgroundTaskCategory.GetDb, ct))
+					await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, ct, async step =>
 					{
 						await LoadFromDbToState(releaseGroup, userId, task, ct);
-					}
+					});
 
 					var shouldSync = ShouldSync(releaseGroup, forceUpdate);
 
@@ -78,17 +78,22 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 				}
 
 				// load from api
-				ReleaseAggregation releaseAggregation;
-				await using (await task.BeginStepAsync("Loading from API", BackgroundTaskCategory.GetApi, ct))
+				ReleaseAggregation? releaseAggregation = null;
+				await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, ct, async step =>
 				{
 					releaseAggregation = await LoadFromApi(releaseGroup, task, ct);
-				}
+				});
 
 				// save api data to db and state
-				await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb, ct))
+				await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, ct, async step =>
 				{
+					if (releaseAggregation is null)
+					{
+						throw new NullReferenceException(nameof(releaseAggregation));
+					}
+
 					await SaveToDbAndState(releaseGroup, releaseAggregation, userId, task, ct);
-				}
+				});
 			});
 		}
 		catch (OperationCanceledException)

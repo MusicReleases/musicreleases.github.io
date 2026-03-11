@@ -45,7 +45,7 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 				}
 			}
 
-			await _taskManager.Run(BackgroundTaskType.Artists, "Geting artists", "Getting loggedin user artists", async task =>
+			await _taskManager.Run(BackgroundTaskType.Artists, "Geting artists", "Getting followed artists", async task =>
 			{
 				var userId = _spotifyApiUserService.GetUserIdRequired();
 
@@ -53,10 +53,10 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 				if (!isInState)
 				{
 					// load data from db to state
-					await using (await task.BeginStepAsync("Loading from DB", BackgroundTaskCategory.GetDb, ct))
+					await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, ct, async step =>
 					{
 						await LoadFromDbToState(userId, task, ct);
-					}
+					});
 
 					// calculate last sync
 					var shouldSync = ShouldSync(forceUpdate);
@@ -69,17 +69,21 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 				}
 
 				// load from api
-				List<SpotifyArtist> apiArtists;
-				await using (await task.BeginStepAsync("Loading from API", BackgroundTaskCategory.GetApi, ct))
+				List<SpotifyArtist>? apiArtists = null;
+				await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, ct, async step =>
 				{
 					apiArtists = await LoadFromApi(task, ct);
-				}
+				});
 
 				// save api data to db and state
-				await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb, ct))
+				await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, ct, async step =>
 				{
+					if (apiArtists is null)
+					{
+						throw new NullReferenceException(nameof(apiArtists));
+					}
 					await SaveToDbAndState(apiArtists, userId, task, ct);
-				}
+				});
 			});
 		}
 		catch (OperationCanceledException)

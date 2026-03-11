@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public static class BackgroundTaskExtensions
 {
-	public static async ValueTask<IAsyncDisposable> BeginStepAsync(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct = default)
+	private static async ValueTask<IAsyncDisposable> BeginStepAsync(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct = default)
 	{
 		var step = new BackgroundTaskStep(name, category);
 		task.AddStep(step);
@@ -22,9 +22,43 @@ public static class BackgroundTaskExtensions
 			});
 		}
 
-
 		return new BackgroundTaskStepScope(task, step, ct, ctr);
 	}
+
+	public static async Task RunStepAsync(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
+	{
+		await RunStepAsyncInternal(task, name, category, task.Token, work);
+	}
+
+	public static async Task RunStep(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct, Func<CancellationToken, Task> work)
+	{
+		await RunStepAsyncInternal(task, name, category, ct, work);
+	}
+
+	private static async Task RunStepAsyncInternal(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct, Func<CancellationToken, Task> work)
+	{
+		await using (await task.BeginStepAsync(name, category, ct))
+		{
+			try
+			{
+				await work(ct);
+
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFinished();
+			}
+			catch (OperationCanceledException)
+			{
+				throw;
+			}
+			catch (Exception ex)
+			{
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFailed(ex);
+				throw;
+			}
+		}
+	}
+
 
 	public static void SetSubProgress(this BackgroundTask task, double value, string? label = null)
 	{
@@ -139,6 +173,11 @@ public static class BackgroundTaskStepExtensions
 {
 	public static void MarkFailed(this BackgroundTaskStep step, Exception ex, bool transient = false, string? code = null)
 	{
+		if (step.Ended)
+		{
+			return;
+		}
+
 		step.Status = BackgroundTaskStatus.Failed;
 		step.FinishedAt = DateTimeOffset.UtcNow;
 		step.ErrorMessage = ex.Message;
@@ -148,12 +187,22 @@ public static class BackgroundTaskStepExtensions
 
 	public static void MarkCanceled(this BackgroundTaskStep step)
 	{
+		if (step.Ended)
+		{
+			return;
+		}
+
 		step.Status = BackgroundTaskStatus.Canceled;
 		step.FinishedAt = DateTimeOffset.UtcNow;
 	}
 
 	public static void MarkFinished(this BackgroundTaskStep step)
 	{
+		if (step.Ended)
+		{
+			return;
+		}
+
 		step.Status = BackgroundTaskStatus.Finished;
 		step.FinishedAt = DateTimeOffset.UtcNow;
 	}
