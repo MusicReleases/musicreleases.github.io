@@ -20,9 +20,8 @@ public enum BackgroundTaskCategory
 
 public enum BackgroundTaskStatus
 {
-	Queued,
 	Running,
-	Succeeded,
+	Canceled,
 	Failed,
-	Canceled
+	Finished,
 }

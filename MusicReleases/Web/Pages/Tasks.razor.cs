@@ -8,7 +8,7 @@ namespace JakubKastner.MusicReleases.Web.Pages;
 public partial class Tasks
 {
 	[Inject]
-	private ISpotifyTaskFilterUrlSynchronizer SpotifyTaskFilterUrlSynchronizer { get; set; } = default!;
+	private IBackgroundTaskFilterUrlSynchronizer SpotifyTaskFilterUrlSynchronizer { get; set; } = default!;
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;

@@ -1,14 +1,13 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
-using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyTaskManagerService : IDisposable, ISpotifyTaskManagerService
+public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerService
 {
-	private readonly ISpotifyTaskFilterService _filterService;
+	private readonly IBackgroundTaskFilterService _filterService;
 
-	public SpotifyTaskManagerService(ISpotifyTaskFilterService filterService)
+	public BackgroundTaskManagerService(IBackgroundTaskFilterService filterService)
 	{
 		_filterService = filterService;
 		_filterService.OnFilterChanged += NotifyUI;
@@ -44,77 +43,64 @@ public class SpotifyTaskManagerService : IDisposable, ISpotifyTaskManagerService
 		OnChange?.Invoke();
 	}
 
-	public async Task Run(string name, BackgroundTaskType type, Func<BackgroundTask, Task> work)
-	{
-		var task = new BackgroundTask(name, type);
 
+	public Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work)
+	{
+		var task = new BackgroundTask(type, name, info);
 		task.OnStateChanged += NotifyUI;
 
 		_tasks.Insert(0, task);
 		NotifyUI();
 
+		return RunCoreAsync(task, work);
+	}
+
+	private async Task RunCoreAsync(BackgroundTask task, Func<BackgroundTask, Task> work)
+	{
 		try
 		{
 			await work(task);
-			task.Status = "Finished";
-			task.Progress = 1.0;
-
-
-			var current = task.Steps.ElementAtOrDefault(task.CurrentStepIndex);
-			if (current is not null && current.Status == BackgroundTaskStatus.Running)
+			if (!task.IsCancelRequested)
 			{
-				current.MarkCanceled();
+				task.MarkFinished();
 			}
-
+			task.RecalculateProgress();
 		}
 		catch (OperationCanceledException)
 		{
-			task.Status = "Canceled by user";
-			task.Failed = true;
-
-
-			var current = task.Steps.ElementAtOrDefault(task.CurrentStepIndex);
-			if (current is not null && current.Status == BackgroundTaskStatus.Running)
-			{
-				current.MarkCanceled();
-			}
+			task.MarkCanceled();
 		}
 		catch (Exception ex)
 		{
-			task.Status = $"Error: {ex.Message}";
-			task.Failed = true;
-
-
-			var current = task.Steps.ElementAtOrDefault(task.CurrentStepIndex);
-			if (current is not null && current.Status == BackgroundTaskStatus.Running)
-			{
-				current.MarkFailed(ex);
-			}
-
-
-			Console.WriteLine(ex);
+			task.MarkFailed(ex);
 		}
 		finally
 		{
-			task.IsRunning = false;
+			task.RecalculateProgress();
 			task.OnStateChanged -= NotifyUI;
 			NotifyUI();
-
 			_ = HideAfterDelay(task);
 		}
 	}
 
 	private async Task HideAfterDelay(BackgroundTask task)
 	{
-		await Task.Delay(task.Failed ? 10000 : 5000);
+		var delay = task.Status switch
+		{
+			BackgroundTaskStatus.Failed => 10000,
+			BackgroundTaskStatus.Canceled => 7000,
+			_ => 5000
+		};
 
-		task.IsOverlayVisible = false;
-		NotifyUI();
+
+		await Task.Delay(delay);
+
+		HideTask(task);
 	}
 
-	public void HideAllFinished()
+	public void HideAllEnded()
 	{
-		foreach (var task in _tasks.Where(t => !t.IsRunning))
+		foreach (var task in _tasks.Where(t => t.Ended))
 		{
 			task.IsOverlayVisible = false;
 		}

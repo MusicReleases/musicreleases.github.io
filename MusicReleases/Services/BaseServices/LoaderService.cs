@@ -5,9 +5,9 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public class LoaderService : ILoaderService, IDisposable
 {
-	private readonly ISpotifyTaskManagerService _spotifyTaskManagerService;
+	private readonly IBackgroundTaskManagerService _spotifyTaskManagerService;
 
-	public LoaderService(ISpotifyTaskManagerService spotifyTaskManagerService)
+	public LoaderService(IBackgroundTaskManagerService spotifyTaskManagerService)
 	{
 		_spotifyTaskManagerService = spotifyTaskManagerService;
 		_spotifyTaskManagerService.OnChange += OnTaskManagerChanged;

@@ -7,7 +7,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 public partial class BackgroundTaskFilterButton : IDisposable
 {
 	[Inject]
-	private ISpotifyTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
+	private IBackgroundTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
 
 	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;

@@ -411,6 +411,7 @@
                 margin-left: 5px;
                 @include chip-left;
             }
+
             &.middle {
                 @include chip-middle;
             }
@@ -427,6 +428,10 @@
             &.left {
                 margin-left: 5px;
                 @include chip-left;
+            }
+
+            &.middle {
+                @include chip-middle;
             }
 
             &.right {

@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.UiServices;
 
-public class PopupService(ISpotifyTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, ISettingsService settingsService, NavigationManager navManager) : IPopupService
+public class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, ISettingsService settingsService, NavigationManager navManager) : IPopupService
 {
-	private readonly ISpotifyTaskFilterUrlSynchronizer _spotifyTaskFilterUrlSynchronizer = spotifyTaskFilterUrlSynchronizer;
+	private readonly IBackgroundTaskFilterUrlSynchronizer _spotifyTaskFilterUrlSynchronizer = spotifyTaskFilterUrlSynchronizer;
 
 	private readonly ISettingsService _settingsService = settingsService;
 
@@ -67,13 +67,17 @@ public class PopupService(ISpotifyTaskFilterUrlSynchronizer spotifyTaskFilterUrl
 		{
 			// close popup
 
-			if (_lastUrl.IsNullOrEmpty())
+			var lastUrl = _lastUrl;
+
+			_lastUrl = null;
+
+			if (lastUrl.IsNullOrEmpty())
 			{
 				_navManager.NavigateTo("/");
 			}
 			else
 			{
-				_navManager.NavigateTo(_lastUrl, false);
+				_navManager.NavigateTo(lastUrl, false);
 			}
 			return;
 		}

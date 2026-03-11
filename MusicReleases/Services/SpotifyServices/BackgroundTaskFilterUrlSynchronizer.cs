@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterUrlSynchronizer
+public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskFilterUrlSynchronizer
 {
-	private readonly ISpotifyTaskFilterService _filterService;
+	private readonly IBackgroundTaskFilterService _filterService;
 
-	private readonly ISpotifyTaskFilterUrlService _filterUrlService;
+	private readonly IBackgroundTaskFilterUrlService _filterUrlService;
 
 	private readonly IDbSpotifyUserFilterTaskService _dbService;
 
@@ -18,7 +18,7 @@ public class SpotifyTaskFilterUrlSynchronizer : IDisposable, ISpotifyTaskFilterU
 	private readonly NavigationManager _navManager;
 
 
-	public SpotifyTaskFilterUrlSynchronizer(ISpotifyTaskFilterService filterService, ISpotifyTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;

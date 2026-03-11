@@ -2,7 +2,7 @@
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
@@ -13,7 +13,7 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, ISpotifyTaskManagerService taskManager) : ISpotifyReleaseService
+public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager) : ISpotifyReleaseService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly IApiReleaseClient _api = api;
@@ -23,7 +23,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 	private readonly IDbSpotifyUserUpdateService _metaDb = metaDb;
 	private readonly ISpotifyArtistState _artistState = artistState;
 	private readonly ISpotifyReleaseState _state = state;
-	private readonly ISpotifyTaskManagerService _taskManager = taskManager;
+	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
 
 	private CancellationTokenSource? _cts;
 
@@ -42,45 +42,54 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 
 		try
 		{
-			await _taskManager.Run($"Geting {releaseGroup.ToFriendlyString()}", BackgroundTaskType.Releases,
-				async task =>
+			var isInState = _state.ReleasesByType.GetValueOrDefault(releaseGroup) is not null;
+
+			if (isInState)
+			{
+				// calculate last sync
+				var shouldSync = ShouldSync(releaseGroup, forceUpdate);
+
+				if (!shouldSync)
 				{
-					var userId = _spotifyApiUserService.GetUserIdRequired();
+					// no need to sync
+					return;
+				}
+			}
 
-					var isInState = _state.ReleasesByType.GetValueOrDefault(releaseGroup) is not null;
+			await _taskManager.Run(BackgroundTaskType.Releases, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()}", async task =>
+			{
+				var userId = _spotifyApiUserService.GetUserIdRequired();
 
-					if (!isInState)
+				if (!isInState)
+				{
+					// load data from db to state
+					await using (await task.BeginStepAsync("Loading from DB", BackgroundTaskCategory.GetDb, ct))
 					{
-						// load data from db to state
-						await using (await task.BeginStepAsync("Loading from DB", BackgroundTaskCategory.GetDb))
-						{
-							await LoadFromDbToState(releaseGroup, userId, task, ct);
-						}
+						await LoadFromDbToState(releaseGroup, userId, task, ct);
 					}
 
-					// calculate last sync
-					var lastSync = _state.LastSyncByType.GetValueOrDefault(releaseGroup);
-					var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
+					var shouldSync = ShouldSync(releaseGroup, forceUpdate);
 
 					if (!shouldSync)
 					{
-						// end task (synced)
+						// no need to sync
 						return;
 					}
+				}
 
-					// load from api
-					ReleaseAggregation releaseAggregation;
-					await using (await task.BeginStepAsync("Loading from API", BackgroundTaskCategory.GetApi))
-					{
-						releaseAggregation = await LoadFromApi(releaseGroup, task, ct);
-					}
+				// load from api
+				ReleaseAggregation releaseAggregation;
+				await using (await task.BeginStepAsync("Loading from API", BackgroundTaskCategory.GetApi, ct))
+				{
+					releaseAggregation = await LoadFromApi(releaseGroup, task, ct);
+				}
 
-					// save api data to db and state
-					await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb))
-					{
-						await SaveToDbAndState(releaseGroup, releaseAggregation, userId, task, ct);
-					}
-				});
+				// save api data to db and state
+				await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb, ct))
+				{
+					await SaveToDbAndState(releaseGroup, releaseAggregation, userId, task, ct);
+				}
+			});
 		}
 		catch (OperationCanceledException)
 		{
@@ -88,6 +97,17 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		}
 	}
 
+	private bool ShouldSync(ReleaseGroup releaseGroup, bool forceUpdate)
+	{
+		if (forceUpdate)
+		{
+			return true;
+		}
+		var lastSync = _state.LastSyncByType.GetValueOrDefault(releaseGroup);
+		var shouldSync = (DateTime.Now - lastSync).TotalHours > 24;
+
+		return shouldSync;
+	}
 
 	private async Task LoadFromDbToState(ReleaseGroup releaseGroup, string userId, BackgroundTask task, CancellationToken ct)
 	{
@@ -174,7 +194,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 			i++;
 		}
 
-		task.SetSubProgress(0.00, $"api.get.releases.done.total-{allReleasesToSave.Count}");
+		task.SetSubProgress(1.00, $"api.get.releases.done.total-{allReleasesToSave.Count}");
 		return new(allReleasesToSave.ToList(), allArtistsToSave.ToList(), allLinksToSave.ToList());
 	}
 

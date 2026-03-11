@@ -47,12 +47,10 @@ public enum ReleaseAdvancedFilter
 [Flags]
 public enum TaskFilter
 {
-	Visible = 1 << 0, // 1
-	Hidden = 1 << 1, // 2
-	Running = 1 << 2, // 4
+	Running = 1 << 0, // 1
+	Canceled = 1 << 1, // 2
+	Failed = 1 << 2, // 4
 	Finished = 1 << 3, // 8
-	Failed = 1 << 4, // 16
-	Succeeded = 1 << 5, // 32
 
-	All = Visible | Hidden | Running | Finished | Failed | Succeeded,
+	All = Running | Canceled | Failed | Finished,
 }

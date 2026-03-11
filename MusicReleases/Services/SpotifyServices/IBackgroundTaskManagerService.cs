@@ -1,9 +1,9 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices
 {
-	public interface ISpotifyTaskManagerService
+	public interface IBackgroundTaskManagerService
 	{
 		IReadOnlyList<BackgroundTask> AllTasks { get; }
 		ICollection<BackgroundTask> FilteredTasks { get; }
@@ -15,9 +15,9 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		event Action? OnChange;
 
 		void Dispose();
-		void HideAllFinished();
+		void HideAllEnded();
 		void HideTask(BackgroundTask task);
 		void RemoveTask(BackgroundTask task);
-		Task Run(string name, BackgroundTaskType type, Func<BackgroundTask, Task> work);
+		Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work);
 	}
 }

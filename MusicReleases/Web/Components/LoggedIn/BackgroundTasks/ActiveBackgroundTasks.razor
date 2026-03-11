@@ -1,4 +1,4 @@
-﻿@using JakubKastner.MusicReleases.Objects.Spotify
+﻿@using JakubKastner.MusicReleases.Objects.BackgroundTasks
 
 
 <div class="tasks">
@@ -14,7 +14,7 @@
 
         @if (SpotifyTaskManagerService.IsAnyTaskVisible)
         {
-            <MrButton Class="sidebar-header" Title="Close finished tasks" OnClick="@SpotifyTaskManagerService.HideAllFinished">
+            <MrButton Class="sidebar-header" Title="Close finished tasks" OnClick="@SpotifyTaskManagerService.HideAllEnded">
                 <MrIcon Icon="@LucideIcon.X" />
             </MrButton>
         }
@@ -27,8 +27,8 @@
             <p>No active tasks</p>
         }
 
-        <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@JakubKastner.MusicReleases.Objects.Spotify.BackgroundTask">
-            <BackgroundTask SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Sidebar" @key="task.Id" />
+        <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@BackgroundTask">
+            <BackgroundTaskCard SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Sidebar" @key="task.Id" />
         </Virtualize>
 
     </div>

@@ -1,5 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using Microsoft.AspNetCore.Components;
 
@@ -8,10 +8,10 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Popups;
 public partial class BackgroundTaskPopup : IDisposable
 {
 	[Inject]
-	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
+	private IBackgroundTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
 
 
 	private ICollection<BackgroundTask> DisplayedTasks => SpotifyTaskManagerService.FilteredTasks;

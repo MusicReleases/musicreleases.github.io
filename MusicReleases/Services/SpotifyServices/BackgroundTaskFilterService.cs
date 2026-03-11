@@ -1,9 +1,9 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyTaskFilterService : ISpotifyTaskFilterService
+public class BackgroundTaskFilterService : IBackgroundTaskFilterService
 {
 	public event Action? OnFilterChanged;
 
@@ -19,25 +19,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 	private const TaskFilter _defaultFilter = TaskFilter.All;
 
 
-	private static readonly (TaskFilter A, TaskFilter B)[] FilterPairs =
-	[
-		(TaskFilter.Visible,   TaskFilter.Hidden),
-		(TaskFilter.Running,   TaskFilter.Finished),
-		(TaskFilter.Failed,    TaskFilter.Succeeded)
-	];
-
-	private static readonly Dictionary<TaskFilter, Func<BackgroundTask, bool>> FilterPredicates =
-	new()
-	{
-		[TaskFilter.Visible] = t => t.IsOverlayVisible,
-		[TaskFilter.Hidden] = t => !t.IsOverlayVisible,
-
-		[TaskFilter.Running] = t => t.IsRunning,
-		[TaskFilter.Finished] = t => !t.IsRunning,
-
-		[TaskFilter.Failed] = t => t.Failed,
-		[TaskFilter.Succeeded] = t => !t.Failed,
-	};
+	private static readonly TaskFilter[] FilterGroup = [TaskFilter.Running, TaskFilter.Canceled, TaskFilter.Failed, TaskFilter.Finished];
 
 
 	private void SetFilterAndSearchInternal(TaskFilter newFilter, string? newSearchText)
@@ -76,7 +58,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 
 	public void SetFilterAndSearch(TaskFilter filter, string? searchText)
 	{
-		var newFilter = EnsureFilterPairs(filter);
+		var newFilter = EnsureFilter(filter);
 		var newSearchText = EnsureSearchText(searchText);
 
 		SetFilterAndSearchInternal(newFilter, newSearchText);
@@ -91,14 +73,14 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 	public void ToggleFilter(TaskFilter filter)
 	{
 		var newFilter = Filter ^ filter;
-		newFilter = EnsureFilterPairs(newFilter);
+		newFilter = EnsureFilter(newFilter);
 		SetFilterInternal(newFilter);
 	}
 
 	public void SetFilter(TaskFilter filter)
 	{
 		var newFilter = Filter | filter;
-		newFilter = EnsureFilterPairs(newFilter);
+		newFilter = EnsureFilter(newFilter);
 
 		SetFilterInternal(newFilter);
 	}
@@ -106,7 +88,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 	public void UnsetFilter(TaskFilter filter)
 	{
 		var newFilter = Filter & ~filter;
-		newFilter = EnsureFilterPairs(newFilter);
+		newFilter = EnsureFilter(newFilter);
 
 		SetFilterInternal(newFilter);
 	}
@@ -120,36 +102,31 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 
 	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)
 	{
-		if (Filter.HasFlag(_defaultFilter))
+		if (IsActive(_defaultFilter))
 		{
 			return source;
 		}
 
 		var query = source;
 
-		foreach (var pair in FilterPairs)
-		{
-			query = ApplyFilterPair(query, pair);
-		}
+		var running = IsActive(TaskFilter.Running);
+		var canceled = IsActive(TaskFilter.Canceled);
+		var failed = IsActive(TaskFilter.Failed);
+		var finished = IsActive(TaskFilter.Finished);
 
+		var anySelected = running || canceled || failed || finished;
+		var allSelected = running && canceled && failed && finished;
+
+		if (anySelected && !allSelected)
+		{
+			query = query.Where(t =>
+				(running && t.Status == BackgroundTaskStatus.Running) ||
+				(canceled && t.Status == BackgroundTaskStatus.Canceled) ||
+				(failed && t.Status == BackgroundTaskStatus.Failed) ||
+				(finished && t.Status == BackgroundTaskStatus.Finished)
+			);
+		}
 		return query;
-	}
-
-	private IEnumerable<BackgroundTask> ApplyFilterPair(IEnumerable<BackgroundTask> source, (TaskFilter A, TaskFilter B) pair)
-	{
-		bool hasA = Filter.HasFlag(pair.A);
-		bool hasB = Filter.HasFlag(pair.B);
-
-		if (hasA && !hasB)
-		{
-			return source.Where(FilterPredicates[pair.A]);
-		}
-		if (hasB && !hasA)
-		{
-			return source.Where(FilterPredicates[pair.B]);
-		}
-
-		return source;
 	}
 
 	private IEnumerable<BackgroundTask> ApplySearch(IEnumerable<BackgroundTask> source)
@@ -158,7 +135,7 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		{
 			return source;
 		}
-		var query = source.Where(t => (t.Name?.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ?? false) || (t.Status?.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ?? false));
+		var query = source.Where(t => (t.Name?.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ?? false) || (t.StatusText?.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ?? false));
 
 		return query;
 	}
@@ -168,19 +145,15 @@ public class SpotifyTaskFilterService : ISpotifyTaskFilterService
 		return searchText.IsNullOrEmpty() ? null : searchText.Trim();
 	}
 
-	private static TaskFilter EnsureFilterPairs(TaskFilter newFilter)
+	private static TaskFilter EnsureFilter(TaskFilter newFilter)
 	{
-		foreach (var (pairA, pairB) in FilterPairs)
-		{
-			var flagA = newFilter.HasFlag(pairA);
-			var flagB = newFilter.HasFlag(pairB);
+		var anyGroupActive = newFilter.HasAnyFlag(FilterGroup);
 
-			// none of pair filter is active -> turn on both of them
-			if (!flagA && !flagB)
-			{
-				newFilter |= pairA | pairB;
-			}
+		if (!anyGroupActive)
+		{
+			return _defaultFilter;
 		}
+
 		return newFilter;
 	}
 

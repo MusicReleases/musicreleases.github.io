@@ -6,7 +6,7 @@
                 @SpotifyBackgroundTask.Name
             </span>
 
-            @if (!SpotifyBackgroundTask.IsRunning)
+            @if (SpotifyBackgroundTask.Ended)
             {
                 <MrButton Class="task" OnClick="@DeleteOrHideTask" Title="@DeleteOrHideButtonTitle">
                     <MrIcon Icon="@LucideIcon.X" />
@@ -20,7 +20,7 @@
         </div>
 
         <div class="status">
-            @SpotifyBackgroundTask.Status
+            @SpotifyBackgroundTask.StatusText
         </div>
 
     </div>

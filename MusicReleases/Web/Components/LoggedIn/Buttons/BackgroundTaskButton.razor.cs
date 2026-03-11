@@ -14,7 +14,7 @@ public partial class BackgroundTaskButton : IDisposable
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]

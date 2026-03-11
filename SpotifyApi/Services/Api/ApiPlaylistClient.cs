@@ -30,7 +30,7 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		return playlists;
 	}
 
-	public async Task<SpotifyPlaylist> CreatePlaylist(string userId, string name, bool addToProfile)
+	public async Task<SpotifyPlaylist> CreatePlaylist(string userId, string name, bool addToProfile, CancellationToken ct = default)
 	{
 		var request = new PlaylistCreateRequest(name)
 		{
@@ -40,13 +40,13 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		};
 
 		var spotifyClient = _client.GetClient();
-		var playlistApi = await spotifyClient.Playlists.Create(request);
+		var playlistApi = await spotifyClient.Playlists.Create(request, ct);
 		var playlist = new SpotifyPlaylist(playlistApi);
 
 		return playlist;
 	}
 
-	public async Task<string> AddTracksToPlaylist(string playlistId, IEnumerable<string> trackUris, bool positionTop)
+	public async Task<string> AddTracksToPlaylist(string playlistId, IEnumerable<string> trackUris, bool positionTop, CancellationToken ct = default)
 	{
 		var request = new PlaylistAddItemsRequest([.. trackUris])
 		{
@@ -54,11 +54,11 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		};
 
 		var spotifyClient = _client.GetClient();
-		var snapshot = await spotifyClient.Playlists.AddPlaylistItems(playlistId, request);
+		var snapshot = await spotifyClient.Playlists.AddPlaylistItems(playlistId, request, ct);
 		return snapshot.SnapshotId;
 	}
 
-	public async Task<string> RemoveTracksFromPlaylist(string playlistId, IEnumerable<string> trackUris)
+	public async Task<string> RemoveTracksFromPlaylist(string playlistId, IEnumerable<string> trackUris, CancellationToken ct = default)
 	{
 		var request = new PlaylistRemoveItemsRequestV2
 		{
@@ -66,7 +66,7 @@ public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
 		};
 
 		var spotifyClient = _client.GetClient();
-		var snapshot = await spotifyClient.Playlists.RemovePlaylistItems(playlistId, request);
+		var snapshot = await spotifyClient.Playlists.RemovePlaylistItems(playlistId, request, ct);
 		return snapshot.SnapshotId;
 	}
 }

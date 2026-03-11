@@ -1,4 +1,4 @@
-﻿@using JakubKastner.MusicReleases.Objects.Spotify
+﻿@using JakubKastner.MusicReleases.Objects.BackgroundTasks
 
 <h1 class="header">
     <MrIcon Icon="@LucideIcon.ListTodo" Title="Tasks" />
@@ -11,13 +11,9 @@
     </MrButton>
 
     <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@TaskFilter.Running" />
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Middle" FilterType="@TaskFilter.Canceled" />
+    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Middle" FilterType="@TaskFilter.Failed" />
     <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@TaskFilter.Finished" />
-
-    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@TaskFilter.Failed" />
-    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@TaskFilter.Succeeded" />
-
-    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Left" FilterType="@TaskFilter.Hidden" />
-    <BackgroundTaskFilterButton ButtonType="@ChipFilterButtonComponent.Right" FilterType="@TaskFilter.Visible" />
 
 </div>
 
@@ -31,9 +27,9 @@
     {
         <p>@ZeroTasksText</p>
     }
-    <Virtualize Items="@DisplayedTasks" Context="task" TItem="@JakubKastner.MusicReleases.Objects.Spotify.BackgroundTask">
+    <Virtualize Items="@DisplayedTasks" Context="task" TItem="@BackgroundTask">
 
-        <BackgroundTask SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Popup" @key="task.Id" />
+        <BackgroundTaskRow SpotifyBackgroundTask="@task" @key="task.Id" />
 
     </Virtualize>
 

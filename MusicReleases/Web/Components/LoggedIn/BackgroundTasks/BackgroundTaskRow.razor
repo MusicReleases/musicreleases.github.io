@@ -1,0 +1,67 @@
+﻿@using System.Globalization
+
+
+<MrRow Class="@Class">
+    <div class="info">
+        <span class="title">
+            @SpotifyBackgroundTask.Name
+        </span>
+        <span class="detail">
+            @SpotifyBackgroundTask.Info
+        </span>
+
+    </div>
+
+    @if (SpotifyBackgroundTask.IsRunning)
+    {
+        <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@SpotifyBackgroundTask.IsRunning" />
+    }
+
+    <div class="status">
+        @SpotifyBackgroundTask.StatusText
+    </div>
+    <div class="task-progress">
+        <div class="bar" style="width:@(SpotifyBackgroundTask.Progress * 100)%"></div>
+    </div>
+
+
+    <div class="steps">
+        @for (int i = 0; i < SpotifyBackgroundTask.Steps.Count; i++)
+        {
+            var step = SpotifyBackgroundTask.Steps[i];
+            var stepPct = step.SubProgress * 100;
+
+            <div class="step @(step.Status.ToLowerString())">
+                <div class="step-header">
+                    <span>@(i + 1). @step.Name</span>
+                    <span>@step.Status</span>
+                    <span>@step.FinishedAt?.ToString("g", CultureInfo.CurrentCulture)</span>
+                </div>
+
+                <div class="step-progress">
+                    <div class="bar" style="width:@stepPct%"></div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <div class="links">
+        @if (SpotifyBackgroundTask.Links.Any())
+        {
+            @foreach (var link in SpotifyBackgroundTask.Links)
+            {
+                <MrButton Href="@SettingsService.GetUrl(link.UrlApp, link.UrlWeb)">
+                    @link.Title
+                </MrButton>
+            }
+        }
+    </div>
+
+    @if (SpotifyBackgroundTask.Ended)
+    {
+        <MrButton Class="task" OnClick="@DeleteTask" Title="Delete task">
+            <MrIcon Icon="@LucideIcon.X" />
+        </MrButton>
+    }
+</MrRow>

@@ -1,17 +1,17 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 
-public partial class BackgroundTask : IDisposable
+public partial class BackgroundTaskCard : IDisposable
 {
 	[Inject]
-	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 	[Parameter]
-	public required Objects.Spotify.BackgroundTask SpotifyBackgroundTask { get; set; }
+	public required BackgroundTask SpotifyBackgroundTask { get; set; }
 
 	[Parameter]
 	public required TaskComponent ComponentType { get; set; }
@@ -21,7 +21,7 @@ public partial class BackgroundTask : IDisposable
 
 	private string DeleteOrHideButtonTitle => $"{(CanDeleteTask ? "Delete" : "Hide")} task";
 
-	private string TaskClass => $"task {ComponentType.ToLowerString()} {(SpotifyBackgroundTask.Failed ? "failed" : "")} {(SpotifyBackgroundTask.IsRunning ? "running" : "finished")}";
+	private string TaskClass => $"task {ComponentType.ToLowerString()} {(SpotifyBackgroundTask.Failed ? "failed" : "")} {(SpotifyBackgroundTask.Ended ? "finished" : "running")}";
 
 
 	protected override void OnInitialized()

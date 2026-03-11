@@ -8,7 +8,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 public partial class ActiveBackgroundTasks : IDisposable
 {
 	[Inject]
-	private ISpotifyTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;

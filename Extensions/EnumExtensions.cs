@@ -55,4 +55,15 @@ public static class EnumExtensions
 	{
 		return GetValues<T>().Select(x => x!.ToString()!);
 	}
+	public static bool HasAnyFlag<T>(this T value, params T[] flags) where T : Enum
+	{
+		foreach (var flag in flags)
+		{
+			if (value.HasFlag(flag))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }

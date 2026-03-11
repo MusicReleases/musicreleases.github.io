@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyTaskFilterUrlService : ISpotifyTaskFilterUrlService
+public class SpotifyTaskFilterUrlService : IBackgroundTaskFilterUrlService
 {
 	public string CreateUrlParams(TaskFilter filter, string? searchText)
 	{

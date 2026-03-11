@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
@@ -10,7 +10,7 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService, IApiPlaylistClient api, IDbSpotifyPlaylistService playlistsDb, IDbSpotifyUserPlaylistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyPlaylistState state, ISpotifyTaskManagerService taskManager, ISettingsService settingsService) : ISpotifyPlaylistService
+public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService, IApiPlaylistClient api, IDbSpotifyPlaylistService playlistsDb, IDbSpotifyUserPlaylistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyPlaylistState state, IBackgroundTaskManagerService taskManager, ISettingsService settingsService) : ISpotifyPlaylistService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly IApiPlaylistClient _api = api;
@@ -18,7 +18,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 	private readonly IDbSpotifyUserPlaylistService _linkDb = linkDb;
 	private readonly IDbSpotifyUserUpdateService _metaDb = metaDb;
 	private readonly ISpotifyPlaylistState _state = state;
-	private readonly ISpotifyTaskManagerService _taskManager = taskManager;
+	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
 	private readonly ISettingsService _settingsService = settingsService;
 
 	private CancellationTokenSource? _cts;
@@ -31,40 +31,50 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 		try
 		{
-			await _taskManager.Run("Geting playlists", BackgroundTaskType.Playlists, async task =>
+			var isInState = _state.Playlists is not null;
+			if (isInState)
+			{
+				// calculate last sync
+				var shouldSync = ShouldSync(forceUpdate);
+
+				if (!shouldSync)
+				{
+					// no need to sync
+					return;
+				}
+			}
+
+
+			await _taskManager.Run(BackgroundTaskType.Playlists, "Geting playlists", "Getting loggedin user playlists", async task =>
 			{
 				var userId = _spotifyApiUserService.GetUserIdRequired();
-
-				var isInState = _state.Playlists is not null;
 
 				if (!isInState)
 				{
 					// load data from db to state
-					await using (await task.BeginStepAsync("Loading from DB", BackgroundTaskCategory.GetDb))
+					await using (await task.BeginStepAsync("Loading from DB", BackgroundTaskCategory.GetDb, ct))
 					{
 						await LoadFromDbToState(userId, task, ct);
 					}
+
+					var shouldSync = ShouldSync(forceUpdate);
+					if (!shouldSync)
+					{
+						// end task (synced)
+						return;
+					}
 				}
 
-				// calculate last sync
-				var lastSync = _state.LastSync ?? DateTime.MinValue;
-				var shouldSync = forceUpdate || (DateTime.Now - lastSync).TotalHours > 24;
-
-				if (!shouldSync)
-				{
-					// end task (synced)
-					return;
-				}
 
 				// load from api
 				List<SpotifyPlaylist> apiPlaylists;
-				await using (await task.BeginStepAsync("Loading from API", BackgroundTaskCategory.GetApi))
+				await using (await task.BeginStepAsync("Loading from API", BackgroundTaskCategory.GetApi, ct))
 				{
 					apiPlaylists = await LoadFromApi(task, ct);
 				}
 
 				// save api data to db and state
-				await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb))
+				await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb, ct))
 				{
 					await SaveToDbAndState(apiPlaylists, userId, task, ct);
 				}
@@ -74,6 +84,18 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		{
 			// cancelled
 		}
+	}
+
+	private bool ShouldSync(bool forceUpdate)
+	{
+		if (forceUpdate)
+		{
+			return true;
+		}
+		var lastSync = _state.LastSync ?? DateTime.MinValue;
+		var shouldSync = (DateTime.Now - lastSync).TotalHours > 24;
+
+		return shouldSync;
 	}
 
 	private async Task LoadFromDbToState(string userId, BackgroundTask task, CancellationToken ct)
@@ -137,23 +159,26 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 	public async Task CreatePlaylist(string name)
 	{
-		await _taskManager.Run($"Creating playlists '{name}'", BackgroundTaskType.Playlists, async task =>
+		using var cts = new CancellationTokenSource();
+		var ct = cts.Token;
+
+		await _taskManager.Run(BackgroundTaskType.Playlists, "Creating playlist", $"Creating new playlists '{name}'", async task =>
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
 			SpotifyPlaylist newPlaylist;
 
-			await using (await task.BeginStepAsync("Sending API request", BackgroundTaskCategory.SaveApi))
+			await using (await task.BeginStepAsync("Sending API request", BackgroundTaskCategory.SaveApi, ct))
 			{
 				task.SetSubProgress(0.00, "api.playlist.get.start");
 				var addToProfile = _settingsService.UserSettings.PlaylistAddToProfile;
 
-				newPlaylist = await _api.CreatePlaylist(userId, name, addToProfile);
+				newPlaylist = await _api.CreatePlaylist(userId, name, addToProfile, ct);
 				task.SetSubProgress(1.00, "api.playlist.get.done");
 
-				task.AddLink("Open playlist", newPlaylist.UrlWeb, newPlaylist.UrlApp);
+				task.AddLink($"Open playlist '{name}'", newPlaylist);
 
 			}
-			await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb))
+			await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb, ct))
 			{
 				task.SetSubProgress(0.00, "db.add.playlist");
 				await _playlistDb.Add(newPlaylist);
@@ -189,21 +214,24 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException($"Playlist not found in state");
 
-		await _taskManager.Run($"Adding {tracksList.Count} track{trackLabel} to playlist '{playlist.Name}'", BackgroundTaskType.PlaylistTracks, async (task) =>
+		using var cts = new CancellationTokenSource();
+		var ct = cts.Token;
+
+		await _taskManager.Run(BackgroundTaskType.PlaylistTracks, "Adding track to playlists", $"Adding {tracksList.Count} track{trackLabel} to playlist '{playlist.Name}'", async (task) =>
 		{
 			string snapshotId;
 
-			await using (await task.BeginStepAsync("Sending API request", BackgroundTaskCategory.SaveApi))
+			await using (await task.BeginStepAsync("Sending API request", BackgroundTaskCategory.SaveApi, ct))
 			{
 				task.SetSubProgress(0.00, "api.playlist-tracks.set.start");
 				var trackUris = tracksList.Select(t => t.UrlApp).ToList();
-				snapshotId = await _api.AddTracksToPlaylist(playlist.Id, trackUris, positionTop);
+				snapshotId = await _api.AddTracksToPlaylist(playlist.Id, trackUris, positionTop, ct);
 				task.SetSubProgress(1.00, "api.playlist-tracks.set.done");
 
-				task.AddLink("Open playlist", playlist.UrlWeb, playlist.UrlApp);
+				task.AddLink($"Open playlist '{playlist.Name}'", playlist);
 			}
 
-			await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb))
+			await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb, ct))
 			{
 				task.SetSubProgress(0.00, "db.update.playlist.snapshot");
 
@@ -227,21 +255,24 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException("Playlist not found in state");
 
-		await _taskManager.Run($"Removing {tracksList.Count} track{trackLabel} from playlist '{playlist.Name}'", BackgroundTaskType.PlaylistTracks, async (task) =>
+		using var cts = new CancellationTokenSource();
+		var ct = cts.Token;
+
+		await _taskManager.Run(BackgroundTaskType.PlaylistTracks, "Removing track from playlist", $"Removing {tracksList.Count} track{trackLabel} from playlist '{playlist.Name}'", async (task) =>
 		{
 			string snapshotId;
 
-			await using (await task.BeginStepAsync("Sending API request", BackgroundTaskCategory.DeleteApi))
+			await using (await task.BeginStepAsync("Sending API request", BackgroundTaskCategory.DeleteApi, ct))
 			{
 				task.SetSubProgress(0.00, "api.playlist-tracks.remove.start");
 				var trackUris = tracksList.Select(t => t.UrlApp).ToList();
-				snapshotId = await _api.RemoveTracksFromPlaylist(playlistId, trackUris);
+				snapshotId = await _api.RemoveTracksFromPlaylist(playlistId, trackUris, ct);
 
 				task.SetSubProgress(1.00, "api.playlist-tracks.remove.done");
 
-				task.AddLink("Open playlist", playlist.UrlWeb, playlist.UrlApp);
+				task.AddLink($"Open playlist '{playlist.Name}'", playlist);
 			}
-			await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb))
+			await using (await task.BeginStepAsync("Saving to DB", BackgroundTaskCategory.SaveDb, ct))
 			{
 				task.SetSubProgress(0.00, "db.update.playlist.snapshot");
 
