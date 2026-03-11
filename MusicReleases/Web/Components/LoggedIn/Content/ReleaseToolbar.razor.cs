@@ -7,10 +7,10 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Content;
 public partial class ReleaseToolbar : IDisposable
 {
 	[Inject]
-	public ILoaderService LoaderService { get; set; } = default!;
+	public ILoadingService LoadingService { get; set; } = default!;
 
 
-	private bool Loading => LoaderService.IsLoading(BackgroundTaskType.Releases);
+	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.Releases);
 
 
 	private const string _buttonClass = "toolbar-releases";
@@ -18,12 +18,12 @@ public partial class ReleaseToolbar : IDisposable
 
 	protected override void OnInitialized()
 	{
-		LoaderService.LoadingStateChanged += StateChanged;
+		LoadingService.LoadingStateChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		LoaderService.LoadingStateChanged -= StateChanged;
+		LoadingService.LoadingStateChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

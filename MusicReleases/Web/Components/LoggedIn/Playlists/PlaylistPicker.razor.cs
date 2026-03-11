@@ -13,7 +13,7 @@ public partial class PlaylistPicker : IDisposable
 	private ISpotifyFilterPlaylistService FilterService { get; set; } = default!;
 
 	[Inject]
-	private ILoaderService LoaderService { get; set; } = default!;
+	private ILoadingService LoadingService { get; set; } = default!;
 
 
 	[Parameter]
@@ -26,7 +26,7 @@ public partial class PlaylistPicker : IDisposable
 	public SpotifyTrack? Track { get; set; }
 
 
-	private bool Loading => LoaderService.IsLoading(BackgroundTaskType.Playlists) || LoaderService.IsLoading(BackgroundTaskType.PlaylistTracks);
+	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.Playlists) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracks);
 
 	private List<SpotifyPlaylist>? Playlists => FilterService.FilteredPlaylists?.ToList();
 
@@ -49,13 +49,13 @@ public partial class PlaylistPicker : IDisposable
 	protected override void OnInitialized()
 	{
 		FilterService.OnFilterChanged += StateChanged;
-		LoaderService.LoadingStateChanged += StateChanged;
+		LoadingService.LoadingStateChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		FilterService.OnFilterChanged -= StateChanged;
-		LoaderService.LoadingStateChanged -= StateChanged;
+		LoadingService.LoadingStateChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

@@ -10,7 +10,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 public partial class UpdateButton : IDisposable
 {
 	[Inject]
-	private ILoaderService LoaderService { get; set; } = default!;
+	private ILoadingService LoadingService { get; set; } = default!;
 
 	[Inject]
 	private IApiLoginService ApiLoginService { get; set; } = default!;
@@ -40,21 +40,21 @@ public partial class UpdateButton : IDisposable
 
 	private bool IsLoading => ButtonType switch
 	{
-		UpdateButtonComponent.Artists => LoaderService.IsLoading(BackgroundTaskType.Artists),
-		UpdateButtonComponent.Releases => LoaderService.IsLoading(BackgroundTaskType.Releases),
-		UpdateButtonComponent.Playlists => LoaderService.IsLoading(BackgroundTaskType.Playlists) || LoaderService.IsLoading(BackgroundTaskType.PlaylistTracks),
+		UpdateButtonComponent.Artists => LoadingService.IsLoading(BackgroundTaskType.Artists),
+		UpdateButtonComponent.Releases => LoadingService.IsLoading(BackgroundTaskType.Releases),
+		UpdateButtonComponent.Playlists => LoadingService.IsLoading(BackgroundTaskType.Playlists) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracks),
 		_ => throw new NotImplementedException(),
 	};
 
 
 	protected override void OnInitialized()
 	{
-		LoaderService.LoadingStateChanged += StateChanged;
+		LoadingService.LoadingStateChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		LoaderService.LoadingStateChanged -= StateChanged;
+		LoadingService.LoadingStateChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

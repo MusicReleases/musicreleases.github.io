@@ -60,7 +60,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyLoginStorageService, SpotifyLoginStorageService>();
 
 		services.AddScoped<ISpotifyWorkflowService, SpotifyWorkflowService>();
-		services.AddScoped<ILoaderService, LoaderService>();
+		services.AddScoped<ILoadingService, LoadingService>();
 
 		services.AddScoped<IBackgroundTaskManagerService, BackgroundTaskManagerService>();
 		services.AddScoped<IBackgroundTaskFilterService, BackgroundTaskFilterService>();

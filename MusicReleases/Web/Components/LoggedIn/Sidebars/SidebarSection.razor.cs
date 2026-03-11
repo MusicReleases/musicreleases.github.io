@@ -11,7 +11,7 @@ public partial class SidebarSection : IDisposable
 	private IMobileService MobileService { get; set; } = default!;
 
 	[Inject]
-	private ILoaderService LoaderService { get; set; } = default!;
+	private ILoadingService LoadingService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -43,9 +43,9 @@ public partial class SidebarSection : IDisposable
 
 	private bool Loading => SidebarType switch
 	{
-		SidebarComponent.Artists => LoaderService.IsLoading(BackgroundTaskType.Artists),
-		SidebarComponent.Date => LoaderService.IsLoading(BackgroundTaskType.Artists) || LoaderService.IsLoading(BackgroundTaskType.Releases),
-		SidebarComponent.Playlists => LoaderService.IsLoading(BackgroundTaskType.Playlists) || LoaderService.IsLoading(BackgroundTaskType.PlaylistTracks),
+		SidebarComponent.Artists => LoadingService.IsLoading(BackgroundTaskType.Artists),
+		SidebarComponent.Date => LoadingService.IsLoading(BackgroundTaskType.Artists) || LoadingService.IsLoading(BackgroundTaskType.Releases),
+		SidebarComponent.Playlists => LoadingService.IsLoading(BackgroundTaskType.Playlists) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracks),
 		_ => throw new NotImplementedException(),
 	};
 
@@ -55,13 +55,13 @@ public partial class SidebarSection : IDisposable
 	protected override void OnInitialized()
 	{
 		MobileService.OnDisplayChanged += StateChanged;
-		LoaderService.LoadingStateChanged += StateChanged;
+		LoadingService.LoadingStateChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
-		LoaderService.LoadingStateChanged -= StateChanged;
+		LoadingService.LoadingStateChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

@@ -12,23 +12,23 @@ public partial class ReleaseContent : IDisposable
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
-	private ILoaderService LoaderService { get; set; } = default!;
+	private ILoadingService LoadingService { get; set; } = default!;
 
 
-	private bool Loading => LoaderService.IsLoading(BackgroundTaskType.Releases) || LoaderService.IsLoading(BackgroundTaskType.Artists);
+	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.Releases) || LoadingService.IsLoading(BackgroundTaskType.Artists);
 
 	private ISet<SpotifyRelease>? FilteredReleases => SpotifyReleaseFilterService.FilteredReleases;
 
 
 	protected override void OnInitialized()
 	{
-		LoaderService.LoadingStateChanged += StateChanged;
+		LoadingService.LoadingStateChanged += StateChanged;
 		SpotifyReleaseFilterService.OnDataFiltered += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		LoaderService.LoadingStateChanged -= StateChanged;
+		LoadingService.LoadingStateChanged -= StateChanged;
 		SpotifyReleaseFilterService.OnDataFiltered -= StateChanged;
 		GC.SuppressFinalize(this);
 	}

@@ -6,17 +6,17 @@ namespace JakubKastner.MusicReleases.Web.Components.Base;
 public partial class Loader : IDisposable
 {
 	[Inject]
-	private ILoaderService LoaderService { get; set; } = default!;
+	private ILoadingService LoadingService { get; set; } = default!;
 
 
 	protected override void OnInitialized()
 	{
-		LoaderService.LoadingStateChanged += StateChanged;
+		LoadingService.LoadingStateChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		LoaderService.LoadingStateChanged -= StateChanged;
+		LoadingService.LoadingStateChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
