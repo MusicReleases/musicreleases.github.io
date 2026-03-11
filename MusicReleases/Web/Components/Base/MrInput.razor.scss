@@ -14,4 +14,11 @@ input {
         outline: none !important;
         background-color: var(--color-4);
     }
+
+    &.search {
+        &.tasks {
+            flex: 1 1;
+            max-width: 200px;
+        }
+    }
 }

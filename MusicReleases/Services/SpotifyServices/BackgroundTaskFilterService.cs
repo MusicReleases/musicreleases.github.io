@@ -135,7 +135,12 @@ public class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		{
 			return source;
 		}
-		var query = source.Where(t => (t.Name?.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ?? false) || (t.StatusText?.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ?? false));
+		var query = source.Where(t =>
+			t.Name.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ||
+			t.Info.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ||
+			t.StatusText.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ||
+			t.Steps.Any(s => s.Name.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) || s.Status.ToString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase))
+		);
 
 		return query;
 	}

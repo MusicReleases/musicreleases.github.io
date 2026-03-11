@@ -343,6 +343,10 @@
             @include l;
             margin: 0 10px;
         }
+
+        &-tasks {
+            @include l;
+        }
     }
 
     &.menu {
@@ -406,7 +410,7 @@
         &-releases {
             @include rounded-l;
             @include chip;
-            
+
             &.left {
                 margin-left: 5px;
                 @include chip-left;
@@ -512,6 +516,7 @@
             @include transparent;
             @include flex-ellipsis;
             @include hover-text-only;
+            padding: 10px;
 
             &-position {
                 @include fill-height-flex;
@@ -571,6 +576,10 @@
     &.task {
         @include transparent;
         @include rounded-s;
+
+        &-row {
+            @include rounded-xl;
+        }
     }
 }
 

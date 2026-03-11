@@ -9,6 +9,8 @@
     max-height: 100%;
     display: flex;
     flex-direction: column;
+    container-name: popup;
+    container-type: inline-size;
 
     @include layout.respond(tablet) {
         grid-column: artists-header-start / releases-filter-end;

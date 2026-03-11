@@ -176,16 +176,20 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 		Progress = Math.Clamp(basePart + sub, 0, 1);
 	}
 
-	public void AddLink(string label, string urlApp, string urlWeb)
+	public void AddLink(string label, string urlApp, string urlWeb, Enum? icon = null)
 	{
-		var link = new BackgroundTaskLink(label, urlApp, urlWeb);
+		icon ??= SpotifyIcon.SmallGreen;
+
+		var link = new BackgroundTaskLink(label, urlApp, urlWeb, icon);
 		_links.Add(link);
 		NotifyChange();
 	}
 
-	public void AddLink(string label, SpotifyIdNameUrlObject spotifyUrlObject)
+	public void AddLink(string label, SpotifyIdNameUrlObject spotifyUrlObject, Enum? icon = null)
 	{
-		var link = new BackgroundTaskLink(label, spotifyUrlObject.UrlApp, spotifyUrlObject.UrlWeb);
+		icon ??= SpotifyIcon.SmallGreen;
+
+		var link = new BackgroundTaskLink(label, spotifyUrlObject.UrlApp, spotifyUrlObject.UrlWeb, icon);
 		_links.Add(link);
 		NotifyChange();
 	}

@@ -9,15 +9,20 @@
     margin-top: 15px;
     margin-bottom: 5px;
     display: flex;
+    flex-shrink: 0
 }
 
-.search {
-    display: inline-flex;
+.actions {
+    display: flex;
+    flex-direction: row;
     gap: 2px;
     padding: 5px;
-    max-width: 200px;
     margin-top: 5px;
     margin-bottom: 15px;
+
+    @container popup (max-width: 650px) {
+        flex-direction: column;
+    }
 }
 
 .list {
@@ -25,9 +30,14 @@
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
-    display: flex;
-    flex-direction: column;
     overflow-y: auto;
     flex: 0 1 auto;
-    min-height: 0; 
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr auto;
+
+    @container popup (max-width: 650px) {
+        display: flex;
+        flex-direction: column;
+    }
 }

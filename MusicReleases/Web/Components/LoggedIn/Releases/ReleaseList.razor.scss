@@ -6,7 +6,8 @@
     max-height: 400px;
     display: flex;
     flex-direction: column;
-        
+    border-radius: 10px;
+
     &.hidden {
         display: none;
     }

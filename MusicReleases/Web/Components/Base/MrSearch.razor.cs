@@ -5,6 +5,9 @@ namespace JakubKastner.MusicReleases.Web.Components.Base;
 public partial class MrSearch : IDisposable
 {
 	[Parameter]
+	public string? Class { get; set; }
+
+	[Parameter]
 	public string ClearButtonClass { get; set; } = "search";
 
 	[Parameter]
@@ -16,7 +19,12 @@ public partial class MrSearch : IDisposable
 	[Parameter]
 	public string Placeholder { get; set; } = "Search...";
 
+
+	private string InputClass => $"search {Class}";
+
+
 	private CancellationTokenSource? _cts;
+
 
 	public void Dispose()
 	{

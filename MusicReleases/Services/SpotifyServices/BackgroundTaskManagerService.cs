@@ -107,7 +107,18 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 
 	public void RemoveTask(BackgroundTask task)
 	{
+		if (task.IsRunning)
+		{
+			return;
+		}
+
 		_tasks.Remove(task);
+		NotifyUI();
+	}
+
+	public void RemoveAllFinishedTasks()
+	{
+		_tasks.RemoveAll(t => t.Ended);
 		NotifyUI();
 	}
 

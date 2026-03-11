@@ -17,6 +17,7 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		void Dispose();
 		void HideAllEnded();
 		void HideTask(BackgroundTask task);
+		void RemoveAllFinishedTasks();
 		void RemoveTask(BackgroundTask task);
 		Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work);
 	}

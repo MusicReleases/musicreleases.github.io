@@ -50,4 +50,9 @@ public partial class BackgroundTaskPopup : IDisposable
 	{
 		SpotifyTaskFilterService.SetSearch(searchText);
 	}
+
+	private void DeleteFinished()
+	{
+		SpotifyTaskManagerService.RemoveAllFinishedTasks();
+	}
 }

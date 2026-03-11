@@ -17,8 +17,11 @@
 
 </div>
 
-<div class="search">
-    <MrSearch Placeholder="Search tasks..." SearchText="@SpotifyTaskFilterService.SearchText" ValueChanged="Search" />
+<div class="actions">
+    <MrSearch Class="tasks" Placeholder="Search tasks..." SearchText="@SpotifyTaskFilterService.SearchText" ValueChanged="Search" />
+    <MrButton Class="popup-tasks" Text="Delete finished" OnClick="@DeleteFinished">
+        <MrIcon Icon="@LucideIcon.Trash" />
+    </MrButton>
 </div>
 
 <div class="list scroll">
@@ -27,10 +30,12 @@
     {
         <p>@ZeroTasksText</p>
     }
-    <Virtualize Items="@DisplayedTasks" Context="task" TItem="@BackgroundTask">
+    else
+    {
+        <Virtualize Items="@DisplayedTasks" Context="task" TItem="@BackgroundTask">
 
-        <BackgroundTaskRow SpotifyBackgroundTask="@task" @key="task.Id" />
+            <BackgroundTaskRow SpotifyBackgroundTask="@task" @key="task.Id" />
 
-    </Virtualize>
-
+        </Virtualize>
+    }
 </div>

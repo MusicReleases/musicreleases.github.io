@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.Objects.BackgroundTasks;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using Microsoft.AspNetCore.Components;
@@ -17,8 +18,24 @@ public partial class BackgroundTaskRow : IDisposable
 	[Parameter]
 	public required BackgroundTask SpotifyBackgroundTask { get; set; }
 
-	private string Class => $"task-row {(SpotifyBackgroundTask.Failed ? "failed" : string.Empty)} {(SpotifyBackgroundTask.Ended ? "finished" : "running")}";
+	private string Class => $"task {(SpotifyBackgroundTask.Failed ? "failed" : string.Empty)} {(SpotifyBackgroundTask.Ended ? "finished" : "running")}";
 
+	public LucideIcon Icon => GetIcon(SpotifyBackgroundTask.Status);
+
+	private static LucideIcon GetIcon(BackgroundTaskStatus status)
+	{
+		return status switch
+		{
+			BackgroundTaskStatus.Running => LucideIcon.LoaderCircle,
+			BackgroundTaskStatus.Failed => LucideIcon.CircleAlert,
+			BackgroundTaskStatus.Finished => LucideIcon.CircleCheckBig,
+			BackgroundTaskStatus.Canceled => LucideIcon.Ban,
+			_ => LucideIcon.Dot
+		};
+	}
+
+	private const string _iconClass = "task-small";
+	private const string _buttonClass = "task-row";
 
 	protected override void OnInitialized()
 	{
@@ -42,5 +59,9 @@ public partial class BackgroundTaskRow : IDisposable
 	private void DeleteTask()
 	{
 		SpotifyTaskManagerService.RemoveTask(SpotifyBackgroundTask);
+	}
+	private void CancelTask()
+	{
+		//SpotifyTaskManagerService.RemoveTask(SpotifyBackgroundTask);
 	}
 }

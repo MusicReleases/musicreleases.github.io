@@ -40,4 +40,11 @@
         width: 100%;
         height: 100%;
     }
+
+    &.task {
+        &-small {
+            width: 0.9rem;
+            height: 0.9rem;
+        }
+    }
 }

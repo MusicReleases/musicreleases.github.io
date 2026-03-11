@@ -180,7 +180,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 				newPlaylist = await _api.CreatePlaylist(userId, name, addToProfile, ct);
 				task.SetSubProgress(1.00, "api.playlist.get.done");
 
-				task.AddLink($"Open playlist '{name}'", newPlaylist);
+				task.AddLink("Open playlist", newPlaylist);
 
 			});
 			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, ct, async step =>
@@ -238,7 +238,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 				snapshotId = await _api.AddTracksToPlaylist(playlist.Id, trackUris, positionTop, ct);
 				task.SetSubProgress(1.00, "api.playlist-tracks.set.done");
 
-				task.AddLink($"Open playlist '{playlist.Name}'", playlist);
+				task.AddLink("Open playlist", playlist);
 			});
 
 			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, ct, async step =>
@@ -285,7 +285,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 				task.SetSubProgress(1.00, "api.playlist-tracks.remove.done");
 
-				task.AddLink($"Open playlist '{playlist.Name}'", playlist);
+				task.AddLink("Open playlist", playlist);
 			});
 			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, ct, async step =>
 			{

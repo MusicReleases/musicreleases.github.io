@@ -1,67 +1,114 @@
-﻿@using System.Globalization
-
-
+﻿
 <MrRow Class="@Class">
-    <div class="info">
-        <span class="title">
+    
+    <div class="task-info">
+        
+        <span class="title" title="Task name">
             @SpotifyBackgroundTask.Name
         </span>
-        <span class="detail">
-            @SpotifyBackgroundTask.Info
-        </span>
+        
+        <div class="time-started" title="Task started at">
+            <MrIcon Class="@_iconClass" Icon="@LucideIcon.Clock" />
+            <span>
+                @SpotifyBackgroundTask.StartedAt?.ToCurrentCultureString()
+            </span>
+        </div>
+
+        <div class="info" title="Task info">
+            <MrIcon Class="@_iconClass" Icon="@LucideIcon.Info" />
+            <span>
+                @SpotifyBackgroundTask.Info
+            </span>
+        </div>
+
+        <div class="status" title="Task status">
+            <MrIcon Class="@_iconClass" Icon="@Icon" Spin="@SpotifyBackgroundTask.IsRunning" />
+            <span>
+                @SpotifyBackgroundTask.StatusText
+            </span>
+            @if (@SpotifyBackgroundTask.Duration.HasValue)
+            {
+                <span class="time-duration" title="Task duration">
+                    &nbsp;(@SpotifyBackgroundTask.Duration.Value.ToMinuteString())
+                </span>
+            }
+        </div>
 
     </div>
-
-    @if (SpotifyBackgroundTask.IsRunning)
-    {
-        <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@SpotifyBackgroundTask.IsRunning" />
-    }
-
-    <div class="status">
-        @SpotifyBackgroundTask.StatusText
-    </div>
-    <div class="task-progress">
-        <div class="bar" style="width:@(SpotifyBackgroundTask.Progress * 100)%"></div>
-    </div>
-
 
     <div class="steps">
+
         @for (int i = 0; i < SpotifyBackgroundTask.Steps.Count; i++)
         {
             var step = SpotifyBackgroundTask.Steps[i];
             var stepPct = step.SubProgress * 100;
 
             <div class="step @(step.Status.ToLowerString())">
-                <div class="step-header">
-                    <span>@(i + 1). @step.Name</span>
-                    <span>@step.Status</span>
-                    <span>@step.FinishedAt?.ToString("g", CultureInfo.CurrentCulture)</span>
+
+                <div class="step-info">
+
+                    <span class="title" title="Step title">
+                        @(i + 1). @step.Name
+                    </span>
+                    
+                    <div class="time-started" title="Step started at">
+                        <MrIcon Class="@_iconClass" Icon="@LucideIcon.Clock" />
+                        <span>@step.StartedAt.ToCurrentCultureString()</span>
+                    </div>
+
+                    <div class="status" title="Step status">
+                        <MrIcon Class="@_iconClass" Icon="@GetIcon(step.Status)" Spin="step.IsRunning" />
+
+                        <span>
+                            @step.Status.ToFriendlyString(true)
+                        </span>
+
+                        @if (step.Duration.HasValue)
+                        {
+                            <span class="time-duration" title="Step duration">
+                                &nbsp;(@step.Duration.Value.ToMinuteString())
+                            </span>
+                        }
+                    </div>
+
                 </div>
 
-                <div class="step-progress">
+                <div class="step-progress @step.Ended.ToCssClass("finished")">
                     <div class="bar" style="width:@stepPct%"></div>
                 </div>
+
             </div>
         }
+
     </div>
 
 
-    <div class="links">
+    <div class="task-buttons">
         @if (SpotifyBackgroundTask.Links.Any())
         {
             @foreach (var link in SpotifyBackgroundTask.Links)
             {
-                <MrButton Href="@SettingsService.GetUrl(link.UrlApp, link.UrlWeb)">
-                    @link.Title
+                <MrButton Class="@_buttonClass" Href="@SettingsService.GetUrl(link.UrlApp, link.UrlWeb)" Text="@link.Title">
+                    <MrIcon Icon="@link.Icon" />
                 </MrButton>
             }
         }
+        @if (SpotifyBackgroundTask.IsRunning)
+        {
+            <MrButton Class="@_buttonClass" OnClick="@CancelTask" Text="Cancel task">
+                <MrIcon Icon="@LucideIcon.Ban" />
+            </MrButton>
+        }
+        else
+        {
+            <MrButton Class="@_buttonClass" OnClick="@DeleteTask" Text="Delete task">
+                <MrIcon Icon="@LucideIcon.Trash" />
+            </MrButton>
+        }
     </div>
 
-    @if (SpotifyBackgroundTask.Ended)
-    {
-        <MrButton Class="task" OnClick="@DeleteTask" Title="Delete task">
-            <MrIcon Icon="@LucideIcon.X" />
-        </MrButton>
-    }
+
+    <div class="task-progress @SpotifyBackgroundTask.Ended.ToCssClass("finished")">
+        <div class="bar" style="width:@(SpotifyBackgroundTask.Progress * 100)%"></div>
+    </div>
 </MrRow>
