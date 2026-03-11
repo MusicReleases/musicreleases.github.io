@@ -26,10 +26,11 @@
         {
             <p>No active tasks</p>
         }
-
-        <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@BackgroundTask">
-            <BackgroundTaskCard SpotifyBackgroundTask="@task" ComponentType="@TaskComponent.Sidebar" @key="task.Id" />
-        </Virtualize>
-
+        else
+        {
+            <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@BackgroundTask">
+                <BackgroundTaskCard SpotifyBackgroundTask="@task" @key="task.Id" />
+            </Virtualize>
+        }
     </div>
 </div>

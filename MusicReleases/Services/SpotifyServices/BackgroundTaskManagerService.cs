@@ -90,7 +90,6 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 			_ => 5000
 		};
 
-
 		await Task.Delay(delay);
 
 		HideTask(task);

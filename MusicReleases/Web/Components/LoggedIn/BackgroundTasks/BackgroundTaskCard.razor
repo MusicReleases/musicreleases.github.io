@@ -1,14 +1,15 @@
-﻿    <div class="@TaskClass" >
+﻿<div class="@TaskClass" @onclick="ViewTask">
 
-        <div class="header">
+    <div class="header">
 
-            <span class="title">
-                @SpotifyBackgroundTask.Name
-            </span>
+        <span class="title">
+            @SpotifyBackgroundTask.Name
+        </span>
 
+        <div class="icon">
             @if (SpotifyBackgroundTask.Ended)
             {
-                <MrButton Class="task" OnClick="@DeleteOrHideTask" Title="@DeleteOrHideButtonTitle">
+                <MrButton Class="task" OnClick="@HideTask" Title="Hide task">
                     <MrIcon Icon="@LucideIcon.X" />
                 </MrButton>
             }
@@ -16,11 +17,23 @@
             {
                 <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@SpotifyBackgroundTask.IsRunning" />
             }
-
-        </div>
-
-        <div class="status">
-            @SpotifyBackgroundTask.StatusText
         </div>
 
     </div>
+
+    <div class="status">
+
+        <span>
+            @SpotifyBackgroundTask.StatusText
+        </span>
+
+        @if (SpotifyBackgroundTask.CurrentStep is not null)
+        {
+            <span>
+                &nbsp;(@SpotifyBackgroundTask.CurrentStep.Name)
+            </span>
+        }
+
+    </div>
+
+</div>

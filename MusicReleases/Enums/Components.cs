@@ -70,12 +70,6 @@ public enum SidebarComponent
 	Date,
 }
 
-public enum TaskComponent
-{
-	Popup,
-	Sidebar,
-}
-
 public enum TasksButtonComponent
 {
 	Settings,

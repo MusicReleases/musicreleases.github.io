@@ -126,6 +126,8 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 
 	public int CurrentStepIndex { get; private set; }
 
+	public BackgroundTaskStep? CurrentStep => Steps.ElementAtOrDefault(CurrentStepIndex);
+
 	public IReadOnlyList<BackgroundTaskStep> Steps => _steps;
 	private readonly List<BackgroundTaskStep> _steps = [];
 

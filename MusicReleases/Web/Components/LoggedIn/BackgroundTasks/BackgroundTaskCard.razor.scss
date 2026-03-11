@@ -1,11 +1,14 @@
 ﻿//@use 'global/layout' as layout;
 
 .task {
+    cursor: pointer;
     background-color: var(--color-5);
     padding: 12px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     border-left: 4px solid #1db954;
+    animation: slide-in 0.2s ease-out;
+    margin-right: 9px;
 
     &.failed {
         border-left-color: #e91429;
@@ -16,22 +19,19 @@
         opacity: 0.9;
     }
 
-    &.popup {
-    }
-
-    &.sidebar {
-        animation: slide-in 0.3s ease-out;
-        margin-right: 9px;
-    }
-
     .header {
         display: inline-flex;
-    }
+        width: 100%;
 
-    .title {
-        align-content: center;
-        font-weight: 600;
-        font-size: 0.9rem;
+        .title {
+            align-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .icon {
+            margin-left: auto;
+        }
     }
 
     .status {
