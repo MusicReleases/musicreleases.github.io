@@ -4,7 +4,7 @@
 
     @* TODO artist filter <ArtistSidebarButton ArtistId="@artist.Id" ArtistName="@artist.Name" />*@
 
-    <MrButton Class="@GetButtonClass(artist.Id)" Href="@GetButtonUrl(artist)" NewTab="@GetButtonNewTab(artist)" Text="@artist.Name" Title="@GetButtonTitle(artist)" OnClick="@(() => FilterArtist(artist.Id))" />
+    <MrButton Class="@GetButtonClass(artist.Id)" Href="@GetButtonUrl(artist)" NewTab="@SettingsService.UserSettings.OpenLinksInNewTab" Text="@artist.Name" Title="@GetButtonTitle(artist)" OnClick="@(() => FilterArtist(artist.Id))" />
 
     @if (i < Artists.Count - 1)
     {

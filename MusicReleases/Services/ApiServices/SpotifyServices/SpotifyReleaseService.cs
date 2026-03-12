@@ -13,7 +13,7 @@ using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager) : ISpotifyReleaseService
+public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly IApiReleaseClient _api = api;
@@ -24,8 +24,8 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 	private readonly ISpotifyArtistState _artistState = artistState;
 	private readonly ISpotifyReleaseState _state = state;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
+	private readonly ILoadingService _loadingservice = loadingservice;
 
-	private CancellationTokenSource? _cts;
 
 	public async Task Get(ReleaseGroup releaseGroup, bool forceUpdate = false)
 	{
@@ -35,71 +35,56 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 			throw new NotSupportedException();
 		}
 
-		// cancel any ongoing sync
-		Cancel();
-		_cts = new CancellationTokenSource();
-		var ct = _cts.Token;
-
-		try
+		if (_loadingservice.IsLoading(BackgroundTaskType.Releases))
 		{
-			var isInState = _state.ReleasesByType.GetValueOrDefault(releaseGroup) is not null;
+			return;
+		}
 
-			if (isInState)
+		var isInState = _state.ReleasesByType.GetValueOrDefault(releaseGroup) is not null;
+
+		if (isInState)
+		{
+			// calculate last sync
+			var shouldSync = ShouldSync(releaseGroup, forceUpdate);
+
+			if (!shouldSync)
 			{
-				// calculate last sync
-				var shouldSync = ShouldSync(releaseGroup, forceUpdate);
-
-				if (!shouldSync)
-				{
-					// no need to sync
-					return;
-				}
+				// synced
+				return;
 			}
+		}
 
-			await _taskManager.Run(BackgroundTaskType.Releases, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()} from followed artists", async task =>
+		await _taskManager.Run(BackgroundTaskType.Releases, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()} from followed artists", async task =>
+		{
+			var userId = _spotifyApiUserService.GetUserIdRequired();
+
+			if (!isInState)
 			{
-				var userId = _spotifyApiUserService.GetUserIdRequired();
-
-				if (!isInState)
+				// load data from db to state
+				await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 				{
-					// load data from db to state
-					await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, ct, async step =>
-					{
-						await LoadFromDbToState(releaseGroup, userId, task, ct);
-					});
+					await LoadFromDbToState(releaseGroup, userId, task);
 
 					var shouldSync = ShouldSync(releaseGroup, forceUpdate);
 
 					if (!shouldSync)
 					{
-						// no need to sync
+						// synced
+						task.EndTask();
 						return;
 					}
-				}
-
-				// load from api
-				ReleaseAggregation? releaseAggregation = null;
-				await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, ct, async step =>
-				{
-					releaseAggregation = await LoadFromApi(releaseGroup, task, ct);
 				});
+			}
 
-				// save api data to db and state
-				await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, ct, async step =>
-				{
-					if (releaseAggregation is null)
-					{
-						throw new NullReferenceException(nameof(releaseAggregation));
-					}
+			// load from api
+			var releaseAggregation = await LoadFromApi(releaseGroup, task);
 
-					await SaveToDbAndState(releaseGroup, releaseAggregation, userId, task, ct);
-				});
+			// save api data to db and state
+			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
+			{
+				await SaveToDbAndState(releaseGroup, releaseAggregation, userId, task);
 			});
-		}
-		catch (OperationCanceledException)
-		{
-			// cancelled
-		}
+		});
 	}
 
 	private bool ShouldSync(ReleaseGroup releaseGroup, bool forceUpdate)
@@ -114,116 +99,144 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		return shouldSync;
 	}
 
-	private async Task LoadFromDbToState(ReleaseGroup releaseGroup, string userId, BackgroundTask task, CancellationToken ct)
+	private async Task LoadFromDbToState(ReleaseGroup releaseGroup, string userId, BackgroundTask task)
 	{
-		task.SetSubProgress(0.00, "db.get.last-sync");
-		var metaDbType = MapToDbUpdateType(releaseGroup);
-		var lastSync = await _metaDb.Get(userId, metaDbType);
+		var releaseGroupString = releaseGroup.ToFriendlyString();
+		task.BeginAutoSegments(4);
+
+		var lastSync = await task.SegmentAsync($"db - get releases last sync (user-update) - {releaseGroupString}", async ct =>
+		{
+			var metaDbType = MapToDbUpdateType(releaseGroup);
+			return await _metaDb.Get(userId, metaDbType);
+		});
 
 		var artists = _artistState.SortedFollowedArtists;
 		if (artists.Count == 0)
 		{
-			_state.Set(releaseGroup, [], lastSync);
-			task.SetSubProgress(1.00, "empty");
+			await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
+			{
+				_state.Set(releaseGroup, [], lastSync);
+			}
 			return;
 		}
 
-		var artistIds = artists.Select(a => a.Id);
-		var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(releaseGroup);
+		var releaseIds = await task.SegmentAsync($"db - get release ids from artists (artist-release) - {releaseGroupString}", async ct =>
+		{
+			var artistIds = artists.Select(a => a.Id);
+			var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(releaseGroup);
 
-		task.SetSubProgress(0.20, "db.get.artist-releases.by-artists");
-		var releaseIds = await _linkDb.GetReleaseIds(artistIds, artistRole);
+			return await _linkDb.GetReleaseIds(artistIds, artistRole);
+		});
 
-		task.SetSubProgress(0.60, "db.get.releases.by-ids");
-		var releases = await _releaseDb.GetByIds(releaseIds, releaseGroup);
+		var releases = await task.SegmentAsync($"db - get releases by ids (release) - {releaseGroupString}", async ct =>
+		{
+			return await _releaseDb.GetByIds(releaseIds, releaseGroup);
+		});
 
-		_state.Set(releaseGroup, releases, lastSync);
-		task.SetSubProgress(1.00, "db.get.releases.done");
+		await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
+		{
+			_state.Set(releaseGroup, releases, lastSync);
+		}
 	}
 
-	private async Task<ReleaseAggregation> LoadFromApi(ReleaseGroup releaseGroup, BackgroundTask task, CancellationToken ct)
+	private async Task<ReleaseAggregation> LoadFromApi(ReleaseGroup releaseGroup, BackgroundTask task)
 	{
-		// get artists from state
-		task.SetSubProgress(0.00, "api.get.releases.start");
-		var artists = _artistState.SortedFollowedArtists;
-		if (artists.Count == 0)
+		var releaseGroupString = releaseGroup.ToFriendlyString();
+
+		var releaseAggregation = await task.StepAsync<ReleaseAggregation>("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
-			task.SetSubProgress(1.00, "no-artists");
-			return new([], [], []);
-		}
-
-		//task.Status = $"Getting {releaseType.ToFriendlyString()} releases from api...";
-
-		var allReleasesToSave = new HashSet<SpotifyRelease>();
-		var allLinksToSave = new HashSet<SpotifyArtistReleaseEntity>();
-		var allArtistsToSave = new HashSet<SpotifyArtist>();
-
-
-		var total = artists.Count;
-		var i = 0;
-
-
-		foreach (var artist in artists)
-		{
-			ct.ThrowIfCancellationRequested();
-
-			var frac = (double)i / Math.Max(1, total);
-			task.SetSubProgress(frac, $"api.get.releases.artist-{i + 1}/{total}");
-
-			// get releases from api
-			var apiReleases = await _api.GetByArtist(artist, releaseGroup, ct);
-
-			if (apiReleases.Count == 0)
+			// get artists from state
+			var artists = _artistState.SortedFollowedArtists;
+			if (artists.Count == 0)
 			{
-				continue;
+				task.EndTask();
+				return new([], [], []);
 			}
 
-			// save release to db
-			allReleasesToSave.UnionWith(apiReleases);
+			var allReleasesToSave = new HashSet<SpotifyRelease>();
+			var allLinksToSave = new HashSet<SpotifyArtistReleaseEntity>();
+			var allArtistsToSave = new HashSet<SpotifyArtist>();
 
-			// save artists and links to db
-			foreach (var release in apiReleases)
+			task.BeginAutoSegments(artists.Count);
+
+			foreach (var artist in artists)
 			{
-				foreach (var releaseArtist in release.Artists)
-				{
-					allArtistsToSave.Add(releaseArtist);
-					allLinksToSave.Add(release.Id.ToArtistReleaseEntity(releaseArtist.Id, ArtistReleaseRole.Main));
-				}
+				ct.ThrowIfCancellationRequested();
 
-				foreach (var featArtist in release.FeaturedArtists)
+				await using (await task.NextSegment($"api - get releases for artist {artist.Name} - {releaseGroupString}"))
 				{
-					allArtistsToSave.Add(featArtist);
-					allLinksToSave.Add(release.Id.ToArtistReleaseEntity(featArtist.Id, ArtistReleaseRole.Featured));
+					// get releases from api
+					var apiReleases = await _api.GetByArtist(artist, releaseGroup, ct);
+
+					if (apiReleases.Count == 0)
+					{
+						continue;
+					}
+
+					// save release to db
+					allReleasesToSave.UnionWith(apiReleases);
+
+					// save artists and links to db
+					foreach (var release in apiReleases)
+					{
+						ct.ThrowIfCancellationRequested();
+						foreach (var releaseArtist in release.Artists)
+						{
+							ct.ThrowIfCancellationRequested();
+							allArtistsToSave.Add(releaseArtist);
+							allLinksToSave.Add(release.Id.ToArtistReleaseEntity(releaseArtist.Id, ArtistReleaseRole.Main));
+						}
+
+						foreach (var featArtist in release.FeaturedArtists)
+						{
+							ct.ThrowIfCancellationRequested();
+							allArtistsToSave.Add(featArtist);
+							allLinksToSave.Add(release.Id.ToArtistReleaseEntity(featArtist.Id, ArtistReleaseRole.Featured));
+						}
+					}
 				}
 			}
-			i++;
-		}
 
-		task.SetSubProgress(1.00, $"api.get.releases.done.total-{allReleasesToSave.Count}");
-		return new(allReleasesToSave.ToList(), allArtistsToSave.ToList(), allLinksToSave.ToList());
+			return new(allReleasesToSave.ToList(), allArtistsToSave.ToList(), allLinksToSave.ToList());
+		});
+
+		return releaseAggregation;
 	}
 
-	private async Task SaveToDbAndState(ReleaseGroup releaseGroup, ReleaseAggregation releaseAggregation, string userId, BackgroundTask task, CancellationToken ct)
+	private async Task SaveToDbAndState(ReleaseGroup releaseGroup, ReleaseAggregation releaseAggregation, string userId, BackgroundTask task)
 	{
+		task.BeginAutoSegments(5);
+
+		var releaseGroupString = releaseGroup.ToFriendlyString();
+
 		// save to db
-		task.SetSubProgress(0.10, "db.save.releases");
-		await _releaseDb.Save(releaseAggregation.Releases);
+		await using (await task.NextSegment($"db - save releases (release) - {releaseGroupString}"))
+		{
+			await _releaseDb.Save(releaseAggregation.Releases);
+		}
 
-		task.SetSubProgress(0.35, "db.save.artists");
-		await _artistDb.Save(releaseAggregation.Artists);
+		await using (await task.NextSegment($"db - save artists from releases (artist) - {releaseGroupString}"))
+		{
+			await _artistDb.Save(releaseAggregation.Artists);
+		}
 
-		task.SetSubProgress(0.60, "db.save.user-playlists");
-		await _linkDb.Save(releaseAggregation.Links);
+		await using (await task.NextSegment($"db - save release artists (artist-release) - {releaseGroupString}"))
+		{
+			await _linkDb.Save(releaseAggregation.Links);
+		}
 
 		// update meta db
-		task.SetSubProgress(0.90, "db.save.last-sync");
-		var metaDbType = MapToDbUpdateType(releaseGroup);
-		await _metaDb.Save(userId, metaDbType);
+		await using (await task.NextSegment($"db - save release last sync (update) - {releaseGroupString}"))
+		{
+			var metaDbType = MapToDbUpdateType(releaseGroup);
+			await _metaDb.Save(userId, metaDbType);
+		}
 
 		// update state
-
-		_state.Set(releaseGroup, releaseAggregation.Releases, DateTime.Now);
-		task.SetSubProgress(1.00, "db.save.releases.done");
+		await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
+		{
+			_state.Set(releaseGroup, releaseAggregation.Releases, DateTime.Now);
+		}
 	}
 
 	private static SpotifyDbUpdateType MapToDbUpdateType(ReleaseGroup releasesType) => releasesType switch
@@ -236,15 +249,6 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		_ => throw new NotSupportedException(nameof(releasesType))
 	};
 
-	public void Cancel()
-	{
-		_cts?.Cancel();
-	}
-
-	private sealed record ReleaseAggregation(
-		List<SpotifyRelease> Releases,
-		List<SpotifyArtist> Artists,
-		List<SpotifyArtistReleaseEntity> Links
-	);
+	private sealed record ReleaseAggregation(List<SpotifyRelease> Releases, List<SpotifyArtist> Artists, List<SpotifyArtistReleaseEntity> Links);
 
 }

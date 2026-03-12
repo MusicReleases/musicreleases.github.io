@@ -4,7 +4,7 @@
 }
 else
 {
-    <MrButton Class="@ButtonClass" Href="@SettingsService.GetUrl(_spotifyUser)" NewTab="@(!SettingsService.UserSettings.OpenLinksInApp)" Text="@_spotifyUser.Name" Title="@SettingsService.GetUrlTitle("user profile")">
+    <MrButton Class="@ButtonClass" Href="@SettingsService.GetUrl(_spotifyUser)" NewTab="@SettingsService.UserSettings.OpenLinksInNewTab" Text="@_spotifyUser.Name" Title="@SettingsService.GetUrlTitle("user profile")">
         @if (_spotifyUser?.ProfilePictureUrl is not null)
         {
             <img src="@_spotifyUser.ProfilePictureUrl" title="Profile picture" alt="Profile picture" width="50" />

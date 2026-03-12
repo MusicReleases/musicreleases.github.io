@@ -73,15 +73,6 @@ public partial class ReleaseArtists : IDisposable
 		return SettingsService.GetUrlTitle($"artist '{artist.Name}'");
 	}
 
-	private bool GetButtonNewTab(SpotifyArtist artist)
-	{
-		if (IsArtistFollowed(artist.Id))
-		{
-			return false;
-		}
-		return !SettingsService.UserSettings.OpenLinksInApp;
-	}
-
 	private void FilterArtist(string artistId)
 	{
 		if (!IsArtistFollowed(artistId))

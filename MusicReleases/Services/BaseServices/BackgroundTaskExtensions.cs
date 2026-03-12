@@ -6,11 +6,38 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public static class BackgroundTaskExtensions
 {
+	public static async Task RunStep(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
+	{
+		await RunStepAsyncInternal(task, name, category, task.Token, work);
+	}
+
+	private static async Task RunStepAsyncInternal(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct, Func<CancellationToken, Task> work)
+	{
+		await using (await task.BeginStepAsync(name, category, ct))
+		{
+			try
+			{
+				await work(ct);
+
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFinished();
+			}
+			catch (OperationCanceledException)
+			{
+				throw;
+			}
+			catch (Exception ex)
+			{
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFailed(ex);
+				throw;
+			}
+		}
+	}
 	private static async ValueTask<IAsyncDisposable> BeginStepAsync(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct = default)
 	{
 		var step = new BackgroundTaskStep(name, category);
 		task.AddStep(step);
-
 
 		CancellationTokenRegistration? ctr = null;
 		if (ct.CanBeCanceled)
@@ -25,26 +52,50 @@ public static class BackgroundTaskExtensions
 		return new BackgroundTaskStepScope(task, step, ct, ctr);
 	}
 
-	public static async Task RunStepAsync(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
+	public static void BeginAutoSegments(this BackgroundTask task, int count)
 	{
-		await RunStepAsyncInternal(task, name, category, task.Token, work);
+		var step = task.Steps[task.CurrentStepIndex];
+		step.Meta["seg.count"] = count.ToString();
+		step.Meta["seg.index"] = "0";
 	}
 
-	public static async Task RunStep(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct, Func<CancellationToken, Task> work)
+	public static ValueTask<IBackgroundTaskSubProgressScope> NextSegment(this BackgroundTask task, string label)
 	{
-		await RunStepAsyncInternal(task, name, category, ct, work);
+		var idx = task.CurrentStepIndex;
+		var step = task.Steps[idx];
+
+		var count = int.Parse(step.Meta["seg.count"]);
+		var index = int.Parse(step.Meta["seg.index"]);
+
+
+		// auto bounds
+		var segmentSize = 1.0 / count;
+		var from = index * segmentSize;
+		var to = from + segmentSize;
+
+		// move index
+		step.Meta["seg.index"] = (index + 1).ToString();
+		return task.BeginSubSegmentAsync(from, to, label);
 	}
 
-	private static async Task RunStepAsyncInternal(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct, Func<CancellationToken, Task> work)
+
+	public static Task<T> StepAsync<T>(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body)
+	{
+		return RunStepAsyncInternal(task, name, category, task.Token, body);
+	}
+
+	private static async Task<T> RunStepAsyncInternal<T>(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct, Func<CancellationToken, Task<T>> body)
 	{
 		await using (await task.BeginStepAsync(name, category, ct))
 		{
 			try
 			{
-				await work(ct);
+				var result = await body(ct);
 
 				var step = task.Steps[task.CurrentStepIndex];
 				step.MarkFinished();
+
+				return result;
 			}
 			catch (OperationCanceledException)
 			{
@@ -98,7 +149,7 @@ public static class BackgroundTaskExtensions
 		task.NotifyChange();
 	}
 
-	public static void AdvanceSubProgress(this BackgroundTask task, double delta, string? label = null)
+	private static void AdvanceSubProgress(this BackgroundTask task, double delta, string? label = null)
 	{
 		if (task.Steps.Count == 0)
 		{
@@ -116,7 +167,7 @@ public static class BackgroundTaskExtensions
 		task.SetSubProgress(target, label);
 	}
 
-	public static async ValueTask<IBackgroundTaskSubProgressScope> BeginSubSegmentAsync(this BackgroundTask task, double from, double to, string segmentLabel, bool writeStartMeta = false)
+	private static async ValueTask<IBackgroundTaskSubProgressScope> BeginSubSegmentAsync(this BackgroundTask task, double from, double to, string segmentLabel, bool writeStartMeta = false)
 	{
 		if (task.Steps.Count == 0)
 		{
@@ -148,62 +199,61 @@ public static class BackgroundTaskExtensions
 		var scope = new BackgroundTaskSubProgressScope(task, step, from, to, segmentLabel);
 		return scope;
 	}
-	/*public static void AddMeta(this BackgroundTask task, string key, string value)
-	{
-		if (task.Steps.Count == 0) return;
-		var step = task.Steps[task.CurrentStepIndex];
-		step.Meta[key] = value;
-		step.NotifyChange();
-	}
 
-	public static void AddMeta(this BackgroundTaskStep step, string key, string value)
-	{
-		step.Meta[key] = value;
-		step.NotifyChange();
-	}
 
-	public static void AddLink(this BackgroundTaskStep step, string label, string url, string? rel = null)
+	public static T Require<T>(this BackgroundTask task, T value, string? message = null)
 	{
-		step.Meta[$"link:{label}"] = url;
-		step.NotifyChange();
-	}*/
-
-}
-public static class BackgroundTaskStepExtensions
-{
-	public static void MarkFailed(this BackgroundTaskStep step, Exception ex, bool transient = false, string? code = null)
-	{
-		if (step.Ended)
+		if (value is null)
 		{
-			return;
+			throw new NullReferenceException(message ?? "Required value is null");
 		}
 
-		step.Status = BackgroundTaskStatus.Failed;
-		step.FinishedAt = DateTimeOffset.UtcNow;
-		step.ErrorMessage = ex.Message;
-		step.ErrorCode = code ?? "ERR_STEP";
-		step.Transient = transient;
+		return value;
 	}
 
-	public static void MarkCanceled(this BackgroundTaskStep step)
+	public static async Task<T> RequireAsync<T>(this BackgroundTask task, Task<T> asyncValue, string? message = null)
 	{
-		if (step.Ended)
+		var result = await asyncValue;
+
+		if (result is null)
 		{
-			return;
+			throw new NullReferenceException(message ?? "Required value is null");
 		}
 
-		step.Status = BackgroundTaskStatus.Canceled;
-		step.FinishedAt = DateTimeOffset.UtcNow;
+		return result;
 	}
 
-	public static void MarkFinished(this BackgroundTaskStep step)
+	public static async Task<T?> AllowNull<T>(this BackgroundTask task, T value)
 	{
-		if (step.Ended)
-		{
-			return;
-		}
+		return value;
+	}
+	public static async Task<T?> AllowNullAsync<T>(this BackgroundTask task, Task<T?> asyncValue)
+	{
+		return await asyncValue;
+	}
 
-		step.Status = BackgroundTaskStatus.Finished;
-		step.FinishedAt = DateTimeOffset.UtcNow;
+
+
+	public static async Task<T> SegmentAsync<T>(this BackgroundTask task, string label, Func<CancellationToken, Task<T>> body)
+	{
+		// začátek segmentu
+		await using (var seg = await task.NextSegment(label))
+		{
+			return await body(task.Token);
+		}
+	}
+
+	public static async Task SegmentAsync(this BackgroundTask task, string label, Func<CancellationToken, Task> body)
+	{
+		await using (var seg = await task.NextSegment(label))
+		{
+			await body(task.Token);
+		}
+	}
+
+	public static void ReportLoopProgress(this BackgroundTask task, int index, int total, string? label = null)
+	{
+		double frac = total == 0 ? 1.0 : (double)index / total;
+		task.SetSubProgress(frac, label);
 	}
 }

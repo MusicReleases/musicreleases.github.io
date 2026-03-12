@@ -23,6 +23,8 @@ public class UserSettings
 	public bool PlaylistAutoSort { get; set; } = true; // TODO custom sorting
 	public SpotifyPlaylist? PlaylistFavourite { get; set; }*/
 
+	public bool OpenLinksInNewTab => !OpenLinksInApp;
+
 	public UserSettings()
 	{
 

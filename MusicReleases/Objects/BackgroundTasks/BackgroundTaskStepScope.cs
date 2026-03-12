@@ -25,9 +25,10 @@ public sealed class BackgroundTaskStepScope(BackgroundTask task, BackgroundTaskS
 		if (_step.IsRunning && (_task.IsCancelRequested || (_ct.CanBeCanceled && _ct.IsCancellationRequested)))
 		{
 			_step.MarkCanceled();
-			_step.NotifyChange();
+			//_step.NotifyChange();
 		}
 
+		_step.NotifyChange();
 		_task.RecalculateProgress();
 		_task.NotifyChange();
 

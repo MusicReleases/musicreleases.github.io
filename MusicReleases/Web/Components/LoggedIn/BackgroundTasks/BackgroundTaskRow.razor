@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Globalization
+
 <MrRow Class="@Class">
     
     <div class="task-info">
@@ -41,7 +42,7 @@
         @for (int i = 0; i < SpotifyBackgroundTask.Steps.Count; i++)
         {
             var step = SpotifyBackgroundTask.Steps[i];
-            var stepPct = step.SubProgress * 100;
+            var stepPct = (step.SubProgress * 100).ToString("F6", CultureInfo.InvariantCulture);
 
             <div class="step @(step.Status.ToLowerString())">
 
@@ -88,7 +89,7 @@
         {
             @foreach (var link in SpotifyBackgroundTask.Links)
             {
-                <MrButton Class="@_buttonClass" Href="@GetButtonUrl(link)" Text="@GetButtonText(link)" Title="@GetButtonTitle(link)">
+                <MrButton Class="@_buttonClass" Href="@GetButtonUrl(link)" Text="@GetButtonText(link)" Title="@GetButtonTitle(link)" NewTab="@SettingsService.UserSettings.OpenLinksInNewTab">
                     <MrIcon Icon="@link.Icon" />
                 </MrButton>
             }
@@ -109,6 +110,6 @@
 
 
     <div class="task-progress @SpotifyBackgroundTask.Ended.ToCssClass("finished")">
-        <div class="bar" style="width:@(SpotifyBackgroundTask.Progress * 100)%"></div>
+        <div class="bar" style="width:@((SpotifyBackgroundTask.Progress * 100).ToString("F6", CultureInfo.InvariantCulture))%"></div>
     </div>
 </MrRow>

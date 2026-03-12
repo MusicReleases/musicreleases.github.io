@@ -47,21 +47,10 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 			return text;
 		}
 	}
-	/*public string StatusText
-	{
-		get => _statusText;
-		set
-		{
-			if (_statusText != value)
-			{
-				_statusText = value;
-				NotifyChange();
-			}
-		}
-	}*/
+
 	public bool IsCancelRequested { get; internal set; }
 
-	//public BackgroundTaskStatus Status { get; private set; } = BackgroundTaskStatus.Running;
+	public bool IsEndTaskRequested { get; internal set; }
 
 	public BackgroundTaskStatus Status
 	{
@@ -217,8 +206,6 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 	public void MarkCanceled()
 	{
 		IsCancelRequested = true;
-		//Status = BackgroundTaskStatus.Canceled;
-		//_statusText = "Canceled by user";
 
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
 		{
@@ -230,7 +217,6 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 
 	public void MarkFailed(Exception ex)
 	{
-		//Status = BackgroundTaskStatus.Failed;
 		_statusText = ex.Message;
 
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
@@ -242,13 +228,14 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 	}
 	public void MarkFinished()
 	{
-		if (Ended || IsCancelRequested)
+		/*if (Ended || IsCancelRequested)
+		{
+			return;
+		}*/
+		if (Ended)
 		{
 			return;
 		}
-
-		//Status = BackgroundTaskStatus.Finished;
-		//_statusText = "Finished";
 
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
 		{
@@ -256,4 +243,10 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 		}
 		NotifyChange();
 	}
+
+	public void EndTask()
+	{
+		IsEndTaskRequested = true;
+	}
+
 }

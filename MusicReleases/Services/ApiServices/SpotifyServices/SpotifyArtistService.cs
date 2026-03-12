@@ -10,7 +10,7 @@ using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState state, IBackgroundTaskManagerService taskManager) : ISpotifyArtistService
+public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyArtistService
 {
 	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
 	private readonly IApiArtistClient _api = api;
@@ -19,77 +19,65 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 	private readonly IDbSpotifyUserUpdateService _metaDb = metaDb;
 	private readonly ISpotifyArtistState _state = state;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
+	private readonly ILoadingService _loadingservice = loadingservice;
 
-	private CancellationTokenSource? _cts;
 
 	public async Task Get(bool forceUpdate = false)
 	{
-		// cancel any ongoing sync
-		Cancel();
-		_cts = new CancellationTokenSource();
-		var ct = _cts.Token;
-
-		try
+		if (_loadingservice.IsLoading(BackgroundTaskType.Artists))
 		{
-			var isInState = _state.SortedFollowedArtists.Any();
+			return;
+		}
 
-			if (isInState)
+		var isInState = _state.SortedFollowedArtists.Any();
+
+		if (isInState)
+		{
+			// calculate last sync
+			var shouldSync = ShouldSync(forceUpdate);
+
+			if (!shouldSync)
 			{
-				// calculate last sync
-				var shouldSync = ShouldSync(forceUpdate);
-
-				if (!shouldSync)
-				{
-					// no need to sync
-					return;
-				}
+				// synced
+				return;
 			}
+		}
 
-			await _taskManager.Run(BackgroundTaskType.Artists, "Geting artists", "Getting followed artists", async task =>
+		await _taskManager.Run(BackgroundTaskType.Artists, "Geting artists", "Getting followed artists", async task =>
+		{
+			var userId = _spotifyApiUserService.GetUserIdRequired();
+
+			if (!isInState)
 			{
-				var userId = _spotifyApiUserService.GetUserIdRequired();
-
-
-				if (!isInState)
+				// load data from db to state
+				await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 				{
-					// load data from db to state
-					await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, ct, async step =>
-					{
-						await LoadFromDbToState(userId, task, ct);
-					});
+					await LoadFromDbToState(userId, task);
 
 					// calculate last sync
 					var shouldSync = ShouldSync(forceUpdate);
 
 					if (!shouldSync)
 					{
-						// no need to sync
+						// synced
+						task.EndTask();
 						return;
 					}
-				}
-
-				// load from api
-				List<SpotifyArtist>? apiArtists = null;
-				await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, ct, async step =>
-				{
-					apiArtists = await LoadFromApi(task, ct);
 				});
+			}
 
-				// save api data to db and state
-				await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, ct, async step =>
-				{
-					if (apiArtists is null)
-					{
-						throw new NullReferenceException(nameof(apiArtists));
-					}
-					await SaveToDbAndState(apiArtists, userId, task, ct);
-				});
+			// load from api
+			var apiArtists = await task.StepAsync("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+			{
+				return await LoadFromApi(task);
 			});
-		}
-		catch (OperationCanceledException)
-		{
-			// cancelled
-		}
+
+			// save api data to db and state
+			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
+			{
+				await SaveToDbAndState(apiArtists, userId, task);
+			});
+		});
 	}
 
 	private bool ShouldSync(bool forceUpdate)
@@ -104,62 +92,79 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 		return shouldSync;
 	}
 
-	private async Task LoadFromDbToState(string userId, BackgroundTask task, CancellationToken ct)
+	private async Task LoadFromDbToState(string userId, BackgroundTask task)
 	{
-		task.SetSubProgress(0.00, "db.get.last-sync");
-		var lastSync = await _metaDb.Get(userId, SpotifyDbUpdateType.Artists);
+		task.BeginAutoSegments(4);
 
-		task.SetSubProgress(0.20, "db.get.user-artists");
-		var artistIds = await _linkDb.GetFollowedIds(userId);
+		var lastSync = await task.SegmentAsync("db - get artists last sync (user-update)", async ct =>
+		{
+			return await _metaDb.Get(userId, SpotifyDbUpdateType.Artists);
+		});
+
+		var artistIds = await task.SegmentAsync("db - get followed artist ids (user-artist)", async ct =>
+		{
+			return await _linkDb.GetFollowedIds(userId);
+		});
+
 
 		if (artistIds.Count == 0)
 		{
-			_state.SetFollowed([], lastSync);
-			task.SetSubProgress(1.00, "return.empty");
+			await using (await task.NextSegment("state - set followed artists"))
+			{
+				_state.SetFollowed([], lastSync);
+			}
+
 			return;
 		}
 
-		task.SetSubProgress(0.60, "db.get.artists.by-ids");
-		var artists = await _artistDb.GetByIds(artistIds);
+		var artists = await task.SegmentAsync("db - get artists by ids (artists)", async ct =>
+		{
+			return await _artistDb.GetByIds(artistIds);
+		});
 
-		_state.SetFollowed(artists, lastSync);
-		task.SetSubProgress(1.00, "db.get.artists.done");
+		await using (await task.NextSegment("state - set followed artists"))
+		{
+			_state.SetFollowed(artists, lastSync);
+		}
 	}
 
-	private async Task<List<SpotifyArtist>> LoadFromApi(BackgroundTask task, CancellationToken ct)
+	private async Task<List<SpotifyArtist>> LoadFromApi(BackgroundTask task)
 	{
-		// get saved playlists from api
-		task.SetSubProgress(0.00, "api.get.artists.start");
-		var apiArtists = await _api.GetFollowed(ct);
+		task.BeginAutoSegments(1);
 
-		ct.ThrowIfCancellationRequested();
-		task.SetSubProgress(1.00, $"api.get.artists.done.count-{apiArtists.Count}");
+		// get saved playlists from api
+		var apiArtists = await task.SegmentAsync($"api - get followed artists", _api.GetFollowed);
 
 		return apiArtists;
 	}
 
-	private async Task SaveToDbAndState(List<SpotifyArtist> apiArtists, string userId, BackgroundTask task, CancellationToken ct)
+	private async Task SaveToDbAndState(List<SpotifyArtist> apiArtists, string userId, BackgroundTask task)
 	{
+		task.BeginAutoSegments(4);
+
 		// save to playlists db
-		task.SetSubProgress(0.10, "db.save.artists");
-		await _artistDb.Save(apiArtists);
+		await using (await task.NextSegment("db - save artists (artist)"))
+		{
+			await _artistDb.Save(apiArtists);
+		}
 
 		// save to user-playlist db
-		task.SetSubProgress(0.60, "db.save.user-artists");
-		var apiIds = apiArtists.Select(a => a.Id);
-		await _linkDb.SetFollowed(userId, apiIds);
+		await using (await task.NextSegment("db - save followed artists (user-artist)"))
+		{
+			var apiIds = apiArtists.Select(a => a.Id);
+			await _linkDb.SetFollowed(userId, apiIds);
+		}
 
 		// save to update db
-		task.SetSubProgress(0.85, "db.save.last-sync");
-		await _metaDb.Save(userId, SpotifyDbUpdateType.Artists);
+		await using (await task.NextSegment("db - save artists last sync (update)"))
+		{
+			await _metaDb.Save(userId, SpotifyDbUpdateType.Artists);
+		}
 
 		// update ui
-		_state.SetFollowed(apiArtists, DateTime.Now);
-		task.SetSubProgress(1.00, "db.save.playlists.done");
-	}
-
-	public void Cancel()
-	{
-		_cts?.Cancel();
+		await using (await task.NextSegment("state - set followed artists"))
+		{
+			_state.SetFollowed(apiArtists, DateTime.Now);
+		}
 	}
 }

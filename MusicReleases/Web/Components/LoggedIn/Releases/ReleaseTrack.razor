@@ -27,7 +27,7 @@
 		<div class="name-artists">
 
 			<span class="name">
-				<MrButton Class="@_nameButtonClass" Href="@SettingsService.GetUrl(Track)" NewTab="@(!SettingsService.UserSettings.OpenLinksInApp)" Text="@Track.Name" Title="@SettingsService.GetUrlTitle($"track '{Track.Name}'")" draggable="true" @ondragstart="@OnDragStart" />
+				<MrButton Class="@_nameButtonClass" Href="@SettingsService.GetUrl(Track)" NewTab="@SettingsService.UserSettings.OpenLinksInNewTab" Text="@Track.Name" Title="@SettingsService.GetUrlTitle($"track '{Track.Name}'")" draggable="true" @ondragstart="@OnDragStart" />
 			</span>
 
 			<div class="artists">
