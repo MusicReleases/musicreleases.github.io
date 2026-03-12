@@ -131,15 +131,12 @@ public class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	private IEnumerable<BackgroundTask> ApplySearch(IEnumerable<BackgroundTask> source)
 	{
-		if (SearchText.IsNullOrEmpty())
-		{
-			return source;
-		}
-		var query = source.Where(t =>
-			t.Name.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ||
-			t.Info.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ||
-			t.StatusText.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) ||
-			t.Steps.Any(s => s.Name.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) || s.Status.ToString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase))
+		var query = source.ApplySearch(SearchText,
+			t => t.Name,
+			t => t.Info,
+			t => t.StatusText,
+			t => string.Join(" ", t.Steps.Select(s => s.Name)),
+			t => string.Join(" ", t.Steps.Select(s => s.Status.ToFriendlyString()))
 		);
 
 		return query;

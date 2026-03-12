@@ -442,7 +442,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 			return false;
 		}
 
-		var query = FilteredReleases.Where(t => t.Name.Contains(Filter.SearchText, StringComparison.InvariantCultureIgnoreCase));
+		var query = FilteredReleases.ApplySearch(Filter.SearchText, t => t.Name);
 
 		FilteredReleases = [.. query];
 

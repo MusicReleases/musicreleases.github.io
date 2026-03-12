@@ -27,7 +27,33 @@ public class SpotifyArtistFilterService : IDisposable, ISpotifyArtistFilterServi
 
 	public string? SearchText { get; private set; }
 
-	public ISet<SpotifyArtist>? FilteredArtists => SearchText.IsNullOrEmpty() ? _spotifyReleaseFilterService.FilteredArtists : _spotifyReleaseFilterService.FilteredArtists?.Where(x => x.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) || (_spotifyReleaseFilterService.Filter.Artist is not null && x.Id == _spotifyReleaseFilterService.Filter.Artist)).ToHashSet();
+	public ISet<SpotifyArtist> FilteredArtists
+	{
+		get
+		{
+			var artists = _spotifyReleaseFilterService.FilteredArtists;
+
+			if (artists is null)
+			{
+				return new SortedSet<SpotifyArtist>();
+			}
+
+			var searched = artists.ApplySearch(SearchText, x => x.Name);
+
+			var artistFilter = _spotifyReleaseFilterService.Filter.Artist;
+
+			if (artistFilter is not null)
+			{
+				var extraArtist = artistFilter is null
+					? []
+					: artists.Where(x => x.Id == artistFilter);
+
+				searched = searched.Union(extraArtist);
+			}
+
+			return new SortedSet<SpotifyArtist>(searched);
+		}
+	}
 
 	public void SetSearch(string? newSearchText)
 	{

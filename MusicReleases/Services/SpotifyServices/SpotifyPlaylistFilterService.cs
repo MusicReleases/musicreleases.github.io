@@ -81,20 +81,7 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 		}
 
 		// filter by text
-		if (!string.IsNullOrWhiteSpace(searchText))
-		{
-			var text = searchText.Trim();
-			if (text.StartsWith('"') && text.EndsWith('"') && text.Length > 1)
-			{
-				var exactPhrase = text.Length == 2 ? text : text[1..^1];
-				query = query.Where(x => x.Name.Contains(exactPhrase, StringComparison.CurrentCultureIgnoreCase));
-			}
-			else
-			{
-				var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-				query = query.Where(p => words.All(word => p.Name.Contains(word, StringComparison.CurrentCultureIgnoreCase)));
-			}
-		}
+		query = query.ApplySearch(searchText, x => x.Name);
 
 		return query;
 	}
