@@ -128,7 +128,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		Console.WriteLine("filter: releases - start");
 
 		// releases by type
-		var releasesByType = AllReleases.TryGetValue(Filter.ReleaseType, out var set) ? set : [];
+		var releasesByType = AllReleases.TryGetValue(Filter.ReleaseGroup, out var set) ? set : [];
 
 		// releases by advanced filter
 		var releasesByTypeAdvanced = ApplyAdvancedFilter(releasesByType);
@@ -137,7 +137,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		var releasesByTypeAdvancedArtist = releasesByTypeAdvanced;
 		if (Filter.Artist.IsNotNullOrEmpty())
 		{
-			if (Filter.ReleaseType == ReleaseGroup.Appears)
+			if (Filter.ReleaseGroup == ReleaseGroup.Appears)
 			{
 				releasesByTypeAdvancedArtist = releasesByTypeAdvanced.Where(r => r.FeaturedArtists.Any(a => a.Id == Filter.Artist));
 			}
@@ -194,14 +194,14 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		var showEPs = Filter.ReleaseAdvancedFilter.HasFlag(ReleaseAdvancedFilter.EPs);
 		var showCompilations = Filter.ReleaseAdvancedFilter.HasFlag(ReleaseAdvancedFilter.Compilations);
 
-		if (Filter.ReleaseType == ReleaseGroup.Tracks)
+		if (Filter.ReleaseGroup == ReleaseGroup.Tracks)
 		{
 			if (showTracks ^ showEPs)
 			{
 				query = query.Where(r => showTracks ? r.TotalTracks == 1 : r.TotalTracks > 1);
 			}
 		}
-		else if (Filter.ReleaseType == ReleaseGroup.Appears)
+		else if (Filter.ReleaseGroup == ReleaseGroup.Appears)
 		{
 			var anySelected = showAlbums || showTracks || showEPs || showCompilations;
 			var allSelected = showAlbums && showTracks && showEPs && showCompilations;
@@ -256,6 +256,8 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 	private void FilterDate(ISet<SpotifyRelease> releases)
 	{
 		Console.WriteLine("filter: date - start");
+
+
 		var filteredYearMonth = releases
 			.Select(r => r.ReleaseDate)
 			.Distinct()
@@ -269,7 +271,39 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 				)
 			);
 
-		FilteredDate = filteredYearMonth;
+		if (Filter.Year is int year)
+		{
+			if (!filteredYearMonth.ContainsKey(year))
+			{
+				filteredYearMonth[year] = [];
+			}
+		}
+
+		if (Filter.Month is DateTime month)
+		{
+			var y = month.Year;
+			var m = month.Month;
+
+			if (!filteredYearMonth.TryGetValue(y, out var months))
+			{
+				months = [];
+				filteredYearMonth[y] = months;
+			}
+
+			months.Add(m);
+		}
+
+		FilteredDate = filteredYearMonth
+			.OrderByDescending(kvp => kvp.Key)
+			.ToDictionary(
+				kvp => kvp.Key,
+				kvp => new SortedSet<int>(
+					kvp.Value.OrderByDescending(m => m),
+					Comparer<int>.Create((x, y) => y.CompareTo(x))
+				)
+			);
+
+
 		Console.WriteLine("filter: date - end");
 	}
 
@@ -284,11 +318,11 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		}
 
 		var artistIdsInFilteredReleases
-			= Filter.ReleaseType == ReleaseGroup.Appears
+			= Filter.ReleaseGroup == ReleaseGroup.Appears
 			? releasesByTypeDate.SelectMany(r => r.FeaturedArtists.Select(a => a.Id)).ToHashSet()
 			: releasesByTypeDate.SelectMany(r => r.Artists.Select(a => a.Id)).ToHashSet();
 
-		var filteredArtists = AllArtists.Where(a => artistIdsInFilteredReleases.Contains(a.Id));
+		var filteredArtists = AllArtists.Where(a => artistIdsInFilteredReleases.Contains(a.Id) || (Filter is not null && a.Id == Filter.Artist));
 
 		FilteredArtists = [.. filteredArtists];
 		Console.WriteLine("filter: artists - end");
@@ -324,9 +358,23 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 	public ReleaseAdvancedFilter EnsureAdvancedFilter(ReleaseAdvancedFilter newFilter)
 	{
-		foreach (var group in AdvancedFilterGroups)
+		var firstGroupValidFlags = GetValidAdvancedFilterForReleaseType(Filter.ReleaseGroup);
+
+		if (firstGroupValidFlags.Length > 0)
 		{
-			var anyActive = group.Any(f => newFilter.HasFlag(f));
+			var anyActive = newFilter.HasAnyFlag(firstGroupValidFlags);
+			if (!anyActive)
+			{
+				foreach (var f in firstGroupValidFlags)
+				{
+					newFilter |= f;
+				}
+			}
+		}
+
+		foreach (var group in AdvancedFilterGroups.Skip(1))
+		{
+			var anyActive = newFilter.HasAnyFlag(group);
 			if (!anyActive)
 			{
 				foreach (var f in group)
@@ -337,6 +385,16 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		}
 		return newFilter;
 	}
+	private static ReleaseAdvancedFilter[] GetValidAdvancedFilterForReleaseType(ReleaseGroup releaseGroup)
+	{
+		return releaseGroup switch
+		{
+			ReleaseGroup.Tracks => [ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs],
+			ReleaseGroup.Appears => [ReleaseAdvancedFilter.Albums, ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs, ReleaseAdvancedFilter.Compilations],
+			_ => []
+		};
+	}
+
 
 	private bool SetAdvancedFilterInternal(ReleaseAdvancedFilter newFilter)
 	{
@@ -454,7 +512,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		switch (type)
 		{
 			case FilterType.Any:
-				SetFilterInternal(new(Filter.ReleaseType));
+				SetFilterInternal(new(Filter.ReleaseGroup));
 				break;
 			case FilterType.Artist:
 				Filter.Artist = null;
@@ -509,12 +567,12 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 	public void FilterReleaseType(ReleaseGroup releaseType)
 	{
-		if (releaseType == Filter.ReleaseType)
+		if (releaseType == Filter.ReleaseGroup)
 		{
 			return;
 		}
 
-		Filter.ReleaseType = releaseType;
+		Filter.ReleaseGroup = releaseType;
 
 		OnFilterChanged?.Invoke();
 		NotifySynchronizer?.Invoke();

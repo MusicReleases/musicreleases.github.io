@@ -10,7 +10,7 @@ public partial class ReleaseFilter : IDisposable
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 
-	private ReleaseGroup ReleaseType => SpotifyReleaseFilterService.Filter.ReleaseType;
+	private ReleaseGroup ReleaseType => SpotifyReleaseFilterService.Filter.ReleaseGroup;
 
 
 	protected override void OnInitialized()

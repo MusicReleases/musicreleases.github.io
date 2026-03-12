@@ -26,6 +26,8 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 
 	public bool IsAnyTaskVisible => VisibleTasks.Count > 0;
 
+	public bool AnyTaskFailed => _tasks.Any(t => t.Failed);
+
 	public IReadOnlyList<BackgroundTask> AllTasks => _tasks;
 
 	public ICollection<BackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];

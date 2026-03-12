@@ -64,6 +64,7 @@ public enum LucideIcon
 	Settings,
 	Sun,
 	Trash,
+	TriangleAlert,
 	UserRound,
 	UserRoundCog,
 	Users,

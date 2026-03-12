@@ -5,7 +5,7 @@ namespace JakubKastner.MusicReleases.Objects.Spotify;
 
 public class SpotifyReleaseFilter
 {
-	public ReleaseGroup ReleaseType { get; set; } = ReleaseGroup.Albums;
+	public ReleaseGroup ReleaseGroup { get; set; } = ReleaseGroup.Albums;
 
 	public ReleaseAdvancedFilter ReleaseAdvancedFilter { get; set; } = ReleaseAdvancedFilter.All;
 
@@ -24,12 +24,12 @@ public class SpotifyReleaseFilter
 
 	public SpotifyReleaseFilter(ReleaseGroup releaseType)
 	{
-		ReleaseType = releaseType;
+		ReleaseGroup = releaseType;
 	}
 
 	public SpotifyReleaseFilter(ReleaseGroup releaseType, ReleaseAdvancedFilter advancedFilter, string? artist, int? year, DateTime? month, string? searchText = null)
 	{
-		ReleaseType = releaseType;
+		ReleaseGroup = releaseType;
 		ReleaseAdvancedFilter = advancedFilter;
 		Artist = artist;
 		Year = year;

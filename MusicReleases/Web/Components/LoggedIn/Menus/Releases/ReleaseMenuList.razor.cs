@@ -33,7 +33,7 @@ public partial class ReleaseMenuList : IDisposable
 
 	private bool IsOverflowMenuDisplayed => OverflowMenuService.IsDisplayed(_overflowMenu);
 
-	private string OverflowListItemClass => $"more {SpotifyReleaseFilterService.Filter.ReleaseType.ToLowerString()}-more";
+	private string OverflowListItemClass => $"more {SpotifyReleaseFilterService.Filter.ReleaseGroup.ToLowerString()}-more";
 
 	private string OverflowButtonTitle => $"{(IsOverflowMenuDisplayed ? "Hide" : "Show")} more";
 

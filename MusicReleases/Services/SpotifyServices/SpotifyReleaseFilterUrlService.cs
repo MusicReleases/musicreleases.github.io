@@ -16,7 +16,7 @@ public class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterS
 	{
 		var urlPathList = new List<string>
 		{
-			filter.ReleaseType.ToLowerString(),
+			filter.ReleaseGroup.ToLowerString(),
 			filter.Year.HasValue ? filter.Year.Value.ToString() : _urlNull,
 			filter.Month.HasValue ? filter.Month.Value.Date.Month.ToString() : _urlNull,
 			filter.Artist.IsNotNullOrEmpty() ? filter.Artist : _urlNull

@@ -69,7 +69,7 @@ public partial class UpdateButton : IDisposable
 
 		if (serviceType == ServiceType.Spotify)
 		{
-			SpotifyWorkflowService.Update(ButtonType, SpotifyReleaseFilterService.Filter.ReleaseType);
+			SpotifyWorkflowService.Update(ButtonType, SpotifyReleaseFilterService.Filter.ReleaseGroup);
 		}
 	}
 }

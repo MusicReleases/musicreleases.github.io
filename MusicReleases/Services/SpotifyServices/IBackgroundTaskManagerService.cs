@@ -11,6 +11,7 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		bool IsAnyTaskVisible { get; }
 		ICollection<BackgroundTask> RunningTasks { get; }
 		ICollection<BackgroundTask> VisibleTasks { get; }
+		bool AnyTaskFailed { get; }
 
 		event Action? OnChange;
 

@@ -34,6 +34,8 @@ public partial class BackgroundTaskButton : IDisposable
 
 	private bool ButtonLoading => ButtonType == TasksButtonComponent.Mobile && SpotifyTaskManagerService.IsAnyTaskRunning;
 
+	private LucideIcon Icon => SpotifyTaskManagerService.AnyTaskFailed ? LucideIcon.TriangleAlert : LucideIcon.ListTodo;
+
 	private string? IconClass => ButtonType == TasksButtonComponent.Mobile ? "fill" : null;
 
 

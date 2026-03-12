@@ -83,7 +83,7 @@ public partial class Releases
 		await SpotifyReleaseFilterUrlSynchronizer.SetFilterFromUrl(Type, Year, Month, ArtistId, Filter, Search);
 
 		// type doesnt changed - dont update
-		var currentReleaseType = SpotifyReleaseFilterService.Filter.ReleaseType;
+		var currentReleaseType = SpotifyReleaseFilterService.Filter.ReleaseGroup;
 		var typeChanged = _lastReleaseType != currentReleaseType;
 		_lastReleaseType = currentReleaseType;
 
@@ -92,6 +92,7 @@ public partial class Releases
 
 	private async Task LoadReleases()
 	{
-		await SpotifyWorkflowService.StartLoadingAll(SpotifyReleaseFilterService.Filter.ReleaseType, false);
+		Console.WriteLine("loading releases");
+		await SpotifyWorkflowService.StartLoadingAll(SpotifyReleaseFilterService.Filter.ReleaseGroup, false);
 	}
 }

@@ -17,7 +17,7 @@ public partial class ReleaseMenuButton : IDisposable
 	public string? Class { get; set; }
 
 
-	private bool IsActive => SpotifyReleaseFilterService.Filter.ReleaseType == ReleaseType;
+	private bool IsActive => SpotifyReleaseFilterService.Filter.ReleaseGroup == ReleaseType;
 
 	private string ButtonText => ReleaseType.ToFriendlyString(true);
 

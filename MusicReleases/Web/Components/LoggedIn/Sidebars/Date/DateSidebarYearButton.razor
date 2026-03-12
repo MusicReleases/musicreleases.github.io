@@ -1,18 +1,22 @@
 ﻿<li class="@ActiveClass">
     <MrButton Class="@_buttonClass" Text="@Year.ToString()" Title="Filter year" Active="@IsFilterActive" OnClick="@FilterYear" role="listitem">
-
         <ChildContent>
-            <span class="hide-mobile year @ActiveClass" title="Display months" @onclick="@ToggleMonths" @onclick:stopPropagation="true">
-                <MrIcon Icon="@Icon" />
-            </span>
+            @if (Months.Count > 0)
+            {
+                <span class="hide-mobile year @ActiveClass" title="Display months" @onclick="@ToggleMonths" @onclick:stopPropagation="true">
+                    <MrIcon Icon="@Icon" />
+                </span>
+            }
         </ChildContent>
 
         <ChildContentAfterText>
-            <span class="show-mobile year @ActiveClass" title="Display months" @onclick="@ToggleMonths" @onclick:stopPropagation="true">
-                <MrIcon Icon="@Icon" />
-            </span>
+            @if (Months.Count > 0)
+            {
+                <span class="show-mobile year @ActiveClass" title="Display months" @onclick="@ToggleMonths" @onclick:stopPropagation="true">
+                    <MrIcon Icon="@Icon" />
+                </span>
+            }
         </ChildContentAfterText>
-
     </MrButton>
 
     @if (_renderMonths)

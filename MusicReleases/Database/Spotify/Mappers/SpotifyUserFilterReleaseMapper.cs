@@ -7,7 +7,7 @@ public static class SpotifyUserFilterReleaseMapper
 {
 	public static SpotifyUserFilterReleaseEntity ToEntity(this SpotifyReleaseFilter dto, string userId)
 	{
-		return new(userId, dto.ReleaseType, dto.ReleaseAdvancedFilter, dto.Artist, dto.Year, dto.Month);
+		return new(userId, dto.ReleaseGroup, dto.ReleaseAdvancedFilter, dto.Artist, dto.Year, dto.Month);
 	}
 
 	public static SpotifyReleaseFilter ToModel(this SpotifyUserFilterReleaseEntity entity)

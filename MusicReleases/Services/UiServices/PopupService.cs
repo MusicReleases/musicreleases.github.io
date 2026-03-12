@@ -69,8 +69,6 @@ public class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilter
 
 			var lastUrl = _lastUrl;
 
-			_lastUrl = null;
-
 			if (lastUrl.IsNullOrEmpty())
 			{
 				_navManager.NavigateTo("/");
@@ -109,7 +107,7 @@ public class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilter
 			// when current url is the same when popup was displayed, then hide popup
 			await Hide();
 		}
-
+		_lastUrl = null;
 		return changed;
 	}
 }
