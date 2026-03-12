@@ -9,5 +9,6 @@ public interface ISpotifyArtistState
 
 	event Action? OnChange;
 
+	bool IsFollowed(string artistId);
 	void SetFollowed(IEnumerable<SpotifyArtist> artists, DateTime lastSync);
 }

@@ -28,8 +28,6 @@ public partial class ReleaseTrack : IDisposable
 
 	private const string _nameButtonClass = $"{_buttonClass} name";
 
-	private const string _artistButtonClass = $"{_buttonClass} artist";
-
 	private bool _renderPlaylistList = false;
 
 	private bool _isPlaylistListDisplayed = false;

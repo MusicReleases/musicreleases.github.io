@@ -12,7 +12,6 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		Dictionary<int, SortedSet<int>>? FilteredDate { get; }
 		SortedSet<SpotifyRelease>? FilteredReleases { get; }
 
-		//event Action? OnFilterOrDataChanged;
 		event Action? OnFilterChanged;
 		event Action? OnDataFiltered;
 		event Action? NotifySynchronizer;
@@ -27,6 +26,7 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		void FilterReleaseType(ReleaseGroup releaseType);
 		void FilterYear(int? year);
 		bool IsAdvancedFilterActive(ReleaseAdvancedFilter advancedFilter);
+		bool IsArtistFiltered(string artistId);
 		bool IsFilterActive(FilterType filterType);
 		void SeAdvancedFilter(ReleaseAdvancedFilter advancedFilter);
 		void SetFromUrl(SpotifyReleaseFilter newFilter);

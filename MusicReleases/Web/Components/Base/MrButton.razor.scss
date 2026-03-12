@@ -539,6 +539,13 @@
             @include transparent;
             @include flex-wrap;
             @include hover-text-only;
+
+            &.artist {                
+                &.not-followed {
+                    color: dimgray;
+                    @include hover-text-only;
+                }
+            }
         }
 
         &-actions {
@@ -561,14 +568,18 @@
             }
 
             &.artist {
-                @include hover-text-only;
-                color: dimgray;
+                //@include hover-text-only;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 flex: 0 1 auto;
                 min-width: 0;
                 font-size: 14px;
+
+                &.not-followed {
+                    color: dimgray;
+                    @include hover-text-only;
+                }
             }
         }
     }

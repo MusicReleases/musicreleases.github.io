@@ -577,4 +577,9 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		OnFilterChanged?.Invoke();
 		NotifySynchronizer?.Invoke();
 	}
+
+	public bool IsArtistFiltered(string artistId)
+	{
+		return Filter.Artist == artistId;
+	}
 }

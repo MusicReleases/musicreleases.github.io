@@ -20,5 +20,10 @@ public class SpotifyArtistState : ISpotifyArtistState
 		NotifyStateChanged();
 	}
 
+	public bool IsFollowed(string artistId)
+	{
+		return SortedFollowedArtists.Any(a => a.Id == artistId);
+	}
+
 	private void NotifyStateChanged() => OnChange?.Invoke();
 }

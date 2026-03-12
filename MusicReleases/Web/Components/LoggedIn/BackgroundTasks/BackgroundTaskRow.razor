@@ -88,7 +88,7 @@
         {
             @foreach (var link in SpotifyBackgroundTask.Links)
             {
-                <MrButton Class="@_buttonClass" Href="@SettingsService.GetUrl(link.UrlApp, link.UrlWeb)" Text="@link.Title">
+                <MrButton Class="@_buttonClass" Href="@GetButtonUrl(link)" Text="@GetButtonText(link)" Title="@GetButtonTitle(link)">
                     <MrIcon Icon="@link.Icon" />
                 </MrButton>
             }

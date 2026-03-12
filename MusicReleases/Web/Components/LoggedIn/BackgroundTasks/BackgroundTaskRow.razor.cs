@@ -64,4 +64,34 @@ public partial class BackgroundTaskRow : IDisposable
 	{
 		//SpotifyTaskManagerService.RemoveTask(SpotifyBackgroundTask);
 	}
+
+	private string GetButtonUrl(BackgroundTaskLink link)
+	{
+		if (link.UrlApp.IsNullOrEmpty())
+		{
+			return link.UrlWeb;
+		}
+
+		return SettingsService.GetUrl(link.UrlApp, link.UrlWeb);
+	}
+
+	private string GetButtonText(BackgroundTaskLink link)
+	{
+		if (link.UrlApp.IsNullOrEmpty())
+		{
+			return link.Text;
+		}
+
+		return $"Open {link.Text}";
+	}
+
+	private string GetButtonTitle(BackgroundTaskLink link)
+	{
+		if (link.UrlApp.IsNullOrEmpty())
+		{
+			return link.Title;
+		}
+
+		return SettingsService.GetUrlTitle(link.Title);
+	}
 }
