@@ -21,5 +21,6 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		void RemoveAllFinishedTasks();
 		void RemoveTask(BackgroundTask task);
 		Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work);
+		Task Run(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work);
 	}
 }

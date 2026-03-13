@@ -45,10 +45,33 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 		OnChange?.Invoke();
 	}
 
-
 	public Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work)
 	{
-		var task = new BackgroundTask(type, name, info);
+		var expectedSteps = type switch
+		{
+			BackgroundTaskType.ArtistsGet => 3,
+
+			BackgroundTaskType.ReleasesGet => 3,
+
+			BackgroundTaskType.PlaylistsGet => 3,
+			BackgroundTaskType.PlaylistsCreate => 2,
+
+			BackgroundTaskType.PlaylistTracksGet => 3,
+			BackgroundTaskType.PlaylistTracksAdd => 2,
+			BackgroundTaskType.PlaylistTracksRemove => 2,
+			_ => 1
+		};
+		return RunInternal(type, name, info, expectedSteps, work);
+	}
+
+	public Task Run(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work)
+	{
+		return RunInternal(type, name, info, expectedSteps, work);
+	}
+
+	private Task RunInternal(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work)
+	{
+		var task = new BackgroundTask(type, name, info, expectedSteps);
 		task.OnStateChanged += NotifyUI;
 
 		_tasks.Insert(0, task);

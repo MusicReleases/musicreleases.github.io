@@ -15,7 +15,7 @@ public partial class ReleaseContent : IDisposable
 	private ILoadingService LoadingService { get; set; } = default!;
 
 
-	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.Releases) || LoadingService.IsLoading(BackgroundTaskType.Artists);
+	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.ReleasesGet) || LoadingService.IsLoading(BackgroundTaskType.ArtistsGet);
 
 	private ISet<SpotifyRelease>? FilteredReleases => SpotifyReleaseFilterService.FilteredReleases;
 

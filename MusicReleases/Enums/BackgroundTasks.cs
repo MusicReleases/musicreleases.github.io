@@ -2,10 +2,16 @@
 
 public enum BackgroundTaskType
 {
-	Releases,
-	Artists,
-	Playlists,
-	PlaylistTracks,
+	ArtistsGet,
+
+	ReleasesGet,
+
+	PlaylistsGet,
+	PlaylistsCreate,
+
+	PlaylistTracksGet,
+	PlaylistTracksAdd,
+	PlaylistTracksRemove,
 }
 
 public enum BackgroundTaskCategory

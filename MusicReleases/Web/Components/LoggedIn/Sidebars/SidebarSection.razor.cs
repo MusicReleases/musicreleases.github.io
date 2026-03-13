@@ -43,9 +43,9 @@ public partial class SidebarSection : IDisposable
 
 	private bool Loading => SidebarType switch
 	{
-		SidebarComponent.Artists => LoadingService.IsLoading(BackgroundTaskType.Artists),
-		SidebarComponent.Date => LoadingService.IsLoading(BackgroundTaskType.Artists) || LoadingService.IsLoading(BackgroundTaskType.Releases),
-		SidebarComponent.Playlists => LoadingService.IsLoading(BackgroundTaskType.Playlists) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracks),
+		SidebarComponent.Artists => LoadingService.IsLoading(BackgroundTaskType.ArtistsGet),
+		SidebarComponent.Date => LoadingService.IsLoading(BackgroundTaskType.ArtistsGet) || LoadingService.IsLoading(BackgroundTaskType.ReleasesGet),
+		SidebarComponent.Playlists => LoadingService.IsLoading(BackgroundTaskType.PlaylistsGet) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracksGet),
 		_ => throw new NotImplementedException(),
 	};
 

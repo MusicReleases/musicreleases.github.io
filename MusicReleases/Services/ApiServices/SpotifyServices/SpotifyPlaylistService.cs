@@ -26,7 +26,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 	public async Task LoadAndSync(bool forceUpdate = false)
 	{
 
-		if (_loadingservice.IsLoading(BackgroundTaskType.Playlists))
+		if (_loadingservice.IsLoading(BackgroundTaskType.PlaylistsGet))
 		{
 			return;
 		}
@@ -46,7 +46,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		}
 
 
-		await _taskManager.Run(BackgroundTaskType.Playlists, "Geting playlists", "Getting user playlists", async task =>
+		await _taskManager.Run(BackgroundTaskType.PlaylistsGet, "Geting playlists", "Getting user playlists", async task =>
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
 
@@ -173,7 +173,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 	public async Task CreatePlaylist(string name)
 	{
-		await _taskManager.Run(BackgroundTaskType.Playlists, "Creating playlist", $"Creating new playlists '{name}'", async task =>
+		await _taskManager.Run(BackgroundTaskType.PlaylistsCreate, "Creating playlist", $"Creating new playlists '{name}'", async task =>
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
 
@@ -258,7 +258,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			= _state.GetById(playlistId)
 			?? throw new InvalidOperationException($"Playlist not found in state");
 
-		await _taskManager.Run(BackgroundTaskType.PlaylistTracks, "Adding track to playlists", $"Adding {tracksList.Count} track{trackLabel} to playlist '{playlist.Name}'", async task =>
+		await _taskManager.Run(BackgroundTaskType.PlaylistTracksAdd, "Adding track to playlists", $"Adding {tracksList.Count} track{trackLabel} to playlist '{playlist.Name}'", async task =>
 		{
 			var snapshotId = await AddTracksApi(playlist, tracksList, positionTop, task);
 
@@ -321,7 +321,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 		var playlist = _state.GetById(playlistId) ?? throw new InvalidOperationException("Playlist not found in state");
 
-		await _taskManager.Run(BackgroundTaskType.PlaylistTracks, "Removing track from playlist", $"Removing {tracksList.Count} track{trackLabel} from playlist '{playlist.Name}'", async (task) =>
+		await _taskManager.Run(BackgroundTaskType.PlaylistTracksRemove, "Removing track from playlist", $"Removing {tracksList.Count} track{trackLabel} from playlist '{playlist.Name}'", async (task) =>
 		{
 			var snapshotId = await RemoveTracksApi(playlist, tracks, task);
 

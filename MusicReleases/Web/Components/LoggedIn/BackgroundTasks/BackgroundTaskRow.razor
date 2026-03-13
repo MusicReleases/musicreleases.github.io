@@ -27,7 +27,14 @@
             <span>
                 @SpotifyBackgroundTask.StatusText
             </span>
-            @if (@SpotifyBackgroundTask.Duration.HasValue)
+            
+            @if (@SpotifyBackgroundTask.IsRunning)
+            {
+                <span class="time-duration" title="Task progress">
+                    &nbsp;(@(SpotifyBackgroundTask.CurrentStepIndex + 1) / @SpotifyBackgroundTask.ExpectedSteps)
+                </span>
+            }
+            @if (@SpotifyBackgroundTask.Ended && SpotifyBackgroundTask.Duration.HasValue)
             {
                 <span class="time-duration" title="Task duration">
                     &nbsp;(@SpotifyBackgroundTask.Duration.Value.ToMinuteString())

@@ -4,7 +4,7 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Objects.BackgroundTasks;
 
-public class BackgroundTask(BackgroundTaskType type, string name, string info)
+public class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps)
 {
 	public event Action? OnStateChanged;
 
@@ -13,6 +13,8 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 	public string Name { get; init; } = name;
 
 	public string Info { get; init; } = info;
+
+	public int ExpectedSteps { get; init; } = expectedSteps;
 
 	public BackgroundTaskType Type { get; init; } = type;
 
@@ -156,15 +158,15 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info)
 			return;
 		}
 
-		var idx = CurrentStepIndex;
-		var total = Steps.Count;
+		var total = ExpectedSteps > 0 ? ExpectedSteps : Steps.Count;
+		var done = 0.0;
 
-		var basePart = Math.Clamp((double)idx / total, 0, 1);
+		for (int i = 0; i < Steps.Count; i++)
+		{
+			done += Math.Clamp(Steps[i].SubProgress, 0, 1) / total;
+		}
 
-		var step = Steps[idx];
-		var sub = Math.Clamp(step.SubProgress, 0, 1) / total;
-
-		Progress = Math.Clamp(basePart + sub, 0, 1);
+		Progress = Math.Clamp(done, 0, 1);
 	}
 
 	public void AddLink(string text, string title, string urlWeb, Enum icon)

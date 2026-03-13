@@ -26,7 +26,7 @@ public partial class PlaylistPicker : IDisposable
 	public SpotifyTrack? Track { get; set; }
 
 
-	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.Playlists) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracks);
+	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.PlaylistsGet) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracksGet);
 
 	private List<SpotifyPlaylist>? Playlists => FilterService.FilteredPlaylists?.ToList();
 

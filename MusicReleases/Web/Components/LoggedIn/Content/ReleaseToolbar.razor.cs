@@ -14,7 +14,7 @@ public partial class ReleaseToolbar : IDisposable
 	public ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 
-	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.Releases);
+	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.ReleasesGet);
 
 
 	private const string _buttonClass = "toolbar-releases";

@@ -35,7 +35,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 			throw new NotSupportedException();
 		}
 
-		if (_loadingservice.IsLoading(BackgroundTaskType.Releases))
+		if (_loadingservice.IsLoading(BackgroundTaskType.ReleasesGet))
 		{
 			return;
 		}
@@ -54,7 +54,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 			}
 		}
 
-		await _taskManager.Run(BackgroundTaskType.Releases, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()} from followed artists", async task =>
+		await _taskManager.Run(BackgroundTaskType.ReleasesGet, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()} from followed artists", async task =>
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
 

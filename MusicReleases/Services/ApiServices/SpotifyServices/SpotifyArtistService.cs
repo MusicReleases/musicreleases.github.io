@@ -24,7 +24,7 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 
 	public async Task Get(bool forceUpdate = false)
 	{
-		if (_loadingservice.IsLoading(BackgroundTaskType.Artists))
+		if (_loadingservice.IsLoading(BackgroundTaskType.ArtistsGet))
 		{
 			return;
 		}
@@ -43,7 +43,7 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 			}
 		}
 
-		await _taskManager.Run(BackgroundTaskType.Artists, "Geting artists", "Getting followed artists", async task =>
+		await _taskManager.Run(BackgroundTaskType.ArtistsGet, "Geting artists", "Getting followed artists", async task =>
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
 

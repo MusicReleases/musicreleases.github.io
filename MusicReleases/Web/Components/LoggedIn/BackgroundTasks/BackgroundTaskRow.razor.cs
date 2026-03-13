@@ -62,7 +62,7 @@ public partial class BackgroundTaskRow : IDisposable
 	}
 	private void CancelTask()
 	{
-		//SpotifyTaskManagerService.RemoveTask(SpotifyBackgroundTask);
+		SpotifyBackgroundTask.RequestCancel();
 	}
 
 	private string GetButtonUrl(BackgroundTaskLink link)

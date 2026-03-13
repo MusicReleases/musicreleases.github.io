@@ -14,7 +14,7 @@ public partial class ArtistSidebarFilter : IDisposable
 	public ISpotifyArtistFilterService SpotifyArtistFilterService { get; set; } = default!;
 
 
-	private bool IsLoading => LoadingService.IsLoading(BackgroundTaskType.Artists);
+	private bool IsLoading => LoadingService.IsLoading(BackgroundTaskType.ArtistsGet);
 
 
 	private const string _buttonClass = "sidebar-filter";
