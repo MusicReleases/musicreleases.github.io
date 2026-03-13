@@ -8,11 +8,13 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<IReadOnlyList<SpotifyArtist>?> GetAll()
+	public async Task<IReadOnlyList<SpotifyArtist>?> GetAll(CancellationToken ct)
 	{
 		Console.WriteLine("db: get all artists - start");
 
 		var db = await _dbService.GetDb();
+
+		ct.ThrowIfCancellationRequested();
 		var artistsDb = await db.Artist.ToArray();
 
 		var artists = artistsDb.Select(e => e.ToModel()).ToArray();
@@ -21,11 +23,13 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		return artists;
 	}
 
-	public async Task<IReadOnlyList<SpotifyArtist>> GetByIds(IEnumerable<string> ids)
+	public async Task<IReadOnlyList<SpotifyArtist>> GetByIds(IEnumerable<string> ids, CancellationToken ct)
 	{
 		Console.WriteLine("db: get artists by ids - start");
 
 		var db = await _dbService.GetDb();
+
+		ct.ThrowIfCancellationRequested();
 		var artistsDb = await db.Artist.BulkGet(ids);
 
 		var artists = artistsDb.Select(e => e.ToModel()).ToArray();
@@ -34,7 +38,7 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		return artists;
 	}
 
-	public async Task Save(IReadOnlyList<SpotifyArtist> artists)
+	public async Task Save(IReadOnlyList<SpotifyArtist> artists, CancellationToken ct)
 	{
 		Console.WriteLine("db: save artists - start");
 
@@ -46,6 +50,8 @@ public class DbSpotifyArtistService(IDbSpotifyService dbService) : IDbSpotifyArt
 		var artistsDb = artists.Select(a => a.ToEntity());
 
 		var db = await _dbService.GetDb();
+
+		ct.ThrowIfCancellationRequested();
 		await db.Artist.BulkPutSafe(artistsDb);
 
 		Console.WriteLine("db: save artists - end");

@@ -5,8 +5,8 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Services
 {
 	public interface IDbSpotifyReleaseService
 	{
-		Task Add(SpotifyRelease release);
-		Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseGroup mainReleaseType);
-		Task Save(IReadOnlyList<SpotifyRelease> releases);
+		Task Add(SpotifyRelease release, CancellationToken ct);
+		Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseGroup mainReleaseType, CancellationToken ct);
+		Task Save(IReadOnlyList<SpotifyRelease> releases, CancellationToken ct);
 	}
 }

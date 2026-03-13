@@ -142,6 +142,12 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 
 	public void AddStep(BackgroundTaskStep step)
 	{
+		if (IsEndTaskRequested)
+		{
+			return;
+		}
+
+
 		_steps.Add(step);
 		CurrentStepIndex = Steps.Count - 1;
 
@@ -234,10 +240,10 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 		{
 			return;
 		}*/
-		if (Ended)
+		/*if (Ended)
 		{
 			return;
-		}
+		}*/
 
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
 		{

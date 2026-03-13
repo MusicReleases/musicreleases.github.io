@@ -50,33 +50,15 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 			if (!isInState)
 			{
 				// load data from db to state
-				await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
-				{
-					await LoadFromDbToState(userId, task);
-
-					// calculate last sync
-					var shouldSync = ShouldSync(forceUpdate);
-
-					if (!shouldSync)
-					{
-						// synced
-						task.EndTask();
-						return;
-					}
-				});
+				await LoadFromDbToState(userId, forceUpdate, task);
 			}
 
+			Console.WriteLine($"idiot");
 			// load from api
-			var apiArtists = await task.StepAsync("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
-			{
-				return await LoadFromApi(task);
-			});
+			var apiArtists = await LoadFromApi(task);
 
 			// save api data to db and state
-			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
-			{
-				await SaveToDbAndState(apiArtists, userId, task);
-			});
+			await SaveToDbAndState(apiArtists, userId, task);
 		});
 	}
 
@@ -89,82 +71,109 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 		var lastSync = _state.LastSync ?? DateTime.MinValue;
 		var shouldSync = (DateTime.Now - lastSync).TotalHours > 24;
 
+		Console.WriteLine($"{lastSync.ToString("G")} - {shouldSync}");
+
 		return shouldSync;
 	}
 
-	private async Task LoadFromDbToState(string userId, BackgroundTask task)
+	private async Task LoadFromDbToState(string userId, bool forceUpdate, BackgroundTask task)
 	{
-		task.BeginAutoSegments(4);
-
-		var lastSync = await task.SegmentAsync("db - get artists last sync (user-update)", async ct =>
+		await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 		{
-			return await _metaDb.Get(userId, SpotifyDbUpdateType.Artists);
-		});
+			task.BeginAutoSegments(5);
 
-		var artistIds = await task.SegmentAsync("db - get followed artist ids (user-artist)", async ct =>
-		{
-			return await _linkDb.GetFollowedIds(userId);
-		});
-
-
-		if (artistIds.Count == 0)
-		{
-			await using (await task.NextSegment("state - set followed artists"))
+			var lastSync = await task.SegmentAsync("db - get artists last sync (user-update)", async ct =>
 			{
-				_state.SetFollowed([], lastSync);
+				return await _metaDb.Get(userId, SpotifyDbUpdateType.Artists, ct);
+			});
+
+			var artistIds = await task.SegmentAsync("db - get followed artist ids (user-artist)", async ct =>
+			{
+				return await _linkDb.GetFollowedIds(userId, ct);
+			});
+
+
+			if (artistIds.Count == 0)
+			{
+				await using (await task.NextSegment("state - set followed artists"))
+				{
+					_state.SetFollowed([], lastSync);
+				}
+
+				return;
 			}
 
-			return;
-		}
+			var artists = await task.SegmentAsync("db - get artists by ids (artists)", async ct =>
+			{
+				return await _artistDb.GetByIds(artistIds, ct);
+			});
 
-		var artists = await task.SegmentAsync("db - get artists by ids (artists)", async ct =>
-		{
-			return await _artistDb.GetByIds(artistIds);
+			await using (await task.NextSegment("state - set followed artists"))
+			{
+				_state.SetFollowed(artists, lastSync);
+
+				// calculate last sync
+				var shouldSync = ShouldSync(forceUpdate);
+
+				if (!shouldSync)
+				{
+					// synced
+					Console.WriteLine($"end-task");
+					task.EndTask();
+					return;
+				}
+
+
+				Console.WriteLine($"but");
+			}
+			Console.WriteLine($"i am still");
 		});
-
-		await using (await task.NextSegment("state - set followed artists"))
-		{
-			_state.SetFollowed(artists, lastSync);
-		}
+		Console.WriteLine($"here");
 	}
 
 	private async Task<List<SpotifyArtist>> LoadFromApi(BackgroundTask task)
 	{
-		task.BeginAutoSegments(1);
+		return await task.StepAsync("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		{
+			task.BeginAutoSegments(1);
 
-		// get saved playlists from api
-		var apiArtists = await task.SegmentAsync($"api - get followed artists", _api.GetFollowed);
+			// get saved playlists from api
+			var apiArtists = await task.SegmentAsync($"api - get followed artists", _api.GetFollowed);
 
-		return apiArtists;
+			return apiArtists;
+		});
 	}
 
 	private async Task SaveToDbAndState(List<SpotifyArtist> apiArtists, string userId, BackgroundTask task)
 	{
-		task.BeginAutoSegments(4);
-
-		// save to playlists db
-		await using (await task.NextSegment("db - save artists (artist)"))
+		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
 		{
-			await _artistDb.Save(apiArtists);
-		}
+			task.BeginAutoSegments(4);
 
-		// save to user-playlist db
-		await using (await task.NextSegment("db - save followed artists (user-artist)"))
-		{
-			var apiIds = apiArtists.Select(a => a.Id);
-			await _linkDb.SetFollowed(userId, apiIds);
-		}
+			// save to playlists db
+			await using (await task.NextSegment("db - save artists (artist)"))
+			{
+				await _artistDb.Save(apiArtists, ct);
+			}
 
-		// save to update db
-		await using (await task.NextSegment("db - save artists last sync (update)"))
-		{
-			await _metaDb.Save(userId, SpotifyDbUpdateType.Artists);
-		}
+			// save to user-playlist db
+			await using (await task.NextSegment("db - save followed artists (user-artist)"))
+			{
+				var apiIds = apiArtists.Select(a => a.Id);
+				await _linkDb.SetFollowed(userId, apiIds, ct);
+			}
 
-		// update ui
-		await using (await task.NextSegment("state - set followed artists"))
-		{
-			_state.SetFollowed(apiArtists, DateTime.Now);
-		}
+			// save to update db
+			await using (await task.NextSegment("db - save artists last sync (update)"))
+			{
+				await _metaDb.Save(userId, SpotifyDbUpdateType.Artists, ct);
+			}
+
+			// update ui
+			await using (await task.NextSegment("state - set followed artists"))
+			{
+				_state.SetFollowed(apiArtists, DateTime.Now);
+			}
+		});
 	}
 }

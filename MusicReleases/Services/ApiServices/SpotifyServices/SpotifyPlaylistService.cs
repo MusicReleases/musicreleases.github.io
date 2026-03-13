@@ -45,7 +45,6 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			}
 		}
 
-
 		await _taskManager.Run(BackgroundTaskType.PlaylistsGet, "Geting playlists", "Getting user playlists", async task =>
 		{
 			var userId = _spotifyApiUserService.GetUserIdRequired();
@@ -53,31 +52,14 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			if (!isInState)
 			{
 				// load data from db to state
-				await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
-				{
-					await LoadFromDbToState(userId, task);
-
-					var shouldSync = ShouldSync(forceUpdate);
-					if (!shouldSync)
-					{
-						// synced
-						task.EndTask();
-						return;
-					}
-				});
+				await LoadFromDbToState(userId, forceUpdate, task);
 			}
 
 			// load from api
-			var apiPlaylists = await task.StepAsync("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
-			{
-				return await LoadFromApi(task);
-			});
+			var apiPlaylists = await LoadFromApi(task);
 
 			// save api data to db and state
-			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
-			{
-				await SaveToDbAndState(apiPlaylists, userId, task);
-			});
+			await SaveToDbAndState(apiPlaylists, userId, task);
 		});
 	}
 
@@ -93,83 +75,99 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 		return shouldSync;
 	}
 
-	private async Task LoadFromDbToState(string userId, BackgroundTask task)
+	private async Task LoadFromDbToState(string userId, bool forceUpdate, BackgroundTask task)
 	{
-		task.BeginAutoSegments(4);
-
-		// get last sync
-		var lastSync = await task.SegmentAsync("db - get playlists last sync (user-update)", async ct =>
+		await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 		{
-			return await _metaDb.Get(userId, SpotifyDbUpdateType.Playlists);
-		});
+			task.BeginAutoSegments(4);
 
-		var orderMap = await task.SegmentAsync("db - get user playlists (user-playlist)", async ct =>
-		{
-			return await _linkDb.GetUserPlaylistOrder(userId);
-		});
-
-		if (orderMap.Count == 0)
-		{
-			await using (await task.NextSegment("state - set user playlists"))
+			// get last sync
+			var lastSync = await task.SegmentAsync("db - get playlists last sync (user-update)", async ct =>
 			{
-				_state.SetPlaylists([], lastSync);
+				return await _metaDb.Get(userId, SpotifyDbUpdateType.Playlists, ct);
+			});
+
+			var orderMap = await task.SegmentAsync("db - get user playlists (user-playlist)", async ct =>
+			{
+				return await _linkDb.GetUserPlaylistOrder(userId);
+			});
+
+			if (orderMap.Count == 0)
+			{
+				await using (await task.NextSegment("state - set user playlists"))
+				{
+					_state.SetPlaylists([], lastSync);
+				}
+
+				return;
 			}
 
-			return;
-		}
+			// load playlists
+			var playlists = await task.SegmentAsync("db - get playlists by ids (playlists)", async ct =>
+			{
+				var playlists = await _playlistDb.GetByIds(orderMap.Keys, ct);
+				return playlists.OrderBy(p => orderMap.GetValueOrDefault(p.Id, int.MaxValue)).ToList();
+			});
 
-		// load playlists
-		var playlists = await task.SegmentAsync("db - get playlists by ids (playlists)", async ct =>
-		{
-			var playlists = await _playlistDb.GetByIds(orderMap.Keys);
-			return playlists.OrderBy(p => orderMap.GetValueOrDefault(p.Id, int.MaxValue)).ToList();
+			await using (await task.NextSegment("state - set user playlists"))
+			{
+				_state.SetPlaylists(playlists, lastSync);
+
+				var shouldSync = ShouldSync(forceUpdate);
+				if (!shouldSync)
+				{
+					// synced
+					task.EndTask();
+					return;
+				}
+			}
 		});
-
-		await using (await task.NextSegment("state - set user playlists"))
-		{
-			_state.SetPlaylists(playlists, lastSync);
-		}
 	}
 
 	private async Task<List<SpotifyPlaylist>> LoadFromApi(BackgroundTask task)
 	{
-		task.BeginAutoSegments(1);
+		return await task.StepAsync("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		{
+			task.BeginAutoSegments(1);
 
-		// get saved playlists from api
-		var apiPlaylists = await task.SegmentAsync($"api - get user playlists", _api.GetUserPlaylists);
+			// get saved playlists from api
+			var apiPlaylists = await task.SegmentAsync($"api - get user playlists", _api.GetUserPlaylists);
 
-		return apiPlaylists;
+			return apiPlaylists;
+		});
 	}
 
 	private async Task SaveToDbAndState(List<SpotifyPlaylist> apiPlaylists, string userId, BackgroundTask task)
 	{
-		task.BeginAutoSegments(4);
-
-		// save to playlists db
-		await using (await task.NextSegment("db - save playlists (playlist)"))
+		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
 		{
-			await _playlistDb.Save(apiPlaylists);
-		}
+			task.BeginAutoSegments(4);
 
-		// save to user-playlist db
-		await using (await task.NextSegment("db - save user playlists (user-playlist)"))
-		{
-			await _linkDb.SetUserPlaylists(userId, apiPlaylists.Select(p => p.Id));
-		}
+			// save to playlists db
+			await using (await task.NextSegment("db - save playlists (playlist)"))
+			{
+				await _playlistDb.Save(apiPlaylists, ct);
+			}
 
-		// save to update db
-		await using (await task.NextSegment("db - save playlists last sync (update)"))
-		{
-			await _metaDb.Save(userId, SpotifyDbUpdateType.Playlists);
-		}
+			// save to user-playlist db
+			await using (await task.NextSegment("db - save user playlists (user-playlist)"))
+			{
+				await _linkDb.SetUserPlaylists(userId, apiPlaylists.Select(p => p.Id));
+			}
 
-		// update ui
-		await using (await task.NextSegment("state - set user playlists"))
-		{
-			_state.SetPlaylists(apiPlaylists, DateTime.Now);
-		}
+			// save to update db
+			await using (await task.NextSegment("db - save playlists last sync (update)"))
+			{
+				await _metaDb.Save(userId, SpotifyDbUpdateType.Playlists, ct);
+			}
+
+			// update ui
+			await using (await task.NextSegment("state - set user playlists"))
+			{
+				_state.SetPlaylists(apiPlaylists, DateTime.Now);
+			}
+		});
 	}
-
 
 	public async Task CreatePlaylist(string name)
 	{
@@ -186,7 +184,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 	private async Task<SpotifyPlaylist> CreatePlaylistApi(string name, string userId, BackgroundTask task)
 	{
-		var newPlaylist = await task.StepAsync("Sending API request", BackgroundTaskCategory.SaveApi, async ct =>
+		return await task.StepAsync("Sending API request", BackgroundTaskCategory.SaveApi, async ct =>
 		{
 			task.BeginAutoSegments(1);
 
@@ -201,10 +199,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			});
 
 			return newPlaylist;
-
 		});
-
-		return newPlaylist;
 	}
 
 	private async Task SavePlaylistToDbAndState(SpotifyPlaylist playlist, string userId, BackgroundTask task)
@@ -216,7 +211,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			// save to playlist db
 			await using (await task.NextSegment("db - add playlist (playlist)"))
 			{
-				await _playlistDb.Add(playlist);
+				await _playlistDb.Add(playlist, ct);
 			}
 
 			// save to user-playlist db
@@ -232,7 +227,6 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			}
 		});
 	}
-
 
 	public async Task AddTrack(string playlistId, SpotifyTrack track, bool positionTop)
 	{
@@ -268,7 +262,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 	private async Task<string> AddTracksApi(SpotifyPlaylist playlist, IEnumerable<SpotifyTrack> tracks, bool positionTop, BackgroundTask task)
 	{
-		var snapshotId = await task.StepAsync("Sending API request", BackgroundTaskCategory.SaveApi, async step =>
+		return await task.StepAsync("Sending API request", BackgroundTaskCategory.SaveApi, async step =>
 		{
 			task.BeginAutoSegments(1);
 
@@ -283,8 +277,6 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 				return snapshotId;
 			});
 		});
-
-		return snapshotId;
 	}
 
 	private async Task SaveNewTracksToDbAndStore(SpotifyPlaylist playlist, string snapshotId, List<SpotifyTrack> tracks, BackgroundTask task)
@@ -296,7 +288,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			// update snapshot in db
 			await using (await task.NextSegment("db - update playlist snapshot (playlist)"))
 			{
-				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId);
+				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct);
 			}
 			// TODO save tracks to db
 
@@ -332,7 +324,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 
 	private async Task<string> RemoveTracksApi(SpotifyPlaylist playlist, IEnumerable<SpotifyTrack> tracks, BackgroundTask task)
 	{
-		var snapshotId = await task.StepAsync("Sending API request", BackgroundTaskCategory.DeleteApi, async ct =>
+		return await task.StepAsync("Sending API request", BackgroundTaskCategory.DeleteApi, async ct =>
 		{
 			task.BeginAutoSegments(1);
 
@@ -347,8 +339,6 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 				return snapshotId;
 			});
 		});
-
-		return snapshotId;
 	}
 
 	private async Task SaveRemovedTracksToDbAndStore(SpotifyPlaylist playlist, string snapshotId, IEnumerable<SpotifyTrack> tracks, BackgroundTask task)
@@ -360,7 +350,7 @@ public class SpotifyPlaylistService(ISpotifyApiUserService spotifyApiUserService
 			// update snapshot in db
 			await using (await task.NextSegment("db - update playlist snapshot (playlist)"))
 			{
-				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId);
+				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct);
 			}
 			// TODO save tracks to db
 

@@ -2,6 +2,6 @@
 
 public interface IDbSpotifyUserArtistService
 {
-	Task<IReadOnlyCollection<string>> GetFollowedIds(string userId);
-	Task SetFollowed(string userId, IEnumerable<string> artistIds);
+	Task<IReadOnlyCollection<string>> GetFollowedIds(string userId, CancellationToken ct);
+	Task SetFollowed(string userId, IEnumerable<string> artistIds, CancellationToken ct);
 }

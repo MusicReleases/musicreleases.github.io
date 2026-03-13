@@ -61,29 +61,14 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 			if (!isInState)
 			{
 				// load data from db to state
-				await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
-				{
-					await LoadFromDbToState(releaseGroup, userId, task);
-
-					var shouldSync = ShouldSync(releaseGroup, forceUpdate);
-
-					if (!shouldSync)
-					{
-						// synced
-						task.EndTask();
-						return;
-					}
-				});
+				await LoadFromDbToState(releaseGroup, userId, forceUpdate, task);
 			}
 
 			// load from api
 			var releaseAggregation = await LoadFromApi(releaseGroup, task);
 
 			// save api data to db and state
-			await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
-			{
-				await SaveToDbAndState(releaseGroup, releaseAggregation, userId, task);
-			});
+			await SaveToDbAndState(releaseGroup, releaseAggregation, userId, task);
 		});
 	}
 
@@ -99,51 +84,63 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 		return shouldSync;
 	}
 
-	private async Task LoadFromDbToState(ReleaseGroup releaseGroup, string userId, BackgroundTask task)
+	private async Task LoadFromDbToState(ReleaseGroup releaseGroup, string userId, bool forceUpdate, BackgroundTask task)
 	{
-		var releaseGroupString = releaseGroup.ToFriendlyString();
-		task.BeginAutoSegments(4);
-
-		var lastSync = await task.SegmentAsync($"db - get releases last sync (user-update) - {releaseGroupString}", async ct =>
+		await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 		{
-			var metaDbType = MapToDbUpdateType(releaseGroup);
-			return await _metaDb.Get(userId, metaDbType);
-		});
+			var releaseGroupString = releaseGroup.ToFriendlyString();
+			task.BeginAutoSegments(4);
 
-		var artists = _artistState.SortedFollowedArtists;
-		if (artists.Count == 0)
-		{
+			var lastSync = await task.SegmentAsync($"db - get releases last sync (user-update) - {releaseGroupString}", async ct =>
+			{
+				var metaDbType = MapToDbUpdateType(releaseGroup);
+				return await _metaDb.Get(userId, metaDbType, ct);
+			});
+
+			var artists = _artistState.SortedFollowedArtists;
+			if (artists.Count == 0)
+			{
+				await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
+				{
+					_state.Set(releaseGroup, [], lastSync);
+				}
+				return;
+			}
+
+			var releaseIds = await task.SegmentAsync($"db - get release ids from artists (artist-release) - {releaseGroupString}", async ct =>
+			{
+				var artistIds = artists.Select(a => a.Id);
+				var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(releaseGroup);
+
+				return await _linkDb.GetReleaseIds(artistIds, artistRole, ct);
+			});
+
+			var releases = await task.SegmentAsync($"db - get releases by ids (release) - {releaseGroupString}", async ct =>
+			{
+				return await _releaseDb.GetByIds(releaseIds, releaseGroup, ct);
+			});
+
 			await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
 			{
-				_state.Set(releaseGroup, [], lastSync);
+				_state.Set(releaseGroup, releases, lastSync);
+
+				var shouldSync = ShouldSync(releaseGroup, forceUpdate);
+
+				if (!shouldSync)
+				{
+					// synced
+					task.EndTask();
+					return;
+				}
 			}
-			return;
-		}
-
-		var releaseIds = await task.SegmentAsync($"db - get release ids from artists (artist-release) - {releaseGroupString}", async ct =>
-		{
-			var artistIds = artists.Select(a => a.Id);
-			var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(releaseGroup);
-
-			return await _linkDb.GetReleaseIds(artistIds, artistRole);
 		});
-
-		var releases = await task.SegmentAsync($"db - get releases by ids (release) - {releaseGroupString}", async ct =>
-		{
-			return await _releaseDb.GetByIds(releaseIds, releaseGroup);
-		});
-
-		await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
-		{
-			_state.Set(releaseGroup, releases, lastSync);
-		}
 	}
 
 	private async Task<ReleaseAggregation> LoadFromApi(ReleaseGroup releaseGroup, BackgroundTask task)
 	{
 		var releaseGroupString = releaseGroup.ToFriendlyString();
 
-		var releaseAggregation = await task.StepAsync<ReleaseAggregation>("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		return await task.StepAsync<ReleaseAggregation>("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
 			// get artists from state
 			var artists = _artistState.SortedFollowedArtists;
@@ -197,46 +194,49 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 				}
 			}
 
-			return new(allReleasesToSave.ToList(), allArtistsToSave.ToList(), allLinksToSave.ToList());
-		});
+			var releaseAggregation = new ReleaseAggregation(allReleasesToSave.ToList(), allArtistsToSave.ToList(), allLinksToSave.ToList());
 
-		return releaseAggregation;
+			return releaseAggregation;
+		});
 	}
 
 	private async Task SaveToDbAndState(ReleaseGroup releaseGroup, ReleaseAggregation releaseAggregation, string userId, BackgroundTask task)
 	{
-		task.BeginAutoSegments(5);
-
-		var releaseGroupString = releaseGroup.ToFriendlyString();
-
-		// save to db
-		await using (await task.NextSegment($"db - save releases (release) - {releaseGroupString}"))
+		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
 		{
-			await _releaseDb.Save(releaseAggregation.Releases);
-		}
+			task.BeginAutoSegments(5);
 
-		await using (await task.NextSegment($"db - save artists from releases (artist) - {releaseGroupString}"))
-		{
-			await _artistDb.Save(releaseAggregation.Artists);
-		}
+			var releaseGroupString = releaseGroup.ToFriendlyString();
 
-		await using (await task.NextSegment($"db - save release artists (artist-release) - {releaseGroupString}"))
-		{
-			await _linkDb.Save(releaseAggregation.Links);
-		}
+			// save to db
+			await using (await task.NextSegment($"db - save releases (release) - {releaseGroupString}"))
+			{
+				await _releaseDb.Save(releaseAggregation.Releases, ct);
+			}
 
-		// update meta db
-		await using (await task.NextSegment($"db - save release last sync (update) - {releaseGroupString}"))
-		{
-			var metaDbType = MapToDbUpdateType(releaseGroup);
-			await _metaDb.Save(userId, metaDbType);
-		}
+			await using (await task.NextSegment($"db - save artists from releases (artist) - {releaseGroupString}"))
+			{
+				await _artistDb.Save(releaseAggregation.Artists, ct);
+			}
 
-		// update state
-		await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
-		{
-			_state.Set(releaseGroup, releaseAggregation.Releases, DateTime.Now);
-		}
+			await using (await task.NextSegment($"db - save release artists (artist-release) - {releaseGroupString}"))
+			{
+				await _linkDb.Save(releaseAggregation.Links, ct);
+			}
+
+			// update meta db
+			await using (await task.NextSegment($"db - save release last sync (update) - {releaseGroupString}"))
+			{
+				var metaDbType = MapToDbUpdateType(releaseGroup);
+				await _metaDb.Save(userId, metaDbType, ct);
+			}
+
+			// update state
+			await using (await task.NextSegment($"state - set releases - {releaseGroupString}"))
+			{
+				_state.Set(releaseGroup, releaseAggregation.Releases, DateTime.Now);
+			}
+		});
 	}
 
 	private static SpotifyDbUpdateType MapToDbUpdateType(ReleaseGroup releasesType) => releasesType switch

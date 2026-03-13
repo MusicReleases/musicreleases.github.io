@@ -96,6 +96,11 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 		}
 		catch (OperationCanceledException)
 		{
+			if (task.IsEndTaskRequested)
+			{
+				task.MarkFinished();
+				return;
+			}
 			task.MarkCanceled();
 		}
 		catch (Exception ex)

@@ -13,7 +13,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 	private readonly IDbSpotifyArtistReleaseService _linkArtistDb = linkArtistDb;
 	private readonly IDbSpotifyArtistService _artistDb = artistsDb;
 
-	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseGroup mainReleaseType)
+	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseGroup mainReleaseType, CancellationToken ct)
 	{
 		Console.WriteLine("db: get releases by ids - start");
 
@@ -24,12 +24,17 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 
 		if (mainReleaseType == ReleaseGroup.Appears)
 		{
+			ct.ThrowIfCancellationRequested();
 			releasesDb = await db.Release.BulkGet(ids);
+			ct.ThrowIfCancellationRequested();
 		}
 		else
 		{
 			var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(mainReleaseType);
+
+			ct.ThrowIfCancellationRequested();
 			releasesDb = await db.Release.Where(x => x.Id, x => x.ReleaseType).AnyOf([.. ids.Select(id => (id, releaseType))]).ToArray();
+			ct.ThrowIfCancellationRequested();
 		}
 
 		if (!releasesDb.Any())
@@ -40,11 +45,13 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 		var releaseIds = releasesDb.Select(x => x.Id).ToArray();
 
 		// get links
-		var allLinks = await _linkArtistDb.GetByReleaseIds(releaseIds);
+		ct.ThrowIfCancellationRequested();
+		var allLinks = await _linkArtistDb.GetByReleaseIds(releaseIds, ct);
+		ct.ThrowIfCancellationRequested();
 
 		// get artists
 		var artistIds = allLinks.Select(l => l.ArtistId).ToHashSet();
-		var artists = await _artistDb.GetByIds(artistIds);
+		var artists = await _artistDb.GetByIds(artistIds, ct);
 		var artistsDict = artists.ToDictionary(a => a.Id);
 
 		// map releases
@@ -54,6 +61,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 
 		foreach (var releaseDb in releasesDb)
 		{
+			ct.ThrowIfCancellationRequested();
 			var releaseLinks = linksByRelease[releaseDb.Id];
 
 			var mainArtists = new HashSet<SpotifyArtist>();
@@ -61,6 +69,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 
 			foreach (var link in releaseLinks)
 			{
+				ct.ThrowIfCancellationRequested();
 				if (artistsDict.TryGetValue(link.ArtistId, out var artist))
 				{
 					if (link.Role == ArtistReleaseRole.Main)
@@ -83,7 +92,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 	}
 
 
-	public async Task Save(IReadOnlyList<SpotifyRelease> releases)
+	public async Task Save(IReadOnlyList<SpotifyRelease> releases, CancellationToken ct)
 	{
 		Console.WriteLine("db: save releases - start");
 
@@ -100,17 +109,23 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 
 		var releasesDb = releases.Where(r => !existingIdsSet.Contains(r.Id)).Select(a => a.ToEntity()).ToList();
 
+		ct.ThrowIfCancellationRequested();
 		await db.Release.BulkPutSafe(releasesDb);
 
 		Console.WriteLine("db: save releases - end");
 	}
 
-	public async Task Add(SpotifyRelease release)
+	public async Task Add(SpotifyRelease release, CancellationToken ct)
 	{
 		Console.WriteLine("db: add release - start");
+
 		var db = await _dbService.GetDb();
 		var releaseDb = release.ToEntity();
+
+		ct.ThrowIfCancellationRequested();
 		await db.Release.PutSafe(releaseDb);
+
+
 		Console.WriteLine("db: add release - end");
 	}
 }

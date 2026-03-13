@@ -4,8 +4,8 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Services
 {
 	public interface IDbSpotifyArtistService
 	{
-		Task<IReadOnlyList<SpotifyArtist>?> GetAll();
-		Task<IReadOnlyList<SpotifyArtist>> GetByIds(IEnumerable<string> ids);
-		Task Save(IReadOnlyList<SpotifyArtist> artists);
+		Task<IReadOnlyList<SpotifyArtist>?> GetAll(CancellationToken ct);
+		Task<IReadOnlyList<SpotifyArtist>> GetByIds(IEnumerable<string> ids, CancellationToken ct);
+		Task Save(IReadOnlyList<SpotifyArtist> artists, CancellationToken ct);
 	}
 }
