@@ -17,6 +17,7 @@ public class DbSpotifyUserService(IDbSpotifyService dbService) : IDbSpotifyUserS
 		{
 			return null;
 		}
+
 		var user = userDb.ToModel();
 		return user;
 	}

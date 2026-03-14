@@ -19,6 +19,7 @@ public class SpotifyUserInfo : SpotifyIdNameUrlObject
 		UrlApp = urlApp;
 		UrlWeb = urlWeb;
 		ProfilePictureUrl = urlProfilePicture;
+		// TODO LastUpdate
 	}
 
 	[SetsRequiredMembers]

@@ -2,7 +2,7 @@
 using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
@@ -10,7 +10,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
 public partial class UserButton : IDisposable
 {
 	[Inject]
-	private ISpotifyApiUserService SpotifyUserService { get; set; } = default!;
+	private IApiUserClient SpotifyUserClient { get; set; } = default!;
 
 	[Inject]
 	private IApiLoginService ApiLoginService { get; set; } = default!;
@@ -51,7 +51,7 @@ public partial class UserButton : IDisposable
 		var serviceType = ApiLoginService.GetServiceType();
 		if (serviceType == ServiceType.Spotify)
 		{
-			_spotifyUser = SpotifyUserService.GetUserRequired().Info;
+			_spotifyUser = SpotifyUserClient.GetUserRequired().Info;
 		}
 	}
 }

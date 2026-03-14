@@ -1,29 +1,38 @@
-﻿using JakubKastner.SpotifyApi.Objects.Base;
-using SpotifyAPI.Web;
+﻿using SpotifyAPI.Web;
+using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyUser
 {
-	public SpotifyUserInfo? Info { get; set; }
-	public SpotifyUserCredentials? Credentials { get; set; }
+	public required SpotifyUserInfo Info { get; set; }
+	public required SpotifyUserCredentials Credentials { get; set; }
 
-	public SpotifyUserList<SpotifyPlaylist, SpotifyUserListUpdatePlaylists>? Playlists { get; set; }
-	public SpotifyUserList<SpotifyArtist, SpotifyUserListUpdateMain>? FollowedArtists { get; set; }
-	public SpotifyUserList<SpotifyReleaseOld, SpotifyUserListUpdateRelease>? FollowedArtistReleases { get; set; }
+	public SpotifyUser()
+	{
+		// for di registration
+	}
 
-	public SpotifyUser() { }
-
-
+	[SetsRequiredMembers]
 	public SpotifyUser(PrivateUser userApi, SpotifyUserCredentials credentials)
 	{
 		Info = new(userApi);
 		Credentials = credentials;
 	}
 
-	public SpotifyUser(SpotifyUserInfo? info, SpotifyUserCredentials credentials)
+	[SetsRequiredMembers]
+	public SpotifyUser(SpotifyUserInfo info, SpotifyUserCredentials credentials)
 	{
 		Info = info;
 		Credentials = credentials;
+	}
+}
+
+public static class SpotifyUserExtensions
+{
+	public static void ThrowIfNull([NotNull] this SpotifyUser? value)
+	{
+		if (value is null)
+			throw new UnauthorizedAccessException(nameof(SpotifyUser));
 	}
 }

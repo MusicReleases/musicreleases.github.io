@@ -32,8 +32,6 @@ public partial class PlaylistSidebarButton : IDisposable
 
 	private const string _buttonClass = "sidebar-content";
 
-	private bool _isLoading = false;
-
 	private int _dragCounter = 0;
 
 
@@ -75,7 +73,6 @@ public partial class PlaylistSidebarButton : IDisposable
 	private async Task HandleDrop()
 	{
 		_dragCounter = 0;
-		_isLoading = true;
 
 		try
 		{
@@ -103,7 +100,6 @@ public partial class PlaylistSidebarButton : IDisposable
 		finally
 		{
 			DragDropService.Reset();
-			_isLoading = false;
 		}
 	}
 }

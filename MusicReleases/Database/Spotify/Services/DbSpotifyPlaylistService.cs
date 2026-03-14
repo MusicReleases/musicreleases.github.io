@@ -79,6 +79,7 @@ public class DbSpotifyPlaylistService(IDbSpotifyService dbService) : IDbSpotifyP
 		var db = await _dbService.GetDb();
 
 		ct.ThrowIfCancellationRequested();
+
 		await db.Playlist.Update(playlistId, p => p.SnapshotId, newSnapshotId);
 		Console.WriteLine("db: update playlist snapshot - end");
 	}

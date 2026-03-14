@@ -5,14 +5,13 @@ using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyArtistService
+public class SpotifyArtistService(IApiUserClient spotifyUserClient, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyArtistService
 {
-	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly IApiArtistClient _api = api;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
 	private readonly IDbSpotifyUserArtistService _linkDb = linkDb;
@@ -45,7 +44,7 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 
 		await _taskManager.Run(BackgroundTaskType.ArtistsGet, "Geting artists", "Getting followed artists", async task =>
 		{
-			var userId = _spotifyApiUserService.GetUserIdRequired();
+			var userId = _spotifyUserClient.GetUserIdRequired();
 
 			if (!isInState)
 			{
@@ -53,7 +52,6 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 				await LoadFromDbToState(userId, forceUpdate, task);
 			}
 
-			Console.WriteLine($"idiot");
 			// load from api
 			var apiArtists = await LoadFromApi(task);
 
@@ -70,8 +68,6 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 		}
 		var lastSync = _state.LastSync ?? DateTime.MinValue;
 		var shouldSync = (DateTime.Now - lastSync).TotalHours > 24;
-
-		Console.WriteLine($"{lastSync.ToString("G")} - {shouldSync}");
 
 		return shouldSync;
 	}
@@ -118,17 +114,11 @@ public class SpotifyArtistService(ISpotifyApiUserService spotifyApiUserService, 
 				if (!shouldSync)
 				{
 					// synced
-					Console.WriteLine($"end-task");
 					task.EndTask();
 					return;
 				}
-
-
-				Console.WriteLine($"but");
 			}
-			Console.WriteLine($"i am still");
 		});
-		Console.WriteLine($"here");
 	}
 
 	private async Task<List<SpotifyArtist>> LoadFromApi(BackgroundTask task)

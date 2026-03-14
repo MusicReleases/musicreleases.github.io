@@ -7,15 +7,14 @@ using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
+public class SpotifyReleaseService(IApiUserClient spotifyUserClient, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
 {
-	private readonly ISpotifyApiUserService _spotifyApiUserService = spotifyApiUserService;
+	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly IApiReleaseClient _api = api;
 	private readonly IDbSpotifyReleaseService _releaseDb = releaseDb;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
@@ -56,7 +55,7 @@ public class SpotifyReleaseService(ISpotifyApiUserService spotifyApiUserService,
 
 		await _taskManager.Run(BackgroundTaskType.ReleasesGet, "Getting releases", $"Geting {releaseGroup.ToFriendlyString()} from followed artists", async task =>
 		{
-			var userId = _spotifyApiUserService.GetUserIdRequired();
+			var userId = _spotifyUserClient.GetUserIdRequired();
 
 			if (!isInState)
 			{

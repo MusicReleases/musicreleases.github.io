@@ -1,15 +1,15 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Objects.User;
 using JakubKastner.SpotifyApi.Objects.Base;
-using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyApiUserService spotifyUserService) : ISettingsService
+public class SettingsService(IDbSpotifyUserSettingsService dbService, IApiUserClient spotifyUserClient) : ISettingsService
 {
 	private readonly IDbSpotifyUserSettingsService _dbService = dbService;
 
-	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
+	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
 
 
 	public event Action? OnChange;
@@ -28,7 +28,7 @@ public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyAp
 
 	public async Task Initialize()
 	{
-		var userId = _spotifyUserService.GetUserIdRequired();
+		var userId = _spotifyUserClient.GetUserIdRequired();
 
 		UserSettings = await _dbService.Get(userId) ?? new();
 		OnChange?.Invoke();
@@ -42,7 +42,7 @@ public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyAp
 
 	private async Task SaveToDb()
 	{
-		var userId = _spotifyUserService.GetUserIdRequired();
+		var userId = _spotifyUserClient.GetUserIdRequired();
 		await _dbService.Save(UserSettings, userId);
 	}
 

@@ -1,5 +1,4 @@
-﻿using JakubKastner.SpotifyApi.SpotifyEnums;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 using JakubKastner.SpotifyApi.Base;
 

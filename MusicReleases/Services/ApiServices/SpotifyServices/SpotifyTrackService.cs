@@ -1,12 +1,13 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyTrackService(ISpotifyApiTrackService spotifyTrackService, ISpotifyApiUserService spotifyUserService) : ISpotifyTrackService
+public class SpotifyTrackService(ISpotifyApiTrackService spotifyTrackService, IApiUserClient spotifyUserClient) : ISpotifyTrackService
 {
 	private readonly ISpotifyApiTrackService _spotifyTrackService = spotifyTrackService;
-	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
+	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
 
 	public event Action? OnTracksDataChanged;
 

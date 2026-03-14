@@ -255,6 +255,15 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 	public void EndTask()
 	{
 		IsEndTaskRequested = true;
+		try
+		{
+			Cts.Cancel();
+		}
+		catch
+		{
+			// ignore
+		}
+		NotifyChange();
 	}
 
 }

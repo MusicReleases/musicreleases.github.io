@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
@@ -13,17 +13,17 @@ public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskF
 
 	private readonly IDbSpotifyUserFilterTaskService _dbService;
 
-	private readonly ISpotifyApiUserService _spotifyApiUserService;
+	private readonly IApiUserClient _spotifyUserClient;
 
 	private readonly NavigationManager _navManager;
 
 
-	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, IApiUserClient spotifyUserClient, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;
 		_dbService = dbService;
-		_spotifyApiUserService = spotifyApiUserService;
+		_spotifyUserClient = spotifyUserClient;
 		_navManager = navManager;
 
 		_filterService.OnFilterChanged += OnFilterChanged;
@@ -46,7 +46,7 @@ public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskF
 		_filterService.SetFilterAndSearch(filter, searchParam);
 
 		// save to db
-		var userId = _spotifyApiUserService.GetUserIdRequired();
+		var userId = _spotifyUserClient.GetUserIdRequired();
 		await _dbService.Save(filter, userId);
 	}
 
@@ -64,7 +64,7 @@ public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskF
 
 	public async Task<string> GetInitUrl()
 	{
-		var userId = _spotifyApiUserService.GetUserIdRequired();
+		var userId = _spotifyUserClient.GetUserIdRequired();
 
 		var filterDb = await _dbService.Get(userId) ?? TaskFilter.All;
 		var parameters = _filterUrlService.CreateUrlParams(filterDb, null);

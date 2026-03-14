@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Objects.Spotify;
-using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
@@ -13,16 +13,16 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 
 	private readonly IDbSpotifyUserFilterReleaseService _dbService;
 
-	private readonly ISpotifyApiUserService _spotifyApiUserService;
+	private readonly IApiUserClient _spotifyUserClient;
 
 	private readonly NavigationManager _navManager;
 
-	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyUserFilterReleaseService dbService, ISpotifyApiUserService spotifyApiUserService, NavigationManager navManager)
+	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyUserFilterReleaseService dbService, IApiUserClient spotifyUserClient, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;
 		_dbService = dbService;
-		_spotifyApiUserService = spotifyApiUserService;
+		_spotifyUserClient = spotifyUserClient;
 		_navManager = navManager;
 
 		_filterService.NotifySynchronizer += OnFilterChanged;
@@ -50,7 +50,7 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 
 		_filterService.SetFromUrl(filter);
 
-		var userId = _spotifyApiUserService.GetUserIdRequired();
+		var userId = _spotifyUserClient.GetUserIdRequired();
 
 		await _dbService.Save(filter, userId);
 
@@ -73,7 +73,7 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 	public async Task SetInitFilter()
 	{
 		Console.WriteLine("SetInitFilter - start");
-		var userId = _spotifyApiUserService.GetUserIdRequired();
+		var userId = _spotifyUserClient.GetUserIdRequired();
 		var filter = await _dbService.Get(userId) ?? new();
 		_filterService.EnsureFilter(filter);
 

@@ -3,16 +3,16 @@ using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserService spotifyUserService, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, IApiUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
-	private readonly ISpotifyApiUserService _spotifyUserService = spotifyUserService;
+	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;
@@ -39,10 +39,10 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 		if (user is not null)
 		{
-			var localStorageUser = await SetUserFromStorage(user);
+			var localStorageUser = await SetUserFromDb(user);
 			if (localStorageUser)
 			{
-				var userLogged = _spotifyUserService.IsLoggedIn();
+				var userLogged = _spotifyUserClient.IsLoggedIn();
 
 				if (userLogged)
 				{
@@ -68,7 +68,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 		var redirectUrl = _navManager.ToAbsoluteUri(_navManager.BaseUri + "login/spotify");
 		var clientId = _spotifyConfig.ClientId;
 
-		(var loginUrl, var loginVerifier) = _spotifyUserService.GetLoginUrl(clientId, redirectUrl);
+		(var loginUrl, var loginVerifier) = _spotifyUserClient.GetLoginUrl(clientId, redirectUrl);
 
 		await _spotifyLoginStorageService.SaveLoginVerifier(loginVerifier);
 		_navManager.NavigateTo(loginUrl.AbsoluteUri);
@@ -76,13 +76,13 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 	public async Task SetUser(StringValues code)
 	{
-		var localStorageUser = await SetUserFromStorage();
+		var localStorageUser = await SetUserFromDb();
 		if (!localStorageUser)
 		{
 			await SetUserFromUrl(code);
 		}
 
-		var userLogged = _spotifyUserService.IsLoggedIn();
+		var userLogged = _spotifyUserClient.IsLoggedIn();
 
 		if (!userLogged)
 		{
@@ -101,20 +101,20 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 	}
 
 
-	private async Task<bool> SetUserFromStorage(SpotifyUser? spotifyUser = null)
+	private async Task<bool> SetUserFromDb(SpotifyUser? spotifyUser = null)
 	{
 		// get user from database
 		spotifyUser ??= await GetUserFromDatabase();
 
-		if (string.IsNullOrEmpty(spotifyUser?.Credentials?.RefreshToken))
+		if (spotifyUser is null)
 		{
 			return false;
 		}
 
 		// update access token
-		await _spotifyUserService.RefreshUser(spotifyUser);
+		await _spotifyUserClient.SetUserFromDb(spotifyUser);
 
-		if (!_spotifyUserService.IsLoggedIn())
+		if (!_spotifyUserClient.IsLoggedIn())
 		{
 			// failed to refresh token
 			await LogoutUser();
@@ -131,13 +131,13 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 	public bool IsUserLoggedIn()
 	{
-		var userLoggedIn = _spotifyUserService.IsLoggedIn();
+		var userLoggedIn = _spotifyUserClient.IsLoggedIn();
 		return userLoggedIn;
 	}
 
 	private async Task SetUserFromUrl(StringValues code)
 	{
-		if (_spotifyUserService.IsLoggedIn())
+		if (_spotifyUserClient.IsLoggedIn())
 		{
 			return;
 		}
@@ -153,7 +153,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 		var codeString = code.ToString();
 		var clientId = _spotifyConfig.ClientId;
-		var userLogged = await _spotifyUserService.LoginUser(clientId, codeString, loginVerifier, baseUrl + "login/spotify");
+		var userLogged = await _spotifyUserClient.LoginUser(clientId, codeString, loginVerifier, baseUrl + "login/spotify");
 
 		if (userLogged)
 		{
@@ -167,8 +167,8 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 		// TODO logout - stop loading data from api
 
 		// remove user
-		var user = _spotifyUserService.GetUser();
-		if (user?.Info is null || user.Credentials is null)
+		var user = _spotifyUserClient.GetUser();
+		if (user is null)
 		{
 			return;
 		}
@@ -182,8 +182,8 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyApiUserSer
 
 	private async Task SaveUser()
 	{
-		var user = _spotifyUserService.GetUser();
-		if (user?.Info is null || user.Credentials is null)
+		var user = _spotifyUserClient.GetUser();
+		if (user is null)
 		{
 			return;
 		}

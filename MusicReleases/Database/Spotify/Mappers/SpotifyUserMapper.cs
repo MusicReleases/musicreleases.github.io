@@ -7,10 +7,6 @@ public static class SpotifyUserMapper
 {
 	public static SpotifyUserEntity ToEntity(this SpotifyUser dto)
 	{
-		if (dto.Info is null || dto.Credentials is null)
-		{
-			throw new ArgumentException("SpotifyUser must have Info and Credentials to be converted to SpotifyUserEntity.");
-		}
 		return new(dto.Info.Id, dto.Info.Name, dto.Info.UrlApp, dto.Info.UrlWeb, dto.Info.ProfilePictureUrl, dto.Credentials.RefreshToken);
 	}
 

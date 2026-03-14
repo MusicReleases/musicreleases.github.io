@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services;
+using JakubKastner.SpotifyApi.Services.Api;
 using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
@@ -9,12 +9,12 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 {
 	private readonly ISpotifyPlaylistState _state;
 
-	private readonly ISpotifyApiUserService _userService;
+	private readonly IApiUserClient _spotifyUserClient;
 
-	public SpotifyPlaylistFilterService(ISpotifyPlaylistState state, ISpotifyApiUserService userService)
+	public SpotifyPlaylistFilterService(ISpotifyPlaylistState state, IApiUserClient spotifyUserClient)
 	{
 		_state = state;
-		_userService = userService;
+		_spotifyUserClient = spotifyUserClient;
 
 		_state.OnChange += ApplyFilter;
 	}
@@ -72,7 +72,7 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 		}
 
 		IEnumerable<SpotifyPlaylist> query = playlists;
-		var userId = _userService.GetUserIdRequired();
+		var userId = _spotifyUserClient.GetUserIdRequired();
 
 		// filter by type
 		if (typeFilter != PlaylistType.All)

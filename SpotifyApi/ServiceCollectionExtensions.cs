@@ -1,8 +1,9 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 using Microsoft.Extensions.DependencyInjection;
+using SpotifyAPI.Web.Http;
 
 namespace JakubKastner.SpotifyApi;
 
@@ -15,20 +16,30 @@ public static class ServiceCollectionExtensions
 	{
 		// client and user
 		services.AddScoped<ISpotifyApiClient, SpotifyApiClient>();
-		services.AddScoped<SpotifyUser>();
+		services.AddScoped<ISpotifyUserStore, SpotifyUserStore>();
+		services.AddScoped<ISpotifyCredentialsStore, SpotifyCredentialsStore>();
 
 		// api clients
+		services.AddScoped<IApiUserClient, ApiUserClient>();
 		services.AddScoped<IApiArtistClient, ApiArtistClient>();
 		services.AddScoped<IApiPlaylistClient, ApiPlaylistClient>();
 		services.AddScoped<IApiReleaseClient, ApiReleaseClient>();
 
 		// api controllers
-		services.AddScoped<IApiUserService, ApiUserService>();
 		services.AddScoped<IApiTrackService, ApiTrackService>();
-
-		// controllers
 		services.AddScoped<ISpotifyApiTrackService, SpotifyApiTrackService>();
-		services.AddScoped<ISpotifyApiUserService, SpotifyApiUserService>();
+
+		// retry handler 
+		services.AddScoped<IAsyncSleeper, DefaultAsyncSleeper>();
+		services.AddScoped<IRetryHandler, SpotifyApiRetryHandler>();
+
+		services.Configure<SpotifyRetryHandlerOptions>(options =>
+		{
+			options.RetryTimes = 10;
+			options.RetryAfter = TimeSpan.FromMilliseconds(200);
+			options.TooManyRequestsConsumesARetry = true;
+		});
+
 
 		return services;
 	}
