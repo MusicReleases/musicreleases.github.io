@@ -6,7 +6,7 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 public static class BackgroundTaskExtensions
 {
-	public static async Task RunStep(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
+	public static async Task Step(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
 	{
 		await RunStepAsyncInternal(task, name, category, task.Token, work);
 	}
@@ -59,7 +59,7 @@ public static class BackgroundTaskExtensions
 		step.Meta["seg.index"] = "0";
 	}
 
-	public static ValueTask<IBackgroundTaskSubProgressScope> NextSegment(this BackgroundTask task, string label)
+	public static ValueTask<IBackgroundTaskSubProgressScope> Segment(this BackgroundTask task, string label)
 	{
 		var idx = task.CurrentStepIndex;
 		var step = task.Steps[idx];
@@ -237,7 +237,7 @@ public static class BackgroundTaskExtensions
 	public static async Task<T> SegmentAsync<T>(this BackgroundTask task, string label, Func<CancellationToken, Task<T>> body)
 	{
 		// začátek segmentu
-		await using (var seg = await task.NextSegment(label))
+		await using (var seg = await task.Segment(label))
 		{
 			return await body(task.Token);
 		}
@@ -245,7 +245,7 @@ public static class BackgroundTaskExtensions
 
 	public static async Task SegmentAsync(this BackgroundTask task, string label, Func<CancellationToken, Task> body)
 	{
-		await using (var seg = await task.NextSegment(label))
+		await using (var seg = await task.Segment(label))
 		{
 			await body(task.Token);
 		}

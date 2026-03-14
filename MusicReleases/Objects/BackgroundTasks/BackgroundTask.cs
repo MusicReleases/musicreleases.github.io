@@ -252,7 +252,7 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 		NotifyChange();
 	}
 
-	public void EndTask()
+	/*public void EndTask()
 	{
 		IsEndTaskRequested = true;
 		try
@@ -264,6 +264,6 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 			// ignore
 		}
 		NotifyChange();
-	}
+	}*/
 
 }
