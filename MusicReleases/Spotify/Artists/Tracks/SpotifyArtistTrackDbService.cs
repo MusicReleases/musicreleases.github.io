@@ -1,10 +1,13 @@
 ﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify.Mappers;
+using JakubKastner.MusicReleases.Database.Spotify.Services;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Services;
+namespace JakubKastner.MusicReleases.Spotify.Artists.Tracks;
 
-public class DbSpotifyArtistTrackService(IDbSpotifyService dbService) : IDbSpotifyArtistTrackService
+internal sealed class SpotifyArtistTrackDbService(IDbSpotifyService dbService) : ISpotifyArtistTrackDbService
 {
+	// TODO check
+
+
 	private readonly IDbSpotifyService _dbService = dbService;
 
 	public async Task<HashSet<string>> GetArtistTrackIds(string artistId)

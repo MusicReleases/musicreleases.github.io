@@ -1,5 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
@@ -7,7 +8,7 @@ using System.Collections.Concurrent;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterService
+internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterService
 {
 	private readonly ISpotifyReleaseState _releaseState;
 
@@ -39,16 +40,16 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 	public SpotifyReleaseFilter Filter { get; private set; } = new();
 
 
-	public SortedSet<SpotifyRelease>? FilteredReleases { get; private set; } = null;
+	public SortedSet<SpotifyRelease>? FilteredReleases { get; private set; }
 
-	public SortedSet<SpotifyArtist>? FilteredArtists { get; private set; } = null;
+	public SortedSet<SpotifyArtist>? FilteredArtists { get; private set; }
 
-	public Dictionary<int, SortedSet<int>>? FilteredDate { get; private set; } = null;
+	public Dictionary<int, SortedSet<int>>? FilteredDate { get; private set; }
 
 
 	private ConcurrentDictionary<ReleaseEnums, IReadOnlyList<SpotifyRelease>> AllReleases => _releaseState.ReleasesByType;
 
-	private IReadOnlyList<SpotifyArtist> AllArtists => _artistState.SortedFollowedArtists;
+	private IReadOnlySet<SpotifyArtist>? AllArtists => _artistState.FollowedArtists;
 
 
 	private const ReleaseAdvancedFilter _defaultAdvancedFilter = ReleaseAdvancedFilter.All;
@@ -105,7 +106,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 
 	private bool ApplyFilter()
 	{
-		if (AllReleases.IsEmpty && AllArtists.Count == 0)
+		if (AllArtists is null || AllReleases.IsEmpty && AllArtists.Count == 0)
 		{
 			return false;
 		}
@@ -311,9 +312,15 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 	{
 		Console.WriteLine("filter: artists - start");
 
-		if (AllArtists.Count == 0)
+		if (AllArtists is null)
 		{
 			FilteredArtists = null;
+			return;
+		}
+
+		if (AllArtists.Count == 0)
+		{
+			FilteredArtists = [];
 			return;
 		}
 

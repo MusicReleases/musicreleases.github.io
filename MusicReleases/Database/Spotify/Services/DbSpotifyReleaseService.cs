@@ -1,17 +1,19 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
+using JakubKastner.MusicReleases.Spotify.Artists;
+using JakubKastner.MusicReleases.Spotify.Artists.Releases;
 using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
 using System.Data;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
-public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArtistReleaseService linkArtistDb, IDbSpotifyArtistService artistsDb) : IDbSpotifyReleaseService
+internal sealed class DbSpotifyReleaseService(IDbSpotifyService dbService, ISpotifyArtistReleaseDbService linkArtistDb, ISpotifyArtistDbService artistsDb) : IDbSpotifyReleaseService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
-	private readonly IDbSpotifyArtistReleaseService _linkArtistDb = linkArtistDb;
-	private readonly IDbSpotifyArtistService _artistDb = artistsDb;
+	private readonly ISpotifyArtistReleaseDbService _linkArtistDb = linkArtistDb;
+	private readonly ISpotifyArtistDbService _artistDb = artistsDb;
 
 	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseEnums mainReleaseType, CancellationToken ct)
 	{

@@ -3,7 +3,7 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public interface ISpotifyFilterPlaylistService
+public interface ISpotifyPlaylistFilterService
 {
 	IReadOnlyList<SpotifyPlaylist>? FilteredPlaylists { get; }
 	string SearchText { get; }

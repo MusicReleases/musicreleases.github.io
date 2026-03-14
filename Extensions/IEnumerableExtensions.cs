@@ -4,11 +4,6 @@ public static class IEnumerableExtensions
 {
 	public static IEnumerable<T> ApplySearch<T>(this IEnumerable<T> source, string? searchText, params Func<T, string?>[] selectors)
 	{
-		if (!source.Any())
-		{
-			return source;
-		}
-
 		searchText = searchText.EnsureText();
 
 		if (searchText.IsNullOrEmpty())

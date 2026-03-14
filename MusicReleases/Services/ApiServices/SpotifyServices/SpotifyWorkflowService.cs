@@ -1,9 +1,10 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.SpotifyApi.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, ISpotifyReleaseService spotifyReleaseService, ISpotifyPlaylistService spotifyPlaylistService) : ISpotifyWorkflowService
+internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, ISpotifyReleaseService spotifyReleaseService, ISpotifyPlaylistService spotifyPlaylistService) : ISpotifyWorkflowService
 {
 	private readonly ISpotifyArtistService _spotifyArtistService = spotifyArtistService;
 	private readonly ISpotifyReleaseService _spotifyReleaseService = spotifyReleaseService;

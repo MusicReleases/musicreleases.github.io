@@ -5,7 +5,7 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
-public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistService
+public class SpotifyPlaylistFilterService : IDisposable, ISpotifyPlaylistFilterService
 {
 	private readonly ISpotifyPlaylistState _state;
 

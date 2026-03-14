@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
-using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 

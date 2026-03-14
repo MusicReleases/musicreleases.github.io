@@ -5,9 +5,9 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
 [Schema(StoreName = "Artist")]
 public partial record SpotifyArtistEntity
-	(
-		[property: Index(IsPrimary = true)] string Id,
-		[property: Index] string Name,
-		string UrlApp,
-		string UrlWeb
-	) : ISpotifyDb, ISpotifyIdNameUrlEntity;
+(
+	[property: Index(IsPrimary = true)] string Id,
+	[property: Index] string Name,
+	string UrlApp,
+	string UrlWeb
+) : ISpotifyDb, ISpotifyIdNameUrlEntity;

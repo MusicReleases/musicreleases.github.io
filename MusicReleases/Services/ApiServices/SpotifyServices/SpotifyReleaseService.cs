@@ -3,10 +3,11 @@ using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.MusicReleases.Database.Spotify.Mappers;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Spotify.Artists;
+using JakubKastner.MusicReleases.Spotify.Artists.Releases;
 using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Enums;
@@ -14,13 +15,13 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotifyReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
+internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotifyReleaseClient api, IDbSpotifyReleaseService releaseDb, ISpotifyArtistDbService artistDb, ISpotifyArtistReleaseDbService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
 {
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly ISpotifyReleaseClient _api = api;
 	private readonly IDbSpotifyReleaseService _releaseDb = releaseDb;
-	private readonly IDbSpotifyArtistService _artistDb = artistDb;
-	private readonly IDbSpotifyArtistReleaseService _linkDb = linkDb;
+	private readonly ISpotifyArtistDbService _artistDb = artistDb;
+	private readonly ISpotifyArtistReleaseDbService _linkDb = linkDb;
 	private readonly IDbSpotifyUserUpdateService _metaDb = metaDb;
 	private readonly ISpotifyArtistState _artistState = artistState;
 	private readonly ISpotifyReleaseState _state = state;
@@ -110,10 +111,9 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient
 				return await _metaDb.Get(userId, metaDbType, ct);
 			});
 
-			var artists = _artistState.SortedFollowedArtists;
-			var artistsCount = artists.Count;
+			var artists = _artistState.FollowedArtists;
 
-			if (artistsCount == 0)
+			if (artists is null || artists.Count == 0)
 			{
 				await task.RunSegment($"state - set releases - {releaseGroupString}", async ct =>
 				{
@@ -123,6 +123,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient
 				// TODO should sync calc
 				return true;
 			}
+			var artistsCount = artists.Count;
 
 			var releaseIds = await task.RunSegment($"db - get release ids from artists (artist-release) - {releaseGroupString} - artists: {artistsCount}", async ct =>
 			{
@@ -157,10 +158,9 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient
 		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
 			// get artists from state
-			var artists = _artistState.SortedFollowedArtists;
-			var artistsCount = artists.Count;
+			var artists = _artistState.FollowedArtists;
 
-			if (artistsCount == 0)
+			if (artists is null || artists.Count == 0)
 			{
 				// TODO should sync calc
 				task.BeginAutoSegments(1);
@@ -170,6 +170,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient
 				});
 				return null;
 			}
+			var artistsCount = artists.Count;
 
 			var allReleasesToSave = new HashSet<SpotifyRelease>();
 			var allLinksToSave = new HashSet<SpotifyArtistReleaseEntity>();

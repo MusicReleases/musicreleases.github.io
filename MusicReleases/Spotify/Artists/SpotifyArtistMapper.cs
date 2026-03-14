@@ -1,9 +1,9 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Mappers;
+namespace JakubKastner.MusicReleases.Spotify.Artists;
 
-public static class SpotifyArtistMapper
+internal static class SpotifyArtistMapper
 {
 	public static SpotifyArtistEntity ToEntity(this SpotifyArtist dto)
 	{

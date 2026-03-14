@@ -1,4 +1,4 @@
-using JakubKastner.MusicReleases.Services.SpotifyServices;
+using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
 
@@ -7,25 +7,26 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Artists;
 public partial class ArtistSidebarContent : IDisposable
 {
 	[Inject]
-	private ISpotifyArtistFilterService SpotifyArtistFilterService { get; set; } = default!;
+	private ISpotifyArtistFilterService SpotifyArtistFilterService { get; init; } = default!;
 
-
-	private ISet<SpotifyArtist>? Artists => SpotifyArtistFilterService.FilteredArtists;
-
+	private List<SpotifyArtist>? _artists;
 
 	protected override void OnInitialized()
 	{
-		SpotifyArtistFilterService.OnSearchOrDataChanged += StateChanged;
+		SpotifyArtistFilterService.OnDataChanged += SearchChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyArtistFilterService.OnSearchOrDataChanged -= StateChanged;
+		SpotifyArtistFilterService.OnDataChanged -= SearchChanged;
 		GC.SuppressFinalize(this);
 	}
 
-	private void StateChanged()
+	private Task StateChanged() => InvokeAsync(StateHasChanged);
+
+	private void SearchChanged()
 	{
-		InvokeAsync(StateHasChanged);
+		_artists = SpotifyArtistFilterService.FilteredArtists is null ? null : [.. SpotifyArtistFilterService.FilteredArtists];
+		_ = StateChanged();
 	}
 }

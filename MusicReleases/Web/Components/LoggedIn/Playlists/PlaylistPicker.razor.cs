@@ -10,7 +10,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
 public partial class PlaylistPicker : IDisposable
 {
 	[Inject]
-	private ISpotifyFilterPlaylistService FilterService { get; set; } = default!;
+	private ISpotifyPlaylistFilterService FilterService { get; set; } = default!;
 
 	[Inject]
 	private ILoadingService LoadingService { get; set; } = default!;

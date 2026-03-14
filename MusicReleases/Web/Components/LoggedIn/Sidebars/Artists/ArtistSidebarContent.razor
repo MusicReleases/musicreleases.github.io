@@ -1,4 +1,10 @@
-﻿@if (Artists is null || Artists.Count < 1)
+﻿@using JakubKastner.SpotifyApi.Objects
+
+@if (_artists is null)
+{
+	<p>Loading artists...</p>
+}
+else if (_artists.Count == 0)
 {
 	<p>0 artists</p>
 	@* <UpdateButton Class="sidebar-content" ButtonType="@UpdateButtonComponent.Artists" Text="Update" /> *@
@@ -6,10 +12,10 @@
 else
 {
 	<ul>
-		<Virtualize Items="@Artists" Context="artist">
+		<Virtualize Items="@_artists" Context="artist" TItem="SpotifyArtist">
 			<li>
 				<ArtistSidebarButton ArtistId=@artist.Id ArtistName=@artist.Name @key="artist.Id"/>
 			</li>
 		</Virtualize>
 	</ul>
-}
+}	
