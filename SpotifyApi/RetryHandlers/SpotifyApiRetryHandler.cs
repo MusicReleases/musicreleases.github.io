@@ -1,13 +1,11 @@
-﻿using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.RetryHandlers;
+﻿using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.Options;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Http;
 using System.Net;
 
-namespace JakubKastner.SpotifyApi.Base;
+namespace JakubKastner.SpotifyApi.RetryHandlers;
 
 /// <summary>
 ///   A simple retry handler which retries a request based on status codes with a fixed sleep interval.

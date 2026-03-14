@@ -12,6 +12,6 @@ public static class SpotifyArtistMapper
 
 	public static SpotifyArtist ToModel(this SpotifyArtistEntity entity)
 	{
-		return new(entity.Id, entity.Name, entity.UrlApp, entity.UrlWeb);
+		return new(entity.Id, entity.Name, entity.UrlApp, entity.UrlWeb, false);
 	}
 }

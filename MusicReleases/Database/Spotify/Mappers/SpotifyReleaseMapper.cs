@@ -12,6 +12,6 @@ public static class SpotifyReleaseMapper
 
 	public static SpotifyRelease ToModel(this SpotifyReleaseEntity entity, HashSet<SpotifyArtist> artists, HashSet<SpotifyArtist> featuredArtists)
 	{
-		return new(entity.Id, entity.Name, entity.ReleaseType, entity.ReleaseDate, entity.UrlApp, entity.UrlWeb, entity.UrlImage, entity.TotalTracks, artists, featuredArtists);
+		return new(entity.Id, entity.Name, entity.UrlApp, entity.UrlWeb, entity.ReleaseType, entity.ReleaseDate, entity.UrlImage, entity.TotalTracks, false, artists, featuredArtists);
 	}
 }

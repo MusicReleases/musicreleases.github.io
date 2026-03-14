@@ -1,6 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Clients;
 using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
@@ -21,7 +19,7 @@ internal class ApiTrackService(Clients.ISpotifyApiClient client) : IApiTrackServ
 
 		foreach (var trackApi in tracksFromApi)
 		{
-			var track = new SpotifyTrack(trackApi, release);
+			var track = trackApi.ToObject(release);
 
 			tracks.Add(track);
 		}

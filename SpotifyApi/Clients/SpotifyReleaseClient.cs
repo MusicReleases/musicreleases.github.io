@@ -1,7 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Enums;
-using JakubKastner.SpotifyApi.Objects;
-using SpotifyAPI.Web;
+﻿using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
@@ -55,7 +52,7 @@ internal class SpotifyReleaseClient(ISpotifyApiClient client) : ISpotifyReleaseC
 				featuredArtists.Add(artist);
 			}
 
-			var release = new SpotifyRelease(releaseApi, featuredArtists);
+			var release = releaseApi.ToObject(featuredArtists);
 			releases.Add(release);
 		}
 

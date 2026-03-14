@@ -1,5 +1,4 @@
-﻿using SpotifyAPI.Web;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
@@ -13,12 +12,6 @@ public class SpotifyUser
 		// for di registration
 	}
 
-	[SetsRequiredMembers]
-	public SpotifyUser(PrivateUser userApi, SpotifyUserCredentials credentials)
-	{
-		Info = new(userApi);
-		Credentials = credentials;
-	}
 
 	[SetsRequiredMembers]
 	public SpotifyUser(SpotifyUserInfo info, SpotifyUserCredentials credentials)
@@ -33,6 +26,8 @@ public static class SpotifyUserExtensions
 	public static void ThrowIfNull([NotNull] this SpotifyUser? value)
 	{
 		if (value is null)
+		{
 			throw new UnauthorizedAccessException(nameof(SpotifyUser));
+		}
 	}
 }

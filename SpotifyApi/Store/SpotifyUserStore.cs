@@ -1,5 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using SpotifyAPI.Web;
+﻿using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Store;
 
@@ -19,17 +18,14 @@ internal class SpotifyUserStore : ISpotifyUserStore
 
 	public void SetUser(PrivateUser userApi, string refreshToken)
 	{
-		var info = new SpotifyUserInfo(userApi);
-		var credentials = new SpotifyUserCredentials(refreshToken);
-
-		_user = new(info, credentials);
+		_user = userApi.ToObject(refreshToken);
 	}
 
 	public void SetUserInfoApi(PrivateUser userApi)
 	{
 		_user.ThrowIfNull();
 
-		_user.Info = new(userApi);
+		_user.Info = userApi.ToObjectInfo();
 	}
 
 	public void SetRefreshToken(string refreshToken)

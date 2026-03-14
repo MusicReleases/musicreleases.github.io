@@ -12,6 +12,6 @@ public static class SpotifyTrackMapper
 
 	public static SpotifyTrack ToModel(this SpotifyTrackEntity entity)
 	{
-		return new(entity.Id, entity.Name, entity.ReleaseId, entity.TrackNumber, entity.DiscNumber, entity.Duration, entity.Explicit, entity.UrlApp, entity.UrlWeb);
+		return new(entity.Id, entity.Name, entity.UrlApp, entity.UrlWeb, entity.ReleaseId, entity.TrackNumber, entity.DiscNumber, entity.Duration, entity.Explicit);
 	}
 }

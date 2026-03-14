@@ -1,6 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
-using SpotifyAPI.Web;
+﻿using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
@@ -23,7 +21,7 @@ public class SpotifyPlaylistClient(ISpotifyApiClient client) : ISpotifyPlaylistC
 		var playlists = new List<SpotifyPlaylist>();
 		await foreach (var playlistApi in playlistsAsync.WithCancellation(ct))
 		{
-			var playlist = new SpotifyPlaylist(playlistApi);
+			var playlist = playlistApi.ToObject();
 			playlists.Add(playlist);
 		}
 		return playlists;
@@ -40,7 +38,7 @@ public class SpotifyPlaylistClient(ISpotifyApiClient client) : ISpotifyPlaylistC
 
 		var spotifyClient = _client.GetClient();
 		var playlistApi = await spotifyClient.Playlists.Create(request, ct);
-		var playlist = new SpotifyPlaylist(playlistApi);
+		var playlist = playlistApi.ToObject();
 
 		return playlist;
 	}

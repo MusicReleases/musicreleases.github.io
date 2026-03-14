@@ -1,4 +1,6 @@
-﻿namespace JakubKastner.SpotifyApi.Objects.Base;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace JakubKastner.SpotifyApi.Objects.Base;
 
 public class SpotifyIdNameUrlObject : IComparable
 {
@@ -6,6 +8,21 @@ public class SpotifyIdNameUrlObject : IComparable
 	public required string Name { get; init; }
 	public required string UrlApp { get; init; }
 	public required string UrlWeb { get; init; }
+
+
+	public SpotifyIdNameUrlObject()
+	{
+		// ctor for json
+	}
+
+	[SetsRequiredMembers]
+	public SpotifyIdNameUrlObject(string id, string name, string urlApp, string urlWeb)
+	{
+		Id = id;
+		Name = name;
+		UrlApp = urlApp;
+		UrlWeb = urlWeb;
+	}
 
 	public int CompareTo(object? obj)
 	{

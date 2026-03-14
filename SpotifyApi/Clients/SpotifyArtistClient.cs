@@ -1,6 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
-using SpotifyAPI.Web;
+﻿using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
@@ -22,7 +20,7 @@ internal class SpotifyArtistClient(ISpotifyApiClient client) : ISpotifyArtistCli
 		var artists = new List<SpotifyArtist>();
 		await foreach (var artistApi in artistsAsync.WithCancellation(ct))
 		{
-			var artist = new SpotifyArtist(artistApi);
+			var artist = artistApi.ToObject();
 			artists.Add(artist);
 		}
 

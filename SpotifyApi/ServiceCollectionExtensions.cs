@@ -1,5 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Clients;
+﻿using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.RetryHandlers;
 using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
