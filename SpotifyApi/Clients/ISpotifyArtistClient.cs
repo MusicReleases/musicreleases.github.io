@@ -1,8 +1,8 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.SpotifyApi.Services.Api;
+namespace JakubKastner.SpotifyApi.Clients;
 
-public interface IApiArtistClient
+public interface ISpotifyArtistClient
 {
 	Task<List<SpotifyArtist>> GetFollowed(CancellationToken ct = default);
 }

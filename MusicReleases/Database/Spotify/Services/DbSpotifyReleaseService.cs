@@ -1,8 +1,8 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
+using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 using System.Data;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Services;

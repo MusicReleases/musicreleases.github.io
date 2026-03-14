@@ -1,5 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services.Api;
+﻿using JakubKastner.SpotifyApi.Clients;
+using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.SpotifyApi.Services;
 

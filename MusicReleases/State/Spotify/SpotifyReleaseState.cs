@@ -1,5 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.SpotifyEnums;
+﻿using JakubKastner.SpotifyApi.Enums;
+using JakubKastner.SpotifyApi.Objects;
 using System.Collections.Concurrent;
 
 namespace JakubKastner.MusicReleases.State.Spotify;

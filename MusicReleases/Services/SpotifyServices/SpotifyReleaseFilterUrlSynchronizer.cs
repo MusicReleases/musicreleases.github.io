@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Objects.Spotify;
-using JakubKastner.SpotifyApi.Services.Api;
+using JakubKastner.SpotifyApi.Clients;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
@@ -13,11 +13,11 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 
 	private readonly IDbSpotifyUserFilterReleaseService _dbService;
 
-	private readonly IApiUserClient _spotifyUserClient;
+	private readonly ISpotifyUserClient _spotifyUserClient;
 
 	private readonly NavigationManager _navManager;
 
-	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyUserFilterReleaseService dbService, IApiUserClient spotifyUserClient, NavigationManager navManager)
+	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyUserFilterReleaseService dbService, ISpotifyUserClient spotifyUserClient, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;

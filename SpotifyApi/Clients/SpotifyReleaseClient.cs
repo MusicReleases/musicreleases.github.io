@@ -1,11 +1,11 @@
 ﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Services.Api;
+namespace JakubKastner.SpotifyApi.Clients;
 
-internal class ApiReleaseClient(ISpotifyApiClient client) : IApiReleaseClient
+internal class SpotifyReleaseClient(ISpotifyApiClient client) : ISpotifyReleaseClient
 {
 	private readonly ISpotifyApiClient _client = client;
 

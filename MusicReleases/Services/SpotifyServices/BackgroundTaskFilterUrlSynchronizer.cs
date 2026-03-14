@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.SpotifyApi.Services.Api;
+using JakubKastner.SpotifyApi.Clients;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
@@ -13,12 +13,12 @@ public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskF
 
 	private readonly IDbSpotifyUserFilterTaskService _dbService;
 
-	private readonly IApiUserClient _spotifyUserClient;
+	private readonly ISpotifyUserClient _spotifyUserClient;
 
 	private readonly NavigationManager _navManager;
 
 
-	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, IApiUserClient spotifyUserClient, NavigationManager navManager)
+	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, ISpotifyUserClient spotifyUserClient, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;

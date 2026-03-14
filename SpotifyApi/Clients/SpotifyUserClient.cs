@@ -1,11 +1,11 @@
-﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Store;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Http;
 
-namespace JakubKastner.SpotifyApi.Services.Api;
+namespace JakubKastner.SpotifyApi.Clients;
 
-public class ApiUserClient(ISpotifyApiClient client, ISpotifyUserStore userStore, IRetryHandler retryHandler, SpotifyConfig spotifyConfig) : IApiUserClient
+public class SpotifyUserClient(ISpotifyApiClient client, ISpotifyUserStore userStore, IRetryHandler retryHandler, SpotifyConfig spotifyConfig) : ISpotifyUserClient
 {
 	private readonly ISpotifyApiClient _client = client;
 	private readonly ISpotifyUserStore _userStore = userStore;
@@ -112,7 +112,8 @@ public class ApiUserClient(ISpotifyApiClient client, ISpotifyUserStore userStore
 
 	private void SetClient(SpotifyClientConfig config)
 	{
-		_client.SetClient(new SpotifyClient(config));
+		var spotifyClient = new SpotifyClient(config);
+		_client.SetClient(spotifyClient);
 	}
 
 	public SpotifyUser? GetUser() => _userStore.GetUser();

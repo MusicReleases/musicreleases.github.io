@@ -1,7 +1,7 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Services.Api
+namespace JakubKastner.SpotifyApi.Store
 {
 	public interface ISpotifyUserStore
 	{

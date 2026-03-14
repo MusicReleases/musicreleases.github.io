@@ -1,4 +1,4 @@
-﻿namespace JakubKastner.SpotifyApi.SpotifyEnums;
+﻿namespace JakubKastner.SpotifyApi.Enums;
 
 [Flags]
 public enum PlaylistType

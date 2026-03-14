@@ -2,17 +2,17 @@
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
+using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services.Api;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, IApiUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
+public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
-	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
+	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
 	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;

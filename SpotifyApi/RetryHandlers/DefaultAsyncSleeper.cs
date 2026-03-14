@@ -1,4 +1,4 @@
-﻿namespace JakubKastner.SpotifyApi.Objects;
+﻿namespace JakubKastner.SpotifyApi.RetryHandlers;
 
 internal class DefaultAsyncSleeper : IAsyncSleeper
 {

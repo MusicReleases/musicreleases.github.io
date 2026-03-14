@@ -1,8 +1,8 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.SpotifyApi.Services.Api;
+namespace JakubKastner.SpotifyApi.Clients;
 
-public interface IApiPlaylistClient
+public interface ISpotifyPlaylistClient
 {
 	Task<string> AddTracksToPlaylist(string playlistId, IEnumerable<string> trackUris, bool positionTop, CancellationToken ct = default);
 	Task<SpotifyPlaylist> CreatePlaylist(string userId, string name, bool addToProfile, CancellationToken ct = default);

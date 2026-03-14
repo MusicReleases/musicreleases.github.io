@@ -2,9 +2,9 @@
 using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Services.Api;
+namespace JakubKastner.SpotifyApi.Clients;
 
-public class ApiPlaylistClient(ISpotifyApiClient client) : IApiPlaylistClient
+public class SpotifyPlaylistClient(ISpotifyApiClient client) : ISpotifyPlaylistClient
 {
 	private readonly ISpotifyApiClient _client = client;
 

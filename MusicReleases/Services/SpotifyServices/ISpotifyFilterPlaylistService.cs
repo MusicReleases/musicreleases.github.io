@@ -1,5 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.SpotifyEnums;
+﻿using JakubKastner.SpotifyApi.Enums;
+using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 

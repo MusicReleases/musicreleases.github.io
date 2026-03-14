@@ -6,16 +6,16 @@ using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Clients;
+using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services.Api;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleaseService(IApiUserClient spotifyUserClient, IApiReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
+public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotifyReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
 {
-	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
-	private readonly IApiReleaseClient _api = api;
+	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
+	private readonly ISpotifyReleaseClient _api = api;
 	private readonly IDbSpotifyReleaseService _releaseDb = releaseDb;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
 	private readonly IDbSpotifyArtistReleaseService _linkDb = linkDb;

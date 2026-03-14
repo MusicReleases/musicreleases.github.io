@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace JakubKastner.SpotifyApi.Objects;
+namespace JakubKastner.SpotifyApi.RetryHandlers;
 
 internal class SpotifyRetryHandlerOptions
 {

@@ -1,8 +1,8 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.SpotifyApi.Services.Api
+namespace JakubKastner.SpotifyApi.Clients
 {
-	public interface IApiUserClient
+	public interface ISpotifyUserClient
 	{
 		(Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, Uri currentUrl);
 		SpotifyUser? GetUser();

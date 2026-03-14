@@ -1,10 +1,10 @@
 ﻿using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Base;
+namespace JakubKastner.SpotifyApi.Clients;
 
 public interface ISpotifyApiClient
 {
 	ISpotifyClient GetClient();
-	void SetClient(SpotifyClient spotifyClient);
+	void SetClient(ISpotifyClient spotifyClient);
 	bool IsInicialized();
 }

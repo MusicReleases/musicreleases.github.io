@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Clients;
+using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services.Api;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Services.SpotifyServices;
 
@@ -9,9 +9,9 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 {
 	private readonly ISpotifyPlaylistState _state;
 
-	private readonly IApiUserClient _spotifyUserClient;
+	private readonly ISpotifyUserClient _spotifyUserClient;
 
-	public SpotifyPlaylistFilterService(ISpotifyPlaylistState state, IApiUserClient spotifyUserClient)
+	public SpotifyPlaylistFilterService(ISpotifyPlaylistState state, ISpotifyUserClient spotifyUserClient)
 	{
 		_state = state;
 		_spotifyUserClient = spotifyUserClient;

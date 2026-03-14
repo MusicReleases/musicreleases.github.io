@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.SpotifyEnums;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Services
 {

@@ -1,5 +1,7 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services.Api;
+﻿using JakubKastner.SpotifyApi.Clients;
+using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.RetryHandlers;
+using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.Options;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Http;
@@ -13,9 +15,9 @@ namespace JakubKastner.SpotifyApi.Base;
 ///   the Retry-After header
 /// </summary>
 /// <returns></returns>
-internal class SpotifyApiRetryHandler(ISpotifyApiClient apiClient, ISpotifyUserStore userStore, SpotifyConfig spotifyConfig, IAsyncSleeper sleeper, IOptions<SpotifyRetryHandlerOptions> options) : IRetryHandler
+internal class SpotifyApiRetryHandler(Clients.ISpotifyApiClient apiClient, ISpotifyUserStore userStore, SpotifyConfig spotifyConfig, IAsyncSleeper sleeper, IOptions<SpotifyRetryHandlerOptions> options) : IRetryHandler
 {
-	private readonly ISpotifyApiClient _apiClient = apiClient;
+	private readonly Clients.ISpotifyApiClient _apiClient = apiClient;
 	private readonly ISpotifyUserStore _userStore = userStore;
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly IAsyncSleeper _sleeper = sleeper;
@@ -70,7 +72,7 @@ internal class SpotifyApiRetryHandler(ISpotifyApiClient apiClient, ISpotifyUserS
 		_userStore.SetRefreshToken(tokenResponse.RefreshToken);
 
 		var config = SpotifyClientConfig.CreateDefault(tokenResponse.AccessToken).WithRetryHandler(this);
-		var spotifyClient = new SpotifyClient(config);
+		var spotifyClient = new SpotifyAPI.Web.SpotifyClient(config);
 		_apiClient.SetClient(spotifyClient);
 
 		return tokenResponse.AccessToken;

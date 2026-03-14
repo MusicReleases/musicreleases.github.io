@@ -1,12 +1,13 @@
 ﻿using JakubKastner.SpotifyApi.Base;
+using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
 using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Services.Api;
 
-internal class ApiTrackService(ISpotifyApiClient client) : IApiTrackService
+internal class ApiTrackService(Clients.ISpotifyApiClient client) : IApiTrackService
 {
-	private readonly ISpotifyApiClient _client = client;
+	private readonly Clients.ISpotifyApiClient _client = client;
 
 	public async Task<ISet<SpotifyTrack>> GetReleaseTracksFromApi(SpotifyRelease release)
 	{

@@ -1,6 +1,6 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.SpotifyApi.Services.Api;
+namespace JakubKastner.SpotifyApi.Clients;
 
 internal interface IApiTrackService
 {

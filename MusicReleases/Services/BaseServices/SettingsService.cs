@@ -1,15 +1,15 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Objects.User;
+using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects.Base;
-using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SettingsService(IDbSpotifyUserSettingsService dbService, IApiUserClient spotifyUserClient) : ISettingsService
+public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyUserClient spotifyUserClient) : ISettingsService
 {
 	private readonly IDbSpotifyUserSettingsService _dbService = dbService;
 
-	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
+	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 
 
 	public event Action? OnChange;

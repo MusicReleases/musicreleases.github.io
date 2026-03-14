@@ -1,7 +1,9 @@
 ﻿using JakubKastner.SpotifyApi.Base;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Clients;
+using JakubKastner.SpotifyApi.RetryHandlers;
 using JakubKastner.SpotifyApi.Services;
 using JakubKastner.SpotifyApi.Services.Api;
+using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyAPI.Web.Http;
 
@@ -17,13 +19,12 @@ public static class ServiceCollectionExtensions
 		// client and user
 		services.AddScoped<ISpotifyApiClient, SpotifyApiClient>();
 		services.AddScoped<ISpotifyUserStore, SpotifyUserStore>();
-		services.AddScoped<ISpotifyCredentialsStore, SpotifyCredentialsStore>();
 
 		// api clients
-		services.AddScoped<IApiUserClient, ApiUserClient>();
-		services.AddScoped<IApiArtistClient, ApiArtistClient>();
-		services.AddScoped<IApiPlaylistClient, ApiPlaylistClient>();
-		services.AddScoped<IApiReleaseClient, ApiReleaseClient>();
+		services.AddScoped<ISpotifyUserClient, SpotifyUserClient>();
+		services.AddScoped<ISpotifyArtistClient, SpotifyArtistClient>();
+		services.AddScoped<ISpotifyPlaylistClient, SpotifyPlaylistClient>();
+		services.AddScoped<ISpotifyReleaseClient, SpotifyReleaseClient>();
 
 		// api controllers
 		services.AddScoped<IApiTrackService, ApiTrackService>();

@@ -4,15 +4,15 @@ using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services.Api;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyArtistService(IApiUserClient spotifyUserClient, IApiArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyArtistService
+public class SpotifyArtistService(ISpotifyUserClient spotifyUserClient, ISpotifyArtistClient api, IDbSpotifyArtistService artistDb, IDbSpotifyUserArtistService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyArtistService
 {
-	private readonly IApiUserClient _spotifyUserClient = spotifyUserClient;
-	private readonly IApiArtistClient _api = api;
+	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
+	private readonly ISpotifyArtistClient _api = api;
 	private readonly IDbSpotifyArtistService _artistDb = artistDb;
 	private readonly IDbSpotifyUserArtistService _linkDb = linkDb;
 	private readonly IDbSpotifyUserUpdateService _metaDb = metaDb;
