@@ -4,9 +4,9 @@ using SpotifyAPI.Web.Http;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-internal class SpotifyUserClient(ISpotifyApiClient client, ISpotifyUserStore userStore, IRetryHandler retryHandler, SpotifyConfig spotifyConfig) : ISpotifyUserClient
+internal class SpotifyUserClient(ISpotifyClientStore client, ISpotifyUserStore userStore, IRetryHandler retryHandler, SpotifyConfig spotifyConfig) : ISpotifyUserClient
 {
-	private readonly ISpotifyApiClient _client = client;
+	private readonly ISpotifyClientStore _client = client;
 	private readonly ISpotifyUserStore _userStore = userStore;
 	private readonly IRetryHandler _retryHandler = retryHandler;
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;

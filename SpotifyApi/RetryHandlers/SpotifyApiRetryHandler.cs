@@ -13,9 +13,9 @@ namespace JakubKastner.SpotifyApi.RetryHandlers;
 ///   the Retry-After header
 /// </summary>
 /// <returns></returns>
-internal class SpotifyApiRetryHandler(Clients.ISpotifyApiClient apiClient, ISpotifyUserStore userStore, SpotifyConfig spotifyConfig, IAsyncSleeper sleeper, IOptions<SpotifyRetryHandlerOptions> options) : IRetryHandler
+internal class SpotifyApiRetryHandler(ISpotifyClientStore apiClient, ISpotifyUserStore userStore, SpotifyConfig spotifyConfig, IAsyncSleeper sleeper, IOptions<SpotifyRetryHandlerOptions> options) : IRetryHandler
 {
-	private readonly Clients.ISpotifyApiClient _apiClient = apiClient;
+	private readonly ISpotifyClientStore _apiClient = apiClient;
 	private readonly ISpotifyUserStore _userStore = userStore;
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly IAsyncSleeper _sleeper = sleeper;

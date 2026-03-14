@@ -1,8 +1,8 @@
 ﻿using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Clients;
+namespace JakubKastner.SpotifyApi.Store;
 
-internal class SpotifyApiClient : ISpotifyApiClient
+internal class SpotifyClientStore : ISpotifyClientStore
 {
 	private ISpotifyClient? _spotifyClient;
 

@@ -1,10 +1,11 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.Store;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-internal class SpotifyPlaylistClient(ISpotifyApiClient client) : ISpotifyPlaylistClient
+internal class SpotifyPlaylistClient(ISpotifyClientStore client) : ISpotifyPlaylistClient
 {
-	private readonly ISpotifyApiClient _client = client;
+	private readonly ISpotifyClientStore _client = client;
 
 	public async Task<List<SpotifyPlaylist>> GetUserPlaylists(CancellationToken ct = default)
 	{

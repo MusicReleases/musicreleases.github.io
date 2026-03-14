@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddSpotifyApi(this IServiceCollection services)
 	{
 		// client and user
-		services.AddScoped<ISpotifyApiClient, SpotifyApiClient>();
+		services.AddScoped<ISpotifyClientStore, SpotifyClientStore>();
 		services.AddScoped<ISpotifyUserStore, SpotifyUserStore>();
 
 		// api clients

@@ -1,10 +1,11 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.Store;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-internal class SpotifyTrackClient(ISpotifyApiClient client) : ISpotifyTrackClient
+internal class SpotifyTrackClient(ISpotifyClientStore client) : ISpotifyTrackClient
 {
-	private readonly ISpotifyApiClient _client = client;
+	private readonly ISpotifyClientStore _client = client;
 
 	public async Task<ISet<SpotifyTrack>> GetReleaseTracks(SpotifyRelease release, CancellationToken ct = default)
 	{

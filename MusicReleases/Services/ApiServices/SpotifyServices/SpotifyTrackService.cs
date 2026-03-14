@@ -1,10 +1,14 @@
-﻿using JakubKastner.SpotifyApi.Clients;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.SpotifyServices;
+using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyTrackService(ISpotifyTrackClient apiTrackClient, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
+public class SpotifyTrackService(IBackgroundTaskManagerService taskManager, ISpotifyTrackClient apiTrackClient, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
 {
+	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
 	private readonly ISpotifyTrackClient _apiTrackClient = apiTrackClient;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 
@@ -18,11 +22,21 @@ public class SpotifyTrackService(ISpotifyTrackClient apiTrackClient, ISpotifyUse
 			return;
 		}
 
-		// get api
-		release.Tracks = [.. await _apiTrackClient.GetReleaseTracks(release)];
+		await _taskManager.Run(BackgroundTaskType.ReleaseTracksGet, "Getting release tracks", $"Getting tracks from {release.ReleaseType.ToFriendlyString()} '{release.Name}'", async task =>
+		{
+			await task.Step("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+			{
+				// get api
+				release.Tracks = [.. await _apiTrackClient.GetReleaseTracks(release, ct)];
 
-		// save db
-		//await _dbSpotifyArtistReleaseService.Save(userId, release.Tracks);
+				task.AddLink(release.ReleaseType.ToFriendlyString(), $"{release.ReleaseType.ToFriendlyString()} '{release.Name}'", release);
+			});
+
+			// save db
+			//await _dbSpotifyArtistReleaseService.Save(userId, release.Tracks);
+		});
+
+
 
 		// display
 		OnTracksDataChanged?.Invoke();

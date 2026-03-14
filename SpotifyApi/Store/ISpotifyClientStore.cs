@@ -1,8 +1,8 @@
 ﻿using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Clients;
+namespace JakubKastner.SpotifyApi.Store;
 
-internal interface ISpotifyApiClient
+internal interface ISpotifyClientStore
 {
 	ISpotifyClient GetClient();
 	void SetClient(ISpotifyClient spotifyClient);

@@ -5,6 +5,7 @@ public enum BackgroundTaskType
 	ArtistsGet,
 
 	ReleasesGet,
+	ReleaseTracksGet,
 
 	PlaylistsGet,
 	PlaylistsCreate,

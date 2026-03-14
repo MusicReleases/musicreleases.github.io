@@ -1,10 +1,11 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.Store;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-internal class SpotifyReleaseClient(ISpotifyApiClient client) : ISpotifyReleaseClient
+internal class SpotifyReleaseClient(ISpotifyClientStore client) : ISpotifyReleaseClient
 {
-	private readonly ISpotifyApiClient _client = client;
+	private readonly ISpotifyClientStore _client = client;
 
 	public async Task<List<SpotifyRelease>> GetByArtists(IEnumerable<SpotifyArtist> artists, ReleaseEnums releaseType, CancellationToken ct = default)
 	{
