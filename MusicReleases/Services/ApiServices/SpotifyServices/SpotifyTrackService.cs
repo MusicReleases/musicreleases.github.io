@@ -1,6 +1,6 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
+using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
 

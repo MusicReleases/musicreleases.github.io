@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices
 {

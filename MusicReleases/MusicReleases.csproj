@@ -54,9 +54,5 @@
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Objects\BackgroundTasks\" />
-	</ItemGroup>
 	
 </Project>

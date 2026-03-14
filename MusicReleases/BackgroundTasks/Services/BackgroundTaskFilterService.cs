@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Objects;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
+using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.BackgroundTasks.Services;

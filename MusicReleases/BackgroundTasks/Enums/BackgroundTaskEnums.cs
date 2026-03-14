@@ -1,4 +1,4 @@
-﻿namespace JakubKastner.MusicReleases.Enums;
+﻿namespace JakubKastner.MusicReleases.BackgroundTasks.Enums;
 
 public enum BackgroundTaskType
 {
