@@ -5,12 +5,12 @@ namespace JakubKastner.SpotifyApi.Objects;
 [method: SetsRequiredMembers]
 public class SpotifyUser(SpotifyUserInfo info, SpotifyUserCredentials credentials)
 {
-	public required SpotifyUserInfo Info { get; set; } = info;
+	public SpotifyUserInfo Info { get; internal set; } = info;
 
-	public required SpotifyUserCredentials Credentials { get; set; } = credentials;
+	public SpotifyUserCredentials Credentials { get; internal set; } = credentials;
 }
 
-public static class SpotifyUserExtensions
+internal static class SpotifyUserExtensions
 {
 	public static void ThrowIfNull([NotNull] this SpotifyUser? value)
 	{

@@ -1,6 +1,6 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.BackgroundTasks;
-using JakubKastner.MusicReleases.Services.SpotifyServices;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Objects;
+using JakubKastner.MusicReleases.BackgroundTasks.Services;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
@@ -15,10 +15,10 @@ public partial class BackgroundTaskCard : IDisposable
 	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 	[Parameter]
-	public required BackgroundTask SpotifyBackgroundTask { get; set; }
+	public required BackgroundTask BackgroundTask { get; set; }
 
 
-	private string TaskClass => $"task {(SpotifyBackgroundTask.Failed ? "failed" : "")} {(SpotifyBackgroundTask.Ended ? "finished" : "running")}";
+	private string TaskClass => $"task {(BackgroundTask.Failed ? "failed" : "")} {(BackgroundTask.Ended ? "finished" : "running")}";
 
 
 	protected override void OnInitialized()
@@ -39,7 +39,7 @@ public partial class BackgroundTaskCard : IDisposable
 
 	private void HideTask()
 	{
-		SpotifyTaskManagerService.HideTask(SpotifyBackgroundTask);
+		SpotifyTaskManagerService.HideTask(BackgroundTask);
 	}
 
 	private async Task ViewTask()

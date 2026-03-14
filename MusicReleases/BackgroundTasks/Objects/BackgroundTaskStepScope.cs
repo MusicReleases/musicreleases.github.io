@@ -1,8 +1,8 @@
-﻿using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 
-namespace JakubKastner.MusicReleases.Objects.BackgroundTasks;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Objects;
 
-public sealed class BackgroundTaskStepScope(BackgroundTask task, BackgroundTaskStep step, CancellationToken ct, CancellationTokenRegistration? ctr) : IAsyncDisposable
+internal sealed class BackgroundTaskStepScope(BackgroundTask task, BackgroundTaskStep step, CancellationToken ct, CancellationTokenRegistration? ctr) : IAsyncDisposable
 {
 	private readonly BackgroundTask _task = task;
 	private readonly BackgroundTaskStep _step = step;
@@ -10,7 +10,6 @@ public sealed class BackgroundTaskStepScope(BackgroundTask task, BackgroundTaskS
 	private readonly CancellationTokenRegistration? _ctr = ctr;
 
 	private bool _disposed;
-
 
 	public ValueTask DisposeAsync()
 	{
@@ -25,10 +24,10 @@ public sealed class BackgroundTaskStepScope(BackgroundTask task, BackgroundTaskS
 		if (_step.IsRunning && (_task.IsCancelRequested || (_ct.CanBeCanceled && _ct.IsCancellationRequested)))
 		{
 			_step.MarkCanceled();
-			//_step.NotifyChange();
+			_step.NotifyChange();
 		}
 
-		_step.NotifyChange();
+		//_step.NotifyChange();
 		_task.RecalculateProgress();
 		_task.NotifyChange();
 

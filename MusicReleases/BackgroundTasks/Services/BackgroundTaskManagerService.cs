@@ -1,11 +1,13 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.BackgroundTasks;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Objects;
+using JakubKastner.MusicReleases.Enums;
 
-namespace JakubKastner.MusicReleases.Services.SpotifyServices;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Services;
 
-public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerService
+internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerService
 {
 	private readonly IBackgroundTaskFilterService _filterService;
+
+	private readonly List<BackgroundTask> _tasks = [];
 
 	public BackgroundTaskManagerService(IBackgroundTaskFilterService filterService)
 	{
@@ -37,9 +39,6 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 	public ICollection<BackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
 
 
-	private readonly List<BackgroundTask> _tasks = [];
-
-
 	private void NotifyUI()
 	{
 		OnChange?.Invoke();
@@ -52,6 +51,7 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 			BackgroundTaskType.ArtistsGet => 3,
 
 			BackgroundTaskType.ReleasesGet => 3,
+			BackgroundTaskType.ReleaseTracksGet => 1,
 
 			BackgroundTaskType.PlaylistsGet => 3,
 			BackgroundTaskType.PlaylistsCreate => 2,
@@ -61,6 +61,7 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 			BackgroundTaskType.PlaylistTracksRemove => 2,
 			_ => 1
 		};
+
 		return RunInternal(type, name, info, expectedSteps, work);
 	}
 
@@ -91,7 +92,6 @@ public class BackgroundTaskManagerService : IDisposable, IBackgroundTaskManagerS
 				task.MarkFinished();
 			}
 
-			//task.MarkFinished();
 			task.RecalculateProgress();
 		}
 		catch (OperationCanceledException)

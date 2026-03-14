@@ -1,10 +1,11 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
+using JakubKastner.MusicReleases.BackgroundTasks.Objects;
+using JakubKastner.MusicReleases.BackgroundTasks.Services;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.BackgroundTasks;
 using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Enums;
@@ -12,7 +13,7 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotifyReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
+internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotifyReleaseClient api, IDbSpotifyReleaseService releaseDb, IDbSpotifyArtistService artistDb, IDbSpotifyArtistReleaseService linkDb, IDbSpotifyUserUpdateService metaDb, ISpotifyArtistState artistState, ISpotifyReleaseState state, IBackgroundTaskManagerService taskManager, ILoadingService loadingservice) : ISpotifyReleaseService
 {
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly ISpotifyReleaseClient _api = api;
@@ -97,12 +98,12 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 
 	private async Task<bool> LoadFromDbToState(ReleaseEnums releaseGroup, string userId, bool forceUpdate, BackgroundTask task)
 	{
-		return await task.StepAsync("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
+		return await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 		{
 			var releaseGroupString = releaseGroup.ToFriendlyString();
 			task.BeginAutoSegments(4);
 
-			var lastSync = await task.SegmentAsync($"db - get releases last sync (user-update) - {releaseGroupString}", async ct =>
+			var lastSync = await task.RunSegment($"db - get releases last sync (user-update) - {releaseGroupString}", async ct =>
 			{
 				var metaDbType = MapToDbUpdateType(releaseGroup);
 				return await _metaDb.Get(userId, metaDbType, ct);
@@ -113,16 +114,16 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 
 			if (artistsCount == 0)
 			{
-				await using (await task.Segment($"state - set releases - {releaseGroupString}"))
+				await task.RunSegment($"state - set releases - {releaseGroupString}", async ct =>
 				{
 					_state.Set(releaseGroup, [], lastSync);
-				}
+				});
 
 				// TODO should sync calc
 				return true;
 			}
 
-			var releaseIds = await task.SegmentAsync($"db - get release ids from artists (artist-release) - {releaseGroupString} - artists: {artistsCount}", async ct =>
+			var releaseIds = await task.RunSegment($"db - get release ids from artists (artist-release) - {releaseGroupString} - artists: {artistsCount}", async ct =>
 			{
 				var artistIds = artists.Select(a => a.Id);
 				var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(releaseGroup);
@@ -132,12 +133,12 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 
 			var releasesCount = releaseIds.Count;
 
-			var releases = await task.SegmentAsync($"db - get releases by ids (release) - {releaseGroupString} - {releasesCount}", async ct =>
+			var releases = await task.RunSegment($"db - get releases by ids (release) - {releaseGroupString} - {releasesCount}", async ct =>
 			{
 				return await _releaseDb.GetByIds(releaseIds, releaseGroup, ct);
 			});
 
-			var shouldSync = await task.SegmentAsync($"state - set releases - {releaseGroupString} - {releasesCount}", async ct =>
+			var shouldSync = await task.RunSegment($"state - set releases - {releaseGroupString} - {releasesCount}", async ct =>
 			{
 				_state.Set(releaseGroup, releases, lastSync);
 
@@ -152,7 +153,7 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 	{
 		var releaseGroupString = releaseGroup.ToFriendlyString();
 
-		return await task.StepAsync("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
 			// get artists from state
 			var artists = _artistState.SortedFollowedArtists;
@@ -162,10 +163,10 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 			{
 				// TODO should sync calc
 				task.BeginAutoSegments(1);
-				await using (await task.Segment($"state - set releases - {releaseGroup.ToFriendlyString()}"))
+				await task.RunSegment($"state - set releases - {releaseGroup.ToFriendlyString()}", async ct =>
 				{
 					_state.Set(releaseGroup, [], DateTime.Now);
-				}
+				});
 				return null;
 			}
 
@@ -180,14 +181,14 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 			{
 				ct.ThrowIfCancellationRequested();
 
-				await using (await task.Segment($"api - get releases for artist {artist.Name} - {releaseGroupString} - {i} / {artistsCount}"))
+				await task.RunSegment($"api - get releases for artist {artist.Name} - {releaseGroupString} - {i} / {artistsCount}", async ct =>
 				{
 					// get releases from api
 					var apiReleases = await _api.GetByArtist(artist, releaseGroup, ct);
 
 					if (apiReleases.Count == 0)
 					{
-						continue;
+						return;
 					}
 
 					// save release to db
@@ -211,7 +212,8 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 							allLinksToSave.Add(release.Id.ToArtistReleaseEntity(featArtist.Id, ArtistReleaseRole.Featured));
 						}
 					}
-				}
+				});
+
 				i++;
 			}
 
@@ -223,7 +225,7 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 
 	private async Task SaveToDbAndState(ReleaseEnums releaseGroup, ReleaseAggregation releaseAggregation, string userId, BackgroundTask task)
 	{
-		await task.Step("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
+		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
 		{
 			task.BeginAutoSegments(5);
 
@@ -232,35 +234,35 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 			// save to db
 			var relasesCount = releaseAggregation.Releases.Count;
 
-			await using (await task.Segment($"db - save releases (release) - {releaseGroupString} - {relasesCount}"))
+			await task.RunSegment($"db - save releases (release) - {releaseGroupString} - {relasesCount}", async ct =>
 			{
 				await _releaseDb.Save(releaseAggregation.Releases, ct);
-			}
+			});
 
 			var artistsCount = releaseAggregation.Artists.Count;
-			await using (await task.Segment($"db - save artists from releases (artist) - {releaseGroupString} - {artistsCount}"))
+			await task.RunSegment($"db - save artists from releases (artist) - {releaseGroupString} - {artistsCount}", async ct =>
 			{
 				await _artistDb.Save(releaseAggregation.Artists, ct);
-			}
+			});
 
 			var linksCount = releaseAggregation.Links.Count;
-			await using (await task.Segment($"db - save release artists (artist-release) - {releaseGroupString} - {linksCount}"))
+			await task.RunSegment($"db - save release artists (artist-release) - {releaseGroupString} - {linksCount}", async ct =>
 			{
 				await _linkDb.Save(releaseAggregation.Links, ct);
-			}
+			});
 
 			// update meta db
-			await using (await task.Segment($"db - save release last sync (update) - {releaseGroupString}"))
+			await task.RunSegment($"db - save release last sync (update) - {releaseGroupString}", async ct =>
 			{
 				var metaDbType = MapToDbUpdateType(releaseGroup);
 				await _metaDb.Save(userId, metaDbType, ct);
-			}
+			});
 
 			// update state
-			await using (await task.Segment($"state - set releases - {releaseGroupString} - {relasesCount}"))
+			await task.RunSegment($"state - set releases - {releaseGroupString} - {relasesCount}", async ct =>
 			{
 				_state.Set(releaseGroup, releaseAggregation.Releases, DateTime.Now);
-			}
+			});
 		});
 	}
 

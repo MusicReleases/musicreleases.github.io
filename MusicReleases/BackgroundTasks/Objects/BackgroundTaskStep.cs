@@ -1,13 +1,17 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 
-namespace JakubKastner.MusicReleases.Objects.BackgroundTasks;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Objects;
 
 public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory category)
 {
 	public event Action? OnStateChanged;
 
+
 	public string Name { get; init; } = name;
+
 	public BackgroundTaskCategory Category { get; init; } = category;
+
+	public Dictionary<string, string> Meta { get; } = [];
 
 	private BackgroundTaskStatus _status = BackgroundTaskStatus.Running;
 	public BackgroundTaskStatus Status
@@ -22,9 +26,6 @@ public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory categ
 			}
 		}
 	}
-
-	public bool Ended => _status.HasAnyFlag(BackgroundTaskStatus.Finished, BackgroundTaskStatus.Failed, BackgroundTaskStatus.Canceled);
-	public bool IsRunning => !Ended;
 
 	private DateTimeOffset _startedAt = DateTimeOffset.UtcNow;
 	public DateTimeOffset StartedAt
@@ -54,14 +55,12 @@ public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory categ
 		}
 	}
 
-	public TimeSpan? Duration => FinishedAt.HasValue ? FinishedAt.Value - StartedAt : null;
-
-	public int Attempt { get; set; } = 1;
+	// ERRORS
 	public string? ErrorCode { get; set; }
-	public string? ErrorMessage { get; set; }
-	public bool Transient { get; set; }
 
-	public Dictionary<string, string> Meta { get; } = [];
+	public string? ErrorMessage { get; set; }
+
+	// SUB PROCESS
 
 	private double _subProgress;
 	public double SubProgress
@@ -78,12 +77,20 @@ public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory categ
 		}
 	}
 
+	public int SubprocessSequence { get; set; }
+
+	public DateTimeOffset? LastSubProgressAt { get; set; }
+
+
+	public bool Ended => _status.HasAnyFlag(BackgroundTaskStatus.Finished, BackgroundTaskStatus.Failed, BackgroundTaskStatus.Canceled);
+
+	public bool IsRunning => !Ended;
+
+	public TimeSpan? Duration => FinishedAt.HasValue ? FinishedAt.Value - StartedAt : null;
+
+
 	public void NotifyChange()
 	{
 		OnStateChanged?.Invoke();
 	}
-
-	public DateTimeOffset? LastSubProgressAt { get; set; }
-
-	public int SubSeq { get; set; }
 }

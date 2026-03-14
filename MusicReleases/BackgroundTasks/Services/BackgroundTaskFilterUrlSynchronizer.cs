@@ -3,20 +3,17 @@ using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.Clients;
 using Microsoft.AspNetCore.Components;
 
-namespace JakubKastner.MusicReleases.Services.SpotifyServices;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Services;
 
-public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskFilterUrlSynchronizer
+internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilterUrlSynchronizer
 {
 	private readonly IBackgroundTaskFilterService _filterService;
-
 	private readonly IBackgroundTaskFilterUrlService _filterUrlService;
-
 	private readonly IDbSpotifyUserFilterTaskService _dbService;
-
 	private readonly ISpotifyUserClient _spotifyUserClient;
-
 	private readonly NavigationManager _navManager;
 
+	private const string _baseUrl = "/tasks";
 
 	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, ISpotifyUserClient spotifyUserClient, NavigationManager navManager)
 	{
@@ -35,9 +32,10 @@ public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskF
 		GC.SuppressFinalize(this);
 	}
 
-
-	private const string _baseUrl = "/tasks";
-
+	private void OnFilterChanged()
+	{
+		ChangeFilter();
+	}
 
 	public async Task SetFilterFromUrl(string? urlParams, string? searchParam)
 	{
@@ -48,11 +46,6 @@ public class BackgroundTaskFilterUrlSynchronizer : IDisposable, IBackgroundTaskF
 		// save to db
 		var userId = _spotifyUserClient.GetUserIdRequired();
 		await _dbService.Save(filter, userId);
-	}
-
-	private void OnFilterChanged()
-	{
-		ChangeFilter();
 	}
 
 	private void ChangeFilter()

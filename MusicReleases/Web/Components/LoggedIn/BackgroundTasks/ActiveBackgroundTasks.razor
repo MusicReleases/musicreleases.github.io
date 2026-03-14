@@ -1,4 +1,4 @@
-﻿@using JakubKastner.MusicReleases.Objects.BackgroundTasks
+﻿@using JakubKastner.MusicReleases.BackgroundTasks.Objects
 
 
 <div class="tasks">
@@ -29,7 +29,7 @@
         else
         {
             <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@BackgroundTask">
-                <BackgroundTaskCard SpotifyBackgroundTask="@task" @key="task.Id" />
+                <BackgroundTaskCard BackgroundTask="@task" @key="task.Id" />
             </Virtualize>
         }
     </div>

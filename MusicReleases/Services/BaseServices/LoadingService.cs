@@ -1,9 +1,9 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.SpotifyServices;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Services;
+using JakubKastner.MusicReleases.Enums;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class LoadingService : IDisposable, ILoadingService
+internal class LoadingService : IDisposable, ILoadingService
 {
 	private readonly IBackgroundTaskManagerService _spotifyTaskManagerService;
 

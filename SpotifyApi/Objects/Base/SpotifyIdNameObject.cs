@@ -3,7 +3,7 @@
 namespace JakubKastner.SpotifyApi.Objects.Base;
 
 [method: SetsRequiredMembers]
-public class SpotifyIdNameObject(string id, string name) : IComparable
+public abstract class SpotifyIdNameObject(string id, string name) : IComparable
 {
 	public required string Id { get; init; } = id;
 

@@ -3,7 +3,7 @@
 namespace JakubKastner.SpotifyApi.Objects.Base;
 
 [method: SetsRequiredMembers]
-public class SpotifyIdNameUrlObject(string id, string name, string urlApp, string urlWeb) : SpotifyIdNameObject(id, name), IComparable
+public abstract class SpotifyIdNameUrlObject(string id, string name, string urlApp, string urlWeb) : SpotifyIdNameObject(id, name), IComparable
 {
 	public required string UrlApp { get; init; } = urlApp;
 

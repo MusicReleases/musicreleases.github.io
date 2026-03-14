@@ -1,9 +1,9 @@
-﻿using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 using System.Globalization;
 
-namespace JakubKastner.MusicReleases.Objects.BackgroundTasks;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Objects;
 
-public class BackgroundTaskSubProgressScope(BackgroundTask task, BackgroundTaskStep step, double from, double to, string segmentLabel) : IBackgroundTaskSubProgressScope
+internal sealed class BackgroundTaskSubProgressScope(BackgroundTask task, BackgroundTaskStep step, double from, double to, string segmentLabel) : IBackgroundTaskSubProgressScope
 {
 	private readonly BackgroundTask _task = task;
 	private readonly BackgroundTaskStep _step = step;
@@ -36,7 +36,7 @@ public class BackgroundTaskSubProgressScope(BackgroundTask task, BackgroundTaskS
 
 		var duration = DateTimeOffset.UtcNow - _startedAt;
 
-		var seq = _step.SubSeq.ToString("D2", CultureInfo.InvariantCulture);
+		var seq = _step.SubprocessSequence.ToString("D2", CultureInfo.InvariantCulture);
 		_step.Meta[$"seg.{seq}.label"] = _segmentLabel;
 		_step.Meta[$"seg.{seq}.duration.ms"] = duration.TotalMilliseconds.ToString("F0", CultureInfo.InvariantCulture);
 

@@ -1,8 +1,8 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 
-namespace JakubKastner.MusicReleases.Services.SpotifyServices;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Services;
 
-public interface IBackgroundTaskFilterUrlService
+internal interface IBackgroundTaskFilterUrlService
 {
 	string CreateUrlParams(TaskFilter filter, string? searchText);
 	TaskFilter ParseFilterFromUrlParams(string? filterParams);

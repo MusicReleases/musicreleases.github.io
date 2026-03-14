@@ -1,11 +1,11 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.BackgroundTasks;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Objects;
+using JakubKastner.MusicReleases.Enums;
 
-namespace JakubKastner.MusicReleases.Services.BaseServices;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 
-public static class BackgroundTaskStepExtensions
+internal static class BackgroundTaskStepExtensions
 {
-	public static void MarkFailed(this BackgroundTaskStep step, Exception ex, bool transient = false, string? code = null)
+	public static void MarkFailed(this BackgroundTaskStep step, Exception ex, string? code = null)
 	{
 		if (step.Ended)
 		{
@@ -16,7 +16,6 @@ public static class BackgroundTaskStepExtensions
 		step.FinishedAt = DateTimeOffset.UtcNow;
 		step.ErrorMessage = ex.Message;
 		step.ErrorCode = code ?? "ERR_STEP";
-		step.Transient = transient;
 	}
 
 	public static void MarkCanceled(this BackgroundTaskStep step)

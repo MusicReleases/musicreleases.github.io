@@ -1,9 +1,9 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.BackgroundTasks;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Objects;
+using JakubKastner.MusicReleases.Enums;
 
-namespace JakubKastner.MusicReleases.Services.SpotifyServices;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Services;
 
-public interface IBackgroundTaskFilterService
+internal interface IBackgroundTaskFilterService
 {
 	string? SearchText { get; }
 	TaskFilter Filter { get; }

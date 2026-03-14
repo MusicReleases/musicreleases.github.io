@@ -1,8 +1,8 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 
-namespace JakubKastner.MusicReleases.Services.SpotifyServices;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Services;
 
-public class SpotifyTaskFilterUrlService : IBackgroundTaskFilterUrlService
+internal sealed class SpotifyTaskFilterUrlService : IBackgroundTaskFilterUrlService
 {
 	public string CreateUrlParams(TaskFilter filter, string? searchText)
 	{

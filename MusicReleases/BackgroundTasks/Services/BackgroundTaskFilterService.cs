@@ -1,9 +1,9 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.BackgroundTasks;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Objects;
+using JakubKastner.MusicReleases.Enums;
 
-namespace JakubKastner.MusicReleases.Services.SpotifyServices;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Services;
 
-public class BackgroundTaskFilterService : IBackgroundTaskFilterService
+internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 {
 	public event Action? OnFilterChanged;
 
@@ -11,7 +11,8 @@ public class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	public TaskFilter Filter { get; private set; } = _defaultFilter;
 
-	public bool IsFilterActive => Filter != _defaultFilter;
+
+	public bool IsFilterActive => !IsActive(_defaultFilter);
 
 	public bool IsSearching => SearchText.IsNotNullOrEmpty();
 
@@ -59,14 +60,14 @@ public class BackgroundTaskFilterService : IBackgroundTaskFilterService
 	public void SetFilterAndSearch(TaskFilter filter, string? searchText)
 	{
 		var newFilter = EnsureFilter(filter);
-		var newSearchText = EnsureSearchText(searchText);
+		var newSearchText = searchText.EnsureText();
 
 		SetFilterAndSearchInternal(newFilter, newSearchText);
 	}
 
 	public void SetSearch(string? searchText)
 	{
-		var newSearchText = EnsureSearchText(searchText);
+		var newSearchText = searchText.EnsureText();
 		SetSearchInternal(newSearchText);
 	}
 
@@ -102,7 +103,7 @@ public class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)
 	{
-		if (IsActive(_defaultFilter))
+		if (!IsFilterActive)
 		{
 			return source;
 		}
@@ -140,11 +141,6 @@ public class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		);
 
 		return query;
-	}
-
-	private static string? EnsureSearchText(string? searchText)
-	{
-		return searchText.IsNullOrEmpty() ? null : searchText.Trim();
 	}
 
 	private static TaskFilter EnsureFilter(TaskFilter newFilter)

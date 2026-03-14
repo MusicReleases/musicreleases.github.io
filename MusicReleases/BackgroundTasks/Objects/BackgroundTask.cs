@@ -1,12 +1,13 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.Objects.Base;
 
-namespace JakubKastner.MusicReleases.Objects.BackgroundTasks;
+namespace JakubKastner.MusicReleases.BackgroundTasks.Objects;
 
-public class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps)
+public sealed class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps)
 {
 	public event Action? OnStateChanged;
+
 
 	public Guid Id { get; } = Guid.NewGuid();
 
@@ -17,15 +18,6 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 	public int ExpectedSteps { get; init; } = expectedSteps;
 
 	public BackgroundTaskType Type { get; init; } = type;
-
-
-	public DateTimeOffset? StartedAt => _steps.FirstOrDefault()?.StartedAt;
-
-	public DateTimeOffset? FinishedAt => _steps.LastOrDefault(s => s.FinishedAt.HasValue)?.FinishedAt;
-
-
-	public TimeSpan? Duration => FinishedAt.HasValue ? FinishedAt.Value - StartedAt : null;
-
 
 	private string? _statusText = null;
 	public string StatusText
@@ -53,6 +45,56 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 	public bool IsCancelRequested { get; internal set; }
 
 	public bool IsEndTaskRequested { get; internal set; }
+
+	private double _progress;
+	public double Progress
+	{
+		get => _progress;
+		set
+		{
+			if (Math.Abs(_progress - value) > 0.001)
+			{
+				_progress = value;
+				NotifyChange();
+			}
+		}
+	}
+
+	private bool _isOverlayVisible = true;
+	public bool IsOverlayVisible
+	{
+		get => _isOverlayVisible;
+		set
+		{
+			if (_isOverlayVisible != value)
+			{
+				_isOverlayVisible = value;
+				NotifyChange();
+			}
+		}
+	}
+
+	public int CurrentStepIndex { get; private set; }
+
+
+	private readonly List<BackgroundTaskStep> _steps = [];
+	public IReadOnlyList<BackgroundTaskStep> Steps => _steps;
+
+	private readonly List<BackgroundTaskLink> _links = [];
+	public IReadOnlyList<BackgroundTaskLink> Links => _links;
+
+	public CancellationTokenSource Cts { get; } = new();
+
+
+	public CancellationToken Ct => Cts.Token;
+
+	public BackgroundTaskStep? CurrentStep => Steps.ElementAtOrDefault(CurrentStepIndex);
+
+	public DateTimeOffset? StartedAt => _steps.FirstOrDefault()?.StartedAt;
+
+	public DateTimeOffset? FinishedAt => _steps.LastOrDefault(s => s.FinishedAt.HasValue)?.FinishedAt;
+
+	public TimeSpan? Duration => FinishedAt.HasValue ? FinishedAt.Value - StartedAt : null;
 
 	public BackgroundTaskStatus Status
 	{
@@ -83,51 +125,11 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 	}
 
 	public bool Ended => Status.HasAnyFlag(BackgroundTaskStatus.Finished, BackgroundTaskStatus.Failed, BackgroundTaskStatus.Canceled);
+
 	public bool IsRunning => !Ended;
+
 	public bool Failed => Status == BackgroundTaskStatus.Failed;
 
-	private double _progress;
-	public double Progress
-	{
-		get => _progress;
-		set
-		{
-			if (Math.Abs(_progress - value) > 0.001)
-			{
-				_progress = value;
-				NotifyChange();
-			}
-		}
-	}
-
-	private bool _isOverlayVisible = true;
-
-	public bool IsOverlayVisible
-	{
-		get => _isOverlayVisible;
-		set
-		{
-			if (_isOverlayVisible != value)
-			{
-				_isOverlayVisible = value;
-				NotifyChange();
-			}
-		}
-	}
-
-	public int CurrentStepIndex { get; private set; }
-
-	public BackgroundTaskStep? CurrentStep => Steps.ElementAtOrDefault(CurrentStepIndex);
-
-	public IReadOnlyList<BackgroundTaskStep> Steps => _steps;
-	private readonly List<BackgroundTaskStep> _steps = [];
-
-	public IReadOnlyList<BackgroundTaskLink> Links => _links;
-	private readonly List<BackgroundTaskLink> _links = [];
-
-
-	public CancellationTokenSource Cts { get; } = new();
-	public CancellationToken Token => Cts.Token;
 
 	public void NotifyChange()
 	{
@@ -146,7 +148,6 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 		{
 			return;
 		}
-
 
 		_steps.Add(step);
 		CurrentStepIndex = Steps.Count - 1;
@@ -191,8 +192,6 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 		NotifyChange();
 	}
 
-
-
 	public void RequestCancel()
 	{
 		if (!IsCancelRequested)
@@ -209,7 +208,6 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 			NotifyChange();
 		}
 	}
-
 
 	public void MarkCanceled()
 	{
@@ -236,34 +234,10 @@ public class BackgroundTask(BackgroundTaskType type, string name, string info, i
 	}
 	public void MarkFinished()
 	{
-		/*if (Ended || IsCancelRequested)
-		{
-			return;
-		}*/
-		/*if (Ended)
-		{
-			return;
-		}*/
-
 		foreach (var step in Steps.Where(s => s.Status == BackgroundTaskStatus.Running))
 		{
 			step.MarkFinished();
 		}
 		NotifyChange();
 	}
-
-	/*public void EndTask()
-	{
-		IsEndTaskRequested = true;
-		try
-		{
-			Cts.Cancel();
-		}
-		catch
-		{
-			// ignore
-		}
-		NotifyChange();
-	}*/
-
 }
