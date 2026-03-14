@@ -3,30 +3,17 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyPlaylist : SpotifyIdNameUrlObject, IComparable
+[method: SetsRequiredMembers]
+public class SpotifyPlaylist(string id, string name, string urlApp, string urlWeb, string snapshotId, string ownerId, bool collaborative) : SpotifyIdNameUrlObject(id, name, urlApp, urlWeb), IComparable
 {
-	public required string SnapshotId { get; set; }
+	public required string SnapshotId { get; set; } = snapshotId;
 
-	public required string OwnerId { get; init; }
+	public required string OwnerId { get; init; } = ownerId;
 
-	public required bool Collaborative { get; init; }
+	public required bool Collaborative { get; init; } = collaborative;
 
 
 	public HashSet<string> Tracks { get; set; } = [];
-
-
-	public SpotifyPlaylist()
-	{
-		// ctor for json
-	}
-
-	[SetsRequiredMembers]
-	public SpotifyPlaylist(string id, string name, string urlApp, string urlWeb, string snapshotId, string ownerId, bool collaborative) : base(id, name, urlApp, urlWeb)
-	{
-		SnapshotId = snapshotId;
-		OwnerId = ownerId;
-		Collaborative = collaborative;
-	}
 
 	public void AddTracks(string snapshotId, ISet<string> trackIds)
 	{

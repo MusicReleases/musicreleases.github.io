@@ -1,7 +1,7 @@
 ﻿namespace JakubKastner.SpotifyApi.Enums;
 
 [Flags]
-public enum PlaylistType
+public enum PlaylistEnums
 {
 	None = 0,
 	Owned = 1 << 0,          // 1: my playlists

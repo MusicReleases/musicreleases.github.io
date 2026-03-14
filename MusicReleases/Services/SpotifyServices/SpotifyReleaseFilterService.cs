@@ -46,7 +46,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 	public Dictionary<int, SortedSet<int>>? FilteredDate { get; private set; } = null;
 
 
-	private ConcurrentDictionary<ReleaseGroup, IReadOnlyList<SpotifyRelease>> AllReleases => _releaseState.ReleasesByType;
+	private ConcurrentDictionary<ReleaseEnums, IReadOnlyList<SpotifyRelease>> AllReleases => _releaseState.ReleasesByType;
 
 	private IReadOnlyList<SpotifyArtist> AllArtists => _artistState.SortedFollowedArtists;
 
@@ -137,7 +137,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		var releasesByTypeAdvancedArtist = releasesByTypeAdvanced;
 		if (Filter.Artist.IsNotNullOrEmpty())
 		{
-			if (Filter.ReleaseGroup == ReleaseGroup.Appears)
+			if (Filter.ReleaseGroup == ReleaseEnums.Appears)
 			{
 				releasesByTypeAdvancedArtist = releasesByTypeAdvanced.Where(r => r.FeaturedArtists.Any(a => a.Id == Filter.Artist));
 			}
@@ -194,14 +194,14 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		var showEPs = Filter.ReleaseAdvancedFilter.HasFlag(ReleaseAdvancedFilter.EPs);
 		var showCompilations = Filter.ReleaseAdvancedFilter.HasFlag(ReleaseAdvancedFilter.Compilations);
 
-		if (Filter.ReleaseGroup == ReleaseGroup.Tracks)
+		if (Filter.ReleaseGroup == ReleaseEnums.Tracks)
 		{
 			if (showTracks ^ showEPs)
 			{
 				query = query.Where(r => showTracks ? r.TotalTracks == 1 : r.TotalTracks > 1);
 			}
 		}
-		else if (Filter.ReleaseGroup == ReleaseGroup.Appears)
+		else if (Filter.ReleaseGroup == ReleaseEnums.Appears)
 		{
 			var anySelected = showAlbums || showTracks || showEPs || showCompilations;
 			var allSelected = showAlbums && showTracks && showEPs && showCompilations;
@@ -318,7 +318,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		}
 
 		var artistIdsInFilteredReleases
-			= Filter.ReleaseGroup == ReleaseGroup.Appears
+			= Filter.ReleaseGroup == ReleaseEnums.Appears
 			? releasesByTypeDate.SelectMany(r => r.FeaturedArtists.Select(a => a.Id)).ToHashSet()
 			: releasesByTypeDate.SelectMany(r => r.Artists.Select(a => a.Id)).ToHashSet();
 
@@ -385,12 +385,12 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		}
 		return newFilter;
 	}
-	private static ReleaseAdvancedFilter[] GetValidAdvancedFilterForReleaseType(ReleaseGroup releaseGroup)
+	private static ReleaseAdvancedFilter[] GetValidAdvancedFilterForReleaseType(ReleaseEnums releaseGroup)
 	{
 		return releaseGroup switch
 		{
-			ReleaseGroup.Tracks => [ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs],
-			ReleaseGroup.Appears => [ReleaseAdvancedFilter.Albums, ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs, ReleaseAdvancedFilter.Compilations],
+			ReleaseEnums.Tracks => [ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs],
+			ReleaseEnums.Appears => [ReleaseAdvancedFilter.Albums, ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs, ReleaseAdvancedFilter.Compilations],
 			_ => []
 		};
 	}
@@ -565,7 +565,7 @@ public class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterSer
 		NotifySynchronizer?.Invoke();
 	}
 
-	public void FilterReleaseType(ReleaseGroup releaseType)
+	public void FilterReleaseType(ReleaseEnums releaseType)
 	{
 		if (releaseType == Filter.ReleaseGroup)
 		{

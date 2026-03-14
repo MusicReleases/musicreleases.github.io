@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-public class SpotifyPlaylistClient(ISpotifyApiClient client) : ISpotifyPlaylistClient
+internal class SpotifyPlaylistClient(ISpotifyApiClient client) : ISpotifyPlaylistClient
 {
 	private readonly ISpotifyApiClient _client = client;
 

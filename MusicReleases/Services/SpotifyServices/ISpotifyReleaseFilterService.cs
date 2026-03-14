@@ -23,7 +23,7 @@ namespace JakubKastner.MusicReleases.Services.SpotifyServices
 		string? EnsureSearchText(string? searchText);
 		void FilterArtist(string? artistId);
 		void FilterMonth(int? year, int? month);
-		void FilterReleaseType(ReleaseGroup releaseType);
+		void FilterReleaseType(ReleaseEnums releaseType);
 		void FilterYear(int? year);
 		bool IsAdvancedFilterActive(ReleaseAdvancedFilter advancedFilter);
 		bool IsArtistFiltered(string artistId);

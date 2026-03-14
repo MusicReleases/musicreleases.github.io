@@ -1,11 +1,10 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Store;
+﻿using JakubKastner.SpotifyApi.Store;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Http;
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-public class SpotifyUserClient(ISpotifyApiClient client, ISpotifyUserStore userStore, IRetryHandler retryHandler, SpotifyConfig spotifyConfig) : ISpotifyUserClient
+internal class SpotifyUserClient(ISpotifyApiClient client, ISpotifyUserStore userStore, IRetryHandler retryHandler, SpotifyConfig spotifyConfig) : ISpotifyUserClient
 {
 	private readonly ISpotifyApiClient _client = client;
 	private readonly ISpotifyUserStore _userStore = userStore;
@@ -39,7 +38,7 @@ public class SpotifyUserClient(ISpotifyApiClient client, ISpotifyUserStore userS
 
 	public bool IsLoggedIn()
 	{
-		return _client.IsInicialized() && _userStore.UserIsNotNull();
+		return _client.IsInitialized() && _userStore.UserIsNotNull();
 	}
 
 	public async Task<bool> LoginUser(string clientId, string code, string loginVerifier, string redirectUrl)

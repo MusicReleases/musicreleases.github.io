@@ -8,11 +8,6 @@ public class SpotifyUserInfo : SpotifyIdNameUrlObject
 	public required string? ProfilePictureUrl { get; set; }
 	public DateTime LastUpdate { get; set; }
 
-	public SpotifyUserInfo()
-	{
-		// ctor for json
-	}
-
 	[SetsRequiredMembers]
 	public SpotifyUserInfo(string id, string name, string urlApp, string urlWeb, string? urlProfilePicture) : base(id, name, urlApp, urlWeb)
 	{

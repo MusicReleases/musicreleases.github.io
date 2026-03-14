@@ -11,7 +11,7 @@ internal static class SpotifyReleaseMapper
 		var urlImage = GetImageUrl(api.Images);
 		var artists = api.Artists.Select(simpleArtist => simpleArtist.ToObject()).ToHashSet();
 
-		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[Namings.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, api.TotalTracks, true, artists, featuredArtists);
+		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[ApiConventions.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, api.TotalTracks, true, artists, featuredArtists);
 	}
 
 	public static SpotifyRelease ToObject(this FullAlbum api, HashSet<SpotifyArtist> featuredArtists)
@@ -21,7 +21,7 @@ internal static class SpotifyReleaseMapper
 		var urlImage = GetImageUrl(api.Images);
 		var artists = api.Artists.Select(simpleArtist => simpleArtist.ToObject()).ToHashSet();
 
-		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[Namings.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, api.TotalTracks, true, artists, featuredArtists);
+		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[ApiConventions.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, api.TotalTracks, true, artists, featuredArtists);
 	}
 
 	public static SpotifyRelease ToObject(this SimpleEpisode api, SpotifyArtist podcast)
@@ -34,7 +34,7 @@ internal static class SpotifyReleaseMapper
 			podcast,
 		};
 
-		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[Namings.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, 1, true, artists, []);
+		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[ApiConventions.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, 1, true, artists, []);
 	}
 	public static SpotifyRelease ToObject(this FullEpisode api)
 	{
@@ -46,12 +46,12 @@ internal static class SpotifyReleaseMapper
 			api.Show.ToObject(),
 		};
 
-		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[Namings.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, 1, true, artists, []);
+		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[ApiConventions.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, 1, true, artists, []);
 	}
 
 	private static ReleaseType MapReleaseTypeFromApi(string releaseTypeApi)
 	{
-		if (Namings.ReleaseTypeMap.TryGetValue(releaseTypeApi, out var result))
+		if (ApiConventions.ReleaseTypeMap.TryGetValue(releaseTypeApi, out var result))
 		{
 			return result;
 		}
@@ -61,16 +61,16 @@ internal static class SpotifyReleaseMapper
 
 	private static string GetImageUrl(List<Image> images)
 	{
-		if (images.Count < Namings.SmallImageIndex)
+		if (images.Count < ApiConventions.SmallImageIndex)
 		{
 			throw new ArgumentNullException(nameof(images));
 		}
 
-		if (images.Count >= Namings.MediumImageIndex)
+		if (images.Count >= ApiConventions.MediumImageIndex)
 		{
-			return images[Namings.MediumImageIndex].Url;
+			return images[ApiConventions.MediumImageIndex].Url;
 		}
 
-		return images[Namings.SmallImageIndex].Url;
+		return images[ApiConventions.SmallImageIndex].Url;
 	}
 }

@@ -13,7 +13,7 @@ public partial class PlaylistSidebar : IDisposable
 
 
 	[Parameter]
-	public PlaylistType PlaylistTypeFilter { get; set; } = PlaylistType.Editable;
+	public PlaylistEnums PlaylistTypeFilter { get; set; } = PlaylistEnums.Editable;
 
 
 	private List<SpotifyPlaylist>? FilteredPlaylists => FilterService.GetFilteredPlaylists(_searchText, PlaylistTypeFilter)?.ToList();

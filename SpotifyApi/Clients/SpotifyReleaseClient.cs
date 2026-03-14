@@ -6,7 +6,7 @@ internal class SpotifyReleaseClient(ISpotifyApiClient client) : ISpotifyReleaseC
 {
 	private readonly ISpotifyApiClient _client = client;
 
-	public async Task<List<SpotifyRelease>> GetByArtists(IEnumerable<SpotifyArtist> artists, ReleaseGroup releaseType, CancellationToken ct = default)
+	public async Task<List<SpotifyRelease>> GetByArtists(IEnumerable<SpotifyArtist> artists, ReleaseEnums releaseType, CancellationToken ct = default)
 	{
 		var set = new HashSet<SpotifyRelease>();
 
@@ -20,9 +20,9 @@ internal class SpotifyReleaseClient(ISpotifyApiClient client) : ISpotifyReleaseC
 		return [.. set];
 	}
 
-	public async Task<List<SpotifyRelease>> GetByArtist(SpotifyArtist artist, ReleaseGroup releaseType, CancellationToken ct = default)
+	public async Task<List<SpotifyRelease>> GetByArtist(SpotifyArtist artist, ReleaseEnums releaseType, CancellationToken ct = default)
 	{
-		if (releaseType == ReleaseGroup.Podcasts)
+		if (releaseType == ReleaseEnums.Podcasts)
 		{
 			// TODO podcasts
 			throw new NotImplementedException();
@@ -47,7 +47,7 @@ internal class SpotifyReleaseClient(ISpotifyApiClient client) : ISpotifyReleaseC
 		await foreach (var releaseApi in releasesAsync.WithCancellation(ct))
 		{
 			var featuredArtists = new HashSet<SpotifyArtist>();
-			if (releaseType == ReleaseGroup.Appears)
+			if (releaseType == ReleaseEnums.Appears)
 			{
 				featuredArtists.Add(artist);
 			}

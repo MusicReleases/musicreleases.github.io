@@ -5,24 +5,20 @@ namespace JakubKastner.SpotifyApi.Objects;
 
 public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 {
-	public int TrackNumber { get; init; }
-
-	public int DiscNumber { get; init; }
-
-	public TimeSpan Duration { get; init; }
-
-	public bool Explicit { get; init; }
-
 	public required string ReleaseId { get; init; }
+
+	public required int TrackNumber { get; init; }
+
+	public required int DiscNumber { get; init; }
+
+	public required TimeSpan Duration { get; init; }
+
+	public required bool Explicit { get; init; }
 
 	public HashSet<SpotifyArtist>? Artists { get; init; }
 
 	public string DurationString => string.Format("{0:D2}:{1:D2}", (int)Duration.TotalMinutes, Duration.Seconds);
 
-	public SpotifyTrack()
-	{
-		// TODO ctor for json
-	}
 
 	[SetsRequiredMembers]
 	public SpotifyTrack(string id, string name, string urlApp, string urlWeb, string releaseId, int trackNumber, int discNumber, TimeSpan duration, bool explicitLyrics) : base(id, name, urlApp, urlWeb)

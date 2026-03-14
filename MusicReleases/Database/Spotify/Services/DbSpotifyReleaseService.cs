@@ -13,7 +13,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 	private readonly IDbSpotifyArtistReleaseService _linkArtistDb = linkArtistDb;
 	private readonly IDbSpotifyArtistService _artistDb = artistsDb;
 
-	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseGroup mainReleaseType, CancellationToken ct)
+	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseEnums mainReleaseType, CancellationToken ct)
 	{
 		Console.WriteLine("db: get releases by ids - start");
 
@@ -22,7 +22,7 @@ public class DbSpotifyReleaseService(IDbSpotifyService dbService, IDbSpotifyArti
 		// get releases
 		IEnumerable<SpotifyReleaseEntity> releasesDb;
 
-		if (mainReleaseType == ReleaseGroup.Appears)
+		if (mainReleaseType == ReleaseEnums.Appears)
 		{
 			ct.ThrowIfCancellationRequested();
 			releasesDb = await db.Release.BulkGet(ids);

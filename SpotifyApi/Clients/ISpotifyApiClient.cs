@@ -2,9 +2,9 @@
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-public interface ISpotifyApiClient
+internal interface ISpotifyApiClient
 {
 	ISpotifyClient GetClient();
 	void SetClient(ISpotifyClient spotifyClient);
-	bool IsInicialized();
+	bool IsInitialized();
 }

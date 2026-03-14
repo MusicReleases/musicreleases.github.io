@@ -1,7 +1,5 @@
 ﻿using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.RetryHandlers;
-using JakubKastner.SpotifyApi.Services;
-using JakubKastner.SpotifyApi.Services.Api;
 using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyAPI.Web.Http;
@@ -24,10 +22,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyArtistClient, SpotifyArtistClient>();
 		services.AddScoped<ISpotifyPlaylistClient, SpotifyPlaylistClient>();
 		services.AddScoped<ISpotifyReleaseClient, SpotifyReleaseClient>();
-
-		// api controllers
-		services.AddScoped<IApiTrackService, ApiTrackService>();
-		services.AddScoped<ISpotifyApiTrackService, SpotifyApiTrackService>();
+		services.AddScoped<ISpotifyTrackClient, SpotifyTrackClient>();
 
 		// retry handler 
 		services.AddScoped<IAsyncSleeper, DefaultAsyncSleeper>();

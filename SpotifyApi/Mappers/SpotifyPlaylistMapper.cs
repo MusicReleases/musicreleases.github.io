@@ -14,6 +14,6 @@ internal static class SpotifyPlaylistMapper
 		var owner = api.Owner.Require();
 		var collaborative = api.Collaborative.Require();
 
-		return new(id, name, uri, externalUrls[Namings.ExternalUrlSpotifyKey], snapshotId, owner.Id, collaborative);
+		return new(id, name, uri, externalUrls[ApiConventions.ExternalUrlSpotifyKey], snapshotId, owner.Id, collaborative);
 	}
 }

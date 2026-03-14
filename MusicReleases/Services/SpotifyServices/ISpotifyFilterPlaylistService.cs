@@ -7,12 +7,12 @@ public interface ISpotifyFilterPlaylistService
 {
 	IReadOnlyList<SpotifyPlaylist>? FilteredPlaylists { get; }
 	string SearchText { get; }
-	PlaylistType FilterType { get; }
+	PlaylistEnums FilterType { get; }
 
 	event Action? OnFilterChanged;
 
 	void Dispose();
 	void SetSearchText(string text);
-	void SetTypeFilter(PlaylistType type);
-	IEnumerable<SpotifyPlaylist>? GetFilteredPlaylists(string searchText, PlaylistType typeFilter);
+	void SetTypeFilter(PlaylistEnums type);
+	IEnumerable<SpotifyPlaylist>? GetFilteredPlaylists(string searchText, PlaylistEnums typeFilter);
 }

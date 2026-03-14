@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Clients;
 
-public class SpotifyApiClient : ISpotifyApiClient
+internal class SpotifyApiClient : ISpotifyApiClient
 {
 	private ISpotifyClient? _spotifyClient;
 
@@ -11,16 +11,16 @@ public class SpotifyApiClient : ISpotifyApiClient
 		_spotifyClient = spotifyClient;
 	}
 
-	public bool IsInicialized()
+	public bool IsInitialized()
 	{
 		return _spotifyClient is not null;
 	}
 
 	public ISpotifyClient GetClient()
 	{
-		if (!IsInicialized())
+		if (!IsInitialized())
 		{
-			throw new NullReferenceException(nameof(ISpotifyClient));
+			throw new InvalidOperationException($"{nameof(ISpotifyClient)} is not initialized.");
 		}
 		return _spotifyClient!;
 	}

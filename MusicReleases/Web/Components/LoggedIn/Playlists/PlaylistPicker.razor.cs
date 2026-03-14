@@ -17,7 +17,7 @@ public partial class PlaylistPicker : IDisposable
 
 
 	[Parameter]
-	public PlaylistType PlaylistTypeFilter { get; set; } = PlaylistType.Editable;
+	public PlaylistEnums PlaylistTypeFilter { get; set; } = PlaylistEnums.Editable;
 
 	[Parameter]
 	public SpotifyRelease? Release { get; set; }

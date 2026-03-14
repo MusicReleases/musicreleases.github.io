@@ -17,21 +17,21 @@ internal static class SpotifyUserMapper
 		var urlProfilePicture = GetImageUrl(api.Images);
 		var lastUpdate = DateTime.Now;
 
-		return new SpotifyUserInfo(api.Id, api.DisplayName, api.Uri, api.ExternalUrls[Namings.ExternalUrlSpotifyKey], urlProfilePicture, lastUpdate);
+		return new SpotifyUserInfo(api.Id, api.DisplayName, api.Uri, api.ExternalUrls[ApiConventions.ExternalUrlSpotifyKey], urlProfilePicture, lastUpdate);
 	}
 
 	private static string? GetImageUrl(List<Image> images)
 	{
-		if (images.Count < Namings.SmallImageIndex)
+		if (images.Count < ApiConventions.SmallImageIndex)
 		{
 			return null;
 		}
 
-		if (images.Count >= Namings.MediumImageIndex)
+		if (images.Count >= ApiConventions.MediumImageIndex)
 		{
-			return images[Namings.MediumImageIndex].Url;
+			return images[ApiConventions.MediumImageIndex].Url;
 		}
 
-		return images[Namings.SmallImageIndex].Url;
+		return images[ApiConventions.SmallImageIndex].Url;
 	}
 }

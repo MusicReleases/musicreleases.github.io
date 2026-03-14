@@ -23,7 +23,7 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 
 	public string SearchText { get; private set; } = string.Empty;
 
-	public PlaylistType FilterType { get; private set; } = PlaylistType.All;
+	public PlaylistEnums FilterType { get; private set; } = PlaylistEnums.All;
 
 	public event Action? OnFilterChanged;
 
@@ -38,7 +38,7 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 		ApplyFilter();
 	}
 
-	public void SetTypeFilter(PlaylistType type)
+	public void SetTypeFilter(PlaylistEnums type)
 	{
 		if (FilterType == type)
 		{
@@ -62,7 +62,7 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 	}
 
 
-	public IEnumerable<SpotifyPlaylist>? GetFilteredPlaylists(string searchText, PlaylistType typeFilter = PlaylistType.All)
+	public IEnumerable<SpotifyPlaylist>? GetFilteredPlaylists(string searchText, PlaylistEnums typeFilter = PlaylistEnums.All)
 	{
 		// check data
 		var playlists = _state.Playlists;
@@ -75,7 +75,7 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 		var userId = _spotifyUserClient.GetUserIdRequired();
 
 		// filter by type
-		if (typeFilter != PlaylistType.All)
+		if (typeFilter != PlaylistEnums.All)
 		{
 			query = query.Where(p => (GetPlaylistType(p, userId) & typeFilter) != 0);
 		}
@@ -86,16 +86,16 @@ public class SpotifyPlaylistFilterService : IDisposable, ISpotifyFilterPlaylistS
 		return query;
 	}
 
-	private static PlaylistType GetPlaylistType(SpotifyPlaylist playlist, string userId)
+	private static PlaylistEnums GetPlaylistType(SpotifyPlaylist playlist, string userId)
 	{
 		if (playlist.OwnerId == userId)
 		{
-			return PlaylistType.Owned;
+			return PlaylistEnums.Owned;
 		}
 		if (playlist.Collaborative)
 		{
-			return PlaylistType.Collaborative;
+			return PlaylistEnums.Collaborative;
 		}
-		return PlaylistType.Subscribed;
+		return PlaylistEnums.Subscribed;
 	}
 }

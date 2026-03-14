@@ -1,6 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-
-namespace JakubKastner.SpotifyApi.Clients;
+﻿namespace JakubKastner.SpotifyApi.Clients;
 
 public interface ISpotifyPlaylistClient
 {

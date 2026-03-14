@@ -26,9 +26,9 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 	private readonly ILoadingService _loadingservice = loadingservice;
 
 
-	public async Task Get(ReleaseGroup releaseGroup, bool forceUpdate = false)
+	public async Task Get(ReleaseEnums releaseGroup, bool forceUpdate = false)
 	{
-		if (releaseGroup == ReleaseGroup.Podcasts)
+		if (releaseGroup == ReleaseEnums.Podcasts)
 		{
 			// TODO podcasts
 			throw new NotSupportedException();
@@ -83,7 +83,7 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 		});
 	}
 
-	private bool ShouldSync(ReleaseGroup releaseGroup, bool forceUpdate)
+	private bool ShouldSync(ReleaseEnums releaseGroup, bool forceUpdate)
 	{
 		if (forceUpdate)
 		{
@@ -95,7 +95,7 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 		return shouldSync;
 	}
 
-	private async Task<bool> LoadFromDbToState(ReleaseGroup releaseGroup, string userId, bool forceUpdate, BackgroundTask task)
+	private async Task<bool> LoadFromDbToState(ReleaseEnums releaseGroup, string userId, bool forceUpdate, BackgroundTask task)
 	{
 		return await task.StepAsync("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 		{
@@ -148,7 +148,7 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 		});
 	}
 
-	private async Task<ReleaseAggregation?> LoadFromApi(ReleaseGroup releaseGroup, BackgroundTask task)
+	private async Task<ReleaseAggregation?> LoadFromApi(ReleaseEnums releaseGroup, BackgroundTask task)
 	{
 		var releaseGroupString = releaseGroup.ToFriendlyString();
 
@@ -221,7 +221,7 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 		});
 	}
 
-	private async Task SaveToDbAndState(ReleaseGroup releaseGroup, ReleaseAggregation releaseAggregation, string userId, BackgroundTask task)
+	private async Task SaveToDbAndState(ReleaseEnums releaseGroup, ReleaseAggregation releaseAggregation, string userId, BackgroundTask task)
 	{
 		await task.Step("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
 		{
@@ -264,13 +264,13 @@ public class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient, ISpotif
 		});
 	}
 
-	private static SpotifyDbUpdateType MapToDbUpdateType(ReleaseGroup releasesType) => releasesType switch
+	private static SpotifyDbUpdateType MapToDbUpdateType(ReleaseEnums releasesType) => releasesType switch
 	{
-		ReleaseGroup.Albums => SpotifyDbUpdateType.ReleasesAlbums,
-		ReleaseGroup.Tracks => SpotifyDbUpdateType.ReleasesTracks,
-		ReleaseGroup.Appears => SpotifyDbUpdateType.ReleasesAppears,
-		ReleaseGroup.Compilations => SpotifyDbUpdateType.ReleasesCompilations,
-		ReleaseGroup.Podcasts => throw new NotSupportedException(),
+		ReleaseEnums.Albums => SpotifyDbUpdateType.ReleasesAlbums,
+		ReleaseEnums.Tracks => SpotifyDbUpdateType.ReleasesTracks,
+		ReleaseEnums.Appears => SpotifyDbUpdateType.ReleasesAppears,
+		ReleaseEnums.Compilations => SpotifyDbUpdateType.ReleasesCompilations,
+		ReleaseEnums.Podcasts => throw new NotSupportedException(),
 		_ => throw new NotSupportedException(nameof(releasesType))
 	};
 

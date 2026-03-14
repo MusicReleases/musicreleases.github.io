@@ -3,40 +3,24 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;
 
-public class SpotifyRelease : SpotifyIdNameUrlObject, IComparable
+[method: SetsRequiredMembers]
+public class SpotifyRelease(string id, string name, string urlApp, string urlWeb, ReleaseType releaseType, DateTime releaseDate, string urlImage, int totalTracks, bool isNew, HashSet<SpotifyArtist> artists, HashSet<SpotifyArtist> featuredArtists) : SpotifyIdNameUrlObject(id, name, urlApp, urlWeb), IComparable
 {
-	public ReleaseType ReleaseType { get; init; }
+	public ReleaseType ReleaseType { get; init; } = releaseType;
 
-	public required DateTime ReleaseDate { get; init; }
+	public required DateTime ReleaseDate { get; init; } = releaseDate;
 
-	public required string UrlImage { get; init; }
+	public required string UrlImage { get; init; } = urlImage;
 
-	public required int TotalTracks { get; init; }
+	public required int TotalTracks { get; init; } = totalTracks;
 
-	public required bool New { get; init; }
+	public required bool New { get; init; } = isNew;
 
-	public required HashSet<SpotifyArtist> Artists { get; init; }
+	public required HashSet<SpotifyArtist> Artists { get; init; } = artists;
 
-	public required HashSet<SpotifyArtist> FeaturedArtists { get; init; }
+	public required HashSet<SpotifyArtist> FeaturedArtists { get; init; } = featuredArtists;
 
 	public SortedSet<SpotifyTrack>? Tracks { get; set; }
-
-	public SpotifyRelease()
-	{
-		// ctor for json
-	}
-
-	[SetsRequiredMembers]
-	public SpotifyRelease(string id, string name, string urlApp, string urlWeb, ReleaseType releaseType, DateTime releaseDate, string urlImage, int totalTracks, bool isNew, HashSet<SpotifyArtist> artists, HashSet<SpotifyArtist> featuredArtists) : base(id, name, urlApp, urlWeb)
-	{
-		ReleaseType = releaseType;
-		ReleaseDate = releaseDate;
-		UrlImage = urlImage;
-		TotalTracks = totalTracks;
-		New = isNew;
-		Artists = artists;
-		FeaturedArtists = featuredArtists;
-	}
 
 	public new int CompareTo(object? obj)
 	{

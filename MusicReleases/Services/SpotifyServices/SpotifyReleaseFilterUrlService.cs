@@ -55,9 +55,9 @@ public class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterS
 
 	public SpotifyReleaseFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam)
 	{
-		if (!Enum.TryParse(releaseTypeParam, true, out ReleaseGroup releaseType))
+		if (!Enum.TryParse(releaseTypeParam, true, out ReleaseEnums releaseType))
 		{
-			releaseType = ReleaseGroup.Albums;
+			releaseType = ReleaseEnums.Albums;
 		}
 		int? year = int.TryParse(yearParam, out var yearParsed) ? yearParsed : null;
 		int? monthValue = int.TryParse(monthParam, out var monthParsed) ? monthParsed : null;

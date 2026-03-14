@@ -1,12 +1,11 @@
 ﻿using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Services;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyTrackService(ISpotifyApiTrackService spotifyTrackService, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
+public class SpotifyTrackService(ISpotifyTrackClient apiTrackClient, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
 {
-	private readonly ISpotifyApiTrackService _spotifyTrackService = spotifyTrackService;
+	private readonly ISpotifyTrackClient _apiTrackClient = apiTrackClient;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 
 	public event Action? OnTracksDataChanged;
@@ -20,7 +19,7 @@ public class SpotifyTrackService(ISpotifyApiTrackService spotifyTrackService, IS
 		}
 
 		// get api
-		await _spotifyTrackService.GetReleaseTracks(release);
+		release.Tracks = [.. await _apiTrackClient.GetReleaseTracks(release)];
 
 		// save db
 		//await _dbSpotifyArtistReleaseService.Save(userId, release.Tracks);

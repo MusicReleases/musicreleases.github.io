@@ -69,7 +69,7 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService) : IDbSpo
 	}
 
 
-	public async Task SetArtistReleases(string artistId, ReleaseGroup mainReleaseType, IEnumerable<string> releaseApiIdsEnumerable, CancellationToken ct)
+	public async Task SetArtistReleases(string artistId, ReleaseEnums mainReleaseType, IEnumerable<string> releaseApiIdsEnumerable, CancellationToken ct)
 	{
 		Console.WriteLine("db: set artist-release - start");
 		var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(mainReleaseType);
@@ -88,7 +88,7 @@ public class DbSpotifyArtistReleaseService(IDbSpotifyService dbService) : IDbSpo
 			var releasesDb = await db.Release.Where(x => x.Id).AnyOf(otherArtistRoleReleaseIds).ToArray();
 			ct.ThrowIfCancellationRequested();
 
-			if (mainReleaseType != ReleaseGroup.Appears)
+			if (mainReleaseType != ReleaseEnums.Appears)
 			{
 				var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(mainReleaseType);
 				releasesDb = releasesDb.Where(x => x.ReleaseType == releaseType);

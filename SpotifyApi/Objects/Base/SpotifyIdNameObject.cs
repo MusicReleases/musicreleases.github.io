@@ -1,9 +1,13 @@
-﻿namespace JakubKastner.SpotifyApi.Objects.Base;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public class SpotifyIdNameObject : IComparable
+namespace JakubKastner.SpotifyApi.Objects.Base;
+
+[method: SetsRequiredMembers]
+public class SpotifyIdNameObject(string id, string name) : IComparable
 {
-	public required string Id { get; init; }
-	public required string Name { get; init; }
+	public required string Id { get; init; } = id;
+
+	public required string Name { get; init; } = name;
 
 	public int CompareTo(object? obj)
 	{
