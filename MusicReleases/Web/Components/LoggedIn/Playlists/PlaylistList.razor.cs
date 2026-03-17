@@ -6,8 +6,10 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
 public partial class PlaylistList
 {
 	[Parameter, EditorRequired]
-	public required ICollection<SpotifyPlaylist> Playlists { get; set; }
+	public required IReadOnlySet<SpotifyPlaylist> Playlists { get; set; }
 
 	[Parameter, EditorRequired]
 	public required RenderFragment<SpotifyPlaylist> RowTemplate { get; set; }
+
+	private List<SpotifyPlaylist> PlaylistsVirtualize => [.. Playlists];
 }

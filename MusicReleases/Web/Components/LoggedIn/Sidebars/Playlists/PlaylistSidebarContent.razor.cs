@@ -6,5 +6,5 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Playlists;
 public partial class PlaylistSidebarContent
 {
 	[Parameter]
-	public ICollection<SpotifyPlaylist>? Playlists { get; set; }
+	public IReadOnlySet<SpotifyPlaylist>? Playlists { get; set; }
 }

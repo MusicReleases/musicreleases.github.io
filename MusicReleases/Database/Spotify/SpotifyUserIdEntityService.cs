@@ -22,11 +22,13 @@ internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : IS
 	{
 		if (_cache.TryGetValue(userId, out var cached))
 		{
+			Console.WriteLine($"Cache hit for {typeof(TPayload).Name} userId: {userId}, items count: {cached.Count}");
 			return cached;
 		}
 
 		ct.ThrowIfCancellationRequested();
 		var linksDb = await FetchByUserId(userId);
+		Console.WriteLine($"linksDb hit for {typeof(TPayload).Name} userId: {userId}, items count: {linksDb.Count()}");
 
 		var payloads = new SortedSet<TPayload>(linksDb.Select(ToPayload));
 		_cache[userId] = payloads;
@@ -78,7 +80,6 @@ internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : IS
 		}
 	}
 
-
 	public async Task Save(IReadOnlyCollection<TPayload> items, string userId, CancellationToken ct)
 	{
 		if (items.Count == 0)
@@ -116,5 +117,21 @@ internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : IS
 	protected void AddToCache(TPayload item, string userId)
 	{
 		_cache[userId].Add(item);
+	}
+
+	public async Task DeleteAllForUser(string userId)
+	{
+		var table = await GetTable();
+		await table.Where(x => x.UserId, userId).Delete();
+
+		_cache.Remove(userId);
+	}
+
+	public async Task DeleteAll()
+	{
+		var table = await GetTable();
+		await table.Clear();
+
+		_cache.Clear();
 	}
 }

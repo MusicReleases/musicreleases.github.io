@@ -1,13 +1,13 @@
 ﻿<div class="playlists">
     <MrRow Class="playlist-picker-header">
 
-        <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@SearchTextChanged" />
+        <PlaylistFilter SearchText="@FilterService.SearchText" SearchTextChanged="@Search" />
         <UpdateButton Class="playlist-action" ButtonType="@UpdateButtonComponent.Playlists" />
 
     </MrRow>
 
     <div class="content scroll">
-        <PlaylistList Playlists="@Playlists">
+        <PlaylistList Playlists="@_playlists">
 
             <RowTemplate Context="playlist">
                 <PlaylistButton Release="@Release" Track="@Track" Playlist="@playlist" @key="playlist.Id"/>

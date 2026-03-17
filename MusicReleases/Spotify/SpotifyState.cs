@@ -29,7 +29,7 @@ internal abstract class SpotifyState<TModel> : ISpotifyState<TModel> where TMode
 		{
 			_lookup[item.Id] = item;
 		}
-
+		Console.WriteLine($"SpotifyState: Set {typeof(TModel).Name} with {items.Count} items, last sync: {lastSync}");
 		StateChanged();
 	}
 

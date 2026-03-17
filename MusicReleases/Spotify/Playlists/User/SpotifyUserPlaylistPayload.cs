@@ -4,6 +4,6 @@ internal record SpotifyUserPlaylistPayload(string Id, int Order) : ISpotifyPaylo
 {
 	public int CompareTo(SpotifyUserPlaylistPayload? other)
 	{
-		return Order.CompareTo(other?.Order);
+		return other?.Order.CompareTo(Order) ?? 1;
 	}
 };

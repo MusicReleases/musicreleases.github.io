@@ -104,6 +104,8 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 
 			var count = payloads.Count;
 
+			Console.WriteLine($"Got {count} {EntityName} payloads from DB, last sync: {lastSync}");
+
 			if (count == 0)
 			{
 				await task.RunSegment($"state - set {EntityName}", async _ =>
@@ -118,12 +120,12 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 				return await _entityDbService.GetByIds(payloads, ct2);
 			});
 
-			return await task.RunSegment($"state - set {EntityName} - {count}", (Func<CancellationToken, Task<bool>>)(async _ =>
+			return await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
 			{
 				var merged = MergePayloads(models, payloads);
 				SetState(models, lastSync);
 				return ShouldSync(forceUpdate);
-			}));
+			});
 		});
 	}
 

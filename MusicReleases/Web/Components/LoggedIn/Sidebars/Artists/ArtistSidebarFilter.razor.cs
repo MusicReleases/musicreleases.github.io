@@ -11,7 +11,7 @@ public partial class ArtistSidebarFilter : IDisposable
 	public ILoadingService LoadingService { get; set; } = default!;
 
 	[Inject]
-	private ISpotifyArtistFilterService SpotifyArtistFilterService { get; set; } = default!;
+	private ISpotifyArtistFilterService FilterService { get; set; } = default!;
 
 
 	private bool IsLoading => LoadingService.IsLoading(BackgroundTaskType.ArtistsGet);
@@ -19,19 +19,19 @@ public partial class ArtistSidebarFilter : IDisposable
 
 	private const string _buttonClass = "sidebar-filter";
 
-	private string? SearchText => SpotifyArtistFilterService.SearchText;
+	private string? SearchText => FilterService.SearchText;
 
 
 	protected override void OnInitialized()
 	{
 		LoadingService.LoadingStateChanged += StateChanged;
-		SpotifyArtistFilterService.OnSearchTextChanged += StateChanged;
+		FilterService.OnSearchTextChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		LoadingService.LoadingStateChanged -= StateChanged;
-		SpotifyArtistFilterService.OnSearchTextChanged -= StateChanged;
+		FilterService.OnSearchTextChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -40,8 +40,8 @@ public partial class ArtistSidebarFilter : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private async Task Search(string? newSearchText)
+	private void Search(string? newSearchText)
 	{
-		SpotifyArtistFilterService.SetSearch(newSearchText);
+		FilterService.SetSearch(newSearchText);
 	}
 }

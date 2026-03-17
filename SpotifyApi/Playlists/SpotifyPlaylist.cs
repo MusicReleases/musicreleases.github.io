@@ -28,4 +28,14 @@ public class SpotifyPlaylist(string id, string name, string urlApp, string urlWe
 		SnapshotId = snapshotId;
 		Tracks.ExceptWith(trackIds);
 	}
+
+	public new int CompareTo(object? obj)
+	{
+		if (obj is SpotifyPlaylist other)
+		{
+			return other.Order.CompareTo(Order);
+		}
+
+		return 1;
+	}
 }

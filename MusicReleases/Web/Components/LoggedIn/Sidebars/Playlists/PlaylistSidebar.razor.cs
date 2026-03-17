@@ -7,6 +7,8 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Playlists;
 
 public partial class PlaylistSidebar : IDisposable
 {
+	[Inject]
+	private ISpotifyPlaylistState State { get; set; } = default!;
 
 	[Inject]
 	private ISpotifyPlaylistFilterService FilterService { get; set; } = default!;
@@ -16,30 +18,41 @@ public partial class PlaylistSidebar : IDisposable
 	public PlaylistEnums PlaylistTypeFilter { get; set; } = PlaylistEnums.Editable;
 
 
-	private List<SpotifyPlaylist>? FilteredPlaylists => FilterService.GetFilteredPlaylists(_searchText, PlaylistTypeFilter)?.ToList();
-
+	private IReadOnlySet<SpotifyPlaylist>? _playlists;
 
 	private string _searchText = string.Empty;
 
 
 	protected override void OnInitialized()
 	{
-		FilterService.OnFilterChanged += StateChanged;
+		State.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		FilterService.OnFilterChanged -= StateChanged;
+		State.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
-	private void StateChanged()
+	protected override void OnParametersSet()
 	{
-		InvokeAsync(StateHasChanged);
+		Recalculate();
 	}
 
 	private void SearchTextChanged(string newSearchText)
 	{
 		_searchText = newSearchText;
+		Recalculate();
+	}
+
+	private void StateChanged()
+	{
+		Recalculate();
+		InvokeAsync(StateHasChanged);
+	}
+
+	private void Recalculate()
+	{
+		_playlists = FilterService.GetFilteredPlaylists(PlaylistTypeFilter, _searchText);
 	}
 }

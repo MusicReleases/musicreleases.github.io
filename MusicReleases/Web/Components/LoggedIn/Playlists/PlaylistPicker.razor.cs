@@ -27,10 +27,22 @@ public partial class PlaylistPicker : IDisposable
 	public SpotifyTrack? Track { get; set; }
 
 
-	private bool Loading => LoadingService.IsLoading(BackgroundTaskType.PlaylistsGet) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracksGet);
+	private bool IsLoading => LoadingService.IsLoading(BackgroundTaskType.PlaylistsGet) || LoadingService.IsLoading(BackgroundTaskType.PlaylistTracksGet);
 
-	private List<SpotifyPlaylist>? Playlists => FilterService.FilteredPlaylists?.ToList();
+	private IReadOnlySet<SpotifyPlaylist>? _playlists;
 
+	protected override void OnInitialized()
+	{
+		FilterService.OnChanged += FilterChanged;
+		LoadingService.LoadingStateChanged += StateChanged;
+	}
+
+	public void Dispose()
+	{
+		FilterService.OnChanged -= FilterChanged;
+		LoadingService.LoadingStateChanged -= StateChanged;
+		GC.SuppressFinalize(this);
+	}
 
 	protected override void OnParametersSet()
 	{
@@ -47,17 +59,10 @@ public partial class PlaylistPicker : IDisposable
 		FilterService.SetTypeFilter(PlaylistTypeFilter);
 	}
 
-	protected override void OnInitialized()
+	private void FilterChanged()
 	{
-		FilterService.OnFilterChanged += StateChanged;
-		LoadingService.LoadingStateChanged += StateChanged;
-	}
-
-	public void Dispose()
-	{
-		FilterService.OnFilterChanged -= StateChanged;
-		LoadingService.LoadingStateChanged -= StateChanged;
-		GC.SuppressFinalize(this);
+		_playlists = FilterService.FilteredPlaylists;
+		StateChanged();
 	}
 
 	private void StateChanged()
@@ -65,7 +70,7 @@ public partial class PlaylistPicker : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void SearchTextChanged(string searchText)
+	private void Search(string? searchText)
 	{
 		FilterService.SetSearchText(searchText);
 	}

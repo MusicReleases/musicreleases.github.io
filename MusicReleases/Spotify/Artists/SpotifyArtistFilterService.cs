@@ -5,47 +5,45 @@ namespace JakubKastner.MusicReleases.Spotify.Artists;
 
 internal sealed class SpotifyArtistFilterService : ISpotifyArtistFilterService
 {
-	private readonly ISpotifyReleaseFilterService _spotifyReleaseFilterService;
+	private readonly ISpotifyReleaseFilterService _releaseFilterService;
 
-	public SpotifyArtistFilterService(ISpotifyReleaseFilterService spotifyReleaseFilterService)
+	public SpotifyArtistFilterService(ISpotifyReleaseFilterService releaseFilterService)
 	{
-		_spotifyReleaseFilterService = spotifyReleaseFilterService;
-		_spotifyReleaseFilterService.OnFilterChanged += DataChanged;
+		_releaseFilterService = releaseFilterService;
+		_releaseFilterService.OnFilterChanged += DataChanged;
 	}
 
 	public void Dispose()
 	{
-		_spotifyReleaseFilterService.OnFilterChanged -= DataChanged;
+		_releaseFilterService.OnFilterChanged -= DataChanged;
 		GC.SuppressFinalize(this);
 	}
 
 	public event Action? OnSearchTextChanged;
-	public event Action? OnDataChanged;
 	public event Action? OnChanged;
 
 	public string? SearchText { get; private set; }
-
 
 	public IReadOnlySet<SpotifyArtist>? FilteredArtists { get; private set; }
 
 	private void DataChanged()
 	{
 		Recalculate();
-		OnDataChanged?.Invoke();
+
 		OnChanged?.Invoke();
 	}
 
 	private void SearchChanged()
 	{
 		Recalculate();
-		OnDataChanged?.Invoke();
+
 		OnSearchTextChanged?.Invoke();
 		OnChanged?.Invoke();
 	}
 
 	private void Recalculate()
 	{
-		var artists = _spotifyReleaseFilterService.FilteredArtists;
+		var artists = _releaseFilterService.FilteredArtists;
 		if (artists is null)
 		{
 			FilteredArtists = null;
@@ -54,7 +52,8 @@ internal sealed class SpotifyArtistFilterService : ISpotifyArtistFilterService
 
 		var searched = artists.ApplySearch(SearchText, x => x.Name);
 
-		var artistFilter = _spotifyReleaseFilterService.Filter.Artist;
+		// add current filtered artist
+		var artistFilter = _releaseFilterService.Filter.Artist;
 		if (artistFilter is not null)
 		{
 			searched = searched.Union(artists.Where(x => x.Id == artistFilter));
@@ -63,16 +62,16 @@ internal sealed class SpotifyArtistFilterService : ISpotifyArtistFilterService
 		FilteredArtists = new SortedSet<SpotifyArtist>(searched);
 	}
 
-	public void SetSearch(string? newSearchText)
+	public void SetSearch(string? searchText)
 	{
-		newSearchText = newSearchText.EnsureText();
+		searchText = searchText.EnsureText();
 
-		if (string.Equals(newSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
+		if (string.Equals(searchText, SearchText, StringComparison.OrdinalIgnoreCase))
 		{
 			return;
 		}
 
-		SearchText = newSearchText;
+		SearchText = searchText;
 		SearchChanged();
 	}
 }

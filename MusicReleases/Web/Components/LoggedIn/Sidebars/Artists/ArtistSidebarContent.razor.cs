@@ -7,18 +7,18 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Artists;
 public partial class ArtistSidebarContent : IDisposable
 {
 	[Inject]
-	private ISpotifyArtistFilterService SpotifyArtistFilterService { get; init; } = default!;
+	private ISpotifyArtistFilterService FilterService { get; init; } = default!;
 
 	private List<SpotifyArtist>? _artists;
 
 	protected override void OnInitialized()
 	{
-		SpotifyArtistFilterService.OnDataChanged += SearchChanged;
+		FilterService.OnChanged += SearchChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyArtistFilterService.OnDataChanged -= SearchChanged;
+		FilterService.OnChanged -= SearchChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -26,7 +26,7 @@ public partial class ArtistSidebarContent : IDisposable
 
 	private void SearchChanged()
 	{
-		_artists = SpotifyArtistFilterService.FilteredArtists is null ? null : [.. SpotifyArtistFilterService.FilteredArtists];
+		_artists = FilterService.FilteredArtists is null ? null : [.. FilterService.FilteredArtists];
 		_ = StateChanged();
 	}
 }

@@ -8,7 +8,6 @@ internal interface ISpotifyArtistFilterService : IDisposable
 	string? SearchText { get; }
 
 	event Action? OnSearchTextChanged;
-	event Action? OnDataChanged;
 	event Action? OnChanged;
 
 	void SetSearch(string? newSearchText);

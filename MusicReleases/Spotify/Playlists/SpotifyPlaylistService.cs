@@ -61,8 +61,10 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			var newPlaylist = await task.RunSegment("api - create playlist", async ct =>
 			{
 				var addToProfile = _settingsService.UserSettings.PlaylistAddToProfile;
+				var lastPlaylistOrder = _playlistState.Items?.Max(p => p.Order) ?? 0;
+				var order = lastPlaylistOrder + 1;
 
-				var newPlaylist = await _playlistApi.CreatePlaylist(userId, name, addToProfile, task.Ct);
+				var newPlaylist = await _playlistApi.CreatePlaylist(userId, name, addToProfile, order, task.Ct);
 
 				task.AddLink("playlist", $"playlist '{name}'", newPlaylist);
 				return newPlaylist;
@@ -87,7 +89,7 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			// save to user-playlist db
 			await task.RunSegment("db - add to user playlist (user-playlist)", async ct =>
 			{
-				await _userPlaylistDb.AddNew(playlist.Id, userId, ct);
+				await _userPlaylistDb.AddNew(playlist, userId, ct);
 			});
 
 			// update ui

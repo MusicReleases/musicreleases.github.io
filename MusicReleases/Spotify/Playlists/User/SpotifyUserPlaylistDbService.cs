@@ -2,6 +2,7 @@
 using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
+using JakubKastner.SpotifyApi.Playlists;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists.User;
 
@@ -25,15 +26,9 @@ internal sealed class SpotifyUserPlaylistDbService(IDbSpotifyService dbService) 
 		return await table.Where(x => x.UserId, userId).ToArray();
 	}
 
-	public async Task DeleteAllForUser(string userId)
+	public async Task AddNew(SpotifyPlaylist playlist, string userId, CancellationToken ct)
 	{
-		var db = await _dbService.GetDb();
-		await db.UserPlaylist.Where(x => x.UserId, userId).Delete();
-	}
-
-	public async Task AddNew(string playlistId, string userId, CancellationToken ct)
-	{
-		var payload = new SpotifyUserPlaylistPayload(playlistId, 0);
+		var payload = new SpotifyUserPlaylistPayload(playlist.Id, playlist.Order);
 		await Save(payload, userId, ct);
 	}
 }

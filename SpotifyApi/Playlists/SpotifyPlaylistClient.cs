@@ -20,17 +20,18 @@ internal class SpotifyPlaylistClient(ISpotifyClientStore client) : ISpotifyPlayl
 		var playlistsAsync = spotifyClient.Paginate(response, cancel: ct);
 
 		var playlists = new List<SpotifyPlaylist>();
-		var i = 0;
+		var i = response.Total.Require();
 
 		await foreach (var playlistApi in playlistsAsync.WithCancellation(ct))
 		{
 			var playlist = playlistApi.ToObject(i);
 			playlists.Add(playlist);
+			i--;
 		}
 		return playlists;
 	}
 
-	public async Task<SpotifyPlaylist> CreatePlaylist(string userId, string name, bool addToProfile, CancellationToken ct = default)
+	public async Task<SpotifyPlaylist> CreatePlaylist(string userId, string name, bool addToProfile, int order, CancellationToken ct = default)
 	{
 		var request = new PlaylistCreateRequest(name)
 		{
@@ -41,7 +42,7 @@ internal class SpotifyPlaylistClient(ISpotifyClientStore client) : ISpotifyPlayl
 
 		var spotifyClient = _client.GetClient();
 		var playlistApi = await spotifyClient.Playlists.Create(request, ct);
-		var playlist = playlistApi.ToObject(0);
+		var playlist = playlistApi.ToObject(order);
 
 		return playlist;
 	}
