@@ -1,4 +1,6 @@
-﻿namespace JakubKastner.SpotifyApi.Base;
+﻿using JakubKastner.SpotifyApi.Releases;
+
+namespace JakubKastner.SpotifyApi.Base;
 
 internal static class ApiConventions
 {

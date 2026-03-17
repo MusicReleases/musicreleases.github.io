@@ -1,7 +1,8 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.Spotify.Playlists;
-using JakubKastner.SpotifyApi.Enums;
+using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 

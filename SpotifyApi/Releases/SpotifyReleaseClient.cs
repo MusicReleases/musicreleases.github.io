@@ -2,9 +2,9 @@
 using JakubKastner.SpotifyApi.Store;
 using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Clients;
+namespace JakubKastner.SpotifyApi.Releases;
 
-internal class SpotifyReleaseClient(ISpotifyClientStore client) : ISpotifyReleaseClient
+internal sealed class SpotifyReleaseClient(ISpotifyClientStore client) : ISpotifyReleaseClient
 {
 	private readonly ISpotifyClientStore _client = client;
 

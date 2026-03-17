@@ -2,7 +2,7 @@
 using JakubKastner.SpotifyApi.Objects.Base;
 using System.Diagnostics.CodeAnalysis;
 
-namespace JakubKastner.SpotifyApi.Objects;
+namespace JakubKastner.SpotifyApi.Releases;
 
 [method: SetsRequiredMembers]
 public class SpotifyRelease(string id, string name, string urlApp, string urlWeb, ReleaseType releaseType, DateTime releaseDate, string urlImage, int totalTracks, bool isNew, HashSet<SpotifyArtist> artists, HashSet<SpotifyArtist> featuredArtists) : SpotifyIdNameUrlObject(id, name, urlApp, urlWeb), IComparable

@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Objects.Spotify;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Services
+namespace JakubKastner.MusicReleases.Spotify.Releases.User
 {
 	public interface IDbSpotifyUserFilterReleaseService
 	{

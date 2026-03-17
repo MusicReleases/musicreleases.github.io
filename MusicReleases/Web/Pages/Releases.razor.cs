@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
-using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.Services.UiServices;
-using JakubKastner.SpotifyApi.Enums;
+using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.SpotifyApi.Releases;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Pages;

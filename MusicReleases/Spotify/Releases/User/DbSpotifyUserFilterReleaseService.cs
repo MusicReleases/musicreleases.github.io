@@ -1,8 +1,9 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
+using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Objects.Spotify;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Services;
+namespace JakubKastner.MusicReleases.Spotify.Releases.User;
 
 public class DbSpotifyUserFilterReleaseService(IDbSpotifyService dbService) : IDbSpotifyUserFilterReleaseService
 {

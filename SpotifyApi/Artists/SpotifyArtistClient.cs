@@ -3,7 +3,7 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Artists;
 
-internal class SpotifyArtistClient(ISpotifyClientStore client) : ISpotifyArtistClient
+internal sealed class SpotifyArtistClient(ISpotifyClientStore client) : ISpotifyArtistClient
 {
 	private readonly ISpotifyClientStore _client = client;
 

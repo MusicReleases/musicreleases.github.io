@@ -1,5 +1,5 @@
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.SpotifyServices;
+using JakubKastner.MusicReleases.Spotify.Releases;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;

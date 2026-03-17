@@ -1,7 +1,8 @@
 ﻿using JakubKastner.SpotifyApi.Artists;
+using JakubKastner.SpotifyApi.Releases;
 using SpotifyAPI.Web;
 
-namespace JakubKastner.SpotifyApi.Mappers;
+namespace JakubKastner.SpotifyApi.Releases;
 
 internal static class SpotifyReleaseMapper
 {

@@ -1,6 +1,6 @@
 ﻿using static SpotifyAPI.Web.ArtistsAlbumsRequest;
 
-namespace JakubKastner.SpotifyApi.Enums;
+namespace JakubKastner.SpotifyApi.Releases;
 
 // TODO all?????
 public enum ReleaseEnums

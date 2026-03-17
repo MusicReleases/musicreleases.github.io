@@ -2,7 +2,7 @@
 using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 

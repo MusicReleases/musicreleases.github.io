@@ -3,7 +3,7 @@ using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Playlists;
 
-internal class SpotifyPlaylistClient(ISpotifyClientStore client) : ISpotifyPlaylistClient
+internal sealed class SpotifyPlaylistClient(ISpotifyClientStore client) : ISpotifyPlaylistClient
 {
 	private readonly ISpotifyClientStore _client = client;
 

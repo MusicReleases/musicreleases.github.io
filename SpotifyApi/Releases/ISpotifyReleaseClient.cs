@@ -1,6 +1,6 @@
 ﻿using JakubKastner.SpotifyApi.Artists;
 
-namespace JakubKastner.SpotifyApi.Clients;
+namespace JakubKastner.SpotifyApi.Releases;
 
 public interface ISpotifyReleaseClient
 {

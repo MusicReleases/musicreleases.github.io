@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Services.SpotifyServices;
+using JakubKastner.MusicReleases.Spotify.Releases;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;

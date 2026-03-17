@@ -1,4 +1,6 @@
-﻿namespace JakubKastner.SpotifyApi.Clients;
+﻿using JakubKastner.SpotifyApi.Releases;
+
+namespace JakubKastner.SpotifyApi.Clients;
 
 public interface ISpotifyTrackClient
 {

@@ -1,6 +1,6 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
-using JakubKastner.SpotifyApi.Enums;
+using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
