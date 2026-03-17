@@ -22,16 +22,14 @@ internal static class SpotifyUserMapper
 
 	private static string? GetImageUrl(List<Image> images)
 	{
-		if (images.Count < ApiConventions.SmallImageIndex)
-		{
-			return null;
-		}
-
-		if (images.Count >= ApiConventions.MediumImageIndex)
+		if (images.Count > ApiConventions.MediumImageIndex)
 		{
 			return images[ApiConventions.MediumImageIndex].Url;
 		}
-
-		return images[ApiConventions.SmallImageIndex].Url;
+		if (images.Count > ApiConventions.SmallImageIndex)
+		{
+			return images[ApiConventions.SmallImageIndex].Url;
+		}
+		return null;
 	}
 }
