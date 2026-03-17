@@ -6,10 +6,10 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 
 [Schema(StoreName = "UserSettings")]
 public partial record SpotifyUserSettingsEntity
-	(
-		[property: Index(IsPrimary = true)] string UserId,
-		Theme Theme,
-		bool OpenLinksInApp,
-		bool PlaylistNewTrackPositionLast,
-		bool PlaylistAddToProfile
-	) : ISpotifyDb, ISpotifyUserIdEntity;
+(
+	[property: Index(IsPrimary = true)] string UserId,
+	Theme Theme,
+	bool OpenLinksInApp,
+	bool PlaylistNewTrackPositionLast,
+	bool PlaylistAddToProfile
+) : ISpotifyDb, ISpotifyUserIdEntity;

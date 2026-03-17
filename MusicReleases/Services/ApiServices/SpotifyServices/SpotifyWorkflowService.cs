@@ -1,5 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Spotify.Artists;
+using JakubKastner.MusicReleases.Spotify.Playlists;
 using JakubKastner.SpotifyApi.Enums;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
@@ -28,7 +29,7 @@ internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtist
 	{
 		Console.WriteLine("workflow: playlists - start");
 
-		await _spotifyPlaylistService.LoadAndSync(forceUpdate);
+		await _spotifyPlaylistService.Get(forceUpdate);
 
 		Console.WriteLine("workflow: playlists - end");
 	}

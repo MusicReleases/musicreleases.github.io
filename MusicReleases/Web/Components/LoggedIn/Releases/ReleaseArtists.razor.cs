@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.Spotify.Artists;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Artists;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
@@ -46,7 +46,7 @@ public partial class ReleaseArtists : IDisposable
 
 	private bool IsArtistFollowed(string artistId)
 	{
-		return SpotifyArtistState.IsFollowed(artistId);
+		return SpotifyArtistState.IsInStore(artistId);
 	}
 
 	public string GetButtonClass(string artistId)

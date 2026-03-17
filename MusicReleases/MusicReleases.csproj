@@ -17,6 +17,11 @@
 		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
+	<!--<PropertyGroup>-->
+		<!-- better loading from db (for json) -->
+	<!--<RunAOTCompilation>true</RunAOTCompilation>
+	</PropertyGroup>-->
+
 	<ItemGroup>
 		<!-- SVG icons to DLL -->
 		<EmbeddedResource Include="Icons\**\*.svg" />

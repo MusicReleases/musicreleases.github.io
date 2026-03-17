@@ -1,4 +1,6 @@
-﻿namespace JakubKastner.SpotifyApi.Clients;
+﻿using JakubKastner.SpotifyApi.Artists;
+
+namespace JakubKastner.SpotifyApi.Clients;
 
 public interface ISpotifyReleaseClient
 {

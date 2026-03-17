@@ -8,5 +8,8 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 public partial record SpotifyUserArtistEntity
 (
 	[property: Index] string UserId,
-	string ArtistId
-) : ISpotifyDb, ISpotifyUserIdEntity;
+	[property: Index] string ArtistId
+) : ISpotifyDb, ISpotifyUserIdLinkEntity
+{
+	public string GetLinkedId() => ArtistId;
+}

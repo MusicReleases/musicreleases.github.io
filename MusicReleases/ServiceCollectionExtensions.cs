@@ -6,8 +6,11 @@ using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.SpotifyServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.MusicReleases.Spotify.Artists;
-using JakubKastner.MusicReleases.Spotify.Artists.Releases;
-using JakubKastner.MusicReleases.Spotify.Artists.Tracks;
+using JakubKastner.MusicReleases.Spotify.Artists.User;
+using JakubKastner.MusicReleases.Spotify.Playlists;
+using JakubKastner.MusicReleases.Spotify.Playlists.User;
+using JakubKastner.MusicReleases.Spotify.Releases.Artists;
+using JakubKastner.MusicReleases.Spotify.Releases.Tracks;
 using JakubKastner.MusicReleases.State.Spotify;
 
 namespace JakubKastner.MusicReleases;
@@ -40,14 +43,14 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDbSpotifyUserFilterReleaseService, DbSpotifyUserFilterReleaseService>();
 		services.AddScoped<IDbSpotifyUserFilterTaskService, DbSpotifyUserFilterTaskService>();
 
-		services.AddScoped<IDbSpotifyUserArtistService, DbSpotifyUserArtistService>();
+		services.AddScoped<ISpotifyUserArtistDbService, SpotifyUserArtistDbService>();
 		services.AddScoped<ISpotifyArtistDbService, SpotifyArtistDbService>();
 		services.AddScoped<ISpotifyArtistReleaseDbService, SpotifyArtistReleaseDbService>();
 
 		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
 
-		services.AddScoped<IDbSpotifyUserPlaylistService, DbSpotifyUserPlaylistService>();
-		services.AddScoped<IDbSpotifyPlaylistService, DbSpotifyPlaylistService>();
+		services.AddScoped<ISpotifyUserPlaylistDbService, SpotifyUserPlaylistDbService>();
+		services.AddScoped<ISpotifyPlaylistDbService, SpotifyPlaylistDbService>();
 
 		services.AddScoped<IDbSpotifyTrackService, DbSpotifyTrackService>();
 

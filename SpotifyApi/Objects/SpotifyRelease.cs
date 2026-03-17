@@ -1,4 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Objects.Base;
+﻿using JakubKastner.SpotifyApi.Artists;
+using JakubKastner.SpotifyApi.Objects.Base;
 using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Objects;

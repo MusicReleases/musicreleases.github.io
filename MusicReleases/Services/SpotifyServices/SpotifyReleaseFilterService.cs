@@ -2,6 +2,7 @@
 using JakubKastner.MusicReleases.Objects.Spotify;
 using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
 using System.Collections.Concurrent;
@@ -49,7 +50,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 
 	private ConcurrentDictionary<ReleaseEnums, IReadOnlyList<SpotifyRelease>> AllReleases => _releaseState.ReleasesByType;
 
-	private IReadOnlySet<SpotifyArtist>? AllArtists => _artistState.FollowedArtists;
+	private IReadOnlySet<SpotifyArtist>? AllArtists => _artistState.Items;
 
 
 	private const ReleaseAdvancedFilter _defaultAdvancedFilter = ReleaseAdvancedFilter.All;

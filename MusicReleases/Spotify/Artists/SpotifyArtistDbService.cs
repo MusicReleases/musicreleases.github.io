@@ -1,27 +1,37 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
+using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.MusicReleases.Spotify.Artists.User;
+using JakubKastner.SpotifyApi.Artists;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 
-internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : ISpotifyArtistDbService
+internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : SpotifyEntityService<SpotifyArtist, SpotifyArtistEntity, SpotifyUserArtistPayload>, ISpotifyArtistDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	public async Task<IReadOnlyCollection<SpotifyArtist>> GetAll(CancellationToken ct)
+	protected override SpotifyArtistEntity ToEntity(SpotifyArtist model) => model.ToEntity();
+
+	protected override SpotifyArtist ToModel(SpotifyArtistEntity entity, SpotifyUserArtistPayload payload) => entity.ToModel();
+
+	protected override async Task<Table<SpotifyArtistEntity, string>> GetTable()
 	{
 		var db = await _dbService.GetDb();
-		ct.ThrowIfCancellationRequested();
+		return db.Artist;
+	}
 
-		var artistsDb = await db.Artist.ToArray();
+	protected override async Task<IEnumerable<SpotifyArtistEntity>> FetchByIds(string[] ids)
+	{
+		var table = await GetTable();
 
-		var artists = artistsDb.Select(e => e.ToModel()).ToList();
-
-		return artists.AsReadOnly();
+		return await table.Where(e => e.Id).AnyOf(ids).ToArray();
 	}
 
 	public async Task<IReadOnlyCollection<SpotifyArtist>> GetByIds(IReadOnlyCollection<string> ids, CancellationToken ct)
 	{
+		// TODO DELETE
+
 		if (ids.Count == 0)
 		{
 			return [];
@@ -35,20 +45,5 @@ internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : ISpo
 		var artists = artistsDb.Select(e => e.ToModel()).ToList();
 
 		return artists.AsReadOnly();
-	}
-
-	public async Task Save(IReadOnlyCollection<SpotifyArtist> artists, CancellationToken ct)
-	{
-		if (artists.Count == 0)
-		{
-			return;
-		}
-
-		var artistsDb = artists.Select(a => a.ToEntity());
-
-		var db = await _dbService.GetDb();
-		ct.ThrowIfCancellationRequested();
-
-		await db.Artist.BulkPutSafe(artistsDb);
 	}
 }

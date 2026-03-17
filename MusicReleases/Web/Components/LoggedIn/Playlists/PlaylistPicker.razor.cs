@@ -1,8 +1,9 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Services.SpotifyServices;
+using JakubKastner.MusicReleases.Spotify.Playlists;
 using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Playlists;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;

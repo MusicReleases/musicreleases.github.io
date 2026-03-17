@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+﻿using JakubKastner.MusicReleases.Spotify.Playlists;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;

@@ -1,5 +1,5 @@
 using JakubKastner.MusicReleases.Spotify.Artists;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Artists;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Artists;

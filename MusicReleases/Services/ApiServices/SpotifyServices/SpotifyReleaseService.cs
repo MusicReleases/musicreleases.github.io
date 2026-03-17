@@ -7,8 +7,9 @@ using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Artists;
-using JakubKastner.MusicReleases.Spotify.Artists.Releases;
+using JakubKastner.MusicReleases.Spotify.Releases.Artists;
 using JakubKastner.MusicReleases.State.Spotify;
+using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
@@ -111,7 +112,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient
 				return await _metaDb.Get(userId, metaDbType, ct);
 			});
 
-			var artists = _artistState.FollowedArtists;
+			var artists = _artistState.Items;
 
 			if (artists is null || artists.Count == 0)
 			{
@@ -158,7 +159,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient spotifyUserClient
 		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
 			// get artists from state
-			var artists = _artistState.FollowedArtists;
+			var artists = _artistState.Items;
 
 			if (artists is null || artists.Count == 0)
 			{

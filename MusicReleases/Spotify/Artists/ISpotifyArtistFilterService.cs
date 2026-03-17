@@ -1,4 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Artists;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 

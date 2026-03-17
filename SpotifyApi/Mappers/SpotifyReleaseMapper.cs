@@ -1,4 +1,5 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.Artists;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Mappers;
 

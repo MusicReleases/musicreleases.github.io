@@ -20,6 +20,10 @@ public static class DexieExtensions
 		{
 			return;
 		}
+		if (items is IReadOnlyList<T> readOnlyList && readOnlyList.Count == 0)
+		{
+			return;
+		}
 
 		var itemsArray = items as T[] ?? [.. items];
 
@@ -36,6 +40,10 @@ public static class DexieExtensions
 			return;
 		}
 		if (keys is IReadOnlyCollection<T> readOnlyCol && readOnlyCol.Count == 0)
+		{
+			return;
+		}
+		if (keys is IReadOnlyList<T> readOnlyList && readOnlyList.Count == 0)
 		{
 			return;
 		}

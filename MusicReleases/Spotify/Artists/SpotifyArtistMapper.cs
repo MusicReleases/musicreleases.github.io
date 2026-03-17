@@ -1,5 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Artists;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 

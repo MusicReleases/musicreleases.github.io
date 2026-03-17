@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Mappers;

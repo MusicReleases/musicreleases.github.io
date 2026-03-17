@@ -1,4 +1,6 @@
-﻿using JakubKastner.SpotifyApi.Clients;
+﻿using JakubKastner.SpotifyApi.Artists;
+using JakubKastner.SpotifyApi.Clients;
+using JakubKastner.SpotifyApi.Playlists;
 using JakubKastner.SpotifyApi.RetryHandlers;
 using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.DependencyInjection;

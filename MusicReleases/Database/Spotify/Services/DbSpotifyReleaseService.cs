@@ -2,7 +2,8 @@
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
 using JakubKastner.MusicReleases.Spotify.Artists;
-using JakubKastner.MusicReleases.Spotify.Artists.Releases;
+using JakubKastner.MusicReleases.Spotify.Releases.Artists;
+using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Objects;
 using System.Data;
