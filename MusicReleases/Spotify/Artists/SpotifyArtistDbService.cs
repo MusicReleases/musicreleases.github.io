@@ -7,7 +7,7 @@ using JakubKastner.SpotifyApi.Artists;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 
-internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : SpotifyEntityService<SpotifyArtist, SpotifyArtistEntity, SpotifyUserArtistPayload>, ISpotifyArtistDbService
+internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : SpotifyIdEntityService<SpotifyArtist, SpotifyArtistEntity, SpotifyUserArtistPayload>, ISpotifyArtistDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 

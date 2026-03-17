@@ -7,21 +7,20 @@ using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Spotify;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects.Base;
 
-namespace JakubKastner.MusicReleases.Services;
+namespace JakubKastner.MusicReleases.Spotify.Base;
 
-internal abstract class SpotifyBaseSyncService<TModel, TEntity, TUserLinkEntity, TPayload>(ISpotifyUserClient userApi, /*ISpotifyPlaylistClient playlistApi,*/ ISpotifyEntityService<TModel, TPayload> entityDbService, ISpotifyUserRelationService<TPayload> userLinkDbService, IDbSpotifyUserUpdateService updateDb, ISpotifyState<TModel> state, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : ISpotifyBaseSyncService where TModel : SpotifyIdNameObject
-	where TEntity : ISpotifyIdEntity
-	where TUserLinkEntity : ISpotifyUserIdEntity
+internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity, TPayload>(ISpotifyUserClient userApi, /*ISpotifyPlaylistClient playlistApi,*/ ISpotifyIdEntityService<TModel, TPayload> entityDbService, ISpotifyUserIdEntityService<TPayload> userLinkDbService, IDbSpotifyUserUpdateService updateDb, ISpotifyState<TModel> state, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : ISpotifyBaseSyncService where TModel : SpotifyIdNameObject
+	where TIdEntity : ISpotifyIdEntity
+	where TUserIdEntity : ISpotifyUserIdEntity
 	where TPayload : ISpotifyPayload
 {
 	private readonly ISpotifyUserClient _userApi = userApi;
 	//private readonly ISpotifyArtistClient _artistApi = artistApi;
-	private readonly ISpotifyEntityService<TModel, TPayload> _entityDbService = entityDbService;
-	private readonly ISpotifyUserRelationService<TPayload> _userLinkDbService = userLinkDbService;
+	private readonly ISpotifyIdEntityService<TModel, TPayload> _entityDbService = entityDbService;
+	private readonly ISpotifyUserIdEntityService<TPayload> _userLinkDbService = userLinkDbService;
 	private readonly IDbSpotifyUserUpdateService _updateDb = updateDb;
 	private readonly ISpotifyState<TModel> _state = state;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;

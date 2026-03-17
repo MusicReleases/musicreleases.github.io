@@ -1,10 +1,9 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.MusicReleases.Spotify.Artists.User;
 using JakubKastner.SpotifyApi.Artists;
 
-namespace JakubKastner.MusicReleases.Spotify.Playlists.User;
+namespace JakubKastner.MusicReleases.Spotify.Artists.User;
 
-public static class SpotifyUserArtistMapper
+internal static class SpotifyUserArtistMapper
 {
 	public static SpotifyUserArtistEntity ToEntity(this SpotifyUserArtistPayload payload, string userId)
 	{

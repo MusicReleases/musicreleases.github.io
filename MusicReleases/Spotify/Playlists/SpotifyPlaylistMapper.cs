@@ -4,7 +4,7 @@ using JakubKastner.SpotifyApi.Playlists;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
-public static class SpotifyPlaylistMapper
+internal static class SpotifyPlaylistMapper
 {
 	public static SpotifyPlaylistEntity ToEntity(this SpotifyPlaylist dto)
 	{

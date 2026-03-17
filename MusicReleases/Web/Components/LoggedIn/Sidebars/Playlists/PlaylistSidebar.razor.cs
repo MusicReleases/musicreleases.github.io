@@ -9,7 +9,7 @@ public partial class PlaylistSidebar : IDisposable
 {
 
 	[Inject]
-	public ISpotifyPlaylistFilterService FilterService { get; set; } = default!;
+	private ISpotifyPlaylistFilterService FilterService { get; set; } = default!;
 
 
 	[Parameter]

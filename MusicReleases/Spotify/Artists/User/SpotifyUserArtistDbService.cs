@@ -2,11 +2,10 @@
 using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
-using JakubKastner.MusicReleases.Spotify.Playlists.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists.User;
 
-internal sealed class SpotifyUserArtistDbService(IDbSpotifyService dbService) : SpotifyUserRelationService<SpotifyUserArtistEntity, SpotifyUserArtistPayload>, ISpotifyUserArtistDbService
+internal sealed class SpotifyUserArtistDbService(IDbSpotifyService dbService) : SpotifyUserIdEntityService<SpotifyUserArtistEntity, SpotifyUserArtistPayload>, ISpotifyUserArtistDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
@@ -25,5 +24,4 @@ internal sealed class SpotifyUserArtistDbService(IDbSpotifyService dbService) : 
 		var table = await GetTable();
 		return await table.Where(x => x.UserId, userId).ToArray();
 	}
-
 }

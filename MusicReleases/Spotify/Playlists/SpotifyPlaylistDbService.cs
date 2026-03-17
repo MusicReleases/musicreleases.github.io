@@ -7,7 +7,7 @@ using JakubKastner.SpotifyApi.Playlists;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
-internal sealed class SpotifyPlaylistDbService(IDbSpotifyService dbService) : SpotifyEntityService<SpotifyPlaylist, SpotifyPlaylistEntity, SpotifyUserPlaylistPayload>, ISpotifyPlaylistDbService
+internal sealed class SpotifyPlaylistDbService(IDbSpotifyService dbService) : SpotifyIdEntityService<SpotifyPlaylist, SpotifyPlaylistEntity, SpotifyUserPlaylistPayload>, ISpotifyPlaylistDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 

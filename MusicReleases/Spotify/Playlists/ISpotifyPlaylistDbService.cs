@@ -4,7 +4,7 @@ using JakubKastner.SpotifyApi.Playlists;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
-internal interface ISpotifyPlaylistDbService : ISpotifyEntityService<SpotifyPlaylist, SpotifyUserPlaylistPayload>
+internal interface ISpotifyPlaylistDbService : ISpotifyIdEntityService<SpotifyPlaylist, SpotifyUserPlaylistPayload>
 {
 	Task UpdateSnapshot(string playlistId, string newSnapshotId, CancellationToken ct);
 }

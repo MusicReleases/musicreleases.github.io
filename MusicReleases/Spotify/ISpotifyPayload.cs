@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify;
 
-public interface ISpotifyPayload
+internal interface ISpotifyPayload
 {
 	string Id { get; }
 }

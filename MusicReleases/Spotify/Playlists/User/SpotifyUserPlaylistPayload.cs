@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Playlists.User;
 
-public record SpotifyUserPlaylistPayload(string Id, int Order) : ISpotifyPayload, IComparable<SpotifyUserPlaylistPayload>
+internal record SpotifyUserPlaylistPayload(string Id, int Order) : ISpotifyPayload, IComparable<SpotifyUserPlaylistPayload>
 {
 	public int CompareTo(SpotifyUserPlaylistPayload? other)
 	{

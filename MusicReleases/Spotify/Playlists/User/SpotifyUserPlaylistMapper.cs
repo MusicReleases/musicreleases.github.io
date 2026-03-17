@@ -3,7 +3,7 @@ using JakubKastner.SpotifyApi.Playlists;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists.User;
 
-public static class SpotifyUserPlaylistMapper
+internal static class SpotifyUserPlaylistMapper
 {
 	public static SpotifyUserPlaylistEntity ToEntity(this SpotifyUserPlaylistPayload payload, string userId)
 	{

@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Services;
+﻿using JakubKastner.MusicReleases.Spotify.Base;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 

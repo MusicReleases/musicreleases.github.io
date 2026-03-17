@@ -5,18 +5,18 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
-internal abstract class SpotifyEntityService<TModel, TEntity, TPayload> : ISpotifyEntityService<TModel, TPayload> where TModel : SpotifyIdNameObject
-	where TEntity : ISpotifyDb, ISpotifyIdEntity
+internal abstract class SpotifyIdEntityService<TModel, TIdEntity, TPayload> : ISpotifyIdEntityService<TModel, TPayload> where TModel : SpotifyIdNameObject
+	where TIdEntity : ISpotifyDb, ISpotifyIdEntity
 	where TPayload : ISpotifyPayload
 {
 	protected readonly Dictionary<string, TModel> _cache = [];
 
-	protected abstract Task<Table<TEntity, string>> GetTable();
+	protected abstract Task<Table<TIdEntity, string>> GetTable();
 
-	protected abstract TEntity ToEntity(TModel model);
-	protected abstract TModel ToModel(TEntity entity, TPayload payload);
+	protected abstract TIdEntity ToEntity(TModel model);
+	protected abstract TModel ToModel(TIdEntity entity, TPayload payload);
 
-	protected abstract Task<IEnumerable<TEntity>> FetchByIds(string[] ids);
+	protected abstract Task<IEnumerable<TIdEntity>> FetchByIds(string[] ids);
 
 	public async Task<IReadOnlyCollection<TModel>> GetByIds(IReadOnlyCollection<TPayload> payloads, CancellationToken ct)
 	{

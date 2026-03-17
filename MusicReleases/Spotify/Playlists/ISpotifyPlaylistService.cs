@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
-public interface ISpotifyPlaylistService
+internal interface ISpotifyPlaylistService
 {
 	Task AddTrack(string playlistId, SpotifyTrack track, bool positionTop);
 	Task AddTracks(string playlistId, IEnumerable<SpotifyTrack> tracks, bool positionTop);
