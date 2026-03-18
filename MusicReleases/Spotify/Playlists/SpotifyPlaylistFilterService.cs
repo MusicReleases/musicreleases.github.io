@@ -34,27 +34,29 @@ internal class SpotifyPlaylistFilterService : ISpotifyPlaylistFilterService
 	public event Action? OnFilterChanged;
 	public event Action? OnChanged;
 
-	public void SetSearchText(string? searchText)
+	public bool SetSearchText(string? searchText)
 	{
 		searchText = searchText.EnsureText();
 
 		if (string.Equals(searchText, SearchText, StringComparison.OrdinalIgnoreCase))
 		{
-			return;
+			return false;
 		}
 
 		SearchText = searchText;
 		SearchChanged();
+		return true;
 	}
 
-	public void SetTypeFilter(PlaylistEnums type)
+	public bool SetTypeFilter(PlaylistEnums type)
 	{
 		if (PlaylistType == type)
 		{
-			return;
+			return false;
 		}
 		PlaylistType = type;
 		FilterChanged();
+		return true;
 	}
 
 	private void DataChanged()

@@ -57,12 +57,22 @@ public partial class PlaylistPicker : IDisposable
 			throw new InvalidOperationException($"You must provide only {nameof(Release)} or {nameof(Track)}, not both.");
 		}
 
-		FilterService.SetTypeFilter(PlaylistTypeFilter);
+		var filterChanged = FilterService.SetTypeFilter(PlaylistTypeFilter);
+
+		if (!filterChanged)
+		{
+			RecalculateFilter();
+		}
+	}
+
+	private void RecalculateFilter()
+	{
+		_playlists = FilterService.FilteredPlaylists;
 	}
 
 	private void FilterChanged()
 	{
-		_playlists = FilterService.FilteredPlaylists;
+		RecalculateFilter();
 		StateChanged();
 	}
 

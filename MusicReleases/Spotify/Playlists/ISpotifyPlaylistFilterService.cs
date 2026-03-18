@@ -13,7 +13,7 @@ internal interface ISpotifyPlaylistFilterService : IDisposable
 	//event Action? OnSearchTextChanged;
 	event Action? OnChanged;
 
-	void SetSearchText(string? searchText);
-	void SetTypeFilter(PlaylistEnums playlistType);
+	bool SetSearchText(string? searchText);
+	bool SetTypeFilter(PlaylistEnums playlistType);
 	IReadOnlySet<SpotifyPlaylist>? GetFilteredPlaylists(PlaylistEnums playlistType, string? searchText);
 }
