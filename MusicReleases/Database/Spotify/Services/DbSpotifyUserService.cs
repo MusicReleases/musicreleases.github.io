@@ -4,9 +4,11 @@ using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
-public class DbSpotifyUserService(IDbSpotifyService dbService) : IDbSpotifyUserService
+internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISpotifyUserLinkEntityService> spotifyUserLinkEntityService) : IDbSpotifyUserService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
+
+	private readonly IEnumerable<ISpotifyUserLinkEntityService> _spotifyUserLinkEntityService = spotifyUserLinkEntityService;
 
 	public async Task<SpotifyUser?> Get(string userId)
 	{
@@ -40,7 +42,6 @@ public class DbSpotifyUserService(IDbSpotifyService dbService) : IDbSpotifyUserS
 
 	private async Task DeleteAllUserDatabases(string userId)
 	{
-		// TODO delete other dbs
-
+		await Task.WhenAll(_spotifyUserLinkEntityService.Select(s => s.DeleteAllForUser(userId)));
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Services;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
@@ -38,23 +39,30 @@ public static class ServiceCollectionExtensions
 
 		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
 		services.AddScoped<IDbSpotifyUserUpdateService, DbSpotifyUserUpdateService>();
+		//services.AddAsSpotifyService<IDbSpotifyUserUpdateService>();
 		services.AddScoped<IDbSpotifyUserSettingsService, DbSpotifyUserSettingsService>();
+		//services.AddAsSpotifyService<IDbSpotifyUserSettingsService>();
 
 		services.AddScoped<IDbSpotifyUserFilterReleaseService, DbSpotifyUserFilterReleaseService>();
+		//services.AddAsSpotifyService<IDbSpotifyUserFilterReleaseService>();
 		services.AddScoped<IDbSpotifyUserFilterTaskService, DbSpotifyUserFilterTaskService>();
+		//services.AddAsSpotifyService<IDbSpotifyUserFilterTaskService>();
 
 		services.AddScoped<ISpotifyUserArtistDbService, SpotifyUserArtistDbService>();
+		services.AddAsSpotifyService<ISpotifyUserArtistDbService>();
 		services.AddScoped<ISpotifyArtistDbService, SpotifyArtistDbService>();
 		services.AddScoped<ISpotifyArtistReleaseDbService, SpotifyArtistReleaseDbService>();
 
 		services.AddScoped<ISpotifyReleaseDbService, SpotifyReleaseDbService>();
 
 		services.AddScoped<ISpotifyUserPlaylistDbService, SpotifyUserPlaylistDbService>();
+		services.AddAsSpotifyService<ISpotifyUserPlaylistDbService>();
 		services.AddScoped<ISpotifyPlaylistDbService, SpotifyPlaylistDbService>();
 
 		services.AddScoped<IDbSpotifyTrackService, DbSpotifyTrackService>();
 
 		services.AddScoped<ISpotifyArtistTrackDbService, SpotifyArtistTrackDbService>();
+
 
 		// spotify state
 		services.AddScoped<ISpotifyArtistState, SpotifyArtistState>();
@@ -88,5 +96,10 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyTrackService, SpotifyTrackService>();
 
 		return services;
+	}
+
+	private static void AddAsSpotifyService<TInterface>(this IServiceCollection services) where TInterface : class, ISpotifyUserLinkEntityService
+	{
+		services.AddScoped<ISpotifyUserLinkEntityService>(sp => sp.GetRequiredService<TInterface>());
 	}
 }

@@ -2,12 +2,15 @@
 using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
+using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists.User;
 
 internal sealed class SpotifyUserArtistDbService(IDbSpotifyService dbService) : SpotifyUserLinkEntityService<SpotifyUserArtistEntity, SpotifyUserArtistPayload>, ISpotifyUserArtistDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
+
+	protected override Expression<Func<SpotifyUserArtistEntity, string>> UserIdExpression => x => x.UserId;
 
 	protected override SpotifyUserArtistPayload ToPayload(SpotifyUserArtistEntity entity) => entity.ToPayload();
 

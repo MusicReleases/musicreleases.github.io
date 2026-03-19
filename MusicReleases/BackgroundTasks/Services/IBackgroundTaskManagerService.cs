@@ -15,6 +15,7 @@ internal interface IBackgroundTaskManagerService : IDisposable
 
 	event Action? OnChange;
 
+	void CancelAllTasks();
 	void HideAllEnded();
 	void HideTask(BackgroundTask task);
 	void RemoveAllFinishedTasks();

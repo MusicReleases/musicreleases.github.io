@@ -3,12 +3,15 @@ using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.SpotifyApi.Playlists;
+using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists.User;
 
 internal sealed class SpotifyUserPlaylistDbService(IDbSpotifyService dbService) : SpotifyUserLinkEntityService<SpotifyUserPlaylistEntity, SpotifyUserPlaylistPayload>, ISpotifyUserPlaylistDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
+
+	protected override Expression<Func<SpotifyUserPlaylistEntity, string>> UserIdExpression => x => x.UserId;
 
 	protected override SpotifyUserPlaylistPayload ToPayload(SpotifyUserPlaylistEntity entity) => entity.ToPayload();
 

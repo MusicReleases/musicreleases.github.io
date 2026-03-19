@@ -1,6 +1,7 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 using JakubKastner.MusicReleases.Spotify;
+using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
@@ -9,6 +10,8 @@ internal abstract class SpotifyUserLinkEntityService<TUserIdEntity, TPayload> : 
 	where TPayload : ISpotifyPayload
 {
 	private readonly Dictionary<string, SortedSet<TPayload>> _cache = [];
+
+	protected abstract Expression<Func<TUserIdEntity, string>> UserIdExpression { get; }
 
 	protected abstract TPayload ToPayload(TUserIdEntity entity);
 
@@ -123,7 +126,7 @@ internal abstract class SpotifyUserLinkEntityService<TUserIdEntity, TPayload> : 
 	public async Task DeleteAllForUser(string userId)
 	{
 		var table = await GetTable();
-		await table.Where(x => x.UserId, userId).Delete();
+		await table.Where(UserIdExpression, userId).Delete();
 
 		_cache.Remove(userId);
 	}

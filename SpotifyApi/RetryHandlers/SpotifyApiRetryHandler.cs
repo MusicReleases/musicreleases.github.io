@@ -1,5 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Objects;
-using JakubKastner.SpotifyApi.Store;
+﻿using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.Options;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Http;
@@ -86,6 +85,7 @@ internal class SpotifyApiRetryHandler(ISpotifyClientStore apiClient, ISpotifyUse
 		if ((response.Headers.ContainsKey("Retry-After") && int.TryParse(response.Headers["Retry-After"], out int secondsToWait))
 			|| (response.Headers.ContainsKey("retry-after") && int.TryParse(response.Headers["retry-after"], out secondsToWait)))
 		{
+			secondsToWait++;
 			return TimeSpan.FromSeconds(secondsToWait);
 		}
 

@@ -161,4 +161,17 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 		task.IsOverlayVisible = false;
 		NotifyUI();
 	}
+
+	public void CancelAllTasks()
+	{
+		foreach (var task in RunningTasks)
+		{
+			if (task.Ended)
+			{
+				return;
+			}
+			task.RequestCancel();
+		}
+		NotifyUI();
+	}
 }

@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
+﻿using JakubKastner.MusicReleases.BackgroundTasks.Services;
+using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Releases;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService) : ISpotifyLoginService
+internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService, IBackgroundTaskManagerService backgroundTaskManagerService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
@@ -19,6 +20,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient
 	private readonly IDbSpotifyUserUpdateService _databaseUpdateService = databaseUpdateService;
 	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
 	private readonly ISettingsService _settingsService = settingsService;
+	private readonly IBackgroundTaskManagerService _backgroundTaskManagerService = backgroundTaskManagerService;
 
 	public ServiceType GetServiceType()
 	{
@@ -166,6 +168,9 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient
 	{
 		// TODO logout - stop loading data from api
 
+		// cancel tasks
+		_backgroundTaskManagerService.CancelAllTasks();
+
 		// remove user
 		var user = _spotifyUserClient.GetUser();
 		if (user is null)
@@ -176,6 +181,7 @@ public class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient
 		await _spotifyLoginStorageService.DeleteSavedUser();
 		await _databaseUserService.Delete(user.Info.Id);
 		await _databaseUpdateService.Delete(user.Info.Id, SpotifyDbUpdateType.User);
+
 
 		_navManager.NavigateTo(_navManager.BaseUri);
 	}
