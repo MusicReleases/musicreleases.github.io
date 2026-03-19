@@ -4,8 +4,7 @@ using JakubKastner.MusicReleases.Spotify;
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
-internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : SpotifyLinkEntityService<TUserIdEntity, string, string>,
-	  ISpotifyUserIdEntityService<TPayload>
+internal abstract class SpotifyUserLinkEntityService<TUserIdEntity, TPayload> : SpotifyLinkEntityService<TUserIdEntity, string, string>, ISpotifyUserLinkEntityService<TPayload>
 	where TUserIdEntity : ISpotifyDb, ISpotifyUserIdEntity
 	where TPayload : ISpotifyPayload
 {

@@ -12,13 +12,13 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Spotify.Base;
 
-internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity, TPayload>(ISpotifyUserClient userApi, ISpotifyIdEntityService<TModel, TPayload> entityDbService, ISpotifyUserIdEntityService<TPayload> userLinkDbService, IDbSpotifyUserUpdateService updateDb, ISpotifyState<TModel> state, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : SpotifyBaseSyncServiceCore<TModel, NoContext>(userApi, updateDb, taskManager, loadingService), ISpotifyBaseSyncService where TModel : SpotifyIdNameObject
+internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity, TPayload>(ISpotifyUserClient userApi, ISpotifyIdEntityService<TModel, TPayload> entityDbService, ISpotifyUserLinkEntityService<TPayload> userLinkDbService, IDbSpotifyUserUpdateService updateDb, ISpotifyState<TModel> state, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : SpotifyBaseSyncServiceCore<TModel, NoContext>(userApi, updateDb, taskManager, loadingService), ISpotifyBaseSyncService where TModel : SpotifyIdNameObject
 	where TIdEntity : ISpotifyIdEntity
 	where TUserIdEntity : ISpotifyUserIdEntity
 	where TPayload : ISpotifyPayload
 {
 	private readonly ISpotifyIdEntityService<TModel, TPayload> _entityDbService = entityDbService;
-	private readonly ISpotifyUserIdEntityService<TPayload> _userLinkDbService = userLinkDbService;
+	private readonly ISpotifyUserLinkEntityService<TPayload> _userLinkDbService = userLinkDbService;
 	private readonly ISpotifyState<TModel> _state = state;
 
 	protected sealed override string GetTaskDescription(NoContext _) => TaskDescription;

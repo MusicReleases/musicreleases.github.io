@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
-internal interface ISpotifyUserIdEntityService<TPayload> : ISpotifyLinkEntityService where TPayload : ISpotifyPayload
+internal interface ISpotifyUserLinkEntityService<TPayload> : ISpotifyLinkEntityService where TPayload : ISpotifyPayload
 {
 	Task DeleteAllForUser(string userId);
 	Task<IReadOnlyCollection<TPayload>> GetByUserId(string userId, CancellationToken ct);

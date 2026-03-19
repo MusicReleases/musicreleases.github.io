@@ -59,7 +59,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 		return await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 		{
 			var releaseGroupString = releaseGroup.ToFriendlyString();
-			task.BeginAutoSegments(4);
+			task.BeginAutoSegments(5);
 
 			var artists = _artistState.Items;
 
@@ -88,37 +88,14 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 
 			var artistsCount = artists.Count;
 
-			var releaseArtistPayloadIds = await task.RunSegment($"db - get release ids from followed artists (artist-release) - {releaseGroupString} - artists: {artistsCount}", async ct =>
+			var releaseArtistPayloadIds = await task.RunSegment($"db - get release ids with artist ids (main& featured) from followed artists (artist-release) - {releaseGroupString} - artists: {artistsCount}", async ct =>
 			{
 				var artistIds = artists.Select(a => a.Id).ToList();
 
 				return await _artistReleaseDb.GetArtistsByArtistIds(artistIds, releaseGroup, ct);
-
-				//var artistRole = EnumReleaseTypeExtensions.MapReleaseRoleFromGroup(releaseGroup);
-
-				//return await _artistReleaseDb.GetReleasesByArtistIds(artistIds, ct);
-
-				//return await _artistReleaseDb.GetArtistsByArtistIds(artistIds, ct);
-
-				//return await _artistReleaseDb.GetReleaseIds(artistIds, artistRole, ct);
 			});
 
 			var releasesCount = releaseArtistPayloadIds.Count;
-
-			/*var releaseArtists = await task.RunSegment($"db - get artists (main + featured from releases (artist-release) - {releaseGroupString} - artists: {artistsCount}", async ct =>
-			{
-				return await _artistReleaseDb.GetArtistsByReleaseIds(releaseArtistPayloadIds, ct);
-			});
-
-
-			var releases = await task.RunSegment($"db - get releases by ids (release) - {releaseGroupString} - {releasesCount}", async ct =>
-			{
-				var allReleaseIds = payloads.Select(p => p.ReleaseId).ToHashSet();
-
-				return await _releaseDb.GetByIds(payloads, releaseGroup, ct);
-			});*/
-
-
 
 			var payloadArtists = await task.RunSegment($"db - get artists by ids (artist) - {releaseGroupString} - {releasesCount}", async ct =>
 			{
@@ -127,13 +104,14 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 				var artists = await _artistDb.GetByIds(allArtistIds, ct);
 				var artistsDict = artists.ToDictionary(a => a.Id);
 
-				var releasePayloads = releaseArtistPayloadIds.Select(p => new SpotifyArtistReleasePayload(
+				var releasePayloads = releaseArtistPayloadIds.Select(p => new SpotifyArtistReleasePayload
+				(
 					p.ReleaseId,
-					p.MainArtistIds.Select(id => artistsDict[id]).ToHashSet(),
-					p.FeaturedArtistIds.Select(id => artistsDict[id]).ToHashSet()
-				)).ToList();
+					[.. p.MainArtistIds.Select(id => artistsDict[id])],
+					[.. p.FeaturedArtistIds.Select(id => artistsDict[id])])
+				);
 
-				return releasePayloads;
+				return releasePayloads.ToList();
 			});
 
 			var releases = await task.RunSegment($"db - get releases by ids (release) - {releaseGroupString} - {releasesCount}", async ct =>
@@ -150,6 +128,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 				var shouldSync = ShouldSync(releaseGroup, forceUpdate);
 				return shouldSync;
 			});
+
 			return shouldSync;
 		});
 	}

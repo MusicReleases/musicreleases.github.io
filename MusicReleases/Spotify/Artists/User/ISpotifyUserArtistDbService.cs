@@ -2,6 +2,6 @@
 
 namespace JakubKastner.MusicReleases.Spotify.Artists.User;
 
-internal interface ISpotifyUserArtistDbService : ISpotifyUserIdEntityService<SpotifyUserArtistPayload>
+internal interface ISpotifyUserArtistDbService : ISpotifyUserLinkEntityService<SpotifyUserArtistPayload>
 {
 }

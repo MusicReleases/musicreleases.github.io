@@ -50,12 +50,10 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 
 	private IReadOnlySet<SpotifyArtist>? AllArtists => _artistState.Items;
 
-
 	private const ReleaseAdvancedFilter _defaultAdvancedFilter = ReleaseAdvancedFilter.All;
 
 	private static readonly ReleaseAdvancedFilter[][] AdvancedFilterGroups =
 	[
-		[ReleaseAdvancedFilter.Albums,              ReleaseAdvancedFilter.Tracks,           ReleaseAdvancedFilter.EPs,           ReleaseAdvancedFilter.Compilations],
 		[ReleaseAdvancedFilter.NotRemixes,          ReleaseAdvancedFilter.Remixes],
 		[ReleaseAdvancedFilter.FollowedArtists,     ReleaseAdvancedFilter.SavedReleases],
 		[ReleaseAdvancedFilter.NotVariousArtists,   ReleaseAdvancedFilter.VariousArtists],
@@ -229,8 +227,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 
 		var query = source;
 
-		// skip first group because it's already applied in ApplyAdvancedFilterAlbumEpTrack
-		foreach (var group in AdvancedFilterGroups.Skip(1))
+		foreach (var group in AdvancedFilterGroups)
 		{
 			query = ApplyAdvancedFilterGroup(query, group);
 		}
@@ -378,7 +375,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 			}
 		}
 
-		foreach (var group in AdvancedFilterGroups.Skip(1))
+		foreach (var group in AdvancedFilterGroups)
 		{
 			var anyActive = newFilter.HasAnyFlag(group);
 			if (!anyActive)

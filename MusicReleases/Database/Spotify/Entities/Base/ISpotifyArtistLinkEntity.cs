@@ -10,5 +10,5 @@ internal interface ISpotifyArtistLinkEntity
 
 	ArtistReleaseRole Role { get; init; }
 
-	ReleaseType ReleaseType { get; init; }
+	//ReleaseType ReleaseType { get; init; }
 }
