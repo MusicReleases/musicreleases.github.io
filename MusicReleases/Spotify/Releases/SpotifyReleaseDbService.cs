@@ -1,42 +1,78 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
-using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.Spotify.Releases.Artists;
-using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Releases;
 using System.Data;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-internal sealed class DbSpotifyReleaseService(IDbSpotifyService dbService, ISpotifyArtistReleaseDbService linkArtistDb, ISpotifyArtistDbService artistsDb) : IDbSpotifyReleaseService
+
+internal sealed class SpotifyReleaseDbService(IDbSpotifyService dbService) : SpotifyIdEntityService<SpotifyRelease, SpotifyReleaseEntity, SpotifyArtistReleasePayload>, ISpotifyReleaseDbService
+{
+	private readonly IDbSpotifyService _dbService = dbService;
+
+	private ReleaseGroup _currentReleaseGroup;
+
+	protected override SpotifyReleaseEntity ToEntity(SpotifyRelease model) => model.ToEntity();
+
+	protected override SpotifyRelease ToModel(SpotifyReleaseEntity entity, SpotifyArtistReleasePayload payload) => entity.ToModel(payload.MainArtists, payload.FeaturedArtists);
+
+	protected override async Task<Table<SpotifyReleaseEntity, string>> GetTable()
+	{
+		var db = await _dbService.GetDb();
+		return db.Release;
+	}
+
+	public Task<IReadOnlyCollection<SpotifyRelease>> GetByIds(IReadOnlyCollection<SpotifyArtistReleasePayload> payloads, ReleaseGroup releaseGroup, CancellationToken ct)
+	{
+		_currentReleaseGroup = releaseGroup;
+		return GetByIds(payloads, ct);
+	}
+
+	protected override async Task<IEnumerable<SpotifyReleaseEntity>> FetchByIds(string[] ids)
+	{
+		var table = await GetTable();
+
+		if (_currentReleaseGroup == ReleaseGroup.Appears)
+		{
+			return await table.BulkGet(ids);
+		}
+
+		var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(_currentReleaseGroup);
+
+		var keys = ids.Select(id => (id, releaseType)).ToArray();
+
+		return await table.Where(x => x.Id, x => x.ReleaseType).AnyOf(keys).ToArray();
+	}
+}
+
+/*
+internal sealed class SpotifyReleaseDbService2(IDbSpotifyService dbService, ISpotifyArtistReleaseDbService linkArtistDb, ISpotifyArtistDbService artistsDb)
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 	private readonly ISpotifyArtistReleaseDbService _linkArtistDb = linkArtistDb;
 	private readonly ISpotifyArtistDbService _artistDb = artistsDb;
 
-	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseEnums mainReleaseType, CancellationToken ct)
+	public async Task<IReadOnlyList<SpotifyRelease>> GetByIds(IEnumerable<string> ids, ReleaseGroup releaseGroup, CancellationToken ct)
 	{
-		Console.WriteLine("db: get releases by ids - start");
-
 		var db = await _dbService.GetDb();
 
 		// get releases
 		IEnumerable<SpotifyReleaseEntity> releasesDb;
 
-		if (mainReleaseType == ReleaseEnums.Appears)
+		if (releaseGroup == ReleaseGroup.Appears)
 		{
 			ct.ThrowIfCancellationRequested();
 			releasesDb = await db.Release.BulkGet(ids);
-			ct.ThrowIfCancellationRequested();
 		}
 		else
 		{
-			var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(mainReleaseType);
+			var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(releaseGroup);
 
 			ct.ThrowIfCancellationRequested();
 			releasesDb = await db.Release.Where(x => x.Id, x => x.ReleaseType).AnyOf([.. ids.Select(id => (id, releaseType))]).ToArray();
-			ct.ThrowIfCancellationRequested();
 		}
 
 		if (!releasesDb.Any())
@@ -89,7 +125,6 @@ internal sealed class DbSpotifyReleaseService(IDbSpotifyService dbService, ISpot
 			releases.Add(release);
 		}
 
-		Console.WriteLine("db: get releases by ids - end");
 		return releases;
 	}
 
@@ -117,7 +152,7 @@ internal sealed class DbSpotifyReleaseService(IDbSpotifyService dbService, ISpot
 		Console.WriteLine("db: save releases - end");
 	}
 
-	public async Task Add(SpotifyRelease release, CancellationToken ct)
+	public async Task Save(SpotifyRelease release, CancellationToken ct)
 	{
 		Console.WriteLine("db: add release - start");
 
@@ -130,4 +165,4 @@ internal sealed class DbSpotifyReleaseService(IDbSpotifyService dbService, ISpot
 
 		Console.WriteLine("db: add release - end");
 	}
-}
+}*/

@@ -9,12 +9,15 @@ internal abstract class SpotifyIdEntityService<TModel, TIdEntity, TPayload> : IS
 	where TIdEntity : ISpotifyDb, ISpotifyIdEntity
 	where TPayload : ISpotifyPayload
 {
+	protected virtual bool InsertOnly => false;
+
 	protected readonly Dictionary<string, TModel> _cache = [];
 
-	protected abstract Task<Table<TIdEntity, string>> GetTable();
+	protected abstract TModel ToModel(TIdEntity entity, TPayload payload);
 
 	protected abstract TIdEntity ToEntity(TModel model);
-	protected abstract TModel ToModel(TIdEntity entity, TPayload payload);
+
+	protected abstract Task<Table<TIdEntity, string>> GetTable();
 
 	protected abstract Task<IEnumerable<TIdEntity>> FetchByIds(string[] ids);
 
@@ -32,12 +35,10 @@ internal abstract class SpotifyIdEntityService<TModel, TIdEntity, TPayload> : IS
 		{
 			var payloadMap = payloads.ToDictionary(p => p.Id);
 
-			var table = await GetTable();
 			ct.ThrowIfCancellationRequested();
-
 			var itemsDb = await FetchByIds(missingIds);
-			var items = itemsDb.Select(x => ToModel(x, payloadMap[x.Id]));
 
+			var items = itemsDb.Select(x => ToModel(x, payloadMap[x.Id]));
 			AddToCache(items);
 		}
 
@@ -53,14 +54,44 @@ internal abstract class SpotifyIdEntityService<TModel, TIdEntity, TPayload> : IS
 			return;
 		}
 
-		var itemsDb = items.Select(ToEntity);
+		List<TModel>? itemsToAdd;
 
 		var table = await GetTable();
+
+		if (InsertOnly)
+		{
+			var notInCache = items.Where(x => !_cache.ContainsKey(x.Id)).ToList();
+
+			if (notInCache.Count == 0)
+			{
+				return;
+			}
+
+			var notInCacheIds = notInCache.Select(x => x.Id).ToArray();
+
+			ct.ThrowIfCancellationRequested();
+
+			var existingIds = (await table.Where(x => x.Id).AnyOf(notInCacheIds).Keys()).ToHashSet();
+
+			itemsToAdd = [.. items.Where(x => !existingIds.Contains(x.Id))];
+
+			if (itemsToAdd.Count == 0)
+			{
+				return;
+			}
+		}
+
+		else
+		{
+			itemsToAdd = [.. items];
+		}
+
 		ct.ThrowIfCancellationRequested();
 
+		var itemsDb = itemsToAdd.Select(ToEntity);
 		await table.BulkPutSafe(itemsDb);
 
-		AddToCache(items);
+		AddToCache(itemsToAdd);
 	}
 
 	public async Task Save(TModel item, CancellationToken ct)

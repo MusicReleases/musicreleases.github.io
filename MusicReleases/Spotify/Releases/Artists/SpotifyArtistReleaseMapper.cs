@@ -5,8 +5,8 @@ namespace JakubKastner.MusicReleases.Spotify.Releases.Artists;
 
 internal static class SpotifyArtistReleaseMapper
 {
-	public static SpotifyArtistReleaseEntity ToArtistReleaseEntity(this string releaseId, string artistId, ArtistReleaseRole artistRole)
+	public static SpotifyArtistReleaseEntity ToArtistReleaseEntity(this string releaseId, string artistId, ArtistReleaseRole artistRole, ReleaseType releaseType)
 	{
-		return new(artistId, releaseId, artistRole);
+		return new(artistId, releaseId, artistRole, releaseType);
 	}
 }

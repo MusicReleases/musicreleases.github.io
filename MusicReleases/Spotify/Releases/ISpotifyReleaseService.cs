@@ -1,9 +1,8 @@
 ﻿using JakubKastner.SpotifyApi.Releases;
 
-namespace JakubKastner.MusicReleases.Spotify.Releases
+namespace JakubKastner.MusicReleases.Spotify.Releases;
+
+internal interface ISpotifyReleaseService
 {
-	public interface ISpotifyReleaseService
-	{
-		Task Get(ReleaseEnums releaseType, bool forceUpdate = false);
-	}
+	Task Get(ReleaseGroup releaseGroup, bool forceUpdate = false);
 }

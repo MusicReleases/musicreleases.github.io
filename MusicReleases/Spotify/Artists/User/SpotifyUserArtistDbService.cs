@@ -11,7 +11,7 @@ internal sealed class SpotifyUserArtistDbService(IDbSpotifyService dbService) : 
 
 	protected override SpotifyUserArtistPayload ToPayload(SpotifyUserArtistEntity entity) => entity.ToPayload();
 
-	protected override SpotifyUserArtistEntity CreateEntity(SpotifyUserArtistPayload payload, string userId) => payload.ToEntity(userId);
+	protected override SpotifyUserArtistEntity ToEntity(SpotifyUserArtistPayload payload, string userId) => payload.ToEntity(userId);
 
 	protected override async Task<Table<SpotifyUserArtistEntity, (string, string)>> GetTable()
 	{

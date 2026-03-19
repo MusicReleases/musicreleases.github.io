@@ -104,15 +104,15 @@ public static class EnumIconsExtensions
 		};
 	}
 
-	public static LucideIcon GetIconForRelease(ReleaseEnums mainReleasesType)
+	public static LucideIcon GetIconForRelease(ReleaseGroup mainReleasesType)
 	{
 		return mainReleasesType switch
 		{
-			ReleaseEnums.Albums => LucideIcon.Disc3,
-			ReleaseEnums.Tracks => LucideIcon.Music,
-			ReleaseEnums.Appears => LucideIcon.Users,
-			ReleaseEnums.Compilations => LucideIcon.DiscAlbum,
-			ReleaseEnums.Podcasts => LucideIcon.Podcast,
+			ReleaseGroup.Albums => LucideIcon.Disc3,
+			ReleaseGroup.Tracks => LucideIcon.Music,
+			ReleaseGroup.Appears => LucideIcon.Users,
+			ReleaseGroup.Compilations => LucideIcon.DiscAlbum,
+			ReleaseGroup.Podcasts => LucideIcon.Podcast,
 			_ => throw new NotSupportedException(nameof(mainReleasesType)),
 		};
 	}

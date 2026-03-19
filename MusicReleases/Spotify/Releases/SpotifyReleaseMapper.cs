@@ -4,7 +4,7 @@ using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-public static class SpotifyReleaseMapper
+internal static class SpotifyReleaseMapper
 {
 	public static SpotifyReleaseEntity ToEntity(this SpotifyRelease dto)
 	{

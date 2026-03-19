@@ -4,7 +4,8 @@ using JakubKastner.MusicReleases.Spotify;
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
-internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : ISpotifyUserIdEntityService<TPayload>
+internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : SpotifyLinkEntityService<TUserIdEntity, string, string>,
+	  ISpotifyUserIdEntityService<TPayload>
 	where TUserIdEntity : ISpotifyDb, ISpotifyUserIdEntity
 	where TPayload : ISpotifyPayload
 {
@@ -12,23 +13,30 @@ internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : IS
 
 	protected abstract TPayload ToPayload(TUserIdEntity entity);
 
-	protected abstract Task<Table<TUserIdEntity, (string userId, string linkId)>> GetTable();
-
-	protected abstract TUserIdEntity CreateEntity(TPayload payload, string userId);
+	protected abstract TUserIdEntity ToEntity(TPayload payload, string userId);
 
 	protected abstract Task<IEnumerable<TUserIdEntity>> FetchByUserId(string userId);
+
+	protected sealed override async Task<IEnumerable<TUserIdEntity>> FetchByKeys1(IEnumerable<string> userIds)
+	{
+		var results = new List<TUserIdEntity>();
+		foreach (var userId in userIds)
+		{
+			results.AddRange(await FetchByUserId(userId));
+		}
+		return results;
+	}
+
 
 	public async Task<IReadOnlyCollection<TPayload>> GetByUserId(string userId, CancellationToken ct)
 	{
 		if (_cache.TryGetValue(userId, out var cached))
 		{
-			Console.WriteLine($"Cache hit for {typeof(TPayload).Name} userId: {userId}, items count: {cached.Count}");
 			return cached;
 		}
 
 		ct.ThrowIfCancellationRequested();
 		var linksDb = await FetchByUserId(userId);
-		Console.WriteLine($"linksDb hit for {typeof(TPayload).Name} userId: {userId}, items count: {linksDb.Count()}");
 
 		var payloads = new SortedSet<TPayload>(linksDb.Select(ToPayload));
 		_cache[userId] = payloads;
@@ -67,7 +75,7 @@ internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : IS
 
 		if (toAdd.Count > 0)
 		{
-			var toAddDb = toAdd.Select(payload => CreateEntity(payload, userId));
+			var toAddDb = toAdd.Select(payload => ToEntity(payload, userId));
 
 			await table.BulkPutSafe(toAddDb);
 		}
@@ -87,24 +95,18 @@ internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : IS
 			return;
 		}
 
-		var itemsDb = items.Select(x => CreateEntity(x, userId));
+		var itemsDb = items.Select(x => ToEntity(x, userId)).ToList();
 
-		var table = await GetTable();
-		ct.ThrowIfCancellationRequested();
-
-		await table.BulkPutSafe(itemsDb);
+		await SaveEntities(itemsDb, ct);
 
 		AddToCache(items, userId);
 	}
 
 	public async Task Save(TPayload item, string userId, CancellationToken ct)
 	{
-		var itemDb = CreateEntity(item, userId);
+		var itemDb = ToEntity(item, userId);
 
-		var table = await GetTable();
-		ct.ThrowIfCancellationRequested();
-
-		await table.PutSafe(itemDb);
+		await SaveEntity(itemDb, ct);
 
 		AddToCache(item, userId);
 	}
@@ -125,13 +127,5 @@ internal abstract class SpotifyUserIdEntityService<TUserIdEntity, TPayload> : IS
 		await table.Where(x => x.UserId, userId).Delete();
 
 		_cache.Remove(userId);
-	}
-
-	public async Task DeleteAll()
-	{
-		var table = await GetTable();
-		await table.Clear();
-
-		_cache.Clear();
 	}
 }

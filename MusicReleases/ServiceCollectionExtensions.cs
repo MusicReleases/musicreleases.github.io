@@ -12,7 +12,6 @@ using JakubKastner.MusicReleases.Spotify.Releases;
 using JakubKastner.MusicReleases.Spotify.Releases.Artists;
 using JakubKastner.MusicReleases.Spotify.Releases.Tracks;
 using JakubKastner.MusicReleases.Spotify.Releases.User;
-using JakubKastner.MusicReleases.State.Spotify;
 
 namespace JakubKastner.MusicReleases;
 
@@ -48,7 +47,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyArtistDbService, SpotifyArtistDbService>();
 		services.AddScoped<ISpotifyArtistReleaseDbService, SpotifyArtistReleaseDbService>();
 
-		services.AddScoped<IDbSpotifyReleaseService, DbSpotifyReleaseService>();
+		services.AddScoped<ISpotifyReleaseDbService, SpotifyReleaseDbService>();
 
 		services.AddScoped<ISpotifyUserPlaylistDbService, SpotifyUserPlaylistDbService>();
 		services.AddScoped<ISpotifyPlaylistDbService, SpotifyPlaylistDbService>();

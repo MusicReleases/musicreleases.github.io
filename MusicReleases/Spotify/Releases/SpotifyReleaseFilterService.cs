@@ -1,7 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Objects.Spotify;
 using JakubKastner.MusicReleases.Spotify.Artists;
-using JakubKastner.MusicReleases.State.Spotify;
 using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Releases;
 using System.Collections.Concurrent;
@@ -47,7 +46,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 	public Dictionary<int, SortedSet<int>>? FilteredDate { get; private set; }
 
 
-	private ConcurrentDictionary<ReleaseEnums, IReadOnlyList<SpotifyRelease>> AllReleases => _releaseState.ReleasesByType;
+	private ConcurrentDictionary<ReleaseGroup, IReadOnlySet<SpotifyRelease>> AllReleases => _releaseState.Items;
 
 	private IReadOnlySet<SpotifyArtist>? AllArtists => _artistState.Items;
 
@@ -129,7 +128,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 		Console.WriteLine("filter: releases - start");
 
 		// releases by type
-		var releasesByType = AllReleases.TryGetValue(Filter.ReleaseGroup, out var set) ? set : [];
+		var releasesByType = AllReleases.TryGetValue(Filter.ReleaseGroup, out var set) ? set : new SortedSet<SpotifyRelease>();
 
 		// releases by advanced filter
 		var releasesByTypeAdvanced = ApplyAdvancedFilter(releasesByType);
@@ -138,7 +137,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 		var releasesByTypeAdvancedArtist = releasesByTypeAdvanced;
 		if (Filter.Artist.IsNotNullOrEmpty())
 		{
-			if (Filter.ReleaseGroup == ReleaseEnums.Appears)
+			if (Filter.ReleaseGroup == ReleaseGroup.Appears)
 			{
 				releasesByTypeAdvancedArtist = releasesByTypeAdvanced.Where(r => r.FeaturedArtists.Any(a => a.Id == Filter.Artist));
 			}
@@ -195,14 +194,14 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 		var showEPs = Filter.ReleaseAdvancedFilter.HasFlag(ReleaseAdvancedFilter.EPs);
 		var showCompilations = Filter.ReleaseAdvancedFilter.HasFlag(ReleaseAdvancedFilter.Compilations);
 
-		if (Filter.ReleaseGroup == ReleaseEnums.Tracks)
+		if (Filter.ReleaseGroup == ReleaseGroup.Tracks)
 		{
 			if (showTracks ^ showEPs)
 			{
 				query = query.Where(r => showTracks ? r.TotalTracks == 1 : r.TotalTracks > 1);
 			}
 		}
-		else if (Filter.ReleaseGroup == ReleaseEnums.Appears)
+		else if (Filter.ReleaseGroup == ReleaseGroup.Appears)
 		{
 			var anySelected = showAlbums || showTracks || showEPs || showCompilations;
 			var allSelected = showAlbums && showTracks && showEPs && showCompilations;
@@ -325,7 +324,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 		}
 
 		var artistIdsInFilteredReleases
-			= Filter.ReleaseGroup == ReleaseEnums.Appears
+			= Filter.ReleaseGroup == ReleaseGroup.Appears
 			? releasesByTypeDate.SelectMany(r => r.FeaturedArtists.Select(a => a.Id)).ToHashSet()
 			: releasesByTypeDate.SelectMany(r => r.Artists.Select(a => a.Id)).ToHashSet();
 
@@ -392,12 +391,12 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 		}
 		return newFilter;
 	}
-	private static ReleaseAdvancedFilter[] GetValidAdvancedFilterForReleaseType(ReleaseEnums releaseGroup)
+	private static ReleaseAdvancedFilter[] GetValidAdvancedFilterForReleaseType(ReleaseGroup releaseGroup)
 	{
 		return releaseGroup switch
 		{
-			ReleaseEnums.Tracks => [ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs],
-			ReleaseEnums.Appears => [ReleaseAdvancedFilter.Albums, ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs, ReleaseAdvancedFilter.Compilations],
+			ReleaseGroup.Tracks => [ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs],
+			ReleaseGroup.Appears => [ReleaseAdvancedFilter.Albums, ReleaseAdvancedFilter.Tracks, ReleaseAdvancedFilter.EPs, ReleaseAdvancedFilter.Compilations],
 			_ => []
 		};
 	}
@@ -572,7 +571,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 		NotifySynchronizer?.Invoke();
 	}
 
-	public void FilterReleaseType(ReleaseEnums releaseType)
+	public void FilterReleaseType(ReleaseGroup releaseType)
 	{
 		if (releaseType == Filter.ReleaseGroup)
 		{

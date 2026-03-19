@@ -12,7 +12,7 @@ internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtist
 	private readonly ISpotifyReleaseService _spotifyReleaseService = spotifyReleaseService;
 	private readonly ISpotifyPlaylistService _spotifyPlaylistService = spotifyPlaylistService;
 
-	public async Task StartLoadingAll(ReleaseEnums releaseType, bool forceUpdate)
+	public async Task StartLoadingAll(ReleaseGroup releaseType, bool forceUpdate)
 	{
 		await StartLoadingArtistsWithReleases(releaseType, forceUpdate);
 		await StartLoadingPlaylistsWithTracks(forceUpdate);
@@ -46,7 +46,7 @@ internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtist
 
 
 	// artists
-	public async Task StartLoadingArtistsWithReleases(ReleaseEnums releaseType, bool forceUpdate)
+	public async Task StartLoadingArtistsWithReleases(ReleaseGroup releaseType, bool forceUpdate)
 	{
 		await StartLoadingArtists(forceUpdate);
 		await StartLoadingReleases(releaseType, forceUpdate);
@@ -61,7 +61,7 @@ internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtist
 		Console.WriteLine("workflow: artists - end");
 	}
 
-	public async Task StartLoadingReleases(ReleaseEnums releaseType, bool forceUpdate)
+	public async Task StartLoadingReleases(ReleaseGroup releaseType, bool forceUpdate)
 	{
 		Console.WriteLine("workflow: releases - start");
 
@@ -70,7 +70,7 @@ internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtist
 		Console.WriteLine("workflow: releases - end");
 	}
 
-	public async Task Update(UpdateButtonComponent updateType, ReleaseEnums releaseType)
+	public async Task Update(UpdateButtonComponent updateType, ReleaseGroup releaseType)
 	{
 		switch (updateType)
 		{

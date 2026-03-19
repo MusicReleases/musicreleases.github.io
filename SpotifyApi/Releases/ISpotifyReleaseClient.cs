@@ -4,6 +4,6 @@ namespace JakubKastner.SpotifyApi.Releases;
 
 public interface ISpotifyReleaseClient
 {
-	Task<List<SpotifyRelease>> GetByArtist(SpotifyArtist artist, ReleaseEnums releaseType, CancellationToken ct = default);
-	Task<List<SpotifyRelease>> GetByArtists(IEnumerable<SpotifyArtist> artistIds, ReleaseEnums releaseType, CancellationToken ct = default);
+	Task<List<SpotifyRelease>> GetByArtist(SpotifyArtist artist, ReleaseGroup releaseType, CancellationToken ct = default);
+	Task<List<SpotifyRelease>> GetByArtists(IEnumerable<SpotifyArtist> artistIds, ReleaseGroup releaseType, CancellationToken ct = default);
 }

@@ -1,11 +1,101 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases.Artists;
 
-internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService) : ISpotifyArtistReleaseDbService
+internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService) : SpotifyArtistLinkService<SpotifyArtistReleaseEntity>, ISpotifyArtistReleaseDbService
+{
+	private readonly IDbSpotifyService _dbService = dbService;
+
+	protected override async Task<IEnumerable<SpotifyArtistReleaseEntity>> FetchByKeys1(IEnumerable<string> artistIds)
+	{
+		var table = await GetTable();
+
+		var linksByArtists = await table.Where(x => x.ArtistId).AnyOf([.. artistIds]).ToArray();
+
+		return linksByArtists;
+	}
+
+	protected override async Task<IEnumerable<SpotifyArtistReleaseEntity>> FetchByKeys2(IEnumerable<string> releaseIds)
+	{
+		var table = await GetTable();
+
+		var linksByReleases = await table.Where(x => x.ReleaseId).AnyOf([.. releaseIds]).ToArray();
+
+		return linksByReleases;
+	}
+
+
+	protected override async Task<IEnumerable<SpotifyArtistReleaseEntity>> FetchByArtistsAndGroup(IEnumerable<string> artistIds, ArtistReleaseRole? artistRole, ReleaseType? releaseType)
+	{
+		var table = await GetTable();
+
+		IEnumerable<SpotifyArtistReleaseEntity>? linksByReleases;
+
+		if (artistRole.HasValue && releaseType.HasValue)
+		{
+			var links = artistIds.Select(id => (id, artistRole.Value, releaseType.Value));
+			linksByReleases = await table.Where(x => x.ArtistId, x => x.Role, x => x.ReleaseType).AnyOf([.. links]).ToArray();
+		}
+		else if (artistRole.HasValue)
+		{
+			var links = artistIds.Select(id => (id, artistRole.Value));
+			linksByReleases = await table.Where(x => x.ArtistId, x => x.Role).AnyOf([.. links]).ToArray();
+		}
+		else if (releaseType.HasValue)
+		{
+			var links = artistIds.Select(id => (id, releaseType.Value));
+			linksByReleases = await table.Where(x => x.ArtistId, x => x.ReleaseType).AnyOf([.. links]).ToArray();
+		}
+		else
+		{
+			var links = artistIds;
+			linksByReleases = await table.Where(x => x.ArtistId).AnyOf([.. links]).ToArray();
+		}
+
+		return linksByReleases;
+	}
+	protected override async Task<IEnumerable<SpotifyArtistReleaseEntity>> FetchByReleasesAndGroup(IEnumerable<string> releaseIds, ArtistReleaseRole? artistRole, ReleaseType? releaseType)
+	{
+		var table = await GetTable();
+
+		IEnumerable<SpotifyArtistReleaseEntity>? linksByReleases;
+
+		if (artistRole.HasValue && releaseType.HasValue)
+		{
+			var links = releaseIds.Select(id => (id, artistRole.Value, releaseType.Value));
+			linksByReleases = await table.Where(x => x.ReleaseId, x => x.Role, x => x.ReleaseType).AnyOf([.. links]).ToArray();
+		}
+		else if (artistRole.HasValue)
+		{
+			var links = releaseIds.Select(id => (id, artistRole.Value));
+			linksByReleases = await table.Where(x => x.ReleaseId, x => x.Role).AnyOf([.. links]).ToArray();
+		}
+		else if (releaseType.HasValue)
+		{
+			var links = releaseIds.Select(id => (id, releaseType.Value));
+			linksByReleases = await table.Where(x => x.ReleaseId, x => x.ReleaseType).AnyOf([.. links]).ToArray();
+		}
+		else
+		{
+			var links = releaseIds;
+			linksByReleases = await table.Where(x => x.ReleaseId).AnyOf([.. links]).ToArray();
+		}
+
+		return linksByReleases;
+	}
+
+	protected override async Task<Table<SpotifyArtistReleaseEntity, (string, string)>> GetTable()
+	{
+		var db = await _dbService.GetDb();
+		return db.ArtistRelease;
+	}
+}
+
+internal sealed class SpotifyArtistReleaseDbService2(IDbSpotifyService dbService) : ISpotifyArtistReleaseDbServiceOld
 {
 	// TODO check and optimize
 

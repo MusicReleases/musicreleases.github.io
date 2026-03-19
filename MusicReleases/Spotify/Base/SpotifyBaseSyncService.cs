@@ -12,25 +12,23 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Spotify.Base;
 
-internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity, TPayload>(ISpotifyUserClient userApi, /*ISpotifyPlaylistClient playlistApi,*/ ISpotifyIdEntityService<TModel, TPayload> entityDbService, ISpotifyUserIdEntityService<TPayload> userLinkDbService, IDbSpotifyUserUpdateService updateDb, ISpotifyState<TModel> state, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : ISpotifyBaseSyncService where TModel : SpotifyIdNameObject
+internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity, TPayload>(ISpotifyUserClient userApi, ISpotifyIdEntityService<TModel, TPayload> entityDbService, ISpotifyUserIdEntityService<TPayload> userLinkDbService, IDbSpotifyUserUpdateService updateDb, ISpotifyState<TModel> state, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : SpotifyBaseSyncServiceCore<TModel, NoContext>(userApi, updateDb, taskManager, loadingService), ISpotifyBaseSyncService where TModel : SpotifyIdNameObject
 	where TIdEntity : ISpotifyIdEntity
 	where TUserIdEntity : ISpotifyUserIdEntity
 	where TPayload : ISpotifyPayload
 {
-	private readonly ISpotifyUserClient _userApi = userApi;
-	//private readonly ISpotifyArtistClient _artistApi = artistApi;
 	private readonly ISpotifyIdEntityService<TModel, TPayload> _entityDbService = entityDbService;
 	private readonly ISpotifyUserIdEntityService<TPayload> _userLinkDbService = userLinkDbService;
-	private readonly IDbSpotifyUserUpdateService _updateDb = updateDb;
 	private readonly ISpotifyState<TModel> _state = state;
-	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
-	private readonly ILoadingService _loadingService = loadingService;
 
-	protected abstract BackgroundTaskType TaskType { get; }
+	protected sealed override string GetTaskDescription(NoContext _) => TaskDescription;
+
+	protected sealed override DateTime? GetLastSync(NoContext _) => LastSync;
+
+	protected sealed override bool GetIsDataInState(NoContext _) => IsDataInState;
+
 
 	protected abstract SpotifyDbUpdateType DbUpdateType { get; }
-
-	protected abstract string TaskTitle { get; }
 
 	protected abstract string TaskDescription { get; }
 
@@ -48,45 +46,11 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 
 	protected virtual IReadOnlyCollection<TModel> MergePayloads(IReadOnlyCollection<TModel> models, IReadOnlyCollection<TPayload> payloads) => models;
 
-	protected bool ShouldSync(bool forceUpdate)
-	{
-		if (forceUpdate)
-		{
-			return true;
-		}
-		return (DateTime.Now - (LastSync ?? DateTime.MinValue)).TotalHours > 24;
-	}
+	public Task Get(bool forceUpdate = false) => RunGet(default, forceUpdate);
 
-	public async Task Get(bool forceUpdate = false)
-	{
-		if (_loadingService.IsLoading(TaskType))
-		{
-			return;
-		}
+	protected bool ShouldSync(bool forceUpdate) => ShouldSync(default, forceUpdate);
 
-		var isInState = IsDataInState;
-
-		if (isInState && !ShouldSync(forceUpdate))
-		{
-			return;
-		}
-
-		await _taskManager.Run(TaskType, TaskTitle, TaskDescription, async task =>
-		{
-			var userId = _userApi.GetUserIdRequired();
-
-			if (!isInState)
-			{
-				var shouldSync = await LoadFromDbToState(userId, forceUpdate, task);
-				if (!shouldSync) return;
-			}
-
-			var apiData = await LoadFromApi(task);
-			await SaveToDbAndState(apiData, userId, task);
-		});
-	}
-
-	private async Task<bool> LoadFromDbToState(string userId, bool forceUpdate, BackgroundTask task)
+	protected sealed override async Task<bool> LoadFromDbToState(NoContext _, string userId, bool forceUpdate, BackgroundTask task)
 	{
 		return await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
 		{
@@ -103,8 +67,6 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 			});
 
 			var count = payloads.Count;
-
-			Console.WriteLine($"Got {count} {EntityName} payloads from DB, last sync: {lastSync}");
 
 			if (count == 0)
 			{
@@ -134,8 +96,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 		_state.Set(models, lastSync);
 	}
 
-
-	private async Task<IReadOnlyCollection<TModel>> LoadFromApi(BackgroundTask task)
+	protected sealed override async Task<IReadOnlyCollection<TModel>?> LoadFromApi(NoContext _, BackgroundTask task)
 	{
 		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
@@ -144,7 +105,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 		});
 	}
 
-	private async Task SaveToDbAndState(IReadOnlyCollection<TModel> models, string userId, BackgroundTask task)
+	protected sealed override async Task SaveToDbAndState(NoContext _, IReadOnlyCollection<TModel> models, string userId, BackgroundTask task)
 	{
 		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
 		{
