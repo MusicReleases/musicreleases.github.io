@@ -11,11 +11,14 @@ internal sealed class SpotifyUserPlaylistDbService(IDbSpotifyService dbService) 
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	protected override Expression<Func<SpotifyUserPlaylistEntity, string>> UserIdExpression => x => x.UserId;
+	protected override Expression<Func<SpotifyUserPlaylistEntity, string>> Key1Expression => x => x.UserId;
 
-	protected override SpotifyUserPlaylistPayload ToPayload(SpotifyUserPlaylistEntity entity) => entity.ToPayload();
+	protected override Expression<Func<SpotifyUserPlaylistEntity, string>> Key2Expression => x => x.PlaylistId;
 
-	protected override SpotifyUserPlaylistEntity ToEntity(SpotifyUserPlaylistPayload payload, string userId) => payload.ToEntity(userId);
+	protected override SpotifyUserPlaylistEntity ToEntityFromKey1(SpotifyUserPlaylistPayload payload, string userId) => payload.ToEntity(userId);
+
+	protected override SpotifyUserPlaylistPayload ToPayload1(SpotifyUserPlaylistEntity entity) => entity.ToPayload();
+
 
 	protected override async Task<Table<SpotifyUserPlaylistEntity, (string, string)>> GetTable()
 	{
@@ -23,15 +26,9 @@ internal sealed class SpotifyUserPlaylistDbService(IDbSpotifyService dbService) 
 		return db.UserPlaylist;
 	}
 
-	protected override async Task<IEnumerable<SpotifyUserPlaylistEntity>> FetchByUserId(string userId)
-	{
-		var table = await GetTable();
-		return await table.Where(x => x.UserId, userId).ToArray();
-	}
-
 	public async Task AddNew(SpotifyPlaylist playlist, string userId, CancellationToken ct)
 	{
-		var payload = new SpotifyUserPlaylistPayload(playlist.Id, playlist.Order);
+		var payload = playlist.ToPayload();
 		await Save(payload, userId, ct);
 	}
 }

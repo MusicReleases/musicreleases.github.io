@@ -16,7 +16,7 @@ internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
 		return db.ArtistRelease;
 	}
 
-	public async Task<IReadOnlyCollection<SpotifyArtistGroupPayload>> GetArtistsByArtistIds(IReadOnlyCollection<string> artistIds, ReleaseGroup releaseGroup, CancellationToken ct)
+	public async Task<IReadOnlyCollection<SpotifyArtistGroupByReleasePayload>> GetArtistsByArtistIds(IReadOnlyCollection<string> artistIds, ReleaseGroup releaseGroup, CancellationToken ct)
 	{
 		if (artistIds.Count == 0)
 		{
@@ -41,7 +41,7 @@ internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
 
 			var payloads = artists
 				.GroupBy(x => x.ReleaseId)
-				.Select(g => new SpotifyArtistGroupPayload
+				.Select(g => new SpotifyArtistGroupByReleasePayload
 				(
 					g.Key,
 					g.Where(x => x.Role == ArtistReleaseRole.Main).Select(x => x.ArtistId).ToHashSet(),
@@ -52,7 +52,7 @@ internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
 
 			foreach (var payload in payloads)
 			{
-				_cache[payload.ReleaseId] = payload;
+				_cache[payload.Id] = payload;
 			}
 		}
 

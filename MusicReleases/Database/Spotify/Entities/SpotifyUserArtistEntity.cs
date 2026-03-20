@@ -9,7 +9,4 @@ public partial record SpotifyUserArtistEntity
 (
 	[property: Index] string UserId,
 	[property: Index] string ArtistId
-) : ISpotifyDb, ISpotifyUserIdLinkEntity
-{
-	public string GetLinkedId() => ArtistId;
-}
+) : ISpotifyDb, ISpotifyUserIdLinkEntity;

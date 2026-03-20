@@ -6,5 +6,5 @@ namespace JakubKastner.MusicReleases.Spotify.Releases.Artists;
 
 internal interface ISpotifyArtistReleaseDbService : ISpotifyArtistLinkEntityService<SpotifyArtistReleaseEntity>
 {
-	Task<IReadOnlyCollection<SpotifyArtistGroupPayload>> GetArtistsByArtistIds(IReadOnlyCollection<string> artistIds, ReleaseGroup releaseGroup, CancellationToken ct);
+	Task<IReadOnlyCollection<SpotifyArtistGroupByReleasePayload>> GetArtistsByArtistIds(IReadOnlyCollection<string> artistIds, ReleaseGroup releaseGroup, CancellationToken ct);
 }

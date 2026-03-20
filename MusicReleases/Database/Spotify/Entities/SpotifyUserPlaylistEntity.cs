@@ -10,4 +10,4 @@ public partial record SpotifyUserPlaylistEntity
 	[property: Index] string UserId,
 	[property: Index] string PlaylistId,
 	int Order
-) : ISpotifyDb, ISpotifyUserIdEntity;
+) : ISpotifyDb, ISpotifyUserIdLinkEntity;

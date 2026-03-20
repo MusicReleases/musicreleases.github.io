@@ -2,5 +2,4 @@
 
 public interface ISpotifyUserIdLinkEntity : ISpotifyUserIdEntity
 {
-	string GetLinkedId();
 }

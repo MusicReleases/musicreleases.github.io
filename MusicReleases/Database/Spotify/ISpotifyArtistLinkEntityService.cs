@@ -2,8 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
-internal interface ISpotifyArtistLinkEntityService<TArtistLinkEntity> : ISpotifyLinkEntityService where TArtistLinkEntity : ISpotifyDb, ISpotifyArtistLinkEntity
+internal interface ISpotifyArtistLinkEntityService<TArtistLinkEntity> : ISpotifyLinkEntityServiceCore where TArtistLinkEntity : ISpotifyDb, ISpotifyArtistLinkEntity
 {
-	Task<IEnumerable<TArtistLinkEntity>> FetchByKeys2(IEnumerable<string> releaseIds);
 	Task Save(IReadOnlyCollection<TArtistLinkEntity> entities, CancellationToken ct);
 }

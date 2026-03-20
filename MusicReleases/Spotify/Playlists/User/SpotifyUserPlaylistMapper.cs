@@ -9,7 +9,6 @@ internal static class SpotifyUserPlaylistMapper
 	{
 		return new(userId, payload.Id, payload.Order);
 	}
-
 	public static SpotifyUserPlaylistPayload ToPayload(this SpotifyUserPlaylistEntity entity)
 	{
 		return new(entity.PlaylistId, entity.Order);

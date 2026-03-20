@@ -10,21 +10,17 @@ internal sealed class SpotifyUserArtistDbService(IDbSpotifyService dbService) : 
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	protected override Expression<Func<SpotifyUserArtistEntity, string>> UserIdExpression => x => x.UserId;
+	protected override Expression<Func<SpotifyUserArtistEntity, string>> Key1Expression => x => x.UserId;
 
-	protected override SpotifyUserArtistPayload ToPayload(SpotifyUserArtistEntity entity) => entity.ToPayload();
+	protected override Expression<Func<SpotifyUserArtistEntity, string>> Key2Expression => x => x.ArtistId;
 
-	protected override SpotifyUserArtistEntity ToEntity(SpotifyUserArtistPayload payload, string userId) => payload.ToEntity(userId);
+	protected override SpotifyUserArtistEntity ToEntityFromKey1(SpotifyUserArtistPayload payload, string key1) => payload.ToEntity(key1);
+
+	protected override SpotifyUserArtistPayload ToPayload1(SpotifyUserArtistEntity entity) => entity.ToPayload();
 
 	protected override async Task<Table<SpotifyUserArtistEntity, (string, string)>> GetTable()
 	{
 		var db = await _dbService.GetDb();
 		return db.UserArtist;
-	}
-
-	protected override async Task<IEnumerable<SpotifyUserArtistEntity>> FetchByUserId(string userId)
-	{
-		var table = await GetTable();
-		return await table.Where(x => x.UserId, userId).ToArray();
 	}
 }

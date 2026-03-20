@@ -2,12 +2,10 @@
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
-internal abstract class SpotifyLinkEntityService<TEntity, TKey1, TKey2> : ISpotifyLinkEntityService where TEntity : ISpotifyDb
-	where TKey1 : notnull
-	where TKey2 : notnull
+internal abstract class SpotifyLinkEntityServiceCore<TEntity> : ISpotifyLinkEntityServiceCore where TEntity : ISpotifyDb
 {
-	protected abstract Task<Table<TEntity, (TKey1, TKey2)>> GetTable();
-	protected abstract Task<IEnumerable<TEntity>> FetchByKeys1(IEnumerable<TKey1> keys1);
+
+	protected abstract Task<Table<TEntity, (string, string)>> GetTable();
 
 	protected async Task SaveEntities(IReadOnlyCollection<TEntity> entities, CancellationToken ct)
 	{

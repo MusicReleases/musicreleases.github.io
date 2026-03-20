@@ -106,7 +106,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 
 				var releasePayloads = releaseArtistPayloadIds.Select(p => new SpotifyArtistReleasePayload
 				(
-					p.ReleaseId,
+					p.Id,
 					[.. p.MainArtistIds.Select(id => artistsDict[id])],
 					[.. p.FeaturedArtistIds.Select(id => artistsDict[id])])
 				);

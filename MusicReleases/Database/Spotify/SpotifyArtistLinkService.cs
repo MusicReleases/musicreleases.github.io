@@ -1,31 +1,16 @@
-﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 
 internal abstract class SpotifyArtistLinkService<TArtistLinkEntity>
-	: SpotifyLinkEntityService<TArtistLinkEntity, string, string>, ISpotifyArtistLinkEntityService<TArtistLinkEntity> where TArtistLinkEntity : ISpotifyDb, ISpotifyArtistLinkEntity
+	: SpotifyLinkEntityServiceCore<TArtistLinkEntity>, ISpotifyArtistLinkEntityService<TArtistLinkEntity> where TArtistLinkEntity : ISpotifyDb, ISpotifyArtistLinkEntity
 {
-	protected readonly Dictionary<string, SpotifyArtistGroupPayload> _cache = [];
+	protected readonly Dictionary<string, SpotifyArtistGroupByReleasePayload> _cache = [];
 
-	protected override async Task<IEnumerable<TArtistLinkEntity>> FetchByKeys1(IEnumerable<string> artistIds)
-	{
-		var table = await GetTable();
+	/*protected override Expression<Func<TArtistLinkEntity, string>> Key1Expression => x => x.ArtistId;
 
-		var linksByArtists = await table.Where(x => x.ArtistId).AnyOf([.. artistIds]).ToArray();
-
-		return linksByArtists;
-	}
-
-	public async Task<IEnumerable<TArtistLinkEntity>> FetchByKeys2(IEnumerable<string> releaseIds)
-	{
-		var table = await GetTable();
-
-		var linksByReleases = await table.Where(x => x.ReleaseId).AnyOf([.. releaseIds]).ToArray();
-
-		return linksByReleases;
-	}
+	protected override Expression<Func<TArtistLinkEntity, string>> Key2Expression => x => x.ReleaseId;*/
 
 	public async Task Save(IReadOnlyCollection<TArtistLinkEntity> entities, CancellationToken ct)
 	{
