@@ -11,6 +11,11 @@ internal static class SpotifyReleaseMapper
 		var releaseType = MapReleaseTypeFromApi(api.AlbumType);
 		var releaseDate = api.ReleaseDate.ToDateTimeNullable() ?? new(1900, 1, 1);
 		var urlImage = GetImageUrl(api.Images);
+		if (urlImage.IsNullOrEmpty())
+		{
+			Console.WriteLine(api.Uri);
+		}
+
 		var artists = api.Artists.Select(simpleArtist => simpleArtist.ToObject()).ToHashSet();
 
 		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[ApiConventions.ExternalUrlSpotifyKey], releaseType, releaseDate, urlImage, api.TotalTracks, true, artists, featuredArtists);
@@ -63,9 +68,10 @@ internal static class SpotifyReleaseMapper
 
 	private static string GetImageUrl(List<Image> images)
 	{
-		if (images.Count < ApiConventions.SmallImageIndex)
+		if (images == null || images.Count == 0)
 		{
-			throw new ArgumentNullException(nameof(images));
+			return string.Empty;
+			//throw new ArgumentException("Images list is empty or null", nameof(images));
 		}
 
 		if (images.Count >= ApiConventions.MediumImageIndex)

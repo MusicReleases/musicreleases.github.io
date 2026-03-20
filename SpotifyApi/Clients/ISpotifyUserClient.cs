@@ -8,6 +8,5 @@ public interface ISpotifyUserClient
 	SpotifyUser GetUserRequired();
 	bool IsLoggedIn();
 	Task<bool> LoginUser(string clientId, string code, string loginVerifier, string redirectUrl);
-	Task<string> RefreshAccessToken();
 	Task SetUserFromDb(SpotifyUser user);
 }

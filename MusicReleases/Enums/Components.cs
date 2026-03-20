@@ -28,7 +28,7 @@ public enum UpdateButtonComponent
 	Playlists,
 }
 
-// TODO new enum to components
+// TODO components enums - add new
 /*public enum UpdateButtonComponentLocation
 {
 	SidebarHeader,

@@ -67,7 +67,7 @@ internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyRelease
 		[ReleaseAdvancedFilter.NotRemixes] = t => !t.Name.Contains("remix", StringComparison.CurrentCultureIgnoreCase) || t.Name.Contains("rmx", StringComparison.CurrentCultureIgnoreCase),
 		[ReleaseAdvancedFilter.Remixes] = t => t.Name.Contains("remix", StringComparison.CurrentCultureIgnoreCase) || t.Name.Contains("rmx", StringComparison.CurrentCultureIgnoreCase),
 
-		// TODO display only saved releases o only releases with various artists
+		// TODO saved releases - filter releases followed/saved
 		[ReleaseAdvancedFilter.FollowedArtists] = t => t.Id is not null,
 		[ReleaseAdvancedFilter.SavedReleases] = t => t.Id is not null,
 

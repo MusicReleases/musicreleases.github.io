@@ -18,7 +18,7 @@ internal static class SpotifyTrackMapper
 	{
 		var duration = TimeSpan.FromMilliseconds(api.DurationMs);
 		var artists = GetArtists(api.Artists, release.Artists);
-		// TODO artists from api?
+		// TODO api tracks - artists from api?
 		//var artistsApi = api.Artists.Select(x => x.ToObject()).ToList();
 
 		return new(api.Id, api.Name, api.Uri, api.ExternalUrls[ApiConventions.ExternalUrlSpotifyKey], release.Id, api.TrackNumber, api.DiscNumber, duration, api.Explicit, artists);

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
+
 public class LoginService(IApiLoginService apiLoginService) : ILoginService
 {
 	private readonly IApiLoginService _apiLoginService = apiLoginService;
@@ -33,7 +34,6 @@ public class LoginService(IApiLoginService apiLoginService) : ILoginService
 
 	public async Task LogoutUser()
 	{
-		// TODO stop all running api calls
 		await _apiLoginService.LogoutUser();
 	}
 }

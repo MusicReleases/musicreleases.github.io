@@ -48,11 +48,7 @@ internal class SpotifyUserClient(ISpotifyClientStore client, ISpotifyUserStore u
 		var request = new PKCETokenRequest(clientId, code, redirectUri, loginVerifier);
 		var response = await new OAuthClient().RequestToken(request);
 
-		var authenticator = new PKCEAuthenticator(clientId, response);
-
-		var config = SpotifyClientConfig.CreateDefault().WithAuthenticator(authenticator).WithRetryHandler(_retryHandler);
-
-		SetClient(config);
+		SetClient(response);
 
 		var userApi = await GetUserInfoFromApi();
 
@@ -61,21 +57,14 @@ internal class SpotifyUserClient(ISpotifyClientStore client, ISpotifyUserStore u
 		return _userStore.UserIsNotNull();
 	}
 
-	public async Task<string> RefreshAccessToken()
-	{
-		await RefreshAccessTokenInternal();
-
-		var user = GetUserRequired();
-		return user.Credentials.RefreshToken;
-	}
 
 	public async Task SetUserFromDb(SpotifyUser user)
 	{
 		_userStore.SetUser(user);
-		await RefreshAccessTokenInternal();
+		await RefreshAccessToken();
 	}
 
-	private async Task RefreshAccessTokenInternal()
+	private async Task RefreshAccessToken()
 	{
 		var user = GetUserRequired();
 		try
@@ -85,8 +74,7 @@ internal class SpotifyUserClient(ISpotifyClientStore client, ISpotifyUserStore u
 
 			_userStore.SetRefreshToken(response.RefreshToken);
 
-			var config = SpotifyClientConfig.CreateDefault(response.AccessToken).WithRetryHandler(_retryHandler);
-			SetClient(config);
+			SetClient(response);
 
 			var lastUpdate = DateTime.Now - user.Info.LastUpdate;
 			if (lastUpdate.Days > 0)
@@ -109,9 +97,14 @@ internal class SpotifyUserClient(ISpotifyClientStore client, ISpotifyUserStore u
 		return userApi;
 	}
 
-	private void SetClient(SpotifyClientConfig config)
+	private void SetClient(PKCETokenResponse response)
 	{
+		var authenticator = new PKCEAuthenticator(_spotifyConfig.ClientId, response);
+
+		var config = SpotifyClientConfig.CreateDefault().WithAuthenticator(authenticator).WithRetryHandler(_retryHandler);
+
 		var spotifyClient = new SpotifyClient(config);
+
 		_client.SetClient(spotifyClient);
 	}
 

@@ -36,7 +36,9 @@ public partial class PlaylistButton : IDisposable
 
 	private LucideIcon Icon => _isWorking ? LucideIcon.LoaderCircle : (IsInPlaylist ? LucideIcon.Minus : LucideIcon.Plus);
 
-	private LucideIcon PositionIcon => SettingsService.UserSettings.PlaylistNewTrackPositionLast ? LucideIcon.ChevronUp : LucideIcon.ChevronDown;
+	private LucideIcon PositionIcon => PositionTop ? LucideIcon.ChevronDown : LucideIcon.ChevronUp;
+
+	private bool PositionTop => !SettingsService.UserSettings.PlaylistNewTrackPositionLast;
 
 
 	private bool IsReleaseInPlaylist => Release?.Tracks is not null && Release.Tracks.Any(track => Playlist.Tracks.Contains(track.Id));
@@ -108,8 +110,7 @@ public partial class PlaylistButton : IDisposable
 		}
 		else
 		{
-			// TODO settings: default position when adding to playlist (top/bottom)
-			await AddToPlaylist(false);
+			await AddToPlaylist(PositionTop);
 		}
 	}
 

@@ -1,6 +1,5 @@
 ﻿using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.Options;
-using SpotifyAPI.Web;
 using SpotifyAPI.Web.Http;
 using System.Net;
 
@@ -48,18 +47,21 @@ internal class SpotifyApiRetryHandler(ISpotifyClientStore apiClient, ISpotifyUse
 		}
 
 		// 401 Unauthorized – refresh + retry
-		if (response.StatusCode == HttpStatusCode.Unauthorized && triesLeft > 0)
+		/*if (response.StatusCode == HttpStatusCode.Unauthorized && triesLeft > 0)
 		{
 			var accessToken = await RefreshTokenAsync();
-			request.Headers["Authorization"] = $"Bearer {accessToken}";
+
+			//request.Headers["Authorization"] = $"Bearer {accessToken}";
+
 			var newResponse = await retry(request, cancel);
+
 			return await HandleRetryInternally(request, newResponse, retry, triesLeft - 1, cancel);
-		}
+		}*/
 
 		return response;
 	}
 
-	private async Task<string> RefreshTokenAsync()
+	/*private async Task<string> RefreshTokenAsync()
 	{
 		var oldRefreshToken = _userStore.GetRefreshTokenRequired();
 
@@ -68,12 +70,13 @@ internal class SpotifyApiRetryHandler(ISpotifyClientStore apiClient, ISpotifyUse
 
 		_userStore.SetRefreshToken(tokenResponse.RefreshToken);
 
-		var config = SpotifyClientConfig.CreateDefault(tokenResponse.AccessToken).WithRetryHandler(this);
-		var spotifyClient = new SpotifyAPI.Web.SpotifyClient(config);
+		var config = SpotifyClientConfig.CreateDefault(tokenResponse.AccessToken).WithRetryHandler(this).WithAuthenticator(new TokenAuthenticator(tokenResponse.AccessToken, "Bearer"));
+		var spotifyClient = new SpotifyClient(config);
+
 		_apiClient.SetClient(spotifyClient);
 
 		return tokenResponse.AccessToken;
-	}
+	}*/
 
 	private static TimeSpan? ParseTooManyRetries(IResponse response)
 	{

@@ -164,7 +164,7 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			{
 				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct);
 			});
-			// TODO save tracks to db
+			// TODO db tracks - save
 
 			// update state
 			await task.RunSegment("state - update playlist snapshot and tracks", async ct =>
@@ -228,7 +228,7 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			{
 				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct);
 			});
-			// TODO save tracks to db
+			// TODO db tracks - save
 
 			// update state
 			await task.RunSegment("state - update playlist snapshot and tracks", async ct =>

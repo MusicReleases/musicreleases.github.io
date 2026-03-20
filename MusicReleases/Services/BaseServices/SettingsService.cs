@@ -48,7 +48,7 @@ public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyUs
 
 	public void Search(string searchText)
 	{
-		// TODO
+		// TODO settings - search
 	}
 
 	public string GetUrl(string appUrl, string browserUrl)

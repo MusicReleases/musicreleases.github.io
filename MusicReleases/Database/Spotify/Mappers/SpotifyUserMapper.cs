@@ -10,9 +10,9 @@ public static class SpotifyUserMapper
 		return new(dto.Info.Id, dto.Info.Name, dto.Info.UrlApp, dto.Info.UrlWeb, dto.Info.ProfilePictureUrl, dto.Credentials.RefreshToken);
 	}
 
-	public static SpotifyUser ToModel(this SpotifyUserEntity entity)
+	public static SpotifyUser ToModel(this SpotifyUserEntity entity, DateTime lastUpdate)
 	{
-		var info = new SpotifyUserInfo(entity.Id, entity.Name, entity.UrlApp, entity.UrlWeb, entity.UrlProfilePicture);
+		var info = new SpotifyUserInfo(entity.Id, entity.Name, entity.UrlApp, entity.UrlWeb, entity.UrlProfilePicture, lastUpdate);
 		var credentials = new SpotifyUserCredentials(entity.RefreshToken);
 
 		return new(info, credentials);

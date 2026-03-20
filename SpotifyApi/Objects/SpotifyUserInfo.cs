@@ -9,13 +9,6 @@ public class SpotifyUserInfo : SpotifyIdNameUrlObject
 	public DateTime LastUpdate { get; set; }
 
 	[SetsRequiredMembers]
-	public SpotifyUserInfo(string id, string name, string urlApp, string urlWeb, string? urlProfilePicture) : base(id, name, urlApp, urlWeb)
-	{
-		ProfilePictureUrl = urlProfilePicture;
-		// TODO LastUpdate
-	}
-
-	[SetsRequiredMembers]
 	public SpotifyUserInfo(string id, string name, string urlApp, string urlWeb, string? urlProfilePicture, DateTime lastUpdate) : base(id, name, urlApp, urlWeb)
 	{
 		ProfilePictureUrl = urlProfilePicture;

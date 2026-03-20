@@ -29,9 +29,13 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 
 	public async Task<bool> IsUserSaved()
 	{
-		var user = await GetUserFromDatabase();
+		var userDb = await GetUserFromDatabase();
+		return userDb is not null;
+	}
 
-		return user is not null;
+	public bool IsUserLoggedIn()
+	{
+		return _spotifyUserClient.IsLoggedIn();
 	}
 
 	public async Task LoginUser()
@@ -44,7 +48,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 			var localStorageUser = await SetUserFromDb(user);
 			if (localStorageUser)
 			{
-				var userLogged = _spotifyUserClient.IsLoggedIn();
+				var userLogged = IsUserLoggedIn();
 
 				if (userLogged)
 				{
@@ -131,12 +135,6 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 		return true;
 	}
 
-	public bool IsUserLoggedIn()
-	{
-		var userLoggedIn = _spotifyUserClient.IsLoggedIn();
-		return userLoggedIn;
-	}
-
 	private async Task SetUserFromUrl(StringValues code)
 	{
 		if (_spotifyUserClient.IsLoggedIn())
@@ -148,10 +146,8 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 		var baseUrl = _navManager.BaseUri;
 
 		var loginVerifier = await _spotifyLoginStorageService.GetLoginVerifier();
-		if (string.IsNullOrEmpty(loginVerifier))
-		{
-			throw new NullReferenceException(nameof(loginVerifier));
-		}
+
+		loginVerifier = loginVerifier.Require();
 
 		var codeString = code.ToString();
 		var clientId = _spotifyConfig.ClientId;
@@ -167,6 +163,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 	public async Task LogoutUser()
 	{
 		// TODO logout - stop loading data from api
+		// TODO logout - delete all user dbs
 
 		// cancel tasks
 		_backgroundTaskManagerService.CancelAllTasks();
@@ -181,7 +178,6 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 		await _spotifyLoginStorageService.DeleteSavedUser();
 		await _databaseUserService.Delete(user.Info.Id);
 		await _databaseUpdateService.Delete(user.Info.Id, SpotifyDbUpdateType.User);
-
 
 		_navManager.NavigateTo(_navManager.BaseUri);
 	}
@@ -207,7 +203,9 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 			return null;
 		}
 
-		var user = await _databaseUserService.Get(userId);
+		var lastUpdate = await _databaseUpdateService.Get(userId, SpotifyDbUpdateType.User);
+
+		var user = await _databaseUserService.Get(userId, lastUpdate);
 		return user;
 	}
 }

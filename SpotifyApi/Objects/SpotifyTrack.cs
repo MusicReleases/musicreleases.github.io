@@ -30,7 +30,7 @@ public class SpotifyTrack : SpotifyIdNameUrlObject, IComparable<SpotifyTrack>
 		Duration = duration;
 		Explicit = explicitLyrics;
 
-		// TODO artists
+		// TODO api tracks - artists
 	}
 
 	[SetsRequiredMembers]

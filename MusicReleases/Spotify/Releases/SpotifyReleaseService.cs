@@ -82,7 +82,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 					_releaseState.Set(releaseGroup, [], lastSync);
 				});
 
-				// TODO should sync calc
+				// TODO db update - should sync calc
 				return false;
 			}
 
@@ -149,7 +149,7 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 
 			if (artists.Count == 0)
 			{
-				// TODO should sync calc
+				// TODO db update - should sync calc
 				task.BeginAutoSegments(1);
 				await task.RunSegment($"state - set releases - {releaseGroupString}", async ct =>
 				{

@@ -2,7 +2,7 @@
 
 namespace JakubKastner.SpotifyApi.Releases;
 
-// TODO all?????
+// TODO release group - all
 public enum ReleaseGroup
 {
 	Albums,
@@ -32,12 +32,12 @@ public static class EnumReleaseTypeExtensions
 	{
 		return releaseGroup switch
 		{
-			//ReleaseType.All => throw new Exception("TODO"), // TODO all
+			//ReleaseType.All => throw new Exception("TODO"), // TODO release group - all
 			ReleaseGroup.Albums => IncludeGroups.Album,
 			ReleaseGroup.Tracks => IncludeGroups.Single,
 			ReleaseGroup.Appears => IncludeGroups.AppearsOn,
 			ReleaseGroup.Compilations => IncludeGroups.Compilation,
-			ReleaseGroup.Podcasts => throw new NotImplementedException(), //TODO podcasts;
+			ReleaseGroup.Podcasts => throw new NotImplementedException(), // TODO release group - podcasts
 			_ => throw new Exception("Unsupported Release group"),
 		};
 	}
@@ -61,7 +61,7 @@ public static class EnumReleaseTypeExtensions
 			ReleaseGroup.Tracks => ArtistReleaseRole.Main,
 			ReleaseGroup.Appears => ArtistReleaseRole.Featured,
 			ReleaseGroup.Compilations => ArtistReleaseRole.Main,
-			ReleaseGroup.Podcasts => throw new NotImplementedException(), //TODO podcasts;
+			ReleaseGroup.Podcasts => throw new NotImplementedException(), //TODO release group - podcasts;
 			_ => throw new Exception("Unsupported Release group"),
 		};
 	}

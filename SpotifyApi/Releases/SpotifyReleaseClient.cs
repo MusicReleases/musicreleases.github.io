@@ -26,7 +26,7 @@ internal sealed class SpotifyReleaseClient(ISpotifyClientStore client) : ISpotif
 	{
 		if (releaseType == ReleaseGroup.Podcasts)
 		{
-			// TODO podcasts
+			// TODO api podcasts - get
 			throw new NotImplementedException();
 		}
 
@@ -35,7 +35,7 @@ internal sealed class SpotifyReleaseClient(ISpotifyClientStore client) : ISpotif
 			Limit = ApiRequestLimit.ArtistReleases,
 			IncludeGroupsParam = EnumReleaseTypeExtensions.GetApiReleaseGroup(releaseType),
 		};
-		// TODO all??
+		// TODO release group - all
 		/*if (releaseType != ReleaseType.All)
 		{
 			request.IncludeGroupsParam = GetApiReleaseType(releaseType);

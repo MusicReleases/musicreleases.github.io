@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace JakubKastner.Extensions;
@@ -9,9 +10,20 @@ public static class StringExtensions
 	{
 		return string.IsNullOrWhiteSpace(value);
 	}
+
 	public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? value)
 	{
 		return !IsNullOrEmpty(value);
+	}
+
+	public static string Require(this string? value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+	{
+		if (value.IsNullOrEmpty())
+		{
+			throw new ArgumentException("Value cannot be null or empty.", paramName);
+		}
+
+		return value;
 	}
 
 	public static string ToKebabCase(this string value)

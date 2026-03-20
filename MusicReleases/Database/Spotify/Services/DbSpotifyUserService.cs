@@ -10,7 +10,7 @@ internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISp
 
 	private readonly IEnumerable<ISpotifyUserLinkEntityService> _spotifyUserLinkEntityService = spotifyUserLinkEntityService;
 
-	public async Task<SpotifyUser?> Get(string userId)
+	public async Task<SpotifyUser?> Get(string userId, DateTime lastUpdate)
 	{
 		var db = await _dbService.GetDb();
 
@@ -20,7 +20,7 @@ internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISp
 			return null;
 		}
 
-		var user = userDb.ToModel();
+		var user = userDb.ToModel(lastUpdate);
 		return user;
 	}
 

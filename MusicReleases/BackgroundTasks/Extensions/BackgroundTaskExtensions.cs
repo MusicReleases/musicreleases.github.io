@@ -37,6 +37,7 @@ internal static class BackgroundTaskExtensions
 			{
 				var step = task.Steps[task.CurrentStepIndex];
 				step.MarkFailed(ex);
+				Console.WriteLine(ex.ToString());
 				throw;
 			}
 		}
@@ -63,6 +64,7 @@ internal static class BackgroundTaskExtensions
 			{
 				var step = task.Steps[task.CurrentStepIndex];
 				step.MarkFailed(ex);
+				Console.WriteLine(ex.ToString());
 				throw;
 			}
 		}

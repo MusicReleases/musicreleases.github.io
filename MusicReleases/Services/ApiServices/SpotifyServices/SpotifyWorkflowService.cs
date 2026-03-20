@@ -39,7 +39,7 @@ internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtist
 	{
 		//Console.WriteLine("workflow: playlist tracks - start");
 
-		// TODO load playlists tracks
+		// TODO workflow - load playlists tracks
 
 		//Console.WriteLine("workflow: playlist tracks - end");
 	}
