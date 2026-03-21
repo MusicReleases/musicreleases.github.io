@@ -68,10 +68,11 @@ internal static class SpotifyReleaseMapper
 
 	private static string GetImageUrl(List<Image> images)
 	{
-		if (images == null || images.Count == 0)
+		if (images is null || images.Count == 0)
 		{
-			return string.Empty;
-			//throw new ArgumentException("Images list is empty or null", nameof(images));
+			// no cover from api
+
+			return "/images/no-cover.png";
 		}
 
 		if (images.Count >= ApiConventions.MediumImageIndex)
