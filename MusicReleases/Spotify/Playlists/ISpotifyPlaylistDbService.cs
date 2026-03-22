@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify;
+﻿using JakubKastner.MusicReleases.Database.Spotify.IdEntities;
 using JakubKastner.MusicReleases.Spotify.Playlists.User;
 using JakubKastner.SpotifyApi.Playlists;
 

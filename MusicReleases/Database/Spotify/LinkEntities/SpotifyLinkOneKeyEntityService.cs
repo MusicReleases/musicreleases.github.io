@@ -2,7 +2,7 @@
 using JakubKastner.MusicReleases.Spotify;
 using System.Linq.Expressions;
 
-namespace JakubKastner.MusicReleases.Database.Spotify;
+namespace JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
 
 internal abstract class SpotifyLinkOneKeyEntityService<TEntity, TPayload1> : ISpotifyLinkOneKeyEntityService
 	where TEntity : ISpotifyDb

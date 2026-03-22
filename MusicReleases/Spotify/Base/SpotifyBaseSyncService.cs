@@ -4,6 +4,7 @@ using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
+using JakubKastner.MusicReleases.Database.Spotify.IdEntities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
@@ -114,7 +115,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 
 			await task.RunSegment($"db - save {EntityName} - {count}", async ct2 =>
 			{
-				await _entityDbService.Save(models, ct2);
+				await _entityDbService.Save(models, true, ct2);
 			});
 
 			await task.RunSegment($"db - save user {EntityName} ({UserLinkLabel}) - {count}", async ct2 =>

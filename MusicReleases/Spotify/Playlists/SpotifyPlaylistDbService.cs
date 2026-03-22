@@ -1,6 +1,6 @@
 ﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Database.Spotify.IdEntities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Spotify.Playlists.User;
 using JakubKastner.SpotifyApi.Playlists;
@@ -21,13 +21,6 @@ internal sealed class SpotifyPlaylistDbService(IDbSpotifyService dbService) : Sp
 		return db.Playlist;
 	}
 
-	protected override async Task<IEnumerable<SpotifyPlaylistEntity>> FetchByIds(string[] ids)
-	{
-		var table = await GetTable();
-
-		return await table.Where(e => e.Id).AnyOf(ids).ToArray();
-	}
-
 	public async Task UpdateSnapshot(string playlistId, string newSnapshotId, CancellationToken ct)
 	{
 		var table = await GetTable();
@@ -35,6 +28,6 @@ internal sealed class SpotifyPlaylistDbService(IDbSpotifyService dbService) : Sp
 
 		await table.Update(playlistId, p => p.SnapshotId, newSnapshotId);
 
-		_cache[playlistId].SnapshotId = newSnapshotId;
+		//_cache[playlistId].SnapshotId = newSnapshotId;
 	}
 }

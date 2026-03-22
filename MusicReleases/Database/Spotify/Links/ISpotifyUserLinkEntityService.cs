@@ -1,4 +1,5 @@
-﻿using JakubKastner.MusicReleases.Spotify;
+﻿using JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
+using JakubKastner.MusicReleases.Spotify;
 
 namespace JakubKastner.MusicReleases.Database.Spotify;
 

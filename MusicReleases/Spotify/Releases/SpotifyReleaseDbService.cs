@@ -1,6 +1,6 @@
 ﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Database.Spotify.IdEntities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Spotify.Releases.Artists;
 using JakubKastner.SpotifyApi.Releases;
@@ -31,19 +31,25 @@ internal sealed class SpotifyReleaseDbService(IDbSpotifyService dbService) : Spo
 		return GetByIds(payloads, ct);
 	}
 
-	protected override async Task<IEnumerable<SpotifyReleaseEntity>> FetchByIds(string[] ids)
+	protected override async Task<IReadOnlyCollection<SpotifyReleaseEntity>> FetchByIds(IReadOnlyCollection<string> ids, CancellationToken ct)
 	{
+		ct.ThrowIfCancellationRequested();
+
 		var table = await GetTable();
 
 		if (_currentReleaseGroup == ReleaseGroup.Appears)
 		{
-			return await table.BulkGet(ids);
+			var entities = await table.BulkGet(ids);
+			return entities.ToList().AsReadOnly();
 		}
 
 		var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(_currentReleaseGroup);
 
 		var keys = ids.Select(id => (id, releaseType)).ToArray();
 
-		return await table.Where(x => x.Id, x => x.ReleaseType).AnyOf(keys).ToArray();
+		var itemsDb = await table.Where(x => x.Id, x => x.ReleaseType).AnyOf(keys).ToArray();
+
+		return itemsDb.ToList().AsReadOnly();
 	}
+
 }

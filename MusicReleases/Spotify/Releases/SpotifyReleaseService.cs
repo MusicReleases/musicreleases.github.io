@@ -234,13 +234,13 @@ internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotify
 
 				await task.RunSegment($"db - save releases (release) - {releaseGroupString} - {relasesCount}", async ct =>
 				{
-					await _releaseDb.Save(_pendingAggregation.Releases, ct);
+					await _releaseDb.Save(_pendingAggregation.Releases, true, ct);
 				});
 
 				var artistsCount = _pendingAggregation.Artists.Count;
 				await task.RunSegment($"db - save artists from releases (artist) - {releaseGroupString} - {artistsCount}", async ct =>
 				{
-					await _artistDb.Save(_pendingAggregation.Artists, ct);
+					await _artistDb.Save(_pendingAggregation.Artists, true, ct);
 				});
 
 				var linksCount = _pendingAggregation.Links.Count;

@@ -1,6 +1,6 @@
 ﻿using DexieNET;
 
-namespace JakubKastner.MusicReleases.Database.Spotify;
+namespace JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
 
 internal abstract class SpotifyLinkEntityServiceCore<TEntity> : ISpotifyLinkEntityServiceCore where TEntity : ISpotifyDb
 {

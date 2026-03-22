@@ -82,7 +82,7 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			// save to playlist db
 			await task.RunSegment("db - add playlist (playlist)", async ct =>
 			{
-				await _playlistDb.Save(playlist, ct);
+				await _playlistDb.Save(playlist, true, ct);
 			});
 
 			// save to user-playlist db
