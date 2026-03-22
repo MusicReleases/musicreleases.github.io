@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
 using JakubKastner.MusicReleases.Spotify;
 
-namespace JakubKastner.MusicReleases.Database.Spotify;
+namespace JakubKastner.MusicReleases.Database.Spotify.Links;
 
 internal interface ISpotifyUserLinkEntityService : ISpotifyLinkOneKeyEntityService
 {

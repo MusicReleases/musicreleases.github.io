@@ -1,10 +1,12 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 using JakubKastner.SpotifyApi.Objects.Base;
+using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.IdEntities;
 
-internal abstract class SpotifyIdEntityStoreService<TModel, TIdEntity> : SpotifyIdEntityServiceCore<TIdEntity>, ISpotifyIdEntityStoreService<TModel> where TModel : SpotifyIdNameObject
+internal abstract class SpotifyIdEntityStoreService<TModel, TIdEntity> : SpotifyIdEntityServiceCore<TIdEntity>, ISpotifyIdEntityStoreService<TModel, TIdEntity>
+	where TModel : SpotifyIdNameObject
 	where TIdEntity : ISpotifyDb, ISpotifyIdEntity
 {
 	protected abstract TIdEntity ToEntity(TModel model);
@@ -30,6 +32,17 @@ internal abstract class SpotifyIdEntityStoreService<TModel, TIdEntity> : Spotify
 		var itemsDb = await table.BulkGet(ids);
 
 		return itemsDb.ToList().AsReadOnly();
+	}
+
+	public async Task Update(string id, Expression<Func<TIdEntity, string>> query, string newValue, CancellationToken ct)
+	{
+		ct.ThrowIfCancellationRequested();
+		var table = await GetTable();
+
+		await table.Update(id, query, newValue);
+
+		// update cache
+		await GetEntityByIdCore(id, false, ct);
 	}
 
 	public async Task Save(TModel item, bool keepExisting, CancellationToken ct)

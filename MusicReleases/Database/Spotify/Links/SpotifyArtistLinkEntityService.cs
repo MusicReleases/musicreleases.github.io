@@ -1,18 +1,13 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
 using JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
-using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.SpotifyApi.Releases;
 
-namespace JakubKastner.MusicReleases.Database.Spotify;
+namespace JakubKastner.MusicReleases.Database.Spotify.Links;
 
-internal abstract class SpotifyArtistLinkService<TArtistLinkEntity>
+internal abstract class SpotifyArtistLinkEntityService<TArtistLinkEntity>
 	: SpotifyLinkEntityServiceCore<TArtistLinkEntity>, ISpotifyArtistLinkEntityService<TArtistLinkEntity> where TArtistLinkEntity : ISpotifyDb, ISpotifyArtistLinkEntity
 {
 	protected readonly Dictionary<string, SpotifyArtistGroupByReleasePayload> _cache = [];
-
-	/*protected override Expression<Func<TArtistLinkEntity, string>> Key1Expression => x => x.ArtistId;
-
-	protected override Expression<Func<TArtistLinkEntity, string>> Key2Expression => x => x.ReleaseId;*/
 
 	public async Task Save(IReadOnlyCollection<TArtistLinkEntity> entities, CancellationToken ct)
 	{

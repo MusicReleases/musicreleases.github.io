@@ -1,5 +1,4 @@
 ﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
@@ -7,7 +6,7 @@ using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases.Artists;
 
-internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService) : SpotifyArtistLinkService<SpotifyArtistReleaseEntity>, ISpotifyArtistReleaseDbService
+internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService) : SpotifyArtistLinkEntityService<SpotifyArtistReleaseEntity>, ISpotifyArtistReleaseDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 

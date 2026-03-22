@@ -3,8 +3,7 @@ using JakubKastner.MusicReleases.Spotify;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
 
-internal abstract class SpotifyLinkTwoKeysEntityService<TEntity, TPayload1, TPayload2> : SpotifyLinkOneKeyEntityService<TEntity, TPayload1>
-	where TEntity : ISpotifyDb
+internal abstract class SpotifyLinkTwoKeysEntityService<TEntity, TPayload1, TPayload2> : SpotifyLinkOneKeyEntityService<TEntity, TPayload1>, ISpotifyLinkTwoKeysEntityService<TPayload2> where TEntity : ISpotifyDb
 	where TPayload1 : ISpotifyPayload
 	where TPayload2 : ISpotifyPayload
 {

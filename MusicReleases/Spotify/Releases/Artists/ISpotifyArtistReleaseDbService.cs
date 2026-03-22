@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify;
-using JakubKastner.MusicReleases.Database.Spotify.Entities;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.SpotifyApi.Releases;
 

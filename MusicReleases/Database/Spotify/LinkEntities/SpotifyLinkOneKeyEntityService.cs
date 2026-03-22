@@ -40,7 +40,6 @@ internal abstract class SpotifyLinkOneKeyEntityService<TEntity, TPayload1> : ISp
 
 	protected async Task<SortedSet<TPayload1>> GetByKey1(string key1, CancellationToken ct)
 	{
-
 		return await GetByKey(key1, Key1Expression, _cacheByKey1, ToPayload1, ct);
 	}
 

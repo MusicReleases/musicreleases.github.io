@@ -28,10 +28,14 @@ internal abstract class SpotifyIdEntityServiceCore<TIdEntity>
 		_cache[item.Id] = item;
 	}
 
-
 	protected async Task<TIdEntity?> GetEntityByIdCore(string id, CancellationToken ct)
 	{
-		if (TryGetCached(id, out var cached))
+		return await GetEntityByIdCore(id, true, ct);
+	}
+
+	protected async Task<TIdEntity?> GetEntityByIdCore(string id, bool cache, CancellationToken ct)
+	{
+		if (cache && TryGetCached(id, out var cached))
 		{
 			return cached;
 		}
@@ -48,14 +52,24 @@ internal abstract class SpotifyIdEntityServiceCore<TIdEntity>
 
 	protected async Task<IReadOnlyCollection<TIdEntity>> GetEntitiesByIdsCore(IReadOnlyCollection<string> ids, CancellationToken ct)
 	{
+		return await GetEntitiesByIdsCore(ids, true, ct);
+	}
+
+	protected async Task<IReadOnlyCollection<TIdEntity>> GetEntitiesByIdsCore(IReadOnlyCollection<string> ids, bool cache, CancellationToken ct)
+	{
 		if (ids.Count == 0)
 		{
 			return [];
 		}
 
-		var missingIds = ids.ToHashSet().Where(id => !_cache.ContainsKey(id)).ToArray();
+		ids = ids.ToHashSet();
 
-		if (missingIds.Length > 0)
+		var missingIds
+			= cache
+			? ids.ToHashSet().Where(id => !_cache.ContainsKey(id)).ToList()
+			: ids;
+
+		if (missingIds.Count > 0)
 		{
 			var itemsDb = await FetchByIds(missingIds, ct);
 

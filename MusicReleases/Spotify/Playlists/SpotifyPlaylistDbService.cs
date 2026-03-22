@@ -23,11 +23,6 @@ internal sealed class SpotifyPlaylistDbService(IDbSpotifyService dbService) : Sp
 
 	public async Task UpdateSnapshot(string playlistId, string newSnapshotId, CancellationToken ct)
 	{
-		var table = await GetTable();
-		ct.ThrowIfCancellationRequested();
-
-		await table.Update(playlistId, p => p.SnapshotId, newSnapshotId);
-
-		//_cache[playlistId].SnapshotId = newSnapshotId;
+		await Update(playlistId, p => p.SnapshotId, newSnapshotId, ct);
 	}
 }

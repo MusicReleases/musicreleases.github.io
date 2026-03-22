@@ -1,4 +1,4 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Links;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists.User;
 

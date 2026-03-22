@@ -2,7 +2,7 @@
 using JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
 using JakubKastner.MusicReleases.Spotify;
 
-namespace JakubKastner.MusicReleases.Database.Spotify;
+namespace JakubKastner.MusicReleases.Database.Spotify.Links;
 
 internal abstract class SpotifyUserLinkEntityService<TUserIdEntity, TPayload> : SpotifyLinkOneKeyEntityService<TUserIdEntity, TPayload>, ISpotifyUserLinkEntityService<TPayload>
 	where TUserIdEntity : ISpotifyDb, ISpotifyUserIdLinkEntity

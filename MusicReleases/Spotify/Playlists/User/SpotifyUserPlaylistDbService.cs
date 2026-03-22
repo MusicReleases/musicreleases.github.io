@@ -1,6 +1,6 @@
 ﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.SpotifyApi.Playlists;
 using System.Linq.Expressions;
