@@ -64,10 +64,7 @@ internal abstract class SpotifyLinkOneKeyEntityService<TEntity, TPayload>
 
 		var table = await GetTable();
 
-		var entities = await table
-			.Where(expression)
-			.AnyOf(keys.ToArray())
-			.ToArray();
+		var entities = await table.Where(expression).AnyOf(keys.ToArray()).ToArray();
 
 		return entities;
 	}
@@ -76,23 +73,15 @@ internal abstract class SpotifyLinkOneKeyEntityService<TEntity, TPayload>
 	{
 		var incoming = payloads.ToList();
 
-		var incomingIds = incoming
-			.Select(p => p.Id)
-			.ToHashSet();
+		var incomingIds = incoming.Select(p => p.Id).ToHashSet();
 
 		var existing = await GetByKey1(key1, ct);
 
-		var existingIds = existing
-			.Select(p => p.Id)
-			.ToHashSet();
+		var existingIds = existing.Select(p => p.Id).ToHashSet();
 
-		var toAdd = incoming
-			.Where(p => !existingIds.Contains(p.Id))
-			.ToList();
+		var toAdd = incoming.Where(p => !existingIds.Contains(p.Id)).ToList();
 
-		var toRemove = existingIds
-			.Where(id => !incomingIds.Contains(id))
-			.ToList();
+		var toRemove = existingIds.Where(id => !incomingIds.Contains(id)).ToList();
 
 		if (toAdd.Count == 0 && toRemove.Count == 0)
 		{
@@ -137,23 +126,16 @@ internal abstract class SpotifyLinkOneKeyEntityService<TEntity, TPayload>
 
 		if (toAdd.Count > 0)
 		{
-			var entitiesToAdd = toAdd
-				.Select(p => ToEntityFromKey1(p, key1))
-				.ToList();
+			var entitiesToAdd = toAdd.Select(p => ToEntityFromKey1(p, key1)).ToList();
 
 			await table.BulkPutSafe(entitiesToAdd);
 		}
 
 		if (toRemove.Count > 0)
 		{
-			var keys = toRemove
-				.Select(id => (key1, id))
-				.ToArray();
+			var keys = toRemove.Select(id => (key1, id)).ToArray();
 
-			await table
-				.Where(Key1Expression, Key2Expression)
-				.AnyOf(keys)
-				.Delete();
+			await table.Where(Key1Expression, Key2Expression).AnyOf(keys).Delete();
 		}
 	}
 
@@ -161,9 +143,7 @@ internal abstract class SpotifyLinkOneKeyEntityService<TEntity, TPayload>
 	{
 		var table = await GetTable();
 
-		await table
-			.Where(Key1Expression, key1)
-			.Delete();
+		await table.Where(Key1Expression, key1).Delete();
 
 		InvalidateKey1(key1);
 	}

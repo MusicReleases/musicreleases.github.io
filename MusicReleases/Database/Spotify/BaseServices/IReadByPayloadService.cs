@@ -2,7 +2,5 @@
 
 public interface IReadByPayloadService<TModel, TPayload>
 {
-	Task<IReadOnlyCollection<TModel>> GetByIds(
-		IReadOnlyCollection<TPayload> payloads,
-		CancellationToken ct);
+	Task<IReadOnlyCollection<TModel>> GetByIds(IReadOnlyCollection<TPayload> payloads, CancellationToken ct);
 }

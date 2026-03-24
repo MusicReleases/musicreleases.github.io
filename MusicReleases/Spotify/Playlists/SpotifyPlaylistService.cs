@@ -14,8 +14,20 @@ using JakubKastner.SpotifyApi.Playlists;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
-internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotifyPlaylistClient playlistApi, ISpotifyPlaylistDbService playlistDb, IReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> playlistReader, IWriteEntityService<SpotifyPlaylist> playlistWriter, ISpotifyUserPlaylistDbService userPlaylistDb, IDbSpotifyUserUpdateService updateDb, ISpotifyPlaylistState playlistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService, ISettingsService settingsService)
-
+internal sealed class SpotifyPlaylistService
+(
+	ISpotifyUserClient userApi,
+	ISpotifyPlaylistClient playlistApi,
+	ISpotifyPlaylistDbService playlistDb,
+	IReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> playlistReader,
+	IWriteEntityService<SpotifyPlaylist> playlistWriter,
+	ISpotifyUserPlaylistDbService userPlaylistDb,
+	IDbSpotifyUserUpdateService updateDb,
+	ISpotifyPlaylistState playlistState,
+	IBackgroundTaskManagerService taskManager,
+	ILoadingService loadingService,
+	ISettingsService settingsService
+)
 	: SpotifyBaseSyncService<SpotifyPlaylist, SpotifyUserPlaylistPayload>(userApi, playlistReader, playlistWriter, userPlaylistDb, updateDb, playlistState, taskManager, loadingService), ISpotifyPlaylistService
 {
 	private readonly ISpotifyUserClient _userApi = userApi;
@@ -27,7 +39,6 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 	private readonly ISpotifyPlaylistState _playlistState = playlistState;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
 	private readonly ISettingsService _settingsService = settingsService;
-
 
 	protected override BackgroundTaskType TaskType => BackgroundTaskType.PlaylistsGet;
 
@@ -102,7 +113,6 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			});
 		});
 	}
-
 
 	public async Task AddTrack(string playlistId, SpotifyTrack track, bool positionTop)
 	{
@@ -179,7 +189,6 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 		});
 	}
 
-
 	public async Task RemoveTracks(string playlistId, IEnumerable<SpotifyTrack> tracks)
 	{
 		var tracksList = tracks.ToList();
@@ -198,7 +207,6 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			await SaveRemovedTracksToDbAndStore(playlist, snapshotId, tracks, task);
 		});
 	}
-
 
 	private async Task<string> RemoveTracksApi(SpotifyPlaylist playlist, IEnumerable<SpotifyTrack> tracks, BackgroundTask task)
 	{

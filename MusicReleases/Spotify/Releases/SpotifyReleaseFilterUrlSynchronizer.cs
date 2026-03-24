@@ -47,9 +47,8 @@ internal class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleas
 
 		_filterService.SetFromUrl(filter);
 
-		//var userId = _spotifyUserClient.GetUserIdRequired();
 
-		// TODO cancel token + user id
+		// TODO cancel token
 		await _dbService.Save(filter, false, default);
 
 		Console.WriteLine("SetFilterFromUrl - end");
@@ -71,9 +70,8 @@ internal class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleas
 	public async Task SetInitFilter()
 	{
 		Console.WriteLine("SetInitFilter - start");
-		//var userId = _spotifyUserClient.GetUserIdRequired();
 
-		// TODO cancel token + user id
+		// TODO cancel token
 		var filter = await _dbService.Get(default) ?? new();
 		_filterService.EnsureFilter(filter);
 

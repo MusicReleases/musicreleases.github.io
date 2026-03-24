@@ -1,8 +1,8 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Objects.Spotify;
 using JakubKastner.SpotifyApi.Clients;
 using System.Linq.Expressions;
@@ -13,28 +13,13 @@ internal sealed class SpotifyUserFilterReleaseDbService(IDbSpotifyService dbServ
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	protected override Expression<Func<SpotifyUserFilterReleaseEntity, string>> UserIdExpression
-	{
-		get
-		{
-			return x => x.UserId;
-		}
-	}
+	protected override Expression<Func<SpotifyUserFilterReleaseEntity, string>> UserIdExpression => x => x.UserId;
 
-	protected override string GetEntityUserId(SpotifyUserFilterReleaseEntity entity)
-	{
-		return entity.UserId;
-	}
+	protected override string GetEntityUserId(SpotifyUserFilterReleaseEntity entity) => entity.UserId;
 
-	protected override SpotifyUserFilterReleaseEntity ToEntity(SpotifyReleaseFilter model, string userId)
-	{
-		return model.ToEntity(userId);
-	}
+	protected override SpotifyUserFilterReleaseEntity ToEntity(SpotifyReleaseFilter model, string userId) => model.ToEntity(userId);
 
-	protected override SpotifyReleaseFilter ToModel(SpotifyUserFilterReleaseEntity entity)
-	{
-		return entity.ToModel();
-	}
+	protected override SpotifyReleaseFilter ToModel(SpotifyUserFilterReleaseEntity entity) => entity.ToModel();
 
 	protected override async Task<Table<SpotifyUserFilterReleaseEntity, string>> GetTable()
 	{

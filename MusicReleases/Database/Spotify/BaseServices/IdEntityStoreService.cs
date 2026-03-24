@@ -76,20 +76,14 @@ internal abstract class IdEntityStoreService<TModel, TEntity> : IdEntityStoreBas
 
 		if (keepExisting)
 		{
-			var ids = models
-				.Select(GetModelId)
-				.ToHashSet();
+			var ids = models.Select(GetModelId).ToHashSet();
 
 			var existingEntities = await GetEntitiesCore(ids, true, ct);
 
-			var existingIds = existingEntities
-				.Select(GetEntityId)
-				.ToHashSet();
+			var existingIds = existingEntities.Select(GetEntityId).ToHashSet();
 
 			entitiesToSave = models
-				.Where(m => !existingIds.Contains(GetModelId(m)))
-				.Select(ToEntity)
-				.ToList();
+				.Where(m => !existingIds.Contains(GetModelId(m))).Select(ToEntity).ToList();
 
 			if (entitiesToSave.Count == 0)
 			{
@@ -98,9 +92,7 @@ internal abstract class IdEntityStoreService<TModel, TEntity> : IdEntityStoreBas
 		}
 		else
 		{
-			entitiesToSave = models
-				.Select(ToEntity)
-				.ToList();
+			entitiesToSave = models.Select(ToEntity).ToList();
 		}
 
 		await SaveEntities(entitiesToSave, ct);
@@ -111,16 +103,11 @@ internal abstract class IdEntityStoreService<TModel, TEntity> : IdEntityStoreBas
 		await DeleteEntity(id, ct);
 	}
 
-	public async Task Update<TValue>(
-		string id,
-		Expression<Func<TEntity, TValue>> selector,
-		TValue newValue,
-		CancellationToken ct)
+	public async Task Update<TValue>(string id, Expression<Func<TEntity, TValue>> selector, TValue newValue, CancellationToken ct)
 	{
 		await UpdateEntity(id, selector, newValue, ct);
 	}
 }
-
 
 
 internal abstract class IdEntityPayloadStoreService<TModel, TEntity, TPayload> : IdEntityStoreBase<TEntity>
@@ -153,9 +140,7 @@ internal abstract class IdEntityPayloadStoreService<TModel, TEntity, TPayload> :
 			return [];
 		}
 
-		var ids = payloads
-			.Select(p => p.Id)
-			.ToHashSet();
+		var ids = payloads.Select(p => p.Id).ToHashSet();
 
 		await GetEntitiesCore(ids, true, ct);
 
@@ -202,20 +187,14 @@ internal abstract class IdEntityPayloadStoreService<TModel, TEntity, TPayload> :
 
 		if (keepExisting)
 		{
-			var ids = models
-				.Select(GetModelId)
-				.ToHashSet();
+			var ids = models.Select(GetModelId).ToHashSet();
 
 			var existingEntities = await GetEntitiesCore(ids, true, ct);
 
-			var existingIds = existingEntities
-				.Select(GetEntityId)
-				.ToHashSet();
+			var existingIds = existingEntities.Select(GetEntityId).ToHashSet();
 
 			entitiesToSave = models
-				.Where(m => !existingIds.Contains(GetModelId(m)))
-				.Select(ToEntity)
-				.ToList();
+				.Where(m => !existingIds.Contains(GetModelId(m))).Select(ToEntity).ToList();
 
 			if (entitiesToSave.Count == 0)
 			{
@@ -224,9 +203,7 @@ internal abstract class IdEntityPayloadStoreService<TModel, TEntity, TPayload> :
 		}
 		else
 		{
-			entitiesToSave = models
-				.Select(ToEntity)
-				.ToList();
+			entitiesToSave = models.Select(ToEntity).ToList();
 		}
 
 		await SaveEntities(entitiesToSave, ct);
@@ -237,11 +214,7 @@ internal abstract class IdEntityPayloadStoreService<TModel, TEntity, TPayload> :
 		await DeleteEntity(id, ct);
 	}
 
-	public async Task Update<TValue>(
-		string id,
-		Expression<Func<TEntity, TValue>> selector,
-		TValue newValue,
-		CancellationToken ct)
+	public async Task Update<TValue>(string id, Expression<Func<TEntity, TValue>> selector, TValue newValue, CancellationToken ct)
 	{
 		await UpdateEntity(id, selector, newValue, ct);
 	}

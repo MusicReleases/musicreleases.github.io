@@ -1,13 +1,12 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases.Artists;
 
-internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
-	: SpotifyArtistLinkEntityService<SpotifyArtistReleaseEntity>, ISpotifyArtistReleaseDbService
+internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService) : SpotifyArtistLinkEntityService<SpotifyArtistReleaseEntity>, ISpotifyArtistReleaseDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
@@ -17,10 +16,7 @@ internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
 		return db.ArtistRelease;
 	}
 
-	public async Task<IReadOnlyCollection<SpotifyArtistGroupByReleasePayload>> GetArtistsByArtistIds(
-		IReadOnlyCollection<string> artistIds,
-		ReleaseGroup releaseGroup,
-		CancellationToken ct)
+	public async Task<IReadOnlyCollection<SpotifyArtistGroupByReleasePayload>> GetArtistsByArtistIds(IReadOnlyCollection<string> artistIds, ReleaseGroup releaseGroup, CancellationToken ct)
 	{
 		if (artistIds.Count == 0)
 		{
@@ -42,13 +38,9 @@ internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
 
 		var releases = await GetByArtists(artistIds, artistRole, releaseType, ct);
 
-		var releaseIds = releases
-			.Select(x => x.ReleaseId)
-			.ToHashSet();
+		var releaseIds = releases.Select(x => x.ReleaseId).ToHashSet();
 
-		var missingReleaseIds = releaseIds
-			.Where(id => !_cache.ContainsKey(id))
-			.ToList();
+		var missingReleaseIds = releaseIds.Where(id => !_cache.ContainsKey(id)).ToList();
 
 		if (missingReleaseIds.Count > 0)
 		{
@@ -82,11 +74,7 @@ internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
 		return result.AsReadOnly();
 	}
 
-	private async Task<IEnumerable<SpotifyArtistReleaseEntity>> GetByArtists(
-		IEnumerable<string> artistIds,
-		ArtistReleaseRole? artistRole,
-		ReleaseType? releaseType,
-		CancellationToken ct)
+	private async Task<IEnumerable<SpotifyArtistReleaseEntity>> GetByArtists(IEnumerable<string> artistIds, ArtistReleaseRole? artistRole, ReleaseType? releaseType, CancellationToken ct)
 	{
 		var table = await GetTable();
 
@@ -113,11 +101,7 @@ internal sealed class SpotifyArtistReleaseDbService(IDbSpotifyService dbService)
 		return await table.Where(x => x.ArtistId).AnyOf([.. artistIds]).ToArray();
 	}
 
-	private async Task<IEnumerable<SpotifyArtistReleaseEntity>> GetByReleases(
-		IEnumerable<string> releaseIds,
-		ArtistReleaseRole? artistRole,
-		ReleaseType? releaseType,
-		CancellationToken ct)
+	private async Task<IEnumerable<SpotifyArtistReleaseEntity>> GetByReleases(IEnumerable<string> releaseIds, ArtistReleaseRole? artistRole, ReleaseType? releaseType, CancellationToken ct)
 	{
 		var table = await GetTable();
 

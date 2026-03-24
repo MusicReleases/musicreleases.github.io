@@ -15,7 +15,20 @@ using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-internal sealed class SpotifyReleaseService(ISpotifyUserClient userApi, ISpotifyReleaseClient releaseApi, ISpotifyReleaseDbService releaseDb, ISpotifyArtistDbService artistDb, ISpotifyArtistReleaseDbService artistReleaseDb, IDbSpotifyUserUpdateService updateDb, ISpotifyReleaseState releaseState, ISpotifyArtistState artistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : SpotifyBaseSyncServiceCore<SpotifyRelease, ReleaseGroup>(userApi, updateDb, taskManager, loadingService), ISpotifyReleaseService
+internal sealed class SpotifyReleaseService
+(
+	ISpotifyUserClient userApi,
+	ISpotifyReleaseClient releaseApi,
+	ISpotifyReleaseDbService releaseDb,
+	ISpotifyArtistDbService artistDb,
+	ISpotifyArtistReleaseDbService artistReleaseDb,
+	IDbSpotifyUserUpdateService updateDb,
+	ISpotifyReleaseState releaseState,
+	ISpotifyArtistState artistState,
+	IBackgroundTaskManagerService taskManager,
+	ILoadingService loadingService
+)
+	: SpotifyBaseSyncServiceCore<SpotifyRelease, ReleaseGroup>(userApi, updateDb, taskManager, loadingService), ISpotifyReleaseService
 {
 	private readonly ISpotifyReleaseClient _releaseApi = releaseApi;
 	private readonly ISpotifyReleaseDbService _releaseDb = releaseDb;

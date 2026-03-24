@@ -1,7 +1,7 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Spotify.Artists.User;
 using JakubKastner.SpotifyApi.Artists;
 using System.Linq.Expressions;
@@ -12,33 +12,15 @@ internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : IdEn
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	protected override Expression<Func<SpotifyArtistEntity, string>> IdExpression
-	{
-		get
-		{
-			return x => x.Id;
-		}
-	}
+	protected override Expression<Func<SpotifyArtistEntity, string>> IdExpression => x => x.Id;
 
-	protected override string GetEntityId(SpotifyArtistEntity entity)
-	{
-		return entity.Id;
-	}
+	protected override string GetEntityId(SpotifyArtistEntity entity) => entity.Id;
 
-	protected override string GetModelId(SpotifyArtist model)
-	{
-		return model.Id;
-	}
+	protected override string GetModelId(SpotifyArtist model) => model.Id;
 
-	protected override SpotifyArtistEntity ToEntity(SpotifyArtist model)
-	{
-		return model.ToEntity();
-	}
+	protected override SpotifyArtistEntity ToEntity(SpotifyArtist model) => model.ToEntity();
 
-	protected override SpotifyArtist ToModel(SpotifyArtistEntity entity)
-	{
-		return entity.ToModel();
-	}
+	protected override SpotifyArtist ToModel(SpotifyArtistEntity entity) => entity.ToModel();
 
 	protected override async Task<Table<SpotifyArtistEntity, string>> GetTable()
 	{
@@ -58,9 +40,7 @@ internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : IdEn
 			return [];
 		}
 
-		var ids = payloads
-			.Select(p => p.Id)
-			.ToHashSet();
+		var ids = payloads.Select(p => p.Id).ToHashSet();
 
 		await GetEntitiesCore(ids, true, ct);
 

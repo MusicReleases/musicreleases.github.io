@@ -1,16 +1,9 @@
 ﻿using JakubKastner.MusicReleases.Objects.Spotify;
 
-namespace JakubKastner.MusicReleases.Spotify.Releases.User
+namespace JakubKastner.MusicReleases.Spotify.Releases.User;
+
+internal interface ISpotifyUserFilterReleaseDbService
 {
-	internal interface ISpotifyUserFilterReleaseDbService
-	{
-
-		Task<SpotifyReleaseFilter?> Get(CancellationToken ct);
-
-		Task Save(
-			SpotifyReleaseFilter filter,
-			bool keepExisting,
-			CancellationToken ct);
-
-	}
+	Task<SpotifyReleaseFilter?> Get(CancellationToken ct);
+	Task Save(SpotifyReleaseFilter filter, bool keepExisting, CancellationToken ct);
 }

@@ -18,7 +18,7 @@ internal abstract class SpotifyLinkTwoKeysEntityService<TEntity, TPayload1, TPay
 	{
 		if (!_cacheByKey2.TryGetValue(key2, out var set))
 		{
-			set = new SortedSet<TPayload2>();
+			set = [];
 			_cacheByKey2[key2] = set;
 		}
 
@@ -61,23 +61,15 @@ internal abstract class SpotifyLinkTwoKeysEntityService<TEntity, TPayload1, TPay
 	{
 		var incoming = payloads.ToList();
 
-		var incomingIds = incoming
-			.Select(p => p.Id)
-			.ToHashSet();
+		var incomingIds = incoming.Select(p => p.Id).ToHashSet();
 
 		var existing = await GetByKey2(key2, ct);
 
-		var existingIds = existing
-			.Select(p => p.Id)
-			.ToHashSet();
+		var existingIds = existing.Select(p => p.Id).ToHashSet();
 
-		var toAdd = incoming
-			.Where(p => !existingIds.Contains(p.Id))
-			.ToList();
+		var toAdd = incoming.Where(p => !existingIds.Contains(p.Id)).ToList();
 
-		var toRemove = existingIds
-			.Where(id => !incomingIds.Contains(id))
-			.ToList();
+		var toRemove = existingIds.Where(id => !incomingIds.Contains(id)).ToList();
 
 		if (toAdd.Count == 0 && toRemove.Count == 0)
 		{
@@ -122,23 +114,16 @@ internal abstract class SpotifyLinkTwoKeysEntityService<TEntity, TPayload1, TPay
 
 		if (toAdd.Count > 0)
 		{
-			var entitiesToAdd = toAdd
-				.Select(p => ToEntityFromKey2(p, key2))
-				.ToList();
+			var entitiesToAdd = toAdd.Select(p => ToEntityFromKey2(p, key2)).ToList();
 
 			await table.BulkPutSafe(entitiesToAdd);
 		}
 
 		if (toRemove.Count > 0)
 		{
-			var keys = toRemove
-				.Select(id => (key2, id))
-				.ToArray();
+			var keys = toRemove.Select(id => (key2, id)).ToArray();
 
-			await table
-				.Where(Key2Expression, Key1Expression)
-				.AnyOf(keys)
-				.Delete();
+			await table.Where(Key2Expression, Key1Expression).AnyOf(keys).Delete();
 		}
 	}
 
@@ -146,9 +131,7 @@ internal abstract class SpotifyLinkTwoKeysEntityService<TEntity, TPayload1, TPay
 	{
 		var table = await GetTable();
 
-		await table
-			.Where(Key2Expression, key2)
-			.Delete();
+		await table.Where(Key2Expression, key2).Delete();
 
 		InvalidateKey2(key2);
 	}

@@ -1,7 +1,6 @@
-﻿namespace JakubKastner.MusicReleases.Spotify.Playlists
+﻿namespace JakubKastner.MusicReleases.Spotify.Playlists;
+
+internal interface ISpotifyPlaylistDbService
 {
-	internal interface ISpotifyPlaylistDbService
-	{
-		Task UpdateSnapshot(string playlistId, string newSnapshotId, CancellationToken ct);
-	}
+	Task UpdateSnapshot(string playlistId, string newSnapshotId, CancellationToken ct);
 }

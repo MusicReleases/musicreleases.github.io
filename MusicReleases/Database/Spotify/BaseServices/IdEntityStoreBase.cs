@@ -28,12 +28,8 @@ internal abstract class IdEntityStoreBase<TEntity> : KeyedEntityServiceCore<TEnt
 		return entity;
 	}
 
-	protected override async Task<IReadOnlyCollection<TEntity>> FetchByKeys(
-		IReadOnlyCollection<string> ids,
-		CancellationToken ct)
+	protected override async Task<IReadOnlyCollection<TEntity>> FetchByKeys(IReadOnlyCollection<string> ids, CancellationToken ct)
 	{
-		ct.ThrowIfCancellationRequested();
-
 		if (ids.Count == 0)
 		{
 			return [];
@@ -41,19 +37,18 @@ internal abstract class IdEntityStoreBase<TEntity> : KeyedEntityServiceCore<TEnt
 
 		var table = await GetTable();
 
+		ct.ThrowIfCancellationRequested();
+
 		var entities = await table.BulkGet(ids);
 
-		return entities
-			.Where(e => e is not null)
-			.ToList()
-			.AsReadOnly();
+		return entities.Where(e => e is not null).ToList().AsReadOnly();
 	}
 
 	protected async Task SaveEntity(TEntity entity, CancellationToken ct)
 	{
-		ct.ThrowIfCancellationRequested();
-
 		var table = await GetTable();
+
+		ct.ThrowIfCancellationRequested();
 
 		await table.PutSafe(entity);
 
@@ -67,9 +62,9 @@ internal abstract class IdEntityStoreBase<TEntity> : KeyedEntityServiceCore<TEnt
 			return;
 		}
 
-		ct.ThrowIfCancellationRequested();
-
 		var table = await GetTable();
+
+		ct.ThrowIfCancellationRequested();
 
 		await table.BulkPutSafe(entities);
 
@@ -78,20 +73,16 @@ internal abstract class IdEntityStoreBase<TEntity> : KeyedEntityServiceCore<TEnt
 
 	protected async Task DeleteEntity(string id, CancellationToken ct)
 	{
-		ct.ThrowIfCancellationRequested();
-
 		var table = await GetTable();
+
+		ct.ThrowIfCancellationRequested();
 
 		await table.Delete(id);
 
 		Invalidate(id);
 	}
 
-	protected async Task UpdateEntity<TValue>(
-		string id,
-		Expression<Func<TEntity, TValue>> selector,
-		TValue newValue,
-		CancellationToken ct)
+	protected async Task UpdateEntity<TValue>(string id, Expression<Func<TEntity, TValue>> selector, TValue newValue, CancellationToken ct)
 	{
 		ct.ThrowIfCancellationRequested();
 

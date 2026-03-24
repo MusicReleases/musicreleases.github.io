@@ -1,7 +1,6 @@
-﻿namespace JakubKastner.MusicReleases.Spotify.Artists
+﻿namespace JakubKastner.MusicReleases.Spotify.Artists;
+
+internal interface ISpotifyArtistService
 {
-	internal interface ISpotifyArtistService
-	{
-		Task Get(bool forceUpdate = false);
-	}
+	Task Get(bool forceUpdate = false);
 }

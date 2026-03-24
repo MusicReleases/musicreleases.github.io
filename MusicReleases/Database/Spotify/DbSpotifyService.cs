@@ -1,7 +1,7 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Services;
+namespace JakubKastner.MusicReleases.Database.Spotify;
 
 public class DbSpotifyService(IDexieNETService<SpotifyDb> dexieService) : IDbSpotifyService
 {

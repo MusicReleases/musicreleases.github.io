@@ -82,9 +82,7 @@ internal abstract class KeyedEntityServiceCore<TEntity, TKey>
 
 		if (useCache)
 		{
-			missingKeys = distinctKeys
-				.Where(k => !_cache.ContainsKey(k))
-				.ToList();
+			missingKeys = distinctKeys.Where(k => !_cache.ContainsKey(k)).ToList();
 		}
 		else
 		{

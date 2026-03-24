@@ -5,14 +5,10 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Links;
 
 internal static class SpotifyArtistGroupByReleasePayloadMapper
 {
-	/*public static ISpotifyArtistLinkEntity ToEntity(this SpotifyArtistGroupByReleasePayload payload, string userId)
-	{
-		return new(userId, payload.Id, payload.Order);
-	}*/
 	public static SpotifyArtistGroupByReleasePayload ToPayload(this IGrouping<string, ISpotifyArtistLinkEntity> group)
 	{
-		HashSet<string> mainArtistIds = [];
-		HashSet<string> featuredArtistIds = [];
+		var mainArtistIds = new HashSet<string>();
+		var featuredArtistIds = new HashSet<string>();
 
 		foreach (var entity in group)
 		{
@@ -27,8 +23,4 @@ internal static class SpotifyArtistGroupByReleasePayloadMapper
 		}
 		return new(group.Key, mainArtistIds, featuredArtistIds);
 	}
-	/*public static SpotifyArtistGroupByReleasePayload ToPayload(this SpotifyPlaylist model)
-	{
-		return new(model.Id, model.Order);
-	}*/
 }

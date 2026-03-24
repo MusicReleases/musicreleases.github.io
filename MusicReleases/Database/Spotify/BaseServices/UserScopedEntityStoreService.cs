@@ -38,9 +38,7 @@ internal abstract class UserScopedEntityStoreService<TModel, TEntity>(ISpotifyUs
 		return entity;
 	}
 
-	protected override async Task<IReadOnlyCollection<TEntity>> FetchByKeys(
-		IReadOnlyCollection<string> userIds,
-		CancellationToken ct)
+	protected override async Task<IReadOnlyCollection<TEntity>> FetchByKeys(IReadOnlyCollection<string> userIds, CancellationToken ct)
 	{
 		ct.ThrowIfCancellationRequested();
 
@@ -53,10 +51,7 @@ internal abstract class UserScopedEntityStoreService<TModel, TEntity>(ISpotifyUs
 
 		var entities = await table.BulkGet(userIds);
 
-		return entities
-			.Where(e => e is not null)
-			.ToList()
-			.AsReadOnly();
+		return entities.Where(e => e is not null).ToList().AsReadOnly();
 	}
 
 	public Task<TModel?> Get(CancellationToken ct)

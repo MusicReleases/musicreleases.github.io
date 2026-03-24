@@ -1,10 +1,9 @@
 ﻿using JakubKastner.MusicReleases.Objects.Spotify;
 
-namespace JakubKastner.MusicReleases.Spotify.Releases
+namespace JakubKastner.MusicReleases.Spotify.Releases;
+
+public interface ISpotifyReleaseFilterUrlService
 {
-	public interface ISpotifyReleaseFilterUrlService
-	{
-		string CreateUrl(SpotifyReleaseFilter filter);
-		SpotifyReleaseFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam);
-	}
+	string CreateUrl(SpotifyReleaseFilter filter);
+	SpotifyReleaseFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam);
 }

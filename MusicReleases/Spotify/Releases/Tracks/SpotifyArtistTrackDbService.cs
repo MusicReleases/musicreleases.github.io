@@ -1,5 +1,5 @@
 ﻿using DexieNET;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
+using JakubKastner.MusicReleases.Database.Spotify;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases.Tracks;
 
