@@ -1,10 +1,9 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Playlists;
-using JakubKastner.SpotifyApi.Enums;
-using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Playlists;
 using JakubKastner.SpotifyApi.Releases;
+using JakubKastner.SpotifyApi.Tracks;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
@@ -19,7 +18,7 @@ public partial class PlaylistPicker : IDisposable
 
 
 	[Parameter]
-	public PlaylistEnums PlaylistTypeFilter { get; set; } = PlaylistEnums.Editable;
+	public SpotifyPlaylistType PlaylistTypeFilter { get; set; } = SpotifyPlaylistType.Editable;
 
 	[Parameter]
 	public SpotifyRelease? Release { get; set; }

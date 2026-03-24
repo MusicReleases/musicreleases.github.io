@@ -1,8 +1,8 @@
 ﻿using DexieNET;
-using JakubKastner.SpotifyApi.Clients;
+using JakubKastner.SpotifyApi.User;
 using System.Linq.Expressions;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
+namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
 internal abstract class SpotifyUserScopedEntityService<TModel, TEntity>(ISpotifyUserClient userClient) : SpotifyKeyedEntityServiceCore<TEntity, string>, ISpotifyUserScopedEntityService<TModel>
 	where TEntity : class, ISpotifyDb

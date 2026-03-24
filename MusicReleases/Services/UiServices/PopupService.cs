@@ -1,15 +1,15 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Spotify.Settings;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.UiServices;
 
-internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, ISettingsService settingsService, NavigationManager navManager) : IPopupService
+internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, ISpotifySettingsService settingsService, NavigationManager navManager) : IPopupService
 {
 	private readonly IBackgroundTaskFilterUrlSynchronizer _spotifyTaskFilterUrlSynchronizer = spotifyTaskFilterUrlSynchronizer;
 
-	private readonly ISettingsService _settingsService = settingsService;
+	private readonly ISpotifySettingsService _settingsService = settingsService;
 
 	private readonly NavigationManager _navManager = navManager;
 

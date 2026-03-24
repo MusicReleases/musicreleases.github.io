@@ -1,6 +1,4 @@
-﻿using JakubKastner.MusicReleases.Enums;
-
-namespace JakubKastner.MusicReleases.Spotify.User.Update;
+﻿namespace JakubKastner.MusicReleases.Spotify.User.Update;
 
 public interface ISpotifyUserUpdateDbService
 {

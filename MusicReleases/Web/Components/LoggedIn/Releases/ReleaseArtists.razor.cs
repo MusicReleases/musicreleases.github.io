@@ -1,6 +1,6 @@
-﻿using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.MusicReleases.Spotify.Artists;
+﻿using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.MusicReleases.Spotify.Settings;
 using JakubKastner.SpotifyApi.Artists;
 using Microsoft.AspNetCore.Components;
 
@@ -9,7 +9,7 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
 public partial class ReleaseArtists : IDisposable
 {
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 	[Inject]
 	private ISpotifyArtistState SpotifyArtistState { get; set; } = default!;

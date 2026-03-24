@@ -1,8 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.ApiServices;
-using JakubKastner.MusicReleases.Services.BaseServices;
-using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.MusicReleases.Spotify.Settings;
+using JakubKastner.SpotifyApi.User;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Buttons;
@@ -16,7 +15,7 @@ public partial class UserButton : IDisposable
 	private IApiLoginService ApiLoginService { get; set; } = default!;
 
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter]

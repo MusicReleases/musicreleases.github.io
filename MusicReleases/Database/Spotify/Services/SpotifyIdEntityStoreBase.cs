@@ -1,7 +1,7 @@
 ﻿using DexieNET;
 using System.Linq.Expressions;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
+namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
 internal abstract class IdEntityStoreBase<TEntity> : SpotifyKeyedEntityServiceCore<TEntity, string>
 	where TEntity : class, ISpotifyDb

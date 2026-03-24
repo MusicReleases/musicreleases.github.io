@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.MusicReleases.Spotify.Settings;
 using JakubKastner.SpotifyApi.Releases;
 using Microsoft.AspNetCore.Components;
 
@@ -16,7 +16,7 @@ public partial class ReleaseInfo : IDisposable
 	private ISpotifyReleaseFilterService SpotifyReleaseFilterService { get; set; } = default!;
 
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]

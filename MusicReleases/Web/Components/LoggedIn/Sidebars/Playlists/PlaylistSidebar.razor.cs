@@ -1,5 +1,4 @@
 ﻿using JakubKastner.MusicReleases.Spotify.Playlists;
-using JakubKastner.SpotifyApi.Enums;
 using JakubKastner.SpotifyApi.Playlists;
 using Microsoft.AspNetCore.Components;
 
@@ -15,7 +14,7 @@ public partial class PlaylistSidebar : IDisposable
 
 
 	[Parameter]
-	public PlaylistEnums PlaylistTypeFilter { get; set; } = PlaylistEnums.Editable;
+	public SpotifyPlaylistType PlaylistTypeFilter { get; set; } = SpotifyPlaylistType.Editable;
 
 
 	private IReadOnlySet<SpotifyPlaylist>? _playlists;

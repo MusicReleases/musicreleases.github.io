@@ -1,17 +1,14 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
-using JakubKastner.MusicReleases.BackgroundTasks.Objects;
-using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.Spotify.Base;
 using JakubKastner.MusicReleases.Spotify.Releases.Artists;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Artists;
-using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Releases;
+using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 

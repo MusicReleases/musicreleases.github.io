@@ -1,17 +1,17 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.MusicReleases.Spotify.Settings;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.MusicReleases.Spotify.User;
 using JakubKastner.MusicReleases.Spotify.User.Update;
-using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Base.Objects;
+using JakubKastner.SpotifyApi.User;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, ISpotifyUserDbService databaseUserService, ISpotifyUserUpdateDbService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService, IBackgroundTaskManagerService backgroundTaskManagerService) : ISpotifyLoginService
+internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, ISpotifyUserDbService databaseUserService, ISpotifyUserUpdateDbService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISpotifySettingsService settingsService, IBackgroundTaskManagerService backgroundTaskManagerService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
@@ -20,7 +20,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 	private readonly ISpotifyUserDbService _databaseUserService = databaseUserService;
 	private readonly ISpotifyUserUpdateDbService _databaseUpdateService = databaseUpdateService;
 	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
-	private readonly ISettingsService _settingsService = settingsService;
+	private readonly ISpotifySettingsService _settingsService = settingsService;
 	private readonly IBackgroundTaskManagerService _backgroundTaskManagerService = backgroundTaskManagerService;
 
 	public ServiceType GetServiceType()

@@ -1,6 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Enums;
-using JakubKastner.SpotifyApi.Playlists;
+﻿using JakubKastner.SpotifyApi.Playlists;
+using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
@@ -28,7 +27,7 @@ internal class SpotifyPlaylistFilterService : ISpotifyPlaylistFilterService
 
 	public IReadOnlySet<SpotifyPlaylist>? FilteredPlaylists { get; private set; }
 
-	public PlaylistEnums PlaylistType { get; private set; } = PlaylistEnums.All;
+	public SpotifyPlaylistType PlaylistType { get; private set; } = SpotifyPlaylistType.All;
 
 	public event Action? OnSearchTextChanged;
 	public event Action? OnFilterChanged;
@@ -48,7 +47,7 @@ internal class SpotifyPlaylistFilterService : ISpotifyPlaylistFilterService
 		return true;
 	}
 
-	public bool SetTypeFilter(PlaylistEnums type)
+	public bool SetTypeFilter(SpotifyPlaylistType type)
 	{
 		if (PlaylistType == type)
 		{
@@ -92,7 +91,7 @@ internal class SpotifyPlaylistFilterService : ISpotifyPlaylistFilterService
 		return new SortedSet<SpotifyPlaylist>(playlists).AsReadOnly();
 	}
 
-	private IReadOnlySet<SpotifyPlaylist>? Recalculate(PlaylistEnums playlistType, string? searchText)
+	private IReadOnlySet<SpotifyPlaylist>? Recalculate(SpotifyPlaylistType playlistType, string? searchText)
 	{
 		var playlists = _playlistState.Items;
 		if (playlists is null)
@@ -127,7 +126,7 @@ internal class SpotifyPlaylistFilterService : ISpotifyPlaylistFilterService
 		return searched;
 	}
 
-	private IEnumerable<SpotifyPlaylist>? RecalculateFilter(PlaylistEnums playlistType, IEnumerable<SpotifyPlaylist>? playlists = null)
+	private IEnumerable<SpotifyPlaylist>? RecalculateFilter(SpotifyPlaylistType playlistType, IEnumerable<SpotifyPlaylist>? playlists = null)
 	{
 		playlists ??= _playlistState.Items;
 
@@ -136,7 +135,7 @@ internal class SpotifyPlaylistFilterService : ISpotifyPlaylistFilterService
 			return null;
 		}
 
-		if (playlistType == PlaylistEnums.All)
+		if (playlistType == SpotifyPlaylistType.All)
 		{
 			return playlists;
 		}
@@ -148,23 +147,23 @@ internal class SpotifyPlaylistFilterService : ISpotifyPlaylistFilterService
 		return filtered;
 	}
 
-	private static PlaylistEnums GetPlaylistType(SpotifyPlaylist playlist, string userId)
+	private static SpotifyPlaylistType GetPlaylistType(SpotifyPlaylist playlist, string userId)
 	{
 		if (playlist.OwnerId == userId)
 		{
-			return PlaylistEnums.Owned;
+			return SpotifyPlaylistType.Owned;
 		}
 
 		if (playlist.Collaborative)
 		{
-			return PlaylistEnums.Collaborative;
+			return SpotifyPlaylistType.Collaborative;
 		}
 
-		return PlaylistEnums.Subscribed;
+		return SpotifyPlaylistType.Subscribed;
 
 	}
 
-	public IReadOnlySet<SpotifyPlaylist>? GetFilteredPlaylists(PlaylistEnums playlistType, string? searchText)
+	public IReadOnlySet<SpotifyPlaylist>? GetFilteredPlaylists(SpotifyPlaylistType playlistType, string? searchText)
 	{
 		return Recalculate(playlistType, searchText);
 	}

@@ -3,7 +3,7 @@ using DexieNET;
 using JakubKastner.MusicReleases;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.SpotifyApi;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Base.Objects;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

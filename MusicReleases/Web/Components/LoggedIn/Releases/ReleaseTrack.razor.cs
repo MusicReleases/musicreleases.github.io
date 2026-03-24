@@ -1,7 +1,7 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.MusicReleases.Spotify.Settings;
+using JakubKastner.SpotifyApi.Tracks;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;
@@ -12,7 +12,7 @@ public partial class ReleaseTrack : IDisposable
 	private IDragDropService DragDropService { get; set; } = default!;
 
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]

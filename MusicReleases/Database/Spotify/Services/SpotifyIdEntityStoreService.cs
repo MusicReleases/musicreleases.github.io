@@ -1,9 +1,9 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Spotify;
-using JakubKastner.SpotifyApi.Objects.Base;
+using JakubKastner.SpotifyApi.Base.Objects;
 using System.Linq.Expressions;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
+namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
 internal abstract class SpotifyIdEntityStoreService<TModel, TEntity> : IdEntityStoreBase<TEntity>
 	where TEntity : class, ISpotifyDb

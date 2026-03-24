@@ -1,6 +1,6 @@
 using JakubKastner.MusicReleases.Services.ApiServices;
-using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Services.UiServices;
+using JakubKastner.MusicReleases.Spotify.Settings;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Layouts;
@@ -17,7 +17,7 @@ public partial class MainLayout : IDisposable
 	private NavigationManager NavManager { get; set; } = default!;
 
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 	private string BodyClass => $"mobile-{MobileService.MobileMenu.ToLowerString()} {SettingsService.UserSettings.Theme.ToLowerString()}";
 

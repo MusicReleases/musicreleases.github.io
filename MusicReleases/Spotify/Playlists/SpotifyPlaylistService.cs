@@ -1,16 +1,14 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
-using JakubKastner.MusicReleases.BackgroundTasks.Objects;
-using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
-using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Base;
 using JakubKastner.MusicReleases.Spotify.Playlists.User;
+using JakubKastner.MusicReleases.Spotify.Settings;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.MusicReleases.Spotify.User.Update;
-using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Playlists;
+using JakubKastner.SpotifyApi.Tracks;
+using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
@@ -26,7 +24,7 @@ internal sealed class SpotifyPlaylistService
 	ISpotifyPlaylistState playlistState,
 	IBackgroundTaskManagerService taskManager,
 	ILoadingService loadingService,
-	ISettingsService settingsService
+	ISpotifySettingsService settingsService
 )
 	: SpotifyBaseSyncService<SpotifyPlaylist, SpotifyUserPlaylistPayload>(userApi, playlistReader, playlistWriter, userPlaylistDb, updateDb, playlistState, taskManager, loadingService), ISpotifyPlaylistService
 {
@@ -38,7 +36,7 @@ internal sealed class SpotifyPlaylistService
 	private readonly ISpotifyUserPlaylistDbService _userPlaylistDb = userPlaylistDb;
 	private readonly ISpotifyPlaylistState _playlistState = playlistState;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
-	private readonly ISettingsService _settingsService = settingsService;
+	private readonly ISpotifySettingsService _settingsService = settingsService;
 
 	protected override BackgroundTaskType TaskType => BackgroundTaskType.PlaylistsGet;
 

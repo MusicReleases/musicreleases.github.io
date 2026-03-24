@@ -1,7 +1,7 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.Tracks;
 
 namespace JakubKastner.MusicReleases.Spotify.Tracks;
 

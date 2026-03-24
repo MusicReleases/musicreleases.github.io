@@ -1,4 +1,4 @@
-﻿namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
+﻿namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
 internal interface ISpotifyUserScopedEntityService
 {

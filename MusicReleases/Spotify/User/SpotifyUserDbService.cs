@@ -1,10 +1,9 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify;
-using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
-using JakubKastner.MusicReleases.Database.Spotify.Links;
-using JakubKastner.MusicReleases.Database.Spotify.Mappers;
+using JakubKastner.MusicReleases.Database.Spotify.Services;
+using JakubKastner.MusicReleases.Database.Spotify.Services.Links;
 using JakubKastner.MusicReleases.Spotify.User.Update;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.User;
 

@@ -1,5 +1,6 @@
 ﻿using JakubKastner.SpotifyApi.Artists;
-using JakubKastner.SpotifyApi.Objects.Base;
+using JakubKastner.SpotifyApi.Base.Objects;
+using JakubKastner.SpotifyApi.Tracks;
 using System.Diagnostics.CodeAnalysis;
 
 namespace JakubKastner.SpotifyApi.Releases;

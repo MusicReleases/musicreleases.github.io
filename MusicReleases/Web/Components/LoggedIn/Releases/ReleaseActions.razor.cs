@@ -1,5 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
+using JakubKastner.MusicReleases.Spotify.Tracks;
 using JakubKastner.SpotifyApi.Releases;
 using Microsoft.AspNetCore.Components;
 

@@ -1,6 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.User;
-using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Spotify.Settings;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Popups;
@@ -8,10 +7,10 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Popups;
 public partial class SettingsPopup : IDisposable
 {
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
-	private UserSettings UserSettings => SettingsService.UserSettings;
+	private SpotifySettings UserSettings => SettingsService.UserSettings;
 
 
 	private const string _buttonClass = "popup-settings";

@@ -1,8 +1,7 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.BackgroundTasks.Objects;
-using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Spotify.Settings;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
@@ -13,7 +12,7 @@ public partial class BackgroundTaskRow : IDisposable
 	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
 
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter]

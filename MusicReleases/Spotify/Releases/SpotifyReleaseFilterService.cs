@@ -1,6 +1,6 @@
 ﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Objects.Spotify;
 using JakubKastner.MusicReleases.Spotify.Artists;
+using JakubKastner.MusicReleases.Spotify.Releases.User;
 using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Releases;
 using System.Collections.Concurrent;

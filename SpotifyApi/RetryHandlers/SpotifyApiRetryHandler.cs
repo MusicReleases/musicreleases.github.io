@@ -1,4 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Store;
+﻿using JakubKastner.SpotifyApi.Base.Objects;
+using JakubKastner.SpotifyApi.Store;
 using Microsoft.Extensions.Options;
 using SpotifyAPI.Web.Http;
 using System.Net;

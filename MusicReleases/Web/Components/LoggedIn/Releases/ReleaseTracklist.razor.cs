@@ -1,4 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Objects;
+﻿using JakubKastner.SpotifyApi.Tracks;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Releases;

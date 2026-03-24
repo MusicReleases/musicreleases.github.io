@@ -1,10 +1,10 @@
 using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
-using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Playlists;
-using JakubKastner.SpotifyApi.Objects;
+using JakubKastner.MusicReleases.Spotify.Settings;
+using JakubKastner.MusicReleases.Spotify.Tracks;
 using JakubKastner.SpotifyApi.Playlists;
 using JakubKastner.SpotifyApi.Releases;
+using JakubKastner.SpotifyApi.Tracks;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Playlists;
@@ -21,7 +21,7 @@ public partial class PlaylistButton : IDisposable
 	private ISpotifyPlaylistState SpotifyPlaylistState { get; set; } = default!;
 
 	[Inject]
-	private ISettingsService SettingsService { get; set; } = default!;
+	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]

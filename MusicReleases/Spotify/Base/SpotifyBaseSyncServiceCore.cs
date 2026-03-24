@@ -1,10 +1,9 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.BackgroundTasks.Objects;
-using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.MusicReleases.Spotify.User.Update;
-using JakubKastner.SpotifyApi.Clients;
-using JakubKastner.SpotifyApi.Objects.Base;
+using JakubKastner.SpotifyApi.Base.Objects;
+using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Base;
 

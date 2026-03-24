@@ -1,7 +1,7 @@
 ﻿using DexieNET;
 using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.MusicReleases.Database.Spotify.Links;
+using JakubKastner.MusicReleases.Database.Spotify.Services.Links;
 using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists.User;

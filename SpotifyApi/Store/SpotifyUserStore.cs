@@ -1,4 +1,5 @@
-﻿using SpotifyAPI.Web;
+﻿using JakubKastner.SpotifyApi.User;
+using SpotifyAPI.Web;
 
 namespace JakubKastner.SpotifyApi.Store;
 

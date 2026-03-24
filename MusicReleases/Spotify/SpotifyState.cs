@@ -1,4 +1,4 @@
-﻿using JakubKastner.SpotifyApi.Objects.Base;
+﻿using JakubKastner.SpotifyApi.Base.Objects;
 using System.Collections.Concurrent;
 
 namespace JakubKastner.MusicReleases.Spotify;

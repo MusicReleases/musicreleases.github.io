@@ -1,5 +1,5 @@
-using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
