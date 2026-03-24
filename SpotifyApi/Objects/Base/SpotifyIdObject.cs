@@ -3,21 +3,20 @@
 namespace JakubKastner.SpotifyApi.Objects.Base;
 
 [method: SetsRequiredMembers]
-public abstract class SpotifyIdNameObject(string id, string name) : SpotifyIdObject(id), IComparable
+public abstract class SpotifyIdObject(string id) : IComparable
 {
-	public required string Name { get; init; } = name;
+	public required string Id { get; init; } = id;
 
-	public new int CompareTo(object? obj)
+	public int CompareTo(object? obj)
 	{
 		if (obj == null)
 		{
 			return -1;
 		}
 
-		var other = (SpotifyIdNameObject)obj;
-		var nameComparison = Name.CompareTo(other.Name);
+		var other = (SpotifyIdObject)obj;
 
-		return nameComparison != 0 ? nameComparison : Id.CompareTo(other.Id);
+		return Id.CompareTo(other.Id);
 	}
 
 	public override bool Equals(object? obj)
@@ -27,7 +26,7 @@ public abstract class SpotifyIdNameObject(string id, string name) : SpotifyIdObj
 			return this == null;
 		}
 
-		var other = (SpotifyIdNameObject)obj;
+		var other = (SpotifyIdObject)obj;
 		return string.Equals(Id, other.Id);
 	}
 

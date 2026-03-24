@@ -2,8 +2,7 @@
 using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
-using JakubKastner.MusicReleases.Database.Spotify.IdEntities;
+using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
@@ -13,14 +12,27 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Spotify.Base;
 
-internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity, TPayload>(ISpotifyUserClient userApi, ISpotifyIdEntityService<TModel, TPayload> entityDbService, ISpotifyUserLinkEntityService<TPayload> userLinkDbService, IDbSpotifyUserUpdateService updateDb, ISpotifyState<TModel> state, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) : SpotifyBaseSyncServiceCore<TModel, NoContext>(userApi, updateDb, taskManager, loadingService), ISpotifyBaseSyncService where TModel : SpotifyIdNameObject
-	where TIdEntity : ISpotifyIdEntity
-	where TUserIdEntity : ISpotifyUserIdEntity
+internal abstract class SpotifyBaseSyncService<TModel, TPayload>
+(
+	ISpotifyUserClient userApi,
+	IReadByPayloadService<TModel, TPayload> reader,
+	IWriteEntityService<TModel> writer,
+	ISpotifyUserLinkEntityService<TPayload> userLinkDbService,
+	IDbSpotifyUserUpdateService updateDb,
+	ISpotifyState<TModel> state,
+	IBackgroundTaskManagerService taskManager,
+	ILoadingService loadingService
+)
+	: SpotifyBaseSyncServiceCore<TModel, NoContext>(userApi, updateDb, taskManager, loadingService), ISpotifyBaseSyncService
+	where TModel : SpotifyIdNameObject
 	where TPayload : ISpotifyPayload
 {
-	private readonly ISpotifyIdEntityService<TModel, TPayload> _entityDbService = entityDbService;
+
+	private readonly IReadByPayloadService<TModel, TPayload> _reader = reader;
+	private readonly IWriteEntityService<TModel> _writer = writer;
 	private readonly ISpotifyUserLinkEntityService<TPayload> _userLinkDbService = userLinkDbService;
 	private readonly ISpotifyState<TModel> _state = state;
+
 
 	protected sealed override string GetTaskDescription(NoContext _) => TaskDescription;
 
@@ -80,7 +92,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 
 			var models = await task.RunSegment($"db - get {EntityName} by ids - {count}", async ct2 =>
 			{
-				return await _entityDbService.GetByIds(payloads, ct2);
+				return await _reader.GetByIds(payloads, ct2);
 			});
 
 			return await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
@@ -115,7 +127,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TIdEntity, TUserIdEntity,
 
 			await task.RunSegment($"db - save {EntityName} - {count}", async ct2 =>
 			{
-				await _entityDbService.Save(models, true, ct2);
+				await _writer.Save(models, true, ct2);
 			});
 
 			await task.RunSegment($"db - save user {EntityName} ({UserLinkLabel}) - {count}", async ct2 =>

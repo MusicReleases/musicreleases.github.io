@@ -1,28 +1,25 @@
 ﻿using JakubKastner.MusicReleases.Objects.Spotify;
 using JakubKastner.MusicReleases.Spotify.Releases.User;
-using JakubKastner.SpotifyApi.Clients;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseFilterUrlSynchronizer
+internal class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseFilterUrlSynchronizer
 {
 	private readonly ISpotifyReleaseFilterService _filterService;
 
 	private readonly ISpotifyReleaseFilterUrlService _filterUrlService;
 
-	private readonly IDbSpotifyUserFilterReleaseService _dbService;
+	private readonly ISpotifyUserFilterReleaseDbService _dbService;
 
-	private readonly ISpotifyUserClient _spotifyUserClient;
 
 	private readonly NavigationManager _navManager;
 
-	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, IDbSpotifyUserFilterReleaseService dbService, ISpotifyUserClient spotifyUserClient, NavigationManager navManager)
+	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, ISpotifyUserFilterReleaseDbService dbService, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;
 		_dbService = dbService;
-		_spotifyUserClient = spotifyUserClient;
 		_navManager = navManager;
 
 		_filterService.NotifySynchronizer += OnFilterChanged;
@@ -50,9 +47,10 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 
 		_filterService.SetFromUrl(filter);
 
-		var userId = _spotifyUserClient.GetUserIdRequired();
+		//var userId = _spotifyUserClient.GetUserIdRequired();
 
-		await _dbService.Save(filter, userId);
+		// TODO cancel token + user id
+		await _dbService.Save(filter, false, default);
 
 		Console.WriteLine("SetFilterFromUrl - end");
 	}
@@ -73,8 +71,10 @@ public class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseF
 	public async Task SetInitFilter()
 	{
 		Console.WriteLine("SetInitFilter - start");
-		var userId = _spotifyUserClient.GetUserIdRequired();
-		var filter = await _dbService.Get(userId) ?? new();
+		//var userId = _spotifyUserClient.GetUserIdRequired();
+
+		// TODO cancel token + user id
+		var filter = await _dbService.Get(default) ?? new();
 		_filterService.EnsureFilter(filter);
 
 

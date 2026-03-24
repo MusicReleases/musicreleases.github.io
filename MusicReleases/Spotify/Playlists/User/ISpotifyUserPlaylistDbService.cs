@@ -1,9 +1,10 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.SpotifyApi.Playlists;
 
-namespace JakubKastner.MusicReleases.Spotify.Playlists.User;
-
-internal interface ISpotifyUserPlaylistDbService : ISpotifyUserLinkEntityService<SpotifyUserPlaylistPayload>
+namespace JakubKastner.MusicReleases.Spotify.Playlists.User
 {
-	Task AddNew(SpotifyPlaylist playlist, string userId, CancellationToken ct);
+	internal interface ISpotifyUserPlaylistDbService : ISpotifyUserLinkEntityService<SpotifyUserPlaylistPayload>, ISpotifyUserLinkEntityService
+	{
+		Task AddNew(SpotifyPlaylist playlist, string userId, CancellationToken ct);
+	}
 }

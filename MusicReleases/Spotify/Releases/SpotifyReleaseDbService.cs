@@ -1,23 +1,47 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.MusicReleases.Database.Spotify.IdEntities;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Spotify.Releases.Artists;
 using JakubKastner.SpotifyApi.Releases;
 using System.Data;
+using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-
-internal sealed class SpotifyReleaseDbService(IDbSpotifyService dbService) : SpotifyIdEntityService<SpotifyRelease, SpotifyReleaseEntity, SpotifyArtistReleasePayload>, ISpotifyReleaseDbService
+internal sealed class SpotifyReleaseDbService(IDbSpotifyService dbService)
+	: IdEntityPayloadStoreService<SpotifyRelease, SpotifyReleaseEntity, SpotifyArtistReleasePayload>,
+	  ISpotifyReleaseDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	private ReleaseGroup _currentReleaseGroup;
+	protected override Expression<Func<SpotifyReleaseEntity, string>> IdExpression
+	{
+		get
+		{
+			return x => x.Id;
+		}
+	}
 
-	protected override SpotifyReleaseEntity ToEntity(SpotifyRelease model) => model.ToEntity();
+	protected override string GetEntityId(SpotifyReleaseEntity entity)
+	{
+		return entity.Id;
+	}
 
-	protected override SpotifyRelease ToModel(SpotifyReleaseEntity entity, SpotifyArtistReleasePayload payload) => entity.ToModel(payload.MainArtists, payload.FeaturedArtists);
+	protected override string GetModelId(SpotifyRelease model)
+	{
+		return model.Id;
+	}
+
+	protected override SpotifyReleaseEntity ToEntity(SpotifyRelease model)
+	{
+		return model.ToEntity();
+	}
+
+	protected override SpotifyRelease ToModel(SpotifyReleaseEntity entity, SpotifyArtistReleasePayload payload)
+	{
+		return entity.ToModel(payload.MainArtists, payload.FeaturedArtists);
+	}
 
 	protected override async Task<Table<SpotifyReleaseEntity, string>> GetTable()
 	{
@@ -25,31 +49,75 @@ internal sealed class SpotifyReleaseDbService(IDbSpotifyService dbService) : Spo
 		return db.Release;
 	}
 
-	public Task<IReadOnlyCollection<SpotifyRelease>> GetByIds(IReadOnlyCollection<SpotifyArtistReleasePayload> payloads, ReleaseGroup releaseGroup, CancellationToken ct)
+	public async Task<IReadOnlyCollection<SpotifyRelease>> GetByIds(
+		IReadOnlyCollection<SpotifyArtistReleasePayload> payloads,
+		ReleaseGroup releaseGroup,
+		CancellationToken ct)
 	{
-		_currentReleaseGroup = releaseGroup;
-		return GetByIds(payloads, ct);
+		if (payloads.Count == 0)
+		{
+			return [];
+		}
+
+		var ids = payloads
+			.Select(p => p.Id)
+			.ToHashSet();
+
+		var entities = await FetchByIdsForGroup(ids, releaseGroup, ct);
+
+		SetCache(entities);
+
+		var result = new List<SpotifyRelease>(payloads.Count);
+
+		foreach (var payload in payloads)
+		{
+			if (TryGetCached(payload.Id, out var entity))
+			{
+				result.Add(ToModel(entity, payload));
+			}
+		}
+
+		return result.AsReadOnly();
 	}
 
-	protected override async Task<IReadOnlyCollection<SpotifyReleaseEntity>> FetchByIds(IReadOnlyCollection<string> ids, CancellationToken ct)
+	private async Task<IReadOnlyCollection<SpotifyReleaseEntity>> FetchByIdsForGroup(
+		IReadOnlyCollection<string> ids,
+		ReleaseGroup releaseGroup,
+		CancellationToken ct)
 	{
 		ct.ThrowIfCancellationRequested();
 
-		var table = await GetTable();
-
-		if (_currentReleaseGroup == ReleaseGroup.Appears)
+		if (ids.Count == 0)
 		{
-			var entities = await table.BulkGet(ids);
-			return entities.ToList().AsReadOnly();
+			return [];
 		}
 
-		var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(_currentReleaseGroup);
+		var table = await GetTable();
 
-		var keys = ids.Select(id => (id, releaseType)).ToArray();
+		if (releaseGroup == ReleaseGroup.Appears)
+		{
+			var entities = await table.BulkGet(ids);
 
-		var itemsDb = await table.Where(x => x.Id, x => x.ReleaseType).AnyOf(keys).ToArray();
+			return entities
+				.Where(e => e is not null)
+				.ToList()
+				.AsReadOnly();
+		}
 
-		return itemsDb.ToList().AsReadOnly();
+		var releaseType = EnumReleaseTypeExtensions.MapReleaseTypeFromGroup(releaseGroup);
+
+		var keys = ids
+			.Select(id => (id, releaseType))
+			.ToArray();
+
+		var entitiesByType = await table
+			.Where(x => x.Id, x => x.ReleaseType)
+			.AnyOf(keys)
+			.ToArray();
+
+		return entitiesByType
+			.Where(e => e is not null)
+			.ToList()
+			.AsReadOnly();
 	}
-
 }

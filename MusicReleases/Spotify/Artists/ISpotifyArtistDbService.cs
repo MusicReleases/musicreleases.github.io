@@ -1,10 +1,21 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify.IdEntities;
-using JakubKastner.MusicReleases.Spotify.Artists.User;
+﻿using JakubKastner.MusicReleases.Spotify.Artists.User;
 using JakubKastner.SpotifyApi.Artists;
 
-namespace JakubKastner.MusicReleases.Spotify.Artists;
-
-internal interface ISpotifyArtistDbService : ISpotifyIdEntityService<SpotifyArtist, SpotifyUserArtistPayload>
+namespace JakubKastner.MusicReleases.Spotify.Artists
 {
-	Task<IReadOnlyCollection<SpotifyArtist>> GetByIds(IReadOnlyCollection<string> ids, CancellationToken ct);
+	internal interface ISpotifyArtistDbService
+	{
+		Task<SpotifyArtist?> GetById(SpotifyUserArtistPayload payload, CancellationToken ct);
+		Task<IReadOnlyCollection<SpotifyArtist>> GetByIds(IReadOnlyCollection<SpotifyUserArtistPayload> payloads, CancellationToken ct);
+
+		Task<IReadOnlyCollection<SpotifyArtist>> GetByIds(
+			IReadOnlyCollection<string> ids,
+			CancellationToken ct);
+
+		Task Save(
+			IReadOnlyCollection<SpotifyArtist> entities,
+			bool keepExisting,
+			CancellationToken ct);
+
+	}
 }

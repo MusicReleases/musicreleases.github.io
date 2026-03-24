@@ -2,7 +2,7 @@
 using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
@@ -14,11 +14,15 @@ using JakubKastner.SpotifyApi.Playlists;
 
 namespace JakubKastner.MusicReleases.Spotify.Playlists;
 
-internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotifyPlaylistClient playlistApi, ISpotifyPlaylistDbService playlistsDb, ISpotifyUserPlaylistDbService userPlaylistDb, IDbSpotifyUserUpdateService updateDb, ISpotifyPlaylistState playlistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService, ISettingsService settingsService) : SpotifyBaseSyncService<SpotifyPlaylist, SpotifyPlaylistEntity, SpotifyUserPlaylistEntity, SpotifyUserPlaylistPayload>(userApi, playlistsDb, userPlaylistDb, updateDb, playlistState, taskManager, loadingService), ISpotifyPlaylistService
+internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotifyPlaylistClient playlistApi, ISpotifyPlaylistDbService playlistDb, IReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> playlistReader, IWriteEntityService<SpotifyPlaylist> playlistWriter, ISpotifyUserPlaylistDbService userPlaylistDb, IDbSpotifyUserUpdateService updateDb, ISpotifyPlaylistState playlistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService, ISettingsService settingsService)
+
+	: SpotifyBaseSyncService<SpotifyPlaylist, SpotifyUserPlaylistPayload>(userApi, playlistReader, playlistWriter, userPlaylistDb, updateDb, playlistState, taskManager, loadingService), ISpotifyPlaylistService
 {
 	private readonly ISpotifyUserClient _userApi = userApi;
 	private readonly ISpotifyPlaylistClient _playlistApi = playlistApi;
-	private readonly ISpotifyPlaylistDbService _playlistDb = playlistsDb;
+	private readonly ISpotifyPlaylistDbService _playlistDb = playlistDb;
+	private readonly IReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> _playlistReader = playlistReader;
+	private readonly IWriteEntityService<SpotifyPlaylist> _playlistWriter = playlistWriter;
 	private readonly ISpotifyUserPlaylistDbService _userPlaylistDb = userPlaylistDb;
 	private readonly ISpotifyPlaylistState _playlistState = playlistState;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
@@ -82,7 +86,7 @@ internal sealed class SpotifyPlaylistService(ISpotifyUserClient userApi, ISpotif
 			// save to playlist db
 			await task.RunSegment("db - add playlist (playlist)", async ct =>
 			{
-				await _playlistDb.Save(playlist, true, ct);
+				await _playlistWriter.Save(playlist, true, ct);
 			});
 
 			// save to user-playlist db

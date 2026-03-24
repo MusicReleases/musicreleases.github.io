@@ -2,9 +2,9 @@
 
 namespace JakubKastner.MusicReleases.Database.Spotify.LinkEntities;
 
-internal abstract class SpotifyLinkEntityServiceCore<TEntity> : ISpotifyLinkEntityServiceCore where TEntity : ISpotifyDb
+internal abstract class SpotifyLinkEntityServiceCore<TEntity>
+	where TEntity : class, ISpotifyDb
 {
-
 	protected abstract Task<Table<TEntity, (string, string)>> GetTable();
 
 	protected async Task SaveEntities(IReadOnlyCollection<TEntity> entities, CancellationToken ct)
@@ -14,23 +14,28 @@ internal abstract class SpotifyLinkEntityServiceCore<TEntity> : ISpotifyLinkEnti
 			return;
 		}
 
-		var table = await GetTable();
 		ct.ThrowIfCancellationRequested();
+
+		var table = await GetTable();
 
 		await table.BulkPutSafe(entities);
 	}
 
 	protected async Task SaveEntity(TEntity entity, CancellationToken ct)
 	{
-		var table = await GetTable();
 		ct.ThrowIfCancellationRequested();
+
+		var table = await GetTable();
 
 		await table.PutSafe(entity);
 	}
 
-	public async Task DeleteAll()
+	public async Task DeleteAll(CancellationToken ct)
 	{
+		ct.ThrowIfCancellationRequested();
+
 		var table = await GetTable();
+
 		await table.Clear();
 	}
 }

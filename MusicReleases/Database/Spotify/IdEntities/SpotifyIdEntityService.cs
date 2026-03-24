@@ -1,40 +1,60 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify.Entities.Base;
-using JakubKastner.MusicReleases.Spotify;
-using JakubKastner.SpotifyApi.Objects.Base;
-
-namespace JakubKastner.MusicReleases.Database.Spotify.IdEntities;
-
-internal abstract class SpotifyIdEntityService<TModel, TIdEntity> : SpotifyIdEntityStoreService<TModel, TIdEntity>, ISpotifyIdEntityService<TModel> where TModel : SpotifyIdNameObject
-	where TIdEntity : ISpotifyDb, ISpotifyIdEntity
+﻿namespace JakubKastner.MusicReleases.Database.Spotify.IdEntities;
+/*
+internal abstract class SpotifyIdEntityService<TModel, TEntity> : KeyedEntityService<TModel, TEntity>
+	where TModel : class
+	where TEntity : class, ISpotifyDb
 {
-	protected abstract TModel ToModel(TIdEntity entity);
+	protected abstract TModel ToModel(TEntity entity);
 
 	public async Task<TModel?> GetById(string id, CancellationToken ct)
 	{
 		var entity = await GetEntityByIdCore(id, ct);
-		return entity is null ? null : ToModel(entity);
+
+		if (entity is null)
+		{
+			return null;
+		}
+
+		return ToModel(entity);
 	}
 
 	public async Task<IReadOnlyCollection<TModel>> GetByIds(IReadOnlyCollection<string> ids, CancellationToken ct)
 	{
+		if (ids.Count == 0)
+		{
+			return [];
+		}
+
 		var entities = await GetEntitiesByIdsCore(ids, ct);
-		return entities.Select(ToModel).ToList().AsReadOnly();
+
+		var result = new List<TModel>(entities.Count);
+
+		foreach (var entity in entities)
+		{
+			result.Add(ToModel(entity));
+		}
+
+		return result.AsReadOnly();
 	}
 }
 
-
-
-
-internal abstract class SpotifyIdEntityService<TModel, TIdEntity, TPayload> : SpotifyIdEntityStoreService<TModel, TIdEntity>, ISpotifyIdEntityService<TModel, TPayload> where TModel : SpotifyIdNameObject
-where TIdEntity : ISpotifyDb, ISpotifyIdEntity
-where TPayload : ISpotifyPayload
+internal abstract class SpotifyIdEntityService<TModel, TEntity, TPayload> : KeyedEntityService<TModel, TEntity>
+	where TModel : SpotifyIdObject
+	where TEntity : class, ISpotifyDb
+	where TPayload : ISpotifyPayload
 {
-	protected abstract TModel ToModel(TIdEntity entity, TPayload payload);
+	protected abstract TModel ToModel(TEntity entity, TPayload payload);
 
 	public async Task<TModel?> GetById(TPayload payload, CancellationToken ct)
 	{
 		var entity = await GetEntityByIdCore(payload.Id, ct);
-		return entity is null ? null : ToModel(entity, payload);
+
+		if (entity is null)
+		{
+			return null;
+		}
+
+		return ToModel(entity, payload);
 	}
 
 	public async Task<IReadOnlyCollection<TModel>> GetByIds(IReadOnlyCollection<TPayload> payloads, CancellationToken ct)
@@ -44,7 +64,9 @@ where TPayload : ISpotifyPayload
 			return [];
 		}
 
-		var ids = payloads.Select(p => p.Id).ToHashSet();
+		var ids = payloads
+			.Select(p => p.Id)
+			.ToHashSet();
 
 		await GetEntitiesByIdsCore(ids, ct);
 
@@ -54,10 +76,13 @@ where TPayload : ISpotifyPayload
 		{
 			if (TryGetCached(payload.Id, out var entity))
 			{
-				result.Add(ToModel(entity, payload));
+				if (entity is not null)
+				{
+					result.Add(ToModel(entity, payload));
+				}
 			}
 		}
 
 		return result.AsReadOnly();
 	}
-}
+}*/

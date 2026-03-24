@@ -5,7 +5,8 @@ using JakubKastner.SpotifyApi.Releases;
 namespace JakubKastner.MusicReleases.Database.Spotify.Links;
 
 internal abstract class SpotifyArtistLinkEntityService<TArtistLinkEntity>
-	: SpotifyLinkEntityServiceCore<TArtistLinkEntity>, ISpotifyArtistLinkEntityService<TArtistLinkEntity> where TArtistLinkEntity : ISpotifyDb, ISpotifyArtistLinkEntity
+	: SpotifyLinkEntityServiceCore<TArtistLinkEntity>
+	where TArtistLinkEntity : class, ISpotifyDb, ISpotifyArtistLinkEntity
 {
 	protected readonly Dictionary<string, SpotifyArtistGroupByReleasePayload> _cache = [];
 
@@ -15,14 +16,8 @@ internal abstract class SpotifyArtistLinkEntityService<TArtistLinkEntity>
 
 		foreach (var group in entities.GroupBy(x => x.ReleaseId))
 		{
-			if (_cache.TryGetValue(group.Key, out var payload))
-			{
-				// saved
-				continue;
-			}
-
-			HashSet<string> mainArtistIds = [];
-			HashSet<string> featuredArtistIds = [];
+			HashSet<string> mainArtistIds = new();
+			HashSet<string> featuredArtistIds = new();
 
 			foreach (var entity in group)
 			{
@@ -36,7 +31,21 @@ internal abstract class SpotifyArtistLinkEntityService<TArtistLinkEntity>
 				}
 			}
 
-			_cache[group.Key] = new(group.Key, mainArtistIds, featuredArtistIds);
+			_cache[group.Key] = new SpotifyArtistGroupByReleasePayload(
+				group.Key,
+				mainArtistIds,
+				featuredArtistIds
+			);
 		}
+	}
+
+	protected void InvalidateRelease(string releaseId)
+	{
+		_cache.Remove(releaseId);
+	}
+
+	protected void ClearArtistCache()
+	{
+		_cache.Clear();
 	}
 }

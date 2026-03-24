@@ -29,6 +29,6 @@ internal sealed class SpotifyUserPlaylistDbService(IDbSpotifyService dbService) 
 	public async Task AddNew(SpotifyPlaylist playlist, string userId, CancellationToken ct)
 	{
 		var payload = playlist.ToPayload();
-		await Save(payload, userId, ct);
+		await Save(userId, payload, ct);
 	}
 }

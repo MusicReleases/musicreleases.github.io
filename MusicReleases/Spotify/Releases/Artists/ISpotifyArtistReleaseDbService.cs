@@ -2,9 +2,15 @@
 using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.SpotifyApi.Releases;
 
-namespace JakubKastner.MusicReleases.Spotify.Releases.Artists;
-
-internal interface ISpotifyArtistReleaseDbService : ISpotifyArtistLinkEntityService<SpotifyArtistReleaseEntity>
+namespace JakubKastner.MusicReleases.Spotify.Releases.Artists
 {
-	Task<IReadOnlyCollection<SpotifyArtistGroupByReleasePayload>> GetArtistsByArtistIds(IReadOnlyCollection<string> artistIds, ReleaseGroup releaseGroup, CancellationToken ct);
+	internal interface ISpotifyArtistReleaseDbService
+	{
+		Task<IReadOnlyCollection<SpotifyArtistGroupByReleasePayload>> GetArtistsByArtistIds(IReadOnlyCollection<string> artistIds, ReleaseGroup releaseGroup, CancellationToken ct);
+
+		Task Save(
+			IReadOnlyCollection<SpotifyArtistReleaseEntity> entities,
+			CancellationToken ct);
+
+	}
 }
