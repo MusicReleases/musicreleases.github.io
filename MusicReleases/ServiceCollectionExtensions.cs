@@ -2,8 +2,8 @@
 using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Objects.User;
 using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
@@ -17,6 +17,11 @@ using JakubKastner.MusicReleases.Spotify.Releases;
 using JakubKastner.MusicReleases.Spotify.Releases.Artists;
 using JakubKastner.MusicReleases.Spotify.Releases.Tracks;
 using JakubKastner.MusicReleases.Spotify.Releases.User;
+using JakubKastner.MusicReleases.Spotify.Tracks;
+using JakubKastner.MusicReleases.Spotify.User;
+using JakubKastner.MusicReleases.Spotify.User.Settings;
+using JakubKastner.MusicReleases.Spotify.User.Tasks;
+using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Playlists;
 
@@ -43,16 +48,21 @@ public static class ServiceCollectionExtensions
 		// indexed db services
 		services.AddScoped<IDbSpotifyService, DbSpotifyService>();
 
-		services.AddScoped<IDbSpotifyUserService, DbSpotifyUserService>();
-		services.AddScoped<IDbSpotifyUserUpdateService, DbSpotifyUserUpdateService>();
+
+		services.AddAsSpotifyUserScopedService<ISpotifyUserSettingsDbService, UserSettings>();
+		services.AddAsSpotifyUserScopedService<ISpotifyUserFilterTaskDbService, BackgroundTaskFilter>();
+
+
+		services.AddScoped<ISpotifyUserDbService, SpotifyUserDbService>();
+		services.AddScoped<ISpotifyUserUpdateDbService, SpotifyUserUpdateDbService>();
 		//services.AddAsSpotifyService<IDbSpotifyUserUpdateService>();
-		services.AddScoped<IDbSpotifyUserSettingsService, DbSpotifyUserSettingsService>();
+		services.AddScoped<ISpotifyUserSettingsDbService, SpotifyUserSettingsDbService>();
 		//services.AddAsSpotifyService<IDbSpotifyUserSettingsService>();
 
 		services.AddScoped<ISpotifyUserFilterReleaseDbService, SpotifyUserFilterReleaseDbService>();
 		services.AddAsSpotifyUserScopedService<ISpotifyUserFilterReleaseDbService, SpotifyReleaseFilter>();
 		//services.AddAsSpotifyService<IDbSpotifyUserFilterReleaseService>();
-		services.AddScoped<IDbSpotifyUserFilterTaskService, DbSpotifyUserFilterTaskService>();
+		services.AddScoped<ISpotifyUserFilterTaskDbService, SpotifyUserFilterTaskDbService>();
 		//services.AddAsSpotifyService<IDbSpotifyUserFilterTaskService>();
 
 		services.AddScoped<ISpotifyUserArtistDbService, SpotifyUserArtistDbService>();

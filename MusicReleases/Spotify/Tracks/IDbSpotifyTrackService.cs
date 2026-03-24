@@ -1,6 +1,6 @@
 ﻿using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Services
+namespace JakubKastner.MusicReleases.Spotify.Tracks
 {
 	public interface IDbSpotifyTrackService
 	{

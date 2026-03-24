@@ -4,9 +4,9 @@ using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects.Base;
 
@@ -18,7 +18,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 	ISpotifyReadByPayloadService<TModel, TPayload> reader,
 	ISpotifyWriteEntityService<TModel> writer,
 	ISpotifyUserLinkEntityService<TPayload> userLinkDbService,
-	IDbSpotifyUserUpdateService updateDb,
+	ISpotifyUserUpdateDbService updateDb,
 	ISpotifyState<TModel> state,
 	IBackgroundTaskManagerService taskManager,
 	ILoadingService loadingService

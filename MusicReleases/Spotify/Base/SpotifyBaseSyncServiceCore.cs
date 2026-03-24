@@ -1,8 +1,8 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
 using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects.Base;
 
@@ -10,10 +10,10 @@ namespace JakubKastner.MusicReleases.Spotify.Base;
 
 internal readonly struct NoContext { }
 
-internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUserClient userApi, IDbSpotifyUserUpdateService updateDb, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) where TModel : SpotifyIdNameObject
+internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUserClient userApi, ISpotifyUserUpdateDbService updateDb, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) where TModel : SpotifyIdNameObject
 {
 	private readonly ISpotifyUserClient _userApi = userApi;
-	protected readonly IDbSpotifyUserUpdateService _updateDb = updateDb;
+	protected readonly ISpotifyUserUpdateDbService _updateDb = updateDb;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
 	private readonly ILoadingService _loadingService = loadingService;
 

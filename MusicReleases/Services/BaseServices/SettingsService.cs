@@ -1,16 +1,12 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
-using JakubKastner.MusicReleases.Objects.User;
-using JakubKastner.SpotifyApi.Clients;
+﻿using JakubKastner.MusicReleases.Objects.User;
+using JakubKastner.MusicReleases.Spotify.User.Settings;
 using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyUserClient spotifyUserClient) : ISettingsService
+internal class SettingsService(ISpotifyUserSettingsDbService dbService) : ISettingsService
 {
-	private readonly IDbSpotifyUserSettingsService _dbService = dbService;
-
-	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
-
+	private readonly ISpotifyUserSettingsDbService _dbService = dbService;
 
 	public event Action? OnChange;
 
@@ -28,9 +24,8 @@ public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyUs
 
 	public async Task Initialize()
 	{
-		var userId = _spotifyUserClient.GetUserIdRequired();
-
-		UserSettings = await _dbService.Get(userId) ?? new();
+		// TODO cancel token
+		UserSettings = await _dbService.Get(default) ?? new();
 		OnChange?.Invoke();
 	}
 
@@ -42,8 +37,8 @@ public class SettingsService(IDbSpotifyUserSettingsService dbService, ISpotifyUs
 
 	private async Task SaveToDb()
 	{
-		var userId = _spotifyUserClient.GetUserIdRequired();
-		await _dbService.Save(UserSettings, userId);
+		// TODO cancel token
+		await _dbService.Save(UserSettings, true, default);
 	}
 
 	public void Search(string searchText)

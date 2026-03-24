@@ -3,11 +3,11 @@ using JakubKastner.MusicReleases.BackgroundTasks.Extensions;
 using JakubKastner.MusicReleases.BackgroundTasks.Objects;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Base;
 using JakubKastner.MusicReleases.Spotify.Playlists.User;
+using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
 using JakubKastner.SpotifyApi.Playlists;
@@ -22,7 +22,7 @@ internal sealed class SpotifyPlaylistService
 	ISpotifyReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> playlistReader,
 	ISpotifyWriteEntityService<SpotifyPlaylist> playlistWriter,
 	ISpotifyUserPlaylistDbService userPlaylistDb,
-	IDbSpotifyUserUpdateService updateDb,
+	ISpotifyUserUpdateDbService updateDb,
 	ISpotifyPlaylistState playlistState,
 	IBackgroundTaskManagerService taskManager,
 	ILoadingService loadingService,

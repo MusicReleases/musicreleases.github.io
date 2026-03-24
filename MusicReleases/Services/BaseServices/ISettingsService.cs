@@ -3,7 +3,7 @@ using JakubKastner.SpotifyApi.Objects.Base;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 
-public interface ISettingsService
+internal interface ISettingsService
 {
 	UserSettings UserSettings { get; }
 

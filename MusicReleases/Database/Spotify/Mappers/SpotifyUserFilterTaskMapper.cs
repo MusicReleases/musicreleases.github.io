@@ -1,17 +1,17 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
-using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Objects.Spotify;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Mappers;
 
 public static class SpotifyUserFilterTaskMapper
 {
-	public static SpotifyUserFilterTaskEntity ToEntity(this TaskFilter filter, string userId)
+	public static SpotifyUserFilterTaskEntity ToEntity(this BackgroundTaskFilter filter, string userId)
 	{
-		return new(userId, filter);
+		return new(userId, filter.TaskFilter);
 	}
 
-	public static TaskFilter ToModel(this SpotifyUserFilterTaskEntity entity)
+	public static BackgroundTaskFilter ToModel(this SpotifyUserFilterTaskEntity entity)
 	{
-		return entity.Filter;
+		return new(entity.Filter);
 	}
 }

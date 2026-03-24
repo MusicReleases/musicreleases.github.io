@@ -1,17 +1,20 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
+using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Services;
+namespace JakubKastner.MusicReleases.Spotify.User;
 
-internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISpotifyUserLinkEntityService> spotifyUserLinkEntityService, IEnumerable<ISpotifyUserScopedEntityService> spotifyUserScopedEntityService) : IDbSpotifyUserService
+internal class SpotifyUserDbService(IDbSpotifyService dbService, ISpotifyUserUpdateDbService updateDbService, IEnumerable<ISpotifyUserLinkEntityService> linkEntityServices, IEnumerable<ISpotifyUserScopedEntityService> scopedEntityServices) : ISpotifyUserDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
-	private readonly IEnumerable<ISpotifyUserLinkEntityService> _spotifyUserLinkEntityService = spotifyUserLinkEntityService;
-	private readonly IEnumerable<ISpotifyUserScopedEntityService> _spotifyUserScopedEntityService = spotifyUserScopedEntityService;
+	private readonly ISpotifyUserUpdateDbService _updateDbService = updateDbService;
+	private readonly IEnumerable<ISpotifyUserLinkEntityService> _linkEntityServices = linkEntityServices;
+	private readonly IEnumerable<ISpotifyUserScopedEntityService> _scopedEntityServices = scopedEntityServices;
 
 	public async Task<SpotifyUser?> Get(string userId, DateTime lastUpdate)
 	{
@@ -40,12 +43,15 @@ internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISp
 		var db = await _dbService.GetDb();
 
 		await db.User.Delete(userId);
+
 		await DeleteAllUserDatabases(userId);
 	}
 
 	private async Task DeleteAllUserDatabases(string userId)
 	{
-		await Task.WhenAll(_spotifyUserLinkEntityService.Select(s => s.DeleteAllForUser(userId)));
-		await Task.WhenAll(_spotifyUserScopedEntityService.Select(s => s.DeleteByUserId(userId, default)));
+		await _updateDbService.DeleteForUser(userId);
+
+		await Task.WhenAll(_linkEntityServices.Select(s => s.DeleteAllForUser(userId)));
+		await Task.WhenAll(_scopedEntityServices.Select(s => s.DeleteByUserId(userId, default)));
 	}
 }

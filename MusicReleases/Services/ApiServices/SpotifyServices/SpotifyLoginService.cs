@@ -1,8 +1,9 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Services;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.MusicReleases.Spotify.User;
+using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Clients;
 using JakubKastner.SpotifyApi.Objects;
 using Microsoft.AspNetCore.Components;
@@ -10,14 +11,14 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, IDbSpotifyUserService databaseUserService, IDbSpotifyUserUpdateService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService, IBackgroundTaskManagerService backgroundTaskManagerService) : ISpotifyLoginService
+internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, ISpotifyUserDbService databaseUserService, ISpotifyUserUpdateDbService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISettingsService settingsService, IBackgroundTaskManagerService backgroundTaskManagerService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
 	private readonly NavigationManager _navManager = navManager;
-	private readonly IDbSpotifyUserService _databaseUserService = databaseUserService;
-	private readonly IDbSpotifyUserUpdateService _databaseUpdateService = databaseUpdateService;
+	private readonly ISpotifyUserDbService _databaseUserService = databaseUserService;
+	private readonly ISpotifyUserUpdateDbService _databaseUpdateService = databaseUpdateService;
 	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
 	private readonly ISettingsService _settingsService = settingsService;
 	private readonly IBackgroundTaskManagerService _backgroundTaskManagerService = backgroundTaskManagerService;

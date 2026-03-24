@@ -1,18 +1,18 @@
 ﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
 using JakubKastner.MusicReleases.BackgroundTasks.Services;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Artists.User;
 using JakubKastner.MusicReleases.Spotify.Base;
 using JakubKastner.MusicReleases.Spotify.Playlists.User;
+using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Artists;
 using JakubKastner.SpotifyApi.Clients;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 
-internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyArtistClient artistApi, ISpotifyReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload> artistReader, ISpotifyWriteEntityService<SpotifyArtist> artistWriter, ISpotifyUserArtistDbService userArtistDb, IDbSpotifyUserUpdateService updateDb, ISpotifyArtistState artistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService)
+internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyArtistClient artistApi, ISpotifyReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload> artistReader, ISpotifyWriteEntityService<SpotifyArtist> artistWriter, ISpotifyUserArtistDbService userArtistDb, ISpotifyUserUpdateDbService updateDb, ISpotifyArtistState artistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService)
 
 	: SpotifyBaseSyncService<SpotifyArtist, SpotifyUserArtistPayload>(userApi, artistReader, artistWriter, userArtistDb, updateDb, artistState, taskManager, loadingService), ISpotifyArtistService
 {

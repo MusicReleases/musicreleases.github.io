@@ -1,8 +1,9 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
 using JakubKastner.SpotifyApi.Objects;
 
-namespace JakubKastner.MusicReleases.Database.Spotify.Services;
+namespace JakubKastner.MusicReleases.Spotify.Tracks;
 
 public class DbSpotifyTrackService(IDbSpotifyService dbService) : IDbSpotifyTrackService
 {

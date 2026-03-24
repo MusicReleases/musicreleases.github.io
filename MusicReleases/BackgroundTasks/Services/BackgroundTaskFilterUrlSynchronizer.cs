@@ -1,5 +1,5 @@
-﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
-using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Objects.Spotify;
+using JakubKastner.MusicReleases.Spotify.User.Tasks;
 using JakubKastner.SpotifyApi.Clients;
 using Microsoft.AspNetCore.Components;
 
@@ -9,13 +9,13 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 {
 	private readonly IBackgroundTaskFilterService _filterService;
 	private readonly IBackgroundTaskFilterUrlService _filterUrlService;
-	private readonly IDbSpotifyUserFilterTaskService _dbService;
+	private readonly ISpotifyUserFilterTaskDbService _dbService;
 	private readonly ISpotifyUserClient _spotifyUserClient;
 	private readonly NavigationManager _navManager;
 
 	private const string _baseUrl = "/tasks";
 
-	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, IDbSpotifyUserFilterTaskService dbService, ISpotifyUserClient spotifyUserClient, NavigationManager navManager)
+	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, ISpotifyUserFilterTaskDbService dbService, ISpotifyUserClient spotifyUserClient, NavigationManager navManager)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;
@@ -44,8 +44,10 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 		_filterService.SetFilterAndSearch(filter, searchParam);
 
 		// save to db
-		var userId = _spotifyUserClient.GetUserIdRequired();
-		await _dbService.Save(filter, userId);
+		// TODO cancel token
+		var filterModel = new BackgroundTaskFilter(filter);
+
+		await _dbService.Save(filterModel, true, default);
 	}
 
 	private void ChangeFilter()
@@ -57,10 +59,10 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 
 	public async Task<string> GetInitUrl()
 	{
-		var userId = _spotifyUserClient.GetUserIdRequired();
+		// TODO cancel token
+		var filterDb = await _dbService.Get(default) ?? new();
 
-		var filterDb = await _dbService.Get(userId) ?? TaskFilter.All;
-		var parameters = _filterUrlService.CreateUrlParams(filterDb, null);
+		var parameters = _filterUrlService.CreateUrlParams(filterDb.TaskFilter, null);
 
 		var url = $"{_baseUrl}{parameters}";
 
