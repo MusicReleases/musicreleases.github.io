@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases.User;
 
-internal sealed class SpotifyUserFilterReleaseDbService(IDbSpotifyService dbService, ISpotifyUserClient spotifyUserClient) : UserScopedEntityStoreService<SpotifyReleaseFilter, SpotifyUserFilterReleaseEntity>(spotifyUserClient), ISpotifyUserFilterReleaseDbService
+internal sealed class SpotifyUserFilterReleaseDbService(IDbSpotifyService dbService, ISpotifyUserClient spotifyUserClient) : SpotifyUserScopedEntityService<SpotifyReleaseFilter, SpotifyUserFilterReleaseEntity>(spotifyUserClient), ISpotifyUserFilterReleaseDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 

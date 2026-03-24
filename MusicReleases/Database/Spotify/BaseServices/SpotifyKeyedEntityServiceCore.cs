@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 
-internal abstract class KeyedEntityServiceCore<TEntity, TKey>
+internal abstract class SpotifyKeyedEntityServiceCore<TEntity, TKey>
 	where TEntity : class, ISpotifyDb
 	where TKey : notnull
 {

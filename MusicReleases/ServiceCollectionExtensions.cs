@@ -3,6 +3,7 @@ using JakubKastner.MusicReleases.Database.Spotify;
 using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.MusicReleases.Database.Spotify.Services;
+using JakubKastner.MusicReleases.Objects.Spotify;
 using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
@@ -49,6 +50,7 @@ public static class ServiceCollectionExtensions
 		//services.AddAsSpotifyService<IDbSpotifyUserSettingsService>();
 
 		services.AddScoped<ISpotifyUserFilterReleaseDbService, SpotifyUserFilterReleaseDbService>();
+		services.AddAsSpotifyUserScopedService<ISpotifyUserFilterReleaseDbService, SpotifyReleaseFilter>();
 		//services.AddAsSpotifyService<IDbSpotifyUserFilterReleaseService>();
 		services.AddScoped<IDbSpotifyUserFilterTaskService, DbSpotifyUserFilterTaskService>();
 		//services.AddAsSpotifyService<IDbSpotifyUserFilterTaskService>();
@@ -100,11 +102,11 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyPlaylistService, SpotifyPlaylistService>();
 		services.AddScoped<ISpotifyTrackService, SpotifyTrackService>();
 
-		services.AddScoped<IReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload>, SpotifyPlaylistDbService>();
-		services.AddScoped<IWriteEntityService<SpotifyPlaylist>, SpotifyPlaylistDbService>();
+		services.AddScoped<ISpotifyReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload>, SpotifyPlaylistDbService>();
+		services.AddScoped<ISpotifyWriteEntityService<SpotifyPlaylist>, SpotifyPlaylistDbService>();
 
-		services.AddScoped<IReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload>, SpotifyArtistDbService>();
-		services.AddScoped<IWriteEntityService<SpotifyArtist>, SpotifyArtistDbService>();
+		services.AddScoped<ISpotifyReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload>, SpotifyArtistDbService>();
+		services.AddScoped<ISpotifyWriteEntityService<SpotifyArtist>, SpotifyArtistDbService>();
 
 		return services;
 	}
@@ -115,5 +117,14 @@ public static class ServiceCollectionExtensions
 	{
 		services.AddScoped<ISpotifyUserLinkEntityService<TPayload>>(sp => sp.GetRequiredService<TInterface>());
 		services.AddScoped<ISpotifyUserLinkEntityService>(sp => sp.GetRequiredService<TInterface>());
+	}
+
+	private static void AddAsSpotifyUserScopedService<TInterface, TModel>(this IServiceCollection services)
+		where TInterface : class, ISpotifyUserScopedEntityService<TModel>, ISpotifyUserScopedEntityService
+		where TModel : class
+	{
+		services.AddScoped<ISpotifyUserScopedEntityService<TModel>>(sp => sp.GetRequiredService<TInterface>());
+
+		services.AddScoped<ISpotifyUserScopedEntityService>(sp => sp.GetRequiredService<TInterface>());
 	}
 }

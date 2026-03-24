@@ -1,15 +1,17 @@
 ﻿using DexieNET;
+using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 using JakubKastner.MusicReleases.Database.Spotify.Links;
 using JakubKastner.MusicReleases.Database.Spotify.Mappers;
 using JakubKastner.SpotifyApi.Objects;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.Services;
 
-internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISpotifyUserLinkEntityService> spotifyUserLinkEntityService) : IDbSpotifyUserService
+internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISpotifyUserLinkEntityService> spotifyUserLinkEntityService, IEnumerable<ISpotifyUserScopedEntityService> spotifyUserScopedEntityService) : IDbSpotifyUserService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
 	private readonly IEnumerable<ISpotifyUserLinkEntityService> _spotifyUserLinkEntityService = spotifyUserLinkEntityService;
+	private readonly IEnumerable<ISpotifyUserScopedEntityService> _spotifyUserScopedEntityService = spotifyUserScopedEntityService;
 
 	public async Task<SpotifyUser?> Get(string userId, DateTime lastUpdate)
 	{
@@ -44,5 +46,6 @@ internal class DbSpotifyUserService(IDbSpotifyService dbService, IEnumerable<ISp
 	private async Task DeleteAllUserDatabases(string userId)
 	{
 		await Task.WhenAll(_spotifyUserLinkEntityService.Select(s => s.DeleteAllForUser(userId)));
+		await Task.WhenAll(_spotifyUserScopedEntityService.Select(s => s.DeleteByUserId(userId, default)));
 	}
 }

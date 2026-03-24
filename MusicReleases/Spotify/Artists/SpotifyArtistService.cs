@@ -12,7 +12,7 @@ using JakubKastner.SpotifyApi.Clients;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 
-internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyArtistClient artistApi, IReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload> artistReader, IWriteEntityService<SpotifyArtist> artistWriter, ISpotifyUserArtistDbService userArtistDb, IDbSpotifyUserUpdateService updateDb, ISpotifyArtistState artistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService)
+internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyArtistClient artistApi, ISpotifyReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload> artistReader, ISpotifyWriteEntityService<SpotifyArtist> artistWriter, ISpotifyUserArtistDbService userArtistDb, IDbSpotifyUserUpdateService updateDb, ISpotifyArtistState artistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService)
 
 	: SpotifyBaseSyncService<SpotifyArtist, SpotifyUserArtistPayload>(userApi, artistReader, artistWriter, userArtistDb, updateDb, artistState, taskManager, loadingService), ISpotifyArtistService
 {

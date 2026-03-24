@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 
-internal abstract class IdEntityStoreService<TModel, TEntity> : IdEntityStoreBase<TEntity>
+internal abstract class SpotifyIdEntityStoreService<TModel, TEntity> : IdEntityStoreBase<TEntity>
 	where TEntity : class, ISpotifyDb
 	where TModel : class
 {

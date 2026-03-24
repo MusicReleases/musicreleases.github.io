@@ -1,9 +1,8 @@
-﻿using JakubKastner.MusicReleases.Objects.Spotify;
+﻿using JakubKastner.MusicReleases.Database.Spotify.BaseServices;
+using JakubKastner.MusicReleases.Objects.Spotify;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases.User;
 
-internal interface ISpotifyUserFilterReleaseDbService
+internal interface ISpotifyUserFilterReleaseDbService : ISpotifyUserScopedEntityService<SpotifyReleaseFilter>
 {
-	Task<SpotifyReleaseFilter?> Get(CancellationToken ct);
-	Task Save(SpotifyReleaseFilter filter, bool keepExisting, CancellationToken ct);
 }

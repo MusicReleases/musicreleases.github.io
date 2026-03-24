@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 
-internal abstract class IdEntityStoreBase<TEntity> : KeyedEntityServiceCore<TEntity, string>
+internal abstract class IdEntityStoreBase<TEntity> : SpotifyKeyedEntityServiceCore<TEntity, string>
 	where TEntity : class, ISpotifyDb
 {
 	protected abstract Task<Table<TEntity, string>> GetTable();

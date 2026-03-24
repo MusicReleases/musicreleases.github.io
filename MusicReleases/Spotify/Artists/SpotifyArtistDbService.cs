@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 
-internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : IdEntityStoreService<SpotifyArtist, SpotifyArtistEntity>, ISpotifyArtistDbService, IReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload>, IWriteEntityService<SpotifyArtist>
+internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : SpotifyIdEntityStoreService<SpotifyArtist, SpotifyArtistEntity>, ISpotifyArtistDbService, ISpotifyReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload>, ISpotifyWriteEntityService<SpotifyArtist>
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 

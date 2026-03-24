@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 
-public interface IWriteEntityService<TModel>
+public interface ISpotifyWriteEntityService<TModel>
 {
 	Task Save(IReadOnlyCollection<TModel> models, bool keepExisting, CancellationToken ct);
 

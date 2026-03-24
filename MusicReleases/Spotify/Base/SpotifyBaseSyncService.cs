@@ -15,8 +15,8 @@ namespace JakubKastner.MusicReleases.Spotify.Base;
 internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 (
 	ISpotifyUserClient userApi,
-	IReadByPayloadService<TModel, TPayload> reader,
-	IWriteEntityService<TModel> writer,
+	ISpotifyReadByPayloadService<TModel, TPayload> reader,
+	ISpotifyWriteEntityService<TModel> writer,
 	ISpotifyUserLinkEntityService<TPayload> userLinkDbService,
 	IDbSpotifyUserUpdateService updateDb,
 	ISpotifyState<TModel> state,
@@ -28,8 +28,8 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 	where TPayload : ISpotifyPayload
 {
 
-	private readonly IReadByPayloadService<TModel, TPayload> _reader = reader;
-	private readonly IWriteEntityService<TModel> _writer = writer;
+	private readonly ISpotifyReadByPayloadService<TModel, TPayload> _reader = reader;
+	private readonly ISpotifyWriteEntityService<TModel> _writer = writer;
 	private readonly ISpotifyUserLinkEntityService<TPayload> _userLinkDbService = userLinkDbService;
 	private readonly ISpotifyState<TModel> _state = state;
 

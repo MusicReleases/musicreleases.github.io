@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Database.Spotify.BaseServices;
 
-internal abstract class UserScopedEntityStoreService<TModel, TEntity>(ISpotifyUserClient userClient) : KeyedEntityServiceCore<TEntity, string>
+internal abstract class SpotifyUserScopedEntityService<TModel, TEntity>(ISpotifyUserClient userClient) : SpotifyKeyedEntityServiceCore<TEntity, string>, ISpotifyUserScopedEntityService<TModel>
 	where TEntity : class, ISpotifyDb
 	where TModel : class
 {
@@ -87,9 +87,9 @@ internal abstract class UserScopedEntityStoreService<TModel, TEntity>(ISpotifyUs
 
 		var entity = ToEntity(model, userId);
 
-		ct.ThrowIfCancellationRequested();
-
 		var table = await GetTable();
+
+		ct.ThrowIfCancellationRequested();
 
 		await table.PutSafe(entity);
 
@@ -103,9 +103,9 @@ internal abstract class UserScopedEntityStoreService<TModel, TEntity>(ISpotifyUs
 
 	public async Task DeleteByUserId(string userId, CancellationToken ct)
 	{
-		ct.ThrowIfCancellationRequested();
-
 		var table = await GetTable();
+
+		ct.ThrowIfCancellationRequested();
 
 		await table.Delete(userId);
 

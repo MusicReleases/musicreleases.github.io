@@ -19,8 +19,8 @@ internal sealed class SpotifyPlaylistService
 	ISpotifyUserClient userApi,
 	ISpotifyPlaylistClient playlistApi,
 	ISpotifyPlaylistDbService playlistDb,
-	IReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> playlistReader,
-	IWriteEntityService<SpotifyPlaylist> playlistWriter,
+	ISpotifyReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> playlistReader,
+	ISpotifyWriteEntityService<SpotifyPlaylist> playlistWriter,
 	ISpotifyUserPlaylistDbService userPlaylistDb,
 	IDbSpotifyUserUpdateService updateDb,
 	ISpotifyPlaylistState playlistState,
@@ -33,8 +33,8 @@ internal sealed class SpotifyPlaylistService
 	private readonly ISpotifyUserClient _userApi = userApi;
 	private readonly ISpotifyPlaylistClient _playlistApi = playlistApi;
 	private readonly ISpotifyPlaylistDbService _playlistDb = playlistDb;
-	private readonly IReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> _playlistReader = playlistReader;
-	private readonly IWriteEntityService<SpotifyPlaylist> _playlistWriter = playlistWriter;
+	private readonly ISpotifyReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> _playlistReader = playlistReader;
+	private readonly ISpotifyWriteEntityService<SpotifyPlaylist> _playlistWriter = playlistWriter;
 	private readonly ISpotifyUserPlaylistDbService _userPlaylistDb = userPlaylistDb;
 	private readonly ISpotifyPlaylistState _playlistState = playlistState;
 	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
