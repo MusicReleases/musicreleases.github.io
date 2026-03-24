@@ -7,7 +7,7 @@ internal static class SpotifyPlaylistMapper
 	public static SpotifyPlaylist ToObject(this FullPlaylist api, int order)
 	{
 		var id = api.Id.Require();
-		var name = api.Name.Require();
+		var name = api.Name.IsNotNullOrEmpty() ? api.Name : "               ";
 		var uri = api.Uri.Require();
 		var externalUrls = api.ExternalUrls.Require();
 		var snapshotId = api.SnapshotId.Require();
