@@ -165,6 +165,11 @@ internal sealed class SpotifyReleaseClient(ISpotifyClientStore client) : ISpotif
 				}
 			}
 
+			if (page.Next is null)
+			{
+				break;
+			}
+
 			request.Offset += request.Limit ?? 50;
 		}
 
