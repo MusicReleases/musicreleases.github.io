@@ -37,7 +37,7 @@ internal class SpotifySettingsService(ISpotifyUserSettingsDbService dbService) :
 	private async Task SaveToDb()
 	{
 		// TODO cancel token
-		await _dbService.Save(UserSettings, true, default);
+		await _dbService.Save(UserSettings, false, default);
 	}
 
 	public void Search(string searchText)
