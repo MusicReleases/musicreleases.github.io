@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Base.Objects;
@@ -32,7 +31,7 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 	}
 
 	protected abstract Task<bool> LoadFromDbToState(TContext context, string userId, bool forceUpdate, BackgroundTask task);
-	protected abstract Task<IReadOnlyCollection<TModel>?> LoadFromApi(TContext context, BackgroundTask task);
+	protected abstract Task<IReadOnlyCollection<TModel>?> LoadFromApi(TContext context, string userId, BackgroundTask task);
 	protected abstract Task SaveToDbAndState(TContext context, IReadOnlyCollection<TModel> models, string userId, BackgroundTask task);
 
 	protected async Task RunGet(TContext context, bool forceUpdate)
@@ -61,7 +60,7 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 				}
 			}
 
-			var apiData = await LoadFromApi(context, task);
+			var apiData = await LoadFromApi(context, userId, task);
 			if (apiData is null)
 			{
 				return;

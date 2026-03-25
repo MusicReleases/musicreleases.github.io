@@ -10,8 +10,12 @@ internal interface ISpotifyState<TModel> where TModel : SpotifyIdNameObject
 	event Action? OnChange;
 
 	void Add(TModel item);
+	void AddRange(IEnumerable<TModel> items, DateTime? lastSync = null, bool notify = true);
 	TModel? GetById(string itemId);
 	bool IsInStore(string itemId);
-	void Merge(IEnumerable<TModel> items, DateTime lastSync);
+	void MergeDelta(IEnumerable<TModel> items, DateTime lastSync);
+	void ReconcileSnapshot(IReadOnlyCollection<TModel> snapshot, DateTime lastSync);
+
+	//void Merge(IEnumerable<TModel> items, DateTime lastSync);
 	void Set(IReadOnlyCollection<TModel> items, DateTime lastSync);
 }

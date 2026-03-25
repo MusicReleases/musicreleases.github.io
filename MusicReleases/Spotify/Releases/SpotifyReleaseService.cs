@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Database.Spotify.Entities;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.Spotify.Base;
@@ -143,7 +142,7 @@ internal sealed class SpotifyReleaseService
 		});
 	}
 
-	protected override async Task<IReadOnlyCollection<SpotifyRelease>?> LoadFromApi(ReleaseGroup group, BackgroundTask task)
+	protected override async Task<IReadOnlyCollection<SpotifyRelease>?> LoadFromApi(ReleaseGroup group, string userId, BackgroundTask task)
 	{
 		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{

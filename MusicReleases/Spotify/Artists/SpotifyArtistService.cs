@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Artists.User;
 using JakubKastner.MusicReleases.Spotify.Base;
@@ -31,4 +30,8 @@ internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyA
 	protected override SpotifyUserArtistPayload CreatePayload(SpotifyArtist model) => model.ToPayload();
 
 	protected override async Task<IReadOnlyCollection<SpotifyArtist>> ApiLoad(CancellationToken ct) => await _artistApi.GetFollowed(ct);
+
+	protected override bool UseBatchedApi => true;
+
+	protected override IAsyncEnumerable<IReadOnlyCollection<SpotifyArtist>> ApiLoadBatches(CancellationToken ct) => _artistApi.GetFollowedBatches(25, ct);
 }

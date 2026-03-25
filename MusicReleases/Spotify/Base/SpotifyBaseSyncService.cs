@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Database.Spotify.Services.Links;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Tasks;
@@ -52,6 +51,10 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 
 	protected abstract Task<IReadOnlyCollection<TModel>> ApiLoad(CancellationToken ct);
 
+	protected abstract IAsyncEnumerable<IReadOnlyCollection<TModel>> ApiLoadBatches(CancellationToken ct);
+
+	protected virtual bool UseBatchedApi => false;
+
 	protected abstract TPayload CreatePayload(TModel model);
 
 	protected virtual IReadOnlyCollection<TModel> MergePayloads(IReadOnlyCollection<TModel> models, IReadOnlyCollection<TPayload> payloads) => models;
@@ -101,12 +104,48 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 		});
 	}
 
-	protected sealed override async Task<IReadOnlyCollection<TModel>?> LoadFromApi(NoContext _, BackgroundTask task)
+	protected sealed override async Task<IReadOnlyCollection<TModel>?> LoadFromApi(NoContext _, string userId, BackgroundTask task)
 	{
 		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
+			if (!UseBatchedApi)
+			{
+				task.BeginAutoSegments(1);
+				return await task.RunSegment($"api - get {EntityName}", _ => ApiLoad(ct));
+			}
+
+			// batched
+			var allPayloads = new List<TPayload>(capacity: 2048);
+
 			task.BeginAutoSegments(1);
-			return await task.RunSegment($"api - get {EntityName}", ApiLoad);
+
+			await foreach (var batch in ApiLoadBatches(ct).WithCancellation(ct))
+			{
+				ct.ThrowIfCancellationRequested();
+
+				await task.RunSegment($"db/state - save {EntityName} batch - {batch.Count}", async ct2 =>
+				{
+					await _writer.Save(batch, true, ct2);
+					_state.AddRange(batch, DateTime.Now);
+				});
+
+				allPayloads.AddRange(batch.Select(CreatePayload));
+
+				await Task.Yield();
+			}
+
+			await task.RunSegment($"db - save user {EntityName} ({UserLinkLabel}) - {allPayloads.Count}", async ct2 =>
+			{
+				await _userLinkDbService.SaveByUserId(userId, allPayloads, ct2);
+			});
+
+			// save last sync
+			await task.RunSegment($"db - save {EntityName} last sync (update)", async ct2 =>
+			{
+				await _updateDb.Save(userId, DbUpdateType, ct2);
+			});
+
+			return null;
 		});
 	}
 
@@ -136,7 +175,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 
 			await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
 			{
-				_state.Merge(models, DateTime.Now);
+				_state.ReconcileSnapshot(models, DateTime.Now);
 			});
 		});
 	}

@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Database.Spotify.Services;
+﻿using JakubKastner.MusicReleases.Database.Spotify.Services;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Base;
 using JakubKastner.MusicReleases.Spotify.Playlists.User;
@@ -31,7 +30,6 @@ internal sealed class SpotifyPlaylistService
 	private readonly ISpotifyUserClient _userApi = userApi;
 	private readonly ISpotifyPlaylistClient _playlistApi = playlistApi;
 	private readonly ISpotifyPlaylistDbService _playlistDb = playlistDb;
-	private readonly ISpotifyReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload> _playlistReader = playlistReader;
 	private readonly ISpotifyWriteEntityService<SpotifyPlaylist> _playlistWriter = playlistWriter;
 	private readonly ISpotifyUserPlaylistDbService _userPlaylistDb = userPlaylistDb;
 	private readonly ISpotifyPlaylistState _playlistState = playlistState;
@@ -275,5 +273,10 @@ internal sealed class SpotifyPlaylistService
 				tracks.Remove(id);
 			}
 		}
+	}
+
+	protected override IAsyncEnumerable<IReadOnlyCollection<SpotifyPlaylist>> ApiLoadBatches(CancellationToken ct)
+	{
+		throw new NotImplementedException();
 	}
 }
