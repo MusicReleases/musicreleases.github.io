@@ -131,6 +131,8 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 
 				allPayloads.AddRange(batch.Select(CreatePayload));
 
+				// report progress
+
 				await Task.Yield();
 			}
 

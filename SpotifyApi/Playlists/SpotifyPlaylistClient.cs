@@ -1,5 +1,6 @@
 ﻿using JakubKastner.SpotifyApi.Store;
 using SpotifyAPI.Web;
+using System.Runtime.CompilerServices;
 
 namespace JakubKastner.SpotifyApi.Playlists;
 
@@ -29,6 +30,43 @@ internal sealed class SpotifyPlaylistClient(ISpotifyClientStore client) : ISpoti
 			i--;
 		}
 		return playlists;
+	}
+
+	public async IAsyncEnumerable<IReadOnlyCollection<SpotifyPlaylist>> GetUserPlaylistsBatches(int batchSize = 25, [EnumeratorCancellation] CancellationToken ct = default)
+	{
+		var request = new PlaylistCurrentUsersRequest
+		{
+			Limit = ApiRequestLimit.UserPlaylists,
+		};
+
+		var spotifyClient = _client.GetClient();
+		var response = await spotifyClient.Playlists.CurrentUsers(request, ct);
+
+		var paged = spotifyClient.Paginate(response, cancel: ct);
+
+		var batch = new List<SpotifyPlaylist>(batchSize);
+		var i = response.Total.Require();
+
+		await foreach (var playlistApi in paged.WithCancellation(ct))
+		{
+			ct.ThrowIfCancellationRequested();
+
+			batch.Add(playlistApi.ToObject(i));
+			i--;
+
+			if (batch.Count == batchSize)
+			{
+				yield return batch.ToArray();
+				batch.Clear();
+
+				await Task.Yield();
+			}
+		}
+
+		if (batch.Count > 0)
+		{
+			yield return batch.ToArray();
+		}
 	}
 
 	public async Task<SpotifyPlaylist> CreatePlaylist(string userId, string name, bool addToProfile, int order, CancellationToken ct = default)

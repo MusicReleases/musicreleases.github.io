@@ -48,6 +48,10 @@ internal sealed class SpotifyPlaylistService
 
 	protected override async Task<IReadOnlyCollection<SpotifyPlaylist>> ApiLoad(CancellationToken ct) => await _playlistApi.GetUserPlaylists(ct);
 
+	protected override bool UseBatchedApi => true;
+
+	protected override IAsyncEnumerable<IReadOnlyCollection<SpotifyPlaylist>> ApiLoadBatches(CancellationToken ct) => _playlistApi.GetUserPlaylistsBatches(25, ct);
+
 	protected override SpotifyUserPlaylistPayload CreatePayload(SpotifyPlaylist model) => model.ToPayload();
 
 	public async Task CreatePlaylist(string name)
@@ -273,10 +277,5 @@ internal sealed class SpotifyPlaylistService
 				tracks.Remove(id);
 			}
 		}
-	}
-
-	protected override IAsyncEnumerable<IReadOnlyCollection<SpotifyPlaylist>> ApiLoadBatches(CancellationToken ct)
-	{
-		throw new NotImplementedException();
 	}
 }
