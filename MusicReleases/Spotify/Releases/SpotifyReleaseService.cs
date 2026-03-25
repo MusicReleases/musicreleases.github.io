@@ -144,7 +144,7 @@ internal sealed class SpotifyReleaseService
 
 	protected override async Task<IReadOnlyCollection<SpotifyRelease>?> LoadFromApi(ReleaseGroup group, string userId, BackgroundTask task)
 	{
-		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
 		{
 			var releaseGroupString = group.ToFriendlyString();
 
@@ -153,7 +153,7 @@ internal sealed class SpotifyReleaseService
 
 			if (artists is null)
 			{
-				return null;
+				return;
 			}
 
 			if (artists.Count == 0)
@@ -164,7 +164,7 @@ internal sealed class SpotifyReleaseService
 				{
 					_releaseState.Set(group, [], DateTime.Now);
 				});
-				return null;
+				return;
 			}
 
 			// get stored releases from state
@@ -179,24 +179,28 @@ internal sealed class SpotifyReleaseService
 					g => g.Key, g => g.Max(x => x.ReleaseDate)
 				);
 
+			const int artistBatchSize = 15;
+			var artistList = artists.ToList();
+			var total = artistList.Count;
 
-			var allReleasesToSave = new HashSet<SpotifyRelease>();
-			var allLinksToSave = new HashSet<SpotifyArtistReleaseEntity>();
-			var allArtistsToSave = new HashSet<SpotifyArtist>();
-			var i = 1;
-			var artistsCount = artists.Count;
+			task.BeginAutoSegments(1);
 
-			task.BeginAutoSegments(artistsCount);
-
-			foreach (var artist in artists)
+			for (var start = 0; start < total; start += artistBatchSize)
 			{
-				ct.ThrowIfCancellationRequested();
 
-				await task.RunSegment($"api - get releases for artist {artist.Name} - {releaseGroupString} - {i} / {artistsCount}", async ct =>
+				var batchArtists = artistList.Skip(start).Take(artistBatchSize).ToList();
+
+				var batchReleases = new List<SpotifyRelease>(256);
+				var batchLinks = new List<SpotifyArtistReleaseEntity>(512);
+				var batchAllArtists = new HashSet<SpotifyArtist>();
+
+
+				foreach (var artist in batchArtists)
 				{
+					ct.ThrowIfCancellationRequested();
+
 					// get last release date for artist
 					DateTime cutoff;
-
 					if (!artist.New && artistLastReleaseDate is not null && artistLastReleaseDate.TryGetValue(artist.Id, out var lastDate))
 					{
 						// only for old artists
@@ -207,49 +211,86 @@ internal sealed class SpotifyReleaseService
 						cutoff = DateTime.MinValue;
 					}
 
-					Console.WriteLine($"Getting releases for artist {artist.Name} with cutoff {cutoff:yyyy-MM-dd}");
-
 					// get releases from api
 					var apiReleases = await _releaseApi.GetByArtist(artist, group, cutoff, ct);
 
 					if (apiReleases.Count == 0)
 					{
-						return;
+						continue;
 					}
 
 					// save release to db
-					allReleasesToSave.UnionWith(apiReleases);
+					batchReleases.AddRange(apiReleases);
 
 					// save artists and links to db
 					foreach (var release in apiReleases)
 					{
-						ct.ThrowIfCancellationRequested();
-
-						foreach (var releaseArtist in release.Artists)
+						foreach (var a in release.Artists)
 						{
-							ct.ThrowIfCancellationRequested();
-
-							allArtistsToSave.Add(releaseArtist);
-							allLinksToSave.Add(release.Id.ToArtistReleaseEntity(releaseArtist.Id, ArtistReleaseRole.Main, release.ReleaseType));
+							batchAllArtists.Add(a);
+							batchLinks.Add(release.Id.ToArtistReleaseEntity(a.Id, ArtistReleaseRole.Main, release.ReleaseType));
 						}
 
-						foreach (var featArtist in release.FeaturedArtists)
+						foreach (var fa in release.FeaturedArtists)
 						{
-							ct.ThrowIfCancellationRequested();
-
-							allArtistsToSave.Add(featArtist);
-							allLinksToSave.Add(release.Id.ToArtistReleaseEntity(featArtist.Id, ArtistReleaseRole.Featured, release.ReleaseType));
+							batchAllArtists.Add(fa);
+							batchLinks.Add(release.Id.ToArtistReleaseEntity(fa.Id, ArtistReleaseRole.Featured, release.ReleaseType));
 						}
 					}
-				});
+				}
 
-				i++;
+				// save batch (DB + state merge)
+				await SaveReleaseBatch(group, batchReleases, batchAllArtists.ToList(), batchLinks, task, ct);
+
+				// progress
+				var done = Math.Min(start + artistBatchSize, total);
+				task.SetSubProgress(done / (double)total, $"artists {done}/{total}");
+
+				await Task.Yield();
 			}
 
-			_pendingAggregation = new([.. allReleasesToSave], [.. allArtistsToSave], [.. allLinksToSave]);
+			await task.RunSegment($"db - save release last sync (update) - {releaseGroupString}", ct2 =>
+			{
+				var metaDbType = MapReleaseGroupToDbUpdateType(group);
+				return _updateDb.Save(userId, metaDbType, ct2);
+			});
 
-			return _pendingAggregation.Releases;
+			// filter
+			await task.RunSegment($"state - filter releases by followed artists - {releaseGroupString}", _ =>
+			{
+				var followed = _artistState.Items?.Select(a => a.Id).ToHashSet() ?? [];
+				var filtered = _releaseState.Items[group]
+					.Where(r => r.Artists.Any(a => followed.Contains(a.Id)))
+					.ToList();
+
+				_releaseState.Set(group, filtered, _releaseState.LastSync[group]);
+				return Task.CompletedTask;
+			});
 		});
+		return null;
+	}
+	private async Task SaveReleaseBatch(ReleaseGroup group, IReadOnlyCollection<SpotifyRelease> releases, IReadOnlyCollection<SpotifyArtist> artists, IReadOnlyCollection<SpotifyArtistReleaseEntity> links, BackgroundTask task, CancellationToken ct)
+	{
+		if (releases.Count == 0)
+		{
+			return;
+		}
+
+		await task.RunSegment($"db - save releases (release) - {releases.Count}", async ct2 =>
+		{
+			await _releaseDb.Save(releases, true, ct2);
+		});
+		await task.RunSegment($"db - save artists (artist) - {artists.Count}", async ct2 =>
+		{
+			return _artistDb.Save(artists, true, ct2);
+		});
+		await task.RunSegment($"db - save artist-release links - {links.Count}", async ct2 =>
+		{
+			await _artistReleaseDb.Save(links, ct2);
+		});
+
+		// State: přidej nové releasy (nefiltruj ještě – to uděláme jednou na konci)
+		_releaseState.Merge(group, releases, DateTime.Now);
 	}
 
 	protected override async Task SaveToDbAndState(ReleaseGroup group, IReadOnlyCollection<SpotifyRelease> newReleases, string userId, BackgroundTask task)
