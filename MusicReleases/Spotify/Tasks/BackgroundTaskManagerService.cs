@@ -1,12 +1,16 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-
-namespace JakubKastner.MusicReleases.Spotify.Tasks;
+﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerService
 {
 	private readonly IBackgroundTaskFilterService _filterService;
 
 	private readonly List<BackgroundTask> _tasks = [];
+
+
+	private readonly List<BackgroundTaskRequest> _workflowQueue = [];
+	private readonly HashSet<BackgroundTaskType> _completedWorkflowTasks = [];
+	private bool _workflowRunning;
+
 
 	public BackgroundTaskManagerService(IBackgroundTaskFilterService filterService)
 	{
@@ -42,6 +46,31 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 	{
 		OnChange?.Invoke();
 	}
+	public void StartWorkflow()
+	{
+		_completedWorkflowTasks.Clear();
+		_workflowQueue.Clear();
+	}
+
+	public Task Enqueue(BackgroundTaskRequest request)
+	{
+		if (request.IsImmediate)
+		{
+			return RunInternal(request.Type, request.Name, request.Info, request.ExpectedSteps, request.Work);
+		}
+
+		// dedup (task is allready running or queued)
+		if (_workflowQueue.Any(t => t.Type == request.Type))
+		{
+			return Task.CompletedTask;
+		}
+
+		// task queue
+		_workflowQueue.Add(request);
+		_ = TryRunNextWorkflow();
+
+		return Task.CompletedTask;
+	}
 
 	public Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work)
 	{
@@ -67,6 +96,37 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 	public Task Run(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work)
 	{
 		return RunInternal(type, name, info, expectedSteps, work);
+	}
+
+	private async Task TryRunNextWorkflow()
+	{
+		if (_workflowRunning)
+		{
+			return;
+		}
+
+		var next = _workflowQueue.FirstOrDefault(req => req.DependsOn is null || req.DependsOn.All(d => _completedWorkflowTasks.Contains(d)));
+
+		if (next is null)
+		{
+			return;
+		}
+
+		_workflowRunning = true;
+
+		try
+		{
+			await RunInternal(next.Type, next.Name, next.Info, next.ExpectedSteps, next.Work);
+
+			// finished task
+			_completedWorkflowTasks.Add(next.Type);
+			_workflowQueue.Remove(next);
+		}
+		finally
+		{
+			_workflowRunning = false;
+			await TryRunNextWorkflow();
+		}
 	}
 
 	private Task RunInternal(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work)

@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 

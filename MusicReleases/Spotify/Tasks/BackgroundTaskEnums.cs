@@ -1,4 +1,4 @@
-﻿namespace JakubKastner.MusicReleases.BackgroundTasks.Enums;
+﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 public enum BackgroundTaskType
 {

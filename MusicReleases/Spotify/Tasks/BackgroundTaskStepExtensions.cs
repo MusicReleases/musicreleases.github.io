@@ -1,6 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-
-namespace JakubKastner.MusicReleases.Spotify.Tasks;
+﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 internal static class BackgroundTaskStepExtensions
 {
