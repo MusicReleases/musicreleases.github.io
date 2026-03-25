@@ -28,11 +28,6 @@ internal sealed class SpotifyArtistDbService(IDbSpotifyService dbService) : Spot
 		return db.Artist;
 	}
 
-	public async Task<SpotifyArtist?> GetById(SpotifyUserArtistPayload payload, CancellationToken ct)
-	{
-		return await GetById(payload.Id, ct);
-	}
-
 	public async Task<IReadOnlyCollection<SpotifyArtist>> GetByIds(IReadOnlyCollection<SpotifyUserArtistPayload> payloads, CancellationToken ct)
 	{
 		if (payloads.Count == 0)

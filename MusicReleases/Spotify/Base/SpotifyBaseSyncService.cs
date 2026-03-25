@@ -82,7 +82,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 			{
 				await task.RunSegment($"state - set {EntityName}", async _ =>
 				{
-					SetState([], lastSync);
+					_state.Set([], lastSync);
 				});
 				return true;
 			}
@@ -95,15 +95,10 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 			return await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
 			{
 				var merged = MergePayloads(models, payloads);
-				SetState(models, lastSync);
+				_state.Set(models, lastSync);
 				return ShouldSync(forceUpdate);
 			});
 		});
-	}
-
-	private void SetState(IReadOnlyCollection<TModel> models, DateTime lastSync)
-	{
-		_state.Set(models, lastSync);
 	}
 
 	protected sealed override async Task<IReadOnlyCollection<TModel>?> LoadFromApi(NoContext _, BackgroundTask task)
@@ -141,7 +136,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 
 			await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
 			{
-				SetState(models, DateTime.Now);
+				_state.Merge(models, DateTime.Now);
 			});
 		});
 	}

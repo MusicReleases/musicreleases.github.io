@@ -12,5 +12,6 @@ internal interface ISpotifyGroupedState<TModel, TGroupKey>
 
 	event Action? OnChange;
 
+	void Merge(TGroupKey group, IEnumerable<TModel> newItems, DateTime lastSync);
 	void Set(TGroupKey group, IEnumerable<TModel> items, DateTime lastSync);
 }

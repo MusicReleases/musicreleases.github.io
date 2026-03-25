@@ -12,5 +12,6 @@ internal interface ISpotifyState<TModel> where TModel : SpotifyIdNameObject
 	void Add(TModel item);
 	TModel? GetById(string itemId);
 	bool IsInStore(string itemId);
+	void Merge(IEnumerable<TModel> items, DateTime lastSync);
 	void Set(IReadOnlyCollection<TModel> items, DateTime lastSync);
 }

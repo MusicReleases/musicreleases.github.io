@@ -1,4 +1,5 @@
-﻿using JakubKastner.SpotifyApi.Base.Objects;
+﻿using JakubKastner.SpotifyApi.Artists;
+using JakubKastner.SpotifyApi.Base.Objects;
 using System.Collections.Concurrent;
 
 namespace JakubKastner.MusicReleases.Spotify;
@@ -21,15 +22,24 @@ internal abstract class SpotifyState<TModel> : ISpotifyState<TModel> where TMode
 
 	public void Set(IReadOnlyCollection<TModel> items, DateTime lastSync)
 	{
-		_items = new(items);
+		_items = [.. items];
 		LastSync = lastSync;
 
+		RecalculateLookup();
+		StateChanged();
+	}
+
+	private void RecalculateLookup()
+	{
 		_lookup.Clear();
-		foreach (var item in items)
+		if (_items is null)
+		{
+			return;
+		}
+		foreach (var item in _items)
 		{
 			_lookup[item.Id] = item;
 		}
-		StateChanged();
 	}
 
 
@@ -57,5 +67,48 @@ internal abstract class SpotifyState<TModel> : ISpotifyState<TModel> where TMode
 	public bool IsInStore(string itemId)
 	{
 		return GetById(itemId) is not null;
+	}
+
+	public void Merge(IEnumerable<TModel> items, DateTime lastSync)
+	{
+		_items ??= [];
+
+		var previous = _lookup.Values.ToDictionary(a => a.Id);
+
+		var newItems = items.ToList();
+		var newItemIds = newItems.Select(i => i.Id).ToHashSet();
+
+		// remove not existing
+		_items.RemoveWhere(i => !newItemIds.Contains(i.Id));
+
+		_lookup.Clear();
+
+		foreach (var item in newItems)
+		{
+			if (previous.TryGetValue(item.Id, out var old))
+			{
+				// existing
+				var merged = item;
+
+				if (merged is SpotifyArtist newArtist && old is SpotifyArtist oldartist)
+				{
+					// merge artists new flag
+					newArtist.New = oldartist.New;
+				}
+
+				_items.Remove(old);
+				_items.Add(merged);
+				_lookup[item.Id] = merged;
+			}
+			else
+			{
+				_items.Add(item);
+				_lookup[item.Id] = item;
+			}
+		}
+
+		LastSync = lastSync;
+		StateChanged();
+
 	}
 }

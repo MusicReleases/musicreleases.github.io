@@ -14,7 +14,7 @@ else
 	<ul>
 		<Virtualize Items="@_artists" Context="artist" TItem="SpotifyArtist">
 			<li>
-				<ArtistSidebarButton ArtistId=@artist.Id ArtistName=@artist.Name @key="artist.Id"/>
+				<ArtistSidebarButton Artist="@artist" @key="artist.Id"/>
 			</li>
 		</Virtualize>
 	</ul>

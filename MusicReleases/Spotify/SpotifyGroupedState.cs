@@ -17,4 +17,21 @@ internal abstract class SpotifyGroupedState<TModel, TGroupKey> : ISpotifyGrouped
 		LastSync[group] = lastSync;
 		OnChange?.Invoke();
 	}
+
+
+	public void Merge(TGroupKey group, IEnumerable<TModel> newItems, DateTime lastSync)
+	{
+		Items.AddOrUpdate(
+			group,
+			_ => new SortedSet<TModel>(newItems).AsReadOnly(),
+			(_, existing) =>
+			{
+				var merged = new SortedSet<TModel>(existing);
+				merged.UnionWith(newItems);
+				return merged.AsReadOnly();
+			});
+
+		LastSync[group] = lastSync;
+		OnChange?.Invoke();
+	}
 }

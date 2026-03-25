@@ -1,1 +1,8 @@
-﻿<MrButton Class="@_buttonClass" Text="@ArtistName" Active="@FilterActive" OnClick="@FilterArtist" role="listitem" />
+﻿<MrButton Class="@_buttonClass" Text="@Artist.Name" Active="@FilterActive" OnClick="@FilterArtist" role="listitem">
+    <ChildContentAfterText>
+        @if (Artist.New)
+        {        
+            <MrIcon Icon="@LucideIcon.Flame" Title="New followed artist" />
+        }
+    </ChildContentAfterText>
+</MrButton>

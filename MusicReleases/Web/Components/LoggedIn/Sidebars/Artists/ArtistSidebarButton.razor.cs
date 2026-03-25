@@ -1,4 +1,5 @@
 using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.SpotifyApi.Artists;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Sidebars.Artists;
@@ -10,13 +11,10 @@ public partial class ArtistSidebarButton : IDisposable
 
 
 	[Parameter, EditorRequired]
-	public required string ArtistId { get; set; }
-
-	[Parameter, EditorRequired]
-	public required string ArtistName { get; set; }
+	public required SpotifyArtist Artist { get; set; }
 
 
-	private bool FilterActive => SpotifyReleaseFilterService.Filter?.Artist == ArtistId;
+	private bool FilterActive => SpotifyReleaseFilterService.Filter?.Artist == Artist.Id;
 
 
 	private const string _buttonClass = "sidebar-content";
@@ -40,6 +38,6 @@ public partial class ArtistSidebarButton : IDisposable
 
 	private async Task FilterArtist()
 	{
-		SpotifyReleaseFilterService.FilterArtist(ArtistId);
+		SpotifyReleaseFilterService.FilterArtist(Artist.Id);
 	}
 }
