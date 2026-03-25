@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Spotify.Tasks;
+﻿using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.SpotifyApi.Releases;
 using JakubKastner.SpotifyApi.Tracks;
 using JakubKastner.SpotifyApi.User;

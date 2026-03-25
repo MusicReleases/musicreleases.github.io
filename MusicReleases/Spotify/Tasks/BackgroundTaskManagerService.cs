@@ -37,7 +37,7 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 	public ICollection<BackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];
 
-	public ICollection<BackgroundTask> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible)];
+	public ICollection<BackgroundTask> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible && !t.IsWorkflow)];
 
 	public ICollection<BackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
 
@@ -46,6 +46,7 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 	{
 		OnChange?.Invoke();
 	}
+
 	public void StartWorkflow()
 	{
 		_completedWorkflowTasks.Clear();
@@ -56,7 +57,7 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 	{
 		if (request.IsImmediate)
 		{
-			return RunInternal(request.Type, request.Name, request.Info, request.ExpectedSteps, request.Work);
+			return RunInternal(request.Type, request.Name, request.Info, request.ExpectedSteps, request.Work, true);
 		}
 
 		// dedup (task is allready running or queued)
@@ -116,7 +117,7 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 		try
 		{
-			await RunInternal(next.Type, next.Name, next.Info, next.ExpectedSteps, next.Work);
+			await RunInternal(next.Type, next.Name, next.Info, next.ExpectedSteps, next.Work, true);
 
 			// finished task
 			_completedWorkflowTasks.Add(next.Type);
@@ -129,9 +130,9 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 		}
 	}
 
-	private Task RunInternal(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work)
+	private Task RunInternal(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work, bool isWorkflow = false)
 	{
-		var task = new BackgroundTask(type, name, info, expectedSteps);
+		var task = new BackgroundTask(type, name, info, expectedSteps, isWorkflow);
 		task.OnStateChanged += NotifyUI;
 
 		_tasks.Insert(0, task);

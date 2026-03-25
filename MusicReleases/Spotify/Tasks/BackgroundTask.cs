@@ -1,10 +1,9 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Enums;
+﻿using JakubKastner.MusicReleases.Enums;
 using JakubKastner.SpotifyApi.Base.Objects;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-public sealed class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps)
+public sealed class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps, bool isWorkflow)
 {
 	public event Action? OnStateChanged;
 
@@ -14,6 +13,8 @@ public sealed class BackgroundTask(BackgroundTaskType type, string name, string 
 	public string Name { get; init; } = name;
 
 	public string Info { get; init; } = info;
+
+	public bool IsWorkflow { get; init; } = isWorkflow;
 
 	public int ExpectedSteps { get; init; } = expectedSteps;
 

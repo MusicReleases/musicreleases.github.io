@@ -2,92 +2,97 @@
 using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.Spotify.Playlists;
 using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-internal sealed class SpotifyWorkflowService(ISpotifyArtistService spotifyArtistService, ISpotifyReleaseService spotifyReleaseService, ISpotifyPlaylistService spotifyPlaylistService) : ISpotifyWorkflowService
+internal sealed class SpotifyWorkflowService(IBackgroundTaskManagerService taskManager, ISpotifyArtistService artistService, ISpotifyReleaseService releaseService, ISpotifyPlaylistService playlistService) : ISpotifyWorkflowService
 {
-	private readonly ISpotifyArtistService _spotifyArtistService = spotifyArtistService;
-	private readonly ISpotifyReleaseService _spotifyReleaseService = spotifyReleaseService;
-	private readonly ISpotifyPlaylistService _spotifyPlaylistService = spotifyPlaylistService;
+	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
+	private readonly ISpotifyArtistService _artistService = artistService;
+	private readonly ISpotifyReleaseService _releaseService = releaseService;
+	private readonly ISpotifyPlaylistService _playlistService = playlistService;
 
-	public async Task StartLoadingAll(ReleaseGroup releaseType, bool forceUpdate)
+	public Task StartLoadingAll(ReleaseGroup releaseType, bool forceUpdate)
 	{
-		await StartLoadingArtistsWithReleases(releaseType, forceUpdate);
-		await StartLoadingPlaylistsWithTracks(forceUpdate);
+		_taskManager.StartWorkflow();
+
+		EnqueueArtistsWithReleases(releaseType, forceUpdate);
+		EnqueuePlaylists(forceUpdate);
+
+		return Task.CompletedTask;
 	}
 
-
-	// playlists
-	public async Task StartLoadingPlaylistsWithTracks(bool forceUpdate)
+	public Task Update(UpdateButtonComponent updateType, ReleaseGroup releaseType)
 	{
-		await StartLoadingPlaylists(forceUpdate);
-		await StartLoadingPlaylistsTracks(forceUpdate);
-	}
+		_taskManager.StartWorkflow();
 
-	private async Task StartLoadingPlaylists(bool forceUpdate)
-	{
-		Console.WriteLine("workflow: playlists - start");
-
-		await _spotifyPlaylistService.Get(forceUpdate);
-
-		Console.WriteLine("workflow: playlists - end");
-	}
-
-	private async Task StartLoadingPlaylistsTracks(bool forceUpdate)
-	{
-		//Console.WriteLine("workflow: playlist tracks - start");
-
-		// TODO workflow - load playlists tracks
-
-		//Console.WriteLine("workflow: playlist tracks - end");
-	}
-
-
-	// artists
-	public async Task StartLoadingArtistsWithReleases(ReleaseGroup releaseType, bool forceUpdate)
-	{
-		await StartLoadingArtists(forceUpdate);
-		await StartLoadingReleases(releaseType, forceUpdate);
-	}
-
-	private async Task StartLoadingArtists(bool forceUpdate)
-	{
-		Console.WriteLine("workflow: artists - start");
-
-		await _spotifyArtistService.Get(forceUpdate);
-
-		Console.WriteLine("workflow: artists - end");
-	}
-
-	public async Task StartLoadingReleases(ReleaseGroup releaseType, bool forceUpdate)
-	{
-		Console.WriteLine("workflow: releases - start");
-
-		await _spotifyReleaseService.Get(releaseType, forceUpdate);
-
-		Console.WriteLine("workflow: releases - end");
-	}
-
-	public async Task Update(UpdateButtonComponent updateType, ReleaseGroup releaseType)
-	{
 		switch (updateType)
 		{
 			case UpdateButtonComponent.Artists:
-				// TODO load only releases for new artists
-				// TODO !!!!!!! set old update date for other release types - for update later
-				await StartLoadingArtistsWithReleases(releaseType, true);
+				EnqueueArtistsWithReleases(releaseType, true);
 				break;
+
 			case UpdateButtonComponent.Releases:
-				// load only releases without updating artists
-				await StartLoadingReleases(releaseType, true);
+				EnqueueReleasesOnly(releaseType, true);
 				break;
+
 			case UpdateButtonComponent.Playlists:
-				await StartLoadingPlaylistsWithTracks(true);
+				EnqueuePlaylists(true);
 				break;
+
 			default:
-				throw new NotSupportedException(nameof(Type));
+				throw new NotSupportedException(nameof(updateType));
 		}
+
+		return Task.CompletedTask;
+	}
+
+	private void EnqueueArtistsWithReleases(ReleaseGroup releaseType, bool forceUpdate)
+	{
+		_taskManager.Enqueue(new BackgroundTaskRequest(
+			Type: BackgroundTaskType.ArtistsGet,
+			Name: "Artists",
+			Info: "Loading followed artists",
+			ExpectedSteps: 3,
+			Work: t => _artistService.Get(forceUpdate),
+			DependsOn: []
+		));
+
+		_taskManager.Enqueue(new BackgroundTaskRequest(
+			Type: BackgroundTaskType.ReleasesGet,
+			Name: "Releases",
+			Info: "Loading releases",
+			ExpectedSteps: 3,
+			Work: t => _releaseService.Get(releaseType, forceUpdate),
+			DependsOn: [BackgroundTaskType.ArtistsGet]
+		));
+	}
+
+	private void EnqueueReleasesOnly(ReleaseGroup releaseType, bool forceUpdate)
+	{
+		_taskManager.Enqueue(new BackgroundTaskRequest(
+			Type: BackgroundTaskType.ReleasesGet,
+			Name: "Releases",
+			Info: "Updating releases",
+			ExpectedSteps: 3,
+			Work: t => _releaseService.Get(releaseType, forceUpdate),
+			DependsOn: []
+		));
+	}
+
+	private void EnqueuePlaylists(bool forceUpdate)
+	{
+		_taskManager.Enqueue(new BackgroundTaskRequest(
+			Type: BackgroundTaskType.PlaylistsGet,
+			Name: "Playlists",
+			Info: "Loading playlists",
+			ExpectedSteps: 3,
+			Work: t => _playlistService.Get(forceUpdate),
+			DependsOn: []
+		));
+
+		// TODO playlist tracks
 	}
 }

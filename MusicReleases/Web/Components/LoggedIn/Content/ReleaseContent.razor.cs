@@ -1,6 +1,6 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Services.BaseServices;
+﻿using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Releases;
+using JakubKastner.MusicReleases.Spotify.Tasks;
 using JakubKastner.SpotifyApi.Releases;
 using Microsoft.AspNetCore.Components;
 

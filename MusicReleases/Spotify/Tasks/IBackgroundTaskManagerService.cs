@@ -1,6 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-
-namespace JakubKastner.MusicReleases.Spotify.Tasks;
+﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 internal interface IBackgroundTaskManagerService : IDisposable
 {
@@ -15,10 +13,12 @@ internal interface IBackgroundTaskManagerService : IDisposable
 	event Action? OnChange;
 
 	void CancelAllTasks();
+	Task Enqueue(BackgroundTaskRequest request);
 	void HideAllEnded();
 	void HideTask(BackgroundTask task);
 	void RemoveAllFinishedTasks();
 	void RemoveTask(BackgroundTask task);
 	Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work);
 	Task Run(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work);
+	void StartWorkflow();
 }

@@ -1,5 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-using JakubKastner.MusicReleases.Spotify.Tasks;
+﻿using JakubKastner.MusicReleases.Spotify.Tasks;
 
 namespace JakubKastner.MusicReleases.Services.BaseServices;
 

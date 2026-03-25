@@ -1,6 +1,4 @@
-﻿using JakubKastner.MusicReleases.BackgroundTasks.Enums;
-
-namespace JakubKastner.MusicReleases.Spotify.Tasks;
+﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 {
@@ -102,12 +100,12 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)
 	{
+		var query = source.Where(x => !x.IsWorkflow);
+
 		if (!IsFilterActive)
 		{
-			return source;
+			return query;
 		}
-
-		var query = source;
 
 		var running = IsActive(TaskFilter.Running);
 		var canceled = IsActive(TaskFilter.Canceled);
