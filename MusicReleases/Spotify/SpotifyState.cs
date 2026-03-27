@@ -41,19 +41,6 @@ internal abstract class SpotifyState<TModel> : ISpotifyState<TModel> where TMode
 		}
 	}
 
-
-	/*public void Add(TModel item)
-	{
-		_items ??= [];
-
-		_items.Add(item);
-
-		_lookup[item.Id] = item;
-
-		StateChanged();
-	}*/
-
-
 	public void Add(TModel item)
 	{
 		_items ??= [];
@@ -75,7 +62,7 @@ internal abstract class SpotifyState<TModel> : ISpotifyState<TModel> where TMode
 		StateChanged();
 	}
 
-	public void AddRange(IEnumerable<TModel> items, DateTime? lastSync = null, bool notify = true)
+	public void AddRange(IEnumerable<TModel> items, DateTime lastSync, bool notify)
 	{
 		_items ??= [];
 
@@ -95,10 +82,7 @@ internal abstract class SpotifyState<TModel> : ISpotifyState<TModel> where TMode
 			}
 		}
 
-		if (lastSync.HasValue)
-		{
-			LastSync = lastSync.Value;
-		}
+		LastSync = lastSync;
 
 		if (notify)
 		{
@@ -163,48 +147,4 @@ internal abstract class SpotifyState<TModel> : ISpotifyState<TModel> where TMode
 
 
 	protected virtual TModel PreserveUserFlags(TModel oldModel, TModel incoming) => incoming;
-
-	/*
-	public void Merge(IEnumerable<TModel> items, DateTime lastSync)
-	{
-		_items ??= [];
-
-		var previous = _lookup.Values.ToDictionary(a => a.Id);
-
-		var newItems = items.ToList();
-		var newItemIds = newItems.Select(i => i.Id).ToHashSet();
-
-		// remove not existing
-		_items.RemoveWhere(i => !newItemIds.Contains(i.Id));
-
-		_lookup.Clear();
-
-		foreach (var item in newItems)
-		{
-			if (previous.TryGetValue(item.Id, out var old))
-			{
-				// existing
-				var merged = item;
-
-				if (merged is SpotifyArtist newArtist && old is SpotifyArtist oldartist)
-				{
-					// merge artists new flag
-					newArtist.New = oldartist.New;
-				}
-
-				_items.Remove(old);
-				_items.Add(merged);
-				_lookup[item.Id] = merged;
-			}
-			else
-			{
-				_items.Add(item);
-				_lookup[item.Id] = item;
-			}
-		}
-
-		LastSync = lastSync;
-		StateChanged();
-
-	}*/
 }

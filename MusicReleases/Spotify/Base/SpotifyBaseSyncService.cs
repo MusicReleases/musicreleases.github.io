@@ -126,7 +126,7 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 				await task.RunSegment($"db/state - save {EntityName} batch - {batch.Count}", async ct2 =>
 				{
 					await _writer.Save(batch, true, ct2);
-					_state.AddRange(batch, DateTime.Now);
+					_state.AddRange(batch, DateTime.Now, false);
 				});
 
 				allPayloads.AddRange(batch.Select(CreatePayload));

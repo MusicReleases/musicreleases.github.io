@@ -32,6 +32,6 @@ internal abstract class SpotifyGroupedState<TModel, TGroupKey> : ISpotifyGrouped
 			});
 
 		LastSync[group] = lastSync;
-		OnChange?.Invoke();
+		//OnChange?.Invoke();
 	}
 }

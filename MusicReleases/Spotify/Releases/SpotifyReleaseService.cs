@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Database.Spotify.Entities;
+using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.BaseServices;
 using JakubKastner.MusicReleases.Spotify.Artists;
 using JakubKastner.MusicReleases.Spotify.Base;
@@ -194,8 +195,11 @@ internal sealed class SpotifyReleaseService
 				var batchLinks = new List<SpotifyArtistReleaseEntity>(512);
 				var batchAllArtists = new HashSet<SpotifyArtist>();
 
+				// lock object
+				var gate = new object();
 
-				foreach (var artist in batchArtists)
+
+				await RequestScheduler.Run(batchArtists, 3, async (artist, ct2) =>
 				{
 					ct.ThrowIfCancellationRequested();
 
@@ -216,35 +220,44 @@ internal sealed class SpotifyReleaseService
 
 					if (apiReleases.Count == 0)
 					{
-						continue;
+						return;
 					}
 
-					// save release to db
-					batchReleases.AddRange(apiReleases);
 
-					// save artists and links to db
-					foreach (var release in apiReleases)
+					lock (gate)
 					{
-						foreach (var a in release.Artists)
-						{
-							batchAllArtists.Add(a);
-							batchLinks.Add(release.Id.ToArtistReleaseEntity(a.Id, ArtistReleaseRole.Main, release.ReleaseType));
-						}
 
-						foreach (var fa in release.FeaturedArtists)
+						// save release to db
+						batchReleases.AddRange(apiReleases);
+
+						// save artists and links to db
+						foreach (var release in apiReleases)
 						{
-							batchAllArtists.Add(fa);
-							batchLinks.Add(release.Id.ToArtistReleaseEntity(fa.Id, ArtistReleaseRole.Featured, release.ReleaseType));
+							foreach (var a in release.Artists)
+							{
+								batchAllArtists.Add(a);
+								batchLinks.Add(release.Id.ToArtistReleaseEntity(a.Id, ArtistReleaseRole.Main, release.ReleaseType));
+							}
+
+							foreach (var fa in release.FeaturedArtists)
+							{
+								batchAllArtists.Add(fa);
+								batchLinks.Add(release.Id.ToArtistReleaseEntity(fa.Id, ArtistReleaseRole.Featured, release.ReleaseType));
+							}
 						}
 					}
-				}
+				}, ct, async (done, total) =>
+				{
+					if (done % 5 == 0 || done == total)
+					{
+						// progress
+						task.SetSubProgress((start + done) / (double)artistList.Count, $"artists {start + done}/{artistList.Count}");
+					}
+					await Task.CompletedTask;
+				});
 
 				// save batch (DB + state merge)
 				await SaveReleaseBatch(group, batchReleases, batchAllArtists.ToList(), batchLinks, task, ct);
-
-				// progress
-				var done = Math.Min(start + artistBatchSize, total);
-				task.SetSubProgress(done / (double)total, $"artists {done}/{total}");
 
 				await Task.Yield();
 			}
@@ -269,6 +282,7 @@ internal sealed class SpotifyReleaseService
 		});
 		return null;
 	}
+
 	private async Task SaveReleaseBatch(ReleaseGroup group, IReadOnlyCollection<SpotifyRelease> releases, IReadOnlyCollection<SpotifyArtist> artists, IReadOnlyCollection<SpotifyArtistReleaseEntity> links, BackgroundTask task, CancellationToken ct)
 	{
 		if (releases.Count == 0)
@@ -289,7 +303,7 @@ internal sealed class SpotifyReleaseService
 			await _artistReleaseDb.Save(links, ct2);
 		});
 
-		// State: přidej nové releasy (nefiltruj ještě – to uděláme jednou na konci)
+		//  add new releases
 		_releaseState.Merge(group, releases, DateTime.Now);
 	}
 
