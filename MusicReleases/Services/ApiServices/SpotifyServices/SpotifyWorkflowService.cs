@@ -35,7 +35,7 @@ internal sealed class SpotifyWorkflowService(IBackgroundTaskManagerService taskM
 				break;
 
 			case UpdateButtonComponent.Releases:
-				EnqueueReleasesOnly(releaseType, true);
+				EnqueueReleases(releaseType, true);
 				break;
 
 			case UpdateButtonComponent.Playlists:
@@ -51,7 +51,7 @@ internal sealed class SpotifyWorkflowService(IBackgroundTaskManagerService taskM
 
 	private void EnqueueArtistsWithReleases(ReleaseGroup releaseType, bool forceUpdate)
 	{
-		_taskManager.Enqueue(new BackgroundTaskRequest(
+		_taskManager.Enqueue(new(
 			Type: BackgroundTaskType.ArtistsGet,
 			Name: "Artists",
 			Info: "Loading followed artists",
@@ -60,31 +60,24 @@ internal sealed class SpotifyWorkflowService(IBackgroundTaskManagerService taskM
 			DependsOn: []
 		));
 
-		_taskManager.Enqueue(new BackgroundTaskRequest(
-			Type: BackgroundTaskType.ReleasesGet,
-			Name: "Releases",
-			Info: "Loading releases",
-			ExpectedSteps: 3,
-			Work: t => _releaseService.Get(releaseType, forceUpdate),
-			DependsOn: [BackgroundTaskType.ArtistsGet]
-		));
+		EnqueueReleases(releaseType, forceUpdate, [BackgroundTaskType.ArtistsGet]);
 	}
 
-	private void EnqueueReleasesOnly(ReleaseGroup releaseType, bool forceUpdate)
+	private void EnqueueReleases(ReleaseGroup releaseType, bool forceUpdate, IReadOnlyCollection<BackgroundTaskType>? dependsOn = null)
 	{
-		_taskManager.Enqueue(new BackgroundTaskRequest(
+		_taskManager.Enqueue(new(
 			Type: BackgroundTaskType.ReleasesGet,
 			Name: "Releases",
 			Info: "Updating releases",
 			ExpectedSteps: 3,
 			Work: t => _releaseService.Get(releaseType, forceUpdate),
-			DependsOn: []
+			DependsOn: dependsOn ?? []
 		));
 	}
 
 	private void EnqueuePlaylists(bool forceUpdate)
 	{
-		_taskManager.Enqueue(new BackgroundTaskRequest(
+		_taskManager.Enqueue(new(
 			Type: BackgroundTaskType.PlaylistsGet,
 			Name: "Playlists",
 			Info: "Loading playlists",

@@ -1,6 +1,8 @@
-﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
+﻿using System.Collections.Concurrent;
 
-internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerService
+namespace JakubKastner.MusicReleases.Spotify.Tasks;
+
+internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerService, IBackgroundTaskStepCompletionSink
 {
 	private readonly IBackgroundTaskFilterService _filterService;
 
@@ -11,6 +13,11 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 	private readonly HashSet<BackgroundTaskType> _completedWorkflowTasks = [];
 	private bool _workflowRunning;
 
+
+	private readonly object _workflowLock = new();
+	private readonly HashSet<Guid> _startedWorkflowRequests = new();
+
+	private readonly ConcurrentDictionary<Guid, TaskCompletionSource<bool>> _stepCompletions = new();
 
 	public BackgroundTaskManagerService(IBackgroundTaskFilterService filterService)
 	{
@@ -51,9 +58,37 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 	{
 		_completedWorkflowTasks.Clear();
 		_workflowQueue.Clear();
+
+
+		lock (_workflowLock)
+		{
+			_startedWorkflowRequests.Clear();
+		}
 	}
 
+
 	public Task Enqueue(BackgroundTaskRequest request)
+	{
+		if (request.IsImmediate)
+		{
+			return RunInternal(request.Type, request.Name, request.Info, request.ExpectedSteps, request.Work, true);
+		}
+
+		// dedup (task is allready running or queued)
+		if (_workflowQueue.Any(t => t.Type == request.Type))
+		{
+			return Task.CompletedTask;
+		}
+
+		// task queue
+		_workflowQueue.Add(request);
+		StartReadyWorkflowTasks();
+
+		return Task.CompletedTask;
+	}
+
+
+	/*public Task Enqueue(BackgroundTaskRequest request)
 	{
 		if (request.IsImmediate)
 		{
@@ -71,6 +106,57 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 		_ = TryRunNextWorkflow();
 
 		return Task.CompletedTask;
+	}*/
+
+	private void StartReadyWorkflowTasks()
+	{
+		List<BackgroundTaskRequest> toStart = [];
+
+		lock (_workflowLock)
+		{
+			foreach (var req in _workflowQueue)
+			{
+				// is running?
+				if (_startedWorkflowRequests.Contains(req.RequestId))
+				{
+					continue;
+				}
+
+				// dependencies finished?
+				if (req.DependsOn is not null && !req.DependsOn.All(d => _completedWorkflowTasks.Contains(d)))
+				{
+					continue;
+				}
+
+				_startedWorkflowRequests.Add(req.RequestId);
+				toStart.Add(req);
+			}
+		}
+
+		// start outside lock
+		foreach (var req in toStart)
+		{
+			_ = RunWorkflowRequestAsync(req);
+		}
+	}
+
+	private async Task RunWorkflowRequestAsync(BackgroundTaskRequest req)
+	{
+		try
+		{
+			await RunInternal(req.Type, req.Name, req.Info, req.ExpectedSteps, req.Work, true);
+
+			lock (_workflowLock)
+			{
+				_completedWorkflowTasks.Add(req.Type);
+				_workflowQueue.Remove(req);
+			}
+		}
+		finally
+		{
+			// unlock other tasks
+			StartReadyWorkflowTasks();
+		}
 	}
 
 	public Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work)
@@ -132,7 +218,7 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 	private Task RunInternal(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work, bool isWorkflow = false)
 	{
-		var task = new BackgroundTask(type, name, info, expectedSteps, isWorkflow);
+		var task = new BackgroundTask(type, name, info, expectedSteps, isWorkflow, this);
 		task.OnStateChanged += NotifyUI;
 
 		_tasks.Insert(0, task);
@@ -189,6 +275,34 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 		HideTask(task);
 	}
+
+	void IBackgroundTaskStepCompletionSink.MarkStepCompleted(Guid stepId, bool success)
+	{
+		var tcs = _stepCompletions.GetOrAdd(stepId, _ => new(TaskCreationOptions.RunContinuationsAsynchronously));
+
+		if (success)
+		{
+			tcs.TrySetResult(true);
+		}
+		else
+		{
+			tcs.TrySetResult(false);
+		}
+	}
+
+	Task<bool> IBackgroundTaskStepCompletionSink.WaitForStep(Guid stepId, CancellationToken ct)
+	{
+		var tcs = _stepCompletions.GetOrAdd(stepId, _ => new(TaskCreationOptions.RunContinuationsAsynchronously));
+
+		if (ct.CanBeCanceled)
+		{
+			ct.Register(() => tcs.TrySetCanceled(ct));
+		}
+
+		return tcs.Task;
+	}
+
+
 
 	public void HideAllEnded()
 	{

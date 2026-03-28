@@ -3,7 +3,7 @@ using JakubKastner.SpotifyApi.Base.Objects;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-public sealed class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps, bool isWorkflow)
+public sealed class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps, bool isWorkflow, IBackgroundTaskStepCompletionSink stepSink)
 {
 	public event Action? OnStateChanged;
 
@@ -131,6 +131,7 @@ public sealed class BackgroundTask(BackgroundTaskType type, string name, string 
 
 	public bool Failed => Status == BackgroundTaskStatus.Failed;
 
+	public IBackgroundTaskStepCompletionSink StepSink { get; } = stepSink;
 
 	public void NotifyChange()
 	{
@@ -191,6 +192,11 @@ public sealed class BackgroundTask(BackgroundTaskType type, string name, string 
 		var link = new BackgroundTaskLink(text, title, spotifyUrlObject.UrlApp, spotifyUrlObject.UrlWeb, icon);
 		_links.Add(link);
 		NotifyChange();
+	}
+
+	public Task<bool> WaitForStep(Guid stepId)
+	{
+		return StepSink.WaitForStep(stepId, Ct);
 	}
 
 	public void RequestCancel()

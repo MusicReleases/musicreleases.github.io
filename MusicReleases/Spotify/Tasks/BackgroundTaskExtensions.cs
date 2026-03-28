@@ -26,6 +26,7 @@ internal static class BackgroundTaskExtensions
 
 				var step = task.Steps[task.CurrentStepIndex];
 				step.MarkFinished();
+				task.StepSink.MarkStepCompleted(step.StepId, true);
 			}
 			catch (OperationCanceledException)
 			{
@@ -35,6 +36,7 @@ internal static class BackgroundTaskExtensions
 			{
 				var step = task.Steps[task.CurrentStepIndex];
 				step.MarkFailed(ex);
+				task.StepSink.MarkStepCompleted(step.StepId, false);
 				Console.WriteLine(ex.ToString());
 				throw;
 			}
@@ -51,6 +53,7 @@ internal static class BackgroundTaskExtensions
 
 				var step = task.Steps[task.CurrentStepIndex];
 				step.MarkFinished();
+				task.StepSink.MarkStepCompleted(step.StepId, true);
 
 				return result;
 			}
@@ -62,6 +65,7 @@ internal static class BackgroundTaskExtensions
 			{
 				var step = task.Steps[task.CurrentStepIndex];
 				step.MarkFailed(ex);
+				task.StepSink.MarkStepCompleted(step.StepId, false);
 				Console.WriteLine(ex.ToString());
 				throw;
 			}
@@ -84,6 +88,29 @@ internal static class BackgroundTaskExtensions
 		}
 
 		return new BackgroundTaskStepScope(task, step, ct, ctr);
+	}
+
+	public static async Task WaitForStep(this BackgroundTask task, BackgroundTaskStep step, Guid dependsOnStepId)
+	{
+		step.IsWaiting = true;
+		step.WaitingForStepId = dependsOnStepId;
+		step.NotifyChange();
+
+		try
+		{
+			var ok = await task.WaitForStep(dependsOnStepId);
+
+			if (!ok)
+			{
+				throw new InvalidOperationException($"Dependency step {dependsOnStepId} failed or was canceled.");
+			}
+		}
+		finally
+		{
+			step.IsWaiting = false;
+			step.WaitingForStepId = null;
+			step.NotifyChange();
+		}
 	}
 
 	// SEGMENTS

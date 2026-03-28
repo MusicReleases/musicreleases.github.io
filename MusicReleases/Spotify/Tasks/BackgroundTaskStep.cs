@@ -4,6 +4,7 @@ public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory categ
 {
 	public event Action? OnStateChanged;
 
+	public Guid StepId { get; init; } = Guid.NewGuid();
 
 	public string Name { get; init; } = name;
 
@@ -52,6 +53,12 @@ public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory categ
 			}
 		}
 	}
+
+
+	public bool IsWaiting { get; internal set; }
+
+	public Guid? WaitingForStepId { get; internal set; }
+
 
 	// ERRORS
 	public string? ErrorCode { get; set; }
