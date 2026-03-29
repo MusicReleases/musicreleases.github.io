@@ -14,6 +14,7 @@ public partial class ArtistSidebarContent : IDisposable
 	protected override void OnInitialized()
 	{
 		FilterService.OnChanged += SearchChanged;
+		SearchChanged();
 	}
 
 	public void Dispose()
