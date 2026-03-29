@@ -56,8 +56,12 @@ public sealed class BackgroundTaskStep(string name, BackgroundTaskCategory categ
 
 
 	public bool IsWaiting { get; internal set; }
-
 	public Guid? WaitingForStepId { get; internal set; }
+
+
+	public bool WasSkipped { get; internal set; }
+	public string? SkipReason { get; internal set; }
+
 
 
 	// ERRORS

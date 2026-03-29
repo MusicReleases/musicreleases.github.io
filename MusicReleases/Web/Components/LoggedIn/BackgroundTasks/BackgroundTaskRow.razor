@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using JakubKastner.MusicReleases.Spotify.Tasks
 
 <MrRow Class="@Class">
     
@@ -24,9 +25,18 @@
 
         <div class="status" title="Task status">
             <MrIcon Class="@_iconClass" Icon="@Icon" Spin="@SpotifyBackgroundTask.IsRunning" />
-            <span>
-                @SpotifyBackgroundTask.StatusText
-            </span>
+            @if (SpotifyBackgroundTask.CurrentStep is not null && SpotifyBackgroundTask.CurrentStep.IsWaiting && SpotifyBackgroundTask.CurrentStep.WaitingForStepId.HasValue)
+            {
+                <span>
+                    Waiting for @(BackgroundTaskExtensions.GetStepLabel(SpotifyBackgroundTask.CurrentStep.WaitingForStepId.Value) ?? "dependency")
+                </span>
+            }
+            else
+            {
+                <span>
+                    @SpotifyBackgroundTask.StatusText
+                </span>
+            }
             
             @if (@SpotifyBackgroundTask.IsRunning)
             {
@@ -66,9 +76,32 @@
 
                     <div class="status" title="Step status">
                         <MrIcon Class="@_iconClass" Icon="@GetIcon(step.Status)" Spin="step.IsRunning" />
+                        
+                        @if (step.WasSkipped)
+                        {
+                            <span>
+                                Skipped                                
+                                @if (step.SkipReason.IsNotNullOrEmpty())
+                                {
+                                    <text> – @step.SkipReason</text>
+                                }
+                            </span>
+                        }
+                        
+                        @if (step.IsWaiting && step.WaitingForStepId.HasValue)
+                        {
+                            <span>
+                                Waiting for @(BackgroundTaskExtensions.GetStepLabel(step.WaitingForStepId.Value) ?? "dependency")
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @step.Status.ToFriendlyString(true)
+                            </span>
+                        }
 
                         <span>
-                            @step.Status.ToFriendlyString(true)
                         </span>
 
                         @if (step.Duration.HasValue)

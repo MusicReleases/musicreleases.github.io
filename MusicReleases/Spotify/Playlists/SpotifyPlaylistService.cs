@@ -54,6 +54,8 @@ internal sealed class SpotifyPlaylistService
 
 	protected override SpotifyUserPlaylistPayload CreatePayload(SpotifyPlaylist model) => model.ToPayload();
 
+	public Task GetInTask(BackgroundTask task, BackgroundTaskSyncPlan plan, bool forceUpdate = false) => RunGetInExistingTask(default, forceUpdate, task, plan);
+
 	public async Task CreatePlaylist(string name)
 	{
 		await _taskManager.Run(BackgroundTaskType.PlaylistsCreate, "Creating playlist", $"Creating new playlists '{name}'", async task =>

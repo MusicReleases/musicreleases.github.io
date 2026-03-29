@@ -31,10 +31,12 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 	}
 
 	protected abstract Task<bool> LoadFromDbToState(TContext context, string userId, bool forceUpdate, BackgroundTask task);
-	protected abstract Task<IReadOnlyCollection<TModel>?> LoadFromApi(TContext context, string userId, BackgroundTask task);
+	protected abstract Task<IReadOnlyCollection<TModel>?> LoadFromApi(TContext context, string userId, BackgroundTask task, CancellationToken ct);
 	protected abstract Task SaveToDbAndState(TContext context, IReadOnlyCollection<TModel> models, string userId, BackgroundTask task);
 
-	protected async Task RunGet(TContext context, bool forceUpdate)
+
+
+	protected async Task RunGet(TContext context, bool forceUpdate, BackgroundTaskSyncPlan? plan)
 	{
 		if (_loadingService.IsLoading(TaskType))
 		{
@@ -49,20 +51,93 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 
 		await _taskManager.Run(TaskType, TaskTitle, GetTaskDescription(context), async task =>
 		{
-			var userId = _userApi.GetUserIdRequired();
+			await RunGetInTask(context, forceUpdate, task, isInState, plan);
+		});
+	}
+	protected async Task RunGetInExistingTask(TContext context, bool forceUpdate, BackgroundTask task, BackgroundTaskSyncPlan? plan)
+	{
+		if (_loadingService.IsLoading(TaskType))
+		{
+			return;
+		}
 
-			if (!isInState)
+		var isInState = GetIsDataInState(context);
+		/*if (isInState && !ShouldSync(context, forceUpdate))
+		{
+			return;
+		}
+		*/
+		await RunGetInTask(context, forceUpdate, task, isInState, plan);
+	}
+
+
+	private async Task RunGetInTask(TContext context, bool forceUpdate, BackgroundTask task, bool isInState, BackgroundTaskSyncPlan? plan)
+	{
+		var userId = _userApi.GetUserIdRequired();
+
+		var shouldSync = !isInState || ShouldSync(context, forceUpdate);
+
+		var dbStepId = plan?.DbStepId ?? Guid.NewGuid();
+		var apiStepId = plan?.ApiStepId ?? Guid.NewGuid();
+		var saveStepId = plan?.SaveStepId ?? Guid.NewGuid();
+
+		IReadOnlyCollection<TModel>? apiData = null;
+
+		await task.RunStep(dbStepId, "Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
+		{
+			var step = task.CurrentStep;
+
+			if (step is not null)
 			{
-				var shouldSync = await LoadFromDbToState(context, userId, forceUpdate, task);
+				if (plan?.WaitBeforeDbStepId is Guid depDb)
+				{
+					await task.WaitForStep(step, depDb);
+				}
+
 				if (!shouldSync)
 				{
+					step.WasSkipped = true;
+					step.SkipReason = "Loaded from store";
 					return;
 				}
 			}
+			shouldSync = await LoadFromDbToState(context, userId, forceUpdate, task);
+		});
 
-			var apiData = await LoadFromApi(context, userId, task);
-			if (apiData is null)
+		await task.RunStep(apiStepId, "Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		{
+			var step = task.CurrentStep;
+
+			if (step is not null)
 			{
+				if (plan?.WaitBeforeApiStepId is Guid depApi)
+				{
+					await task.WaitForStep(step, depApi);
+				}
+
+				if (!shouldSync)
+				{
+					step.WasSkipped = true;
+					step.SkipReason = "No API sync needed";
+					return;
+				}
+			}
+			apiData = await LoadFromApi(context, userId, task, ct);
+		});
+
+		await task.RunStep(saveStepId, "Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
+		{
+			var step = task.CurrentStep;
+
+			if (!shouldSync || apiData is null)
+			{
+				if (step is not null)
+				{
+
+					step.WasSkipped = true;
+					step.SkipReason = "Nothing to save";
+				}
+
 				return;
 			}
 

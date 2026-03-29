@@ -34,4 +34,6 @@ internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyA
 	protected override bool UseBatchedApi => true;
 
 	protected override IAsyncEnumerable<IReadOnlyCollection<SpotifyArtist>> ApiLoadBatches(CancellationToken ct) => _artistApi.GetFollowedBatches(25, ct);
+
+	public Task GetInTask(BackgroundTask task, BackgroundTaskSyncPlan plan, bool forceUpdate = false) => RunGetInExistingTask(default, forceUpdate, task, plan);
 }

@@ -1,19 +1,31 @@
-﻿using System.Globalization;
+﻿using System.Collections.Concurrent;
+using System.Globalization;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 internal static class BackgroundTaskExtensions
 {
+	private static readonly ConcurrentDictionary<Guid, string> _stepLabels = new();
+
 	// STEPS
 
 	public static async Task RunStep(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
 	{
 		await RunStepInternal(task, name, category, work, task.Ct);
 	}
+	public static async Task RunStep(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
+	{
+		await RunStepInternal(task, stepId, name, category, work, task.Ct);
+	}
 
 	public static Task<T> RunStep<T>(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body)
 	{
 		return RunStepInternal(task, name, category, body, task.Ct);
+	}
+
+	public static Task<T> RunStep<T>(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body)
+	{
+		return RunStepInternal(task, stepId, name, category, body, task.Ct);
 	}
 
 	private static async Task RunStepInternal(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work, CancellationToken ct)
@@ -38,6 +50,33 @@ internal static class BackgroundTaskExtensions
 				step.MarkFailed(ex);
 				task.StepSink.MarkStepCompleted(step.StepId, false);
 				Console.WriteLine(ex.ToString());
+				throw;
+			}
+		}
+	}
+
+	private static async Task RunStepInternal(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work, CancellationToken ct)
+	{
+		await using (await task.BeginStep(stepId, name, category, ct))
+		{
+			try
+			{
+				await work(ct);
+
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFinished();
+				task.StepSink.MarkStepCompleted(step.StepId, true);
+			}
+			catch (OperationCanceledException)
+			{
+				throw;
+			}
+			catch (Exception ex)
+			{
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFailed(ex);
+				task.StepSink.MarkStepCompleted(step.StepId, false);
+				Console.WriteLine(ex);
 				throw;
 			}
 		}
@@ -72,9 +111,60 @@ internal static class BackgroundTaskExtensions
 		}
 	}
 
+	private static async Task<T> RunStepInternal<T>(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body, CancellationToken ct)
+	{
+		await using (await task.BeginStep(stepId, name, category, ct))
+		{
+			try
+			{
+				var result = await body(ct);
+
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFinished();
+				task.StepSink.MarkStepCompleted(step.StepId, true);
+
+				return result;
+			}
+			catch (OperationCanceledException)
+			{
+				throw;
+			}
+			catch (Exception ex)
+			{
+				var step = task.Steps[task.CurrentStepIndex];
+				step.MarkFailed(ex);
+				task.StepSink.MarkStepCompleted(step.StepId, false);
+				Console.WriteLine(ex);
+				throw;
+			}
+		}
+	}
+
 	private static async ValueTask<IAsyncDisposable> BeginStep(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct)
 	{
 		var step = new BackgroundTaskStep(name, category);
+		task.AddStep(step);
+
+		CancellationTokenRegistration? ctr = null;
+		if (ct.CanBeCanceled)
+		{
+			ctr = ct.Register(() =>
+			{
+				task.IsCancelRequested = true;
+				step.NotifyChange();
+			});
+		}
+
+		return new BackgroundTaskStepScope(task, step, ct, ctr);
+	}
+
+	private static async ValueTask<IAsyncDisposable> BeginStep(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, CancellationToken ct)
+	{
+		var step = new BackgroundTaskStep(name, category)
+		{
+			StepId = stepId
+		};
+		_stepLabels.TryAdd(step.StepId, step.Name);
 		task.AddStep(step);
 
 		CancellationTokenRegistration? ctr = null;
@@ -224,5 +314,10 @@ internal static class BackgroundTaskExtensions
 
 		task.RecalculateProgress();
 		task.NotifyChange();
+	}
+
+	public static string? GetStepLabel(Guid stepId)
+	{
+		return _stepLabels.TryGetValue(stepId, out var label) ? label : null;
 	}
 }

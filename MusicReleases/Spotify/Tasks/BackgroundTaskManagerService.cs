@@ -44,7 +44,7 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 	public ICollection<BackgroundTask> RunningTasks => [.. _tasks.Where(t => t.IsRunning)];
 
-	public ICollection<BackgroundTask> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible && !t.IsWorkflow)];
+	public ICollection<BackgroundTask> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible /*&& !t.IsWorkflow*/)];
 
 	public ICollection<BackgroundTask> FilteredTasks => [.. _filterService.Apply(_tasks)];
 
@@ -87,26 +87,6 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 		return Task.CompletedTask;
 	}
 
-
-	/*public Task Enqueue(BackgroundTaskRequest request)
-	{
-		if (request.IsImmediate)
-		{
-			return RunInternal(request.Type, request.Name, request.Info, request.ExpectedSteps, request.Work, true);
-		}
-
-		// dedup (task is allready running or queued)
-		if (_workflowQueue.Any(t => t.Type == request.Type))
-		{
-			return Task.CompletedTask;
-		}
-
-		// task queue
-		_workflowQueue.Add(request);
-		_ = TryRunNextWorkflow();
-
-		return Task.CompletedTask;
-	}*/
 
 	private void StartReadyWorkflowTasks()
 	{

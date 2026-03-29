@@ -100,7 +100,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)
 	{
-		var query = source.Where(x => !x.IsWorkflow);
+		var query = source; //.Where(x => !x.IsWorkflow);
 
 		if (!IsFilterActive)
 		{

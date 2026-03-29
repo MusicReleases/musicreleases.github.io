@@ -1,4 +1,7 @@
-﻿<div class="@TaskClass" @onclick="ViewTask">
+﻿@using JakubKastner.MusicReleases.Spotify.Tasks
+
+
+<div class="@TaskClass" @onclick="ViewTask">
 
     <div class="header">
 
@@ -23,9 +26,18 @@
 
     <div class="status">
 
-        <span>
-            @BackgroundTask.StatusText
-        </span>
+        @if (BackgroundTask.CurrentStep is not null && BackgroundTask.CurrentStep.IsWaiting && BackgroundTask.CurrentStep.WaitingForStepId.HasValue)
+        {
+            <span>
+                Waiting for @(BackgroundTaskExtensions.GetStepLabel(BackgroundTask.CurrentStep.WaitingForStepId.Value) ?? "dependency")
+            </span>
+        }
+        else
+        {
+            <span>
+                @BackgroundTask.StatusText
+            </span>
+        }
 
         @if (BackgroundTask.CurrentStep is not null)
         {

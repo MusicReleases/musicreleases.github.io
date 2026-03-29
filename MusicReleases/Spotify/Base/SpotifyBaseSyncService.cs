@@ -59,126 +59,126 @@ internal abstract class SpotifyBaseSyncService<TModel, TPayload>
 
 	protected virtual IReadOnlyCollection<TModel> MergePayloads(IReadOnlyCollection<TModel> models, IReadOnlyCollection<TPayload> payloads) => models;
 
-	public Task Get(bool forceUpdate = false) => RunGet(default, forceUpdate);
+	public Task Get(bool forceUpdate = false) => RunGet(default, forceUpdate, null);
 
 	protected bool ShouldSync(bool forceUpdate) => ShouldSync(default, forceUpdate);
 
 	protected sealed override async Task<bool> LoadFromDbToState(NoContext _, string userId, bool forceUpdate, BackgroundTask task)
 	{
-		return await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
+		/*return await task.RunStep("Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
+		{*/
+		task.BeginAutoSegments(5);
+
+		var lastSync = await task.RunSegment($"db - get {EntityName} last sync (user-update)", async ct2 =>
 		{
-			task.BeginAutoSegments(5);
-
-			var lastSync = await task.RunSegment($"db - get {EntityName} last sync (user-update)", async ct2 =>
-			{
-				return await _updateDb.Get(userId, DbUpdateType, ct2);
-			});
-
-			var payloads = await task.RunSegment($"db - get user {EntityName} ({UserLinkLabel})", async ct2 =>
-			{
-				return await _userLinkDbService.GetByUserId(userId, ct2);
-			});
-
-			var count = payloads.Count;
-
-			if (count == 0)
-			{
-				await task.RunSegment($"state - set {EntityName}", async _ =>
-				{
-					_state.Set([], lastSync);
-				});
-				return true;
-			}
-
-			var models = await task.RunSegment($"db - get {EntityName} by ids - {count}", async ct2 =>
-			{
-				return await _reader.GetByIds(payloads, ct2);
-			});
-
-			return await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
-			{
-				var merged = MergePayloads(models, payloads);
-				_state.Set(models, lastSync);
-				return ShouldSync(forceUpdate);
-			});
+			return await _updateDb.Get(userId, DbUpdateType, ct2);
 		});
+
+		var payloads = await task.RunSegment($"db - get user {EntityName} ({UserLinkLabel})", async ct2 =>
+		{
+			return await _userLinkDbService.GetByUserId(userId, ct2);
+		});
+
+		var count = payloads.Count;
+
+		if (count == 0)
+		{
+			await task.RunSegment($"state - set {EntityName}", async _ =>
+			{
+				_state.Set([], lastSync);
+			});
+			return true;
+		}
+
+		var models = await task.RunSegment($"db - get {EntityName} by ids - {count}", async ct2 =>
+		{
+			return await _reader.GetByIds(payloads, ct2);
+		});
+
+		return await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
+		{
+			var merged = MergePayloads(models, payloads);
+			_state.Set(models, lastSync);
+			return ShouldSync(forceUpdate);
+		});
+		//});
 	}
 
-	protected sealed override async Task<IReadOnlyCollection<TModel>?> LoadFromApi(NoContext _, string userId, BackgroundTask task)
+	protected sealed override async Task<IReadOnlyCollection<TModel>?> LoadFromApi(NoContext _, string userId, BackgroundTask task, CancellationToken ct)
 	{
-		return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		/*return await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		{*/
+		if (!UseBatchedApi)
 		{
-			if (!UseBatchedApi)
-			{
-				task.BeginAutoSegments(1);
-				return await task.RunSegment($"api - get {EntityName}", _ => ApiLoad(ct));
-			}
-
-			// batched
-			var allPayloads = new List<TPayload>(capacity: 2048);
-
 			task.BeginAutoSegments(1);
+			return await task.RunSegment($"api - get {EntityName}", _ => ApiLoad(ct));
+		}
 
-			await foreach (var batch in ApiLoadBatches(ct).WithCancellation(ct))
+		// batched
+		var allPayloads = new List<TPayload>(capacity: 2048);
+
+		task.BeginAutoSegments(1);
+
+		await foreach (var batch in ApiLoadBatches(ct).WithCancellation(ct))
+		{
+			ct.ThrowIfCancellationRequested();
+
+			await task.RunSegment($"db/state - save {EntityName} batch - {batch.Count}", async ct2 =>
 			{
-				ct.ThrowIfCancellationRequested();
-
-				await task.RunSegment($"db/state - save {EntityName} batch - {batch.Count}", async ct2 =>
-				{
-					await _writer.Save(batch, true, ct2);
-					_state.AddRange(batch, DateTime.Now, false);
-				});
-
-				allPayloads.AddRange(batch.Select(CreatePayload));
-
-				// report progress
-
-				await Task.Yield();
-			}
-
-			await task.RunSegment($"db - save user {EntityName} ({UserLinkLabel}) - {allPayloads.Count}", async ct2 =>
-			{
-				await _userLinkDbService.SaveByUserId(userId, allPayloads, ct2);
+				await _writer.Save(batch, true, ct2);
+				_state.AddRange(batch, DateTime.Now, false);
 			});
 
-			// save last sync
-			await task.RunSegment($"db - save {EntityName} last sync (update)", async ct2 =>
-			{
-				await _updateDb.Save(userId, DbUpdateType, ct2);
-			});
+			allPayloads.AddRange(batch.Select(CreatePayload));
 
-			return null;
+			// report progress
+
+			await Task.Yield();
+		}
+
+		await task.RunSegment($"db - save user {EntityName} ({UserLinkLabel}) - {allPayloads.Count}", async ct2 =>
+		{
+			await _userLinkDbService.SaveByUserId(userId, allPayloads, ct2);
 		});
+
+		// save last sync
+		await task.RunSegment($"db - save {EntityName} last sync (update)", async ct2 =>
+		{
+			await _updateDb.Save(userId, DbUpdateType, ct2);
+		});
+
+		return null;
+		//});
 	}
 
 	protected sealed override async Task SaveToDbAndState(NoContext _, IReadOnlyCollection<TModel> models, string userId, BackgroundTask task)
 	{
-		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
+		/*await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
+		{*/
+		task.BeginAutoSegments(4);
+		var count = models.Count;
+
+		await task.RunSegment($"db - save {EntityName} - {count}", async ct2 =>
 		{
-			task.BeginAutoSegments(4);
-			var count = models.Count;
-
-			await task.RunSegment($"db - save {EntityName} - {count}", async ct2 =>
-			{
-				await _writer.Save(models, true, ct2);
-			});
-
-			await task.RunSegment($"db - save user {EntityName} ({UserLinkLabel}) - {count}", async ct2 =>
-			{
-				var payloads = models.Select(CreatePayload);
-
-				await _userLinkDbService.SaveByUserId(userId, payloads, ct2);
-			});
-
-			await task.RunSegment($"db - save {EntityName} last sync (update)", async ct2 =>
-			{
-				await _updateDb.Save(userId, DbUpdateType, ct2);
-			});
-
-			await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
-			{
-				_state.ReconcileSnapshot(models, DateTime.Now);
-			});
+			await _writer.Save(models, true, ct2);
 		});
+
+		await task.RunSegment($"db - save user {EntityName} ({UserLinkLabel}) - {count}", async ct2 =>
+		{
+			var payloads = models.Select(CreatePayload);
+
+			await _userLinkDbService.SaveByUserId(userId, payloads, ct2);
+		});
+
+		await task.RunSegment($"db - save {EntityName} last sync (update)", async ct2 =>
+		{
+			await _updateDb.Save(userId, DbUpdateType, ct2);
+		});
+
+		await task.RunSegment($"state - set {EntityName} - {count}", async _ =>
+		{
+			_state.ReconcileSnapshot(models, DateTime.Now);
+		});
+		//});
 	}
 }
