@@ -11,7 +11,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, ISpotifyUserDbService databaseUserService, ISpotifyUserUpdateDbService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISpotifySettingsService settingsService, IBackgroundTaskManagerService backgroundTaskManagerService) : ISpotifyLoginService
+internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, ISpotifyUserDbService databaseUserService, ISpotifyUserUpdateDbService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISpotifySettingsService settingsService, IBackgroundTaskManagerService2 backgroundTaskManagerService) : ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
@@ -21,7 +21,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 	private readonly ISpotifyUserUpdateDbService _databaseUpdateService = databaseUpdateService;
 	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
 	private readonly ISpotifySettingsService _settingsService = settingsService;
-	private readonly IBackgroundTaskManagerService _backgroundTaskManagerService = backgroundTaskManagerService;
+	private readonly IBackgroundTaskManagerService2 _backgroundTaskManagerService = backgroundTaskManagerService;
 
 	public ServiceType GetServiceType()
 	{

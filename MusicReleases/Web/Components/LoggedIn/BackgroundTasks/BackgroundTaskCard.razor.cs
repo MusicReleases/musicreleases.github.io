@@ -11,10 +11,10 @@ public partial class BackgroundTaskCard : IDisposable
 	private IPopupService PopupService { get; set; } = default!;
 
 	[Inject]
-	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
 
 	[Parameter]
-	public required BackgroundTask BackgroundTask { get; set; }
+	public required BackgroundTask2 BackgroundTask { get; set; }
 
 
 	private string TaskClass => $"task {(BackgroundTask.Failed ? "failed" : "")} {(BackgroundTask.Ended ? "finished" : "running")}";

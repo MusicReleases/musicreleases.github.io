@@ -7,13 +7,13 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Popups;
 public partial class BackgroundTaskPopup : IDisposable
 {
 	[Inject]
-	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
 
 	[Inject]
 	private IBackgroundTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
 
 
-	private ICollection<BackgroundTask> DisplayedTasks => SpotifyTaskManagerService.FilteredTasks;
+	private ICollection<BackgroundTask2> DisplayedTasks => SpotifyTaskManagerService.FilteredTasks;
 
 	private string ClearFilterButtonTitle => SpotifyTaskFilterService.IsFilterActive ? "Clear all task filters" : "No task filters applied";
 

@@ -1,9 +1,9 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-internal sealed class BackgroundTaskStepScope(BackgroundTask task, BackgroundTaskStep step, CancellationToken ct, CancellationTokenRegistration? ctr) : IAsyncDisposable
+internal sealed class BackgroundTaskStepScope(BackgroundTask2 task, BackgroundTaskStep2 step, CancellationToken ct, CancellationTokenRegistration? ctr) : IAsyncDisposable
 {
-	private readonly BackgroundTask _task = task;
-	private readonly BackgroundTaskStep _step = step;
+	private readonly BackgroundTask2 _task = task;
+	private readonly BackgroundTaskStep2 _step = step;
 	private readonly CancellationToken _ct = ct;
 	private readonly CancellationTokenRegistration? _ctr = ctr;
 

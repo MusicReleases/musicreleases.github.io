@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.User.Update;
 
-public interface ISpotifyUserUpdateDbService
+internal interface ISpotifyUserUpdateDbService
 {
 	Task Delete(string userId, SpotifyDbUpdateType updateType);
 	Task DeleteForUser(string userId);

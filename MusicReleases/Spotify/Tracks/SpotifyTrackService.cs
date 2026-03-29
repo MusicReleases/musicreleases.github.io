@@ -5,9 +5,9 @@ using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Tracks;
 
-internal class SpotifyTrackService(IBackgroundTaskManagerService taskManager, ISpotifyTrackClient apiTrackClient, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
+internal class SpotifyTrackService(IBackgroundTaskManagerService2 taskManager, ISpotifyTrackClient apiTrackClient, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
 {
-	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
+	private readonly IBackgroundTaskManagerService2 _taskManager = taskManager;
 	private readonly ISpotifyTrackClient _apiTrackClient = apiTrackClient;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 

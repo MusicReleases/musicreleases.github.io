@@ -25,7 +25,7 @@ internal sealed class SpotifyPlaylistService
 	ILoadingService loadingService,
 	ISpotifySettingsService settingsService
 )
-	: SpotifyBaseSyncService<SpotifyPlaylist, SpotifyUserPlaylistPayload>(userApi, playlistReader, playlistWriter, userPlaylistDb, updateDb, playlistState, taskManager, loadingService), ISpotifyPlaylistService
+: SpotifyBaseSyncService<SpotifyPlaylist, SpotifyUserPlaylistPayload>(userApi, playlistReader, playlistWriter, userPlaylistDb, updateDb, playlistState, taskManager, loadingService), ISpotifyPlaylistService
 {
 	private readonly ISpotifyUserClient _userApi = userApi;
 	private readonly ISpotifyPlaylistClient _playlistApi = playlistApi;
@@ -46,74 +46,84 @@ internal sealed class SpotifyPlaylistService
 	protected override DateTime? LastSync => _playlistState.LastSync;
 	protected override bool IsDataInState => _playlistState.Items is not null;
 
-	protected override async Task<IReadOnlyCollection<SpotifyPlaylist>> ApiLoad(CancellationToken ct) => await _playlistApi.GetUserPlaylists(ct);
-
-	protected override bool UseBatchedApi => true;
-
 	protected override IAsyncEnumerable<IReadOnlyCollection<SpotifyPlaylist>> ApiLoadBatches(CancellationToken ct) => _playlistApi.GetUserPlaylistsBatches(25, ct);
 
 	protected override SpotifyUserPlaylistPayload CreatePayload(SpotifyPlaylist model) => model.ToPayload();
 
-	public Task GetInTask(BackgroundTask task, BackgroundTaskSyncPlan plan, bool forceUpdate = false) => RunGetInExistingTask(default, forceUpdate, task, plan);
+	public Task GetInTask(BackgroundTask task, bool forceUpdate = false) => RunGetInExistingTask(default, forceUpdate, task, null);
 
 	public async Task CreatePlaylist(string name)
 	{
-		await _taskManager.Run(BackgroundTaskType.PlaylistsCreate, "Creating playlist", $"Creating new playlists '{name}'", async task =>
-		{
-			var userId = _userApi.GetUserIdRequired();
+		await _taskManager.Run
+		(
+			BackgroundTaskType.PlaylistsCreate,
+			"Creating playlist",
+			$"Creating new playlists '{name}'",
+			2,
+			async task =>
+			{
+				var userId = _userApi.GetUserIdRequired();
 
-			var playlist = await CreatePlaylistApi(name, userId, task);
+				var playlist = await CreatePlaylistApi(name, userId, task);
 
-			await SavePlaylistToDbAndState(playlist, userId, task);
-		});
+				await SavePlaylistToDbAndState(playlist, userId, task);
+			}
+		);
 	}
 
 	private async Task<SpotifyPlaylist> CreatePlaylistApi(string name, string userId, BackgroundTask task)
 	{
-		return await task.RunStep("Sending API request", BackgroundTaskCategory.SaveApi, async ct =>
-		{
-			task.BeginAutoSegments(1);
-
-			var newPlaylist = await task.RunSegment("api - create playlist", async ct =>
+		return await task.RunStep
+		(
+			BackgroundTaskCategory.SaveApi,
+			async (ct, step) =>
 			{
-				var addToProfile = _settingsService.UserSettings.PlaylistAddToProfile;
-				var lastPlaylistOrder = _playlistState.Items?.Max(p => p.Order) ?? 0;
-				var order = lastPlaylistOrder + 1;
+				//step.BeginAutoSegments(1);
 
-				var newPlaylist = await _playlistApi.CreatePlaylist(userId, name, addToProfile, order, task.Ct);
+				return await step.RunSegment("api - create playlist", async ct2 =>
+				{
+					var addToProfile = _settingsService.UserSettings.PlaylistAddToProfile;
+					var lastPlaylistOrder = _playlistState.Items?.Max(p => p.Order) ?? 0;
+					var order = lastPlaylistOrder + 1;
 
-				task.AddLink("playlist", $"playlist '{name}'", newPlaylist);
-				return newPlaylist;
-			});
+					var newPlaylist = await _playlistApi.CreatePlaylist(userId, name, addToProfile, order, ct2);
 
-			return newPlaylist;
-		});
+					task.AddLink("playlist", $"playlist '{name}'", newPlaylist);
+
+					return newPlaylist;
+				});
+			}
+		);
 	}
 
 	private async Task SavePlaylistToDbAndState(SpotifyPlaylist playlist, string userId, BackgroundTask task)
 	{
-		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
-		{
-			task.BeginAutoSegments(3);
-
-			// save to playlist db
-			await task.RunSegment("db - add playlist (playlist)", async ct =>
+		await task.RunStep
+		(
+			BackgroundTaskCategory.SaveDb,
+			async (ct, step) =>
 			{
-				await _playlistWriter.Save(playlist, true, ct);
-			});
+				//step.BeginAutoSegments(3);
 
-			// save to user-playlist db
-			await task.RunSegment("db - add to user playlist (user-playlist)", async ct =>
-			{
-				await _userPlaylistDb.AddNew(playlist, userId, ct);
-			});
+				// save to playlist db
+				await step.RunSegment("db - add playlist (playlist)", async ct2 =>
+				{
+					await _playlistWriter.Save(playlist, true, ct2);
+				});
 
-			// update ui
-			await task.RunSegment("state - add user playlist", async ct =>
-			{
-				_playlistState.Add(playlist);
-			});
-		});
+				// save to user-playlist db
+				await step.RunSegment("db - add to user playlist (user-playlist)", async ct2 =>
+				{
+					await _userPlaylistDb.AddNew(playlist, userId, ct2);
+				});
+
+				// update ui
+				await step.RunSegment("state - add user playlist", async ct2 =>
+				{
+					_playlistState.Add(playlist);
+				});
+			}
+		);
 	}
 
 	public async Task AddTrack(string playlistId, SpotifyTrack track, bool positionTop)
@@ -140,55 +150,70 @@ internal sealed class SpotifyPlaylistService
 			= _playlistState.GetById(playlistId)
 			?? throw new InvalidOperationException($"Playlist not found in state");
 
-		await _taskManager.Run(BackgroundTaskType.PlaylistTracksAdd, "Adding track to playlists", $"Adding {tracksList.Count} track{trackLabel} to playlist '{playlist.Name}'", async task =>
-		{
-			var snapshotId = await AddTracksApi(playlist, tracksList, positionTop, task);
+		await _taskManager.Run
+		(
+			BackgroundTaskType.PlaylistTracksAdd,
+			"Adding tracks to playlist",
+			$"Adding {tracksList.Count} track{trackLabel} to playlist '{playlist.Name}'",
+			2,
+			async task =>
+			{
+				var snapshotId = await AddTracksApi(playlist, tracksList, positionTop, task);
 
-			await SaveNewTracksToDbAndStore(playlist, snapshotId, tracksList, task);
-		});
+				await SaveNewTracksToDbAndStore(playlist, snapshotId, tracksList, task);
+			}
+		);
 	}
 
 	private async Task<string> AddTracksApi(SpotifyPlaylist playlist, IEnumerable<SpotifyTrack> tracks, bool positionTop, BackgroundTask task)
 	{
-		return await task.RunStep("Sending API request", BackgroundTaskCategory.SaveApi, async step =>
-		{
-			task.BeginAutoSegments(1);
-
-			var tracksCount = tracks.Count();
-
-			return await task.RunSegment($"api - add playlist tracks - {tracksCount}", async ct =>
+		return await task.RunStep
+		(
+			BackgroundTaskCategory.SaveApi,
+			async (ct, step) =>
 			{
-				var trackUris = tracks.Select(t => t.UrlApp).ToList();
+				//step.BeginAutoSegments(1);
 
-				var snapshotId = await _playlistApi.AddTracksToPlaylist(playlist.Id, trackUris, positionTop, ct);
+				var tracksCount = tracks.Count();
 
-				task.AddLink("playlist", $"playlist '{playlist.Name}'", playlist);
+				return await step.RunSegment($"api - add playlist tracks - {tracksCount}", async ct2 =>
+				{
+					var trackUris = tracks.Select(t => t.UrlApp).ToList();
 
-				return snapshotId;
-			});
-		});
+					var snapshotId = await _playlistApi.AddTracksToPlaylist(playlist.Id, trackUris, positionTop, ct2);
+
+					task.AddLink("playlist", $"playlist '{playlist.Name}'", playlist);
+
+					return snapshotId;
+				});
+			}
+		);
 	}
 
 	private async Task SaveNewTracksToDbAndStore(SpotifyPlaylist playlist, string snapshotId, List<SpotifyTrack> tracks, BackgroundTask task)
 	{
-		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
-		{
-			task.BeginAutoSegments(2);
-
-			// update snapshot in db
-			await task.RunSegment("db - update playlist snapshot (playlist)", async ct =>
+		await task.RunStep
+		(
+			BackgroundTaskCategory.SaveDb,
+			async (ct, step) =>
 			{
-				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct);
-			});
-			// TODO db tracks - save
+				//step.BeginAutoSegments(2);
 
-			// update state
-			await task.RunSegment("state - update playlist snapshot and tracks", async ct =>
-			{
-				var trackIds = tracks.Select(t => t.Id).ToList();
-				await UpdateStateAfterAdding(playlist, snapshotId, trackIds);
-			});
-		});
+				// update snapshot in db
+				await step.RunSegment("db - update playlist snapshot (playlist)", async ct2 =>
+				{
+					await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct2);
+				});
+				// TODO db tracks - save
+
+				// update state
+				await step.RunSegment("state - update playlist snapshot and tracks", async ct2 =>
+				{
+					var trackIds = tracks.Select(t => t.Id).ToList();
+					await UpdateStateAfterAdding(playlist, snapshotId, trackIds);
+				});
+			}
+		);
 	}
 
 	public async Task RemoveTracks(string playlistId, IEnumerable<SpotifyTrack> tracks)
@@ -200,60 +225,77 @@ internal sealed class SpotifyPlaylistService
 		}
 		var trackLabel = tracksList.Count == 1 ? "" : "s";
 
-		var playlist = _playlistState.GetById(playlistId) ?? throw new InvalidOperationException("Playlist not found in state");
+		var playlist
+			= _playlistState.GetById(playlistId)
+			?? throw new InvalidOperationException("Playlist not found in state");
 
-		await _taskManager.Run(BackgroundTaskType.PlaylistTracksRemove, "Removing track from playlist", $"Removing {tracksList.Count} track{trackLabel} from playlist '{playlist.Name}'", async (task) =>
-		{
-			var snapshotId = await RemoveTracksApi(playlist, tracks, task);
+		await _taskManager.Run
+		(
+			BackgroundTaskType.PlaylistTracksAdd,
+			 "Removing tracks from playlist",
+			$"Removing {tracksList.Count} track{trackLabel} from playlist '{playlist.Name}'",
+			2,
+			async task =>
+			{
+				var snapshotId = await RemoveTracksApi(playlist, tracks, task);
 
-			await SaveRemovedTracksToDbAndStore(playlist, snapshotId, tracks, task);
-		});
+				await SaveRemovedTracksToDbAndStore(playlist, snapshotId, tracks, task);
+			}
+		);
 	}
 
 	private async Task<string> RemoveTracksApi(SpotifyPlaylist playlist, IEnumerable<SpotifyTrack> tracks, BackgroundTask task)
 	{
-		return await task.RunStep("Sending API request", BackgroundTaskCategory.DeleteApi, async ct =>
-		{
-			task.BeginAutoSegments(1);
-
-			var tracksCount = tracks.Count();
-
-			return await task.RunSegment($"api - add playlist tracks - {tracksCount}", async ct =>
+		return await task.RunStep
+		(
+			BackgroundTaskCategory.DeleteApi,
+			async (ct, step) =>
 			{
-				var trackUris = tracks.Select(t => t.UrlApp).ToList();
+				//step.BeginAutoSegments(1);
 
-				var snapshotId = await _playlistApi.RemoveTracksFromPlaylist(playlist.Id, trackUris, ct);
+				var tracksCount = tracks.Count();
 
-				task.AddLink("playlist", $"playlist '{playlist.Name}'", playlist);
+				return await step.RunSegment($"api - add playlist tracks - {tracksCount}", async ct2 =>
+				{
+					var trackUris = tracks.Select(t => t.UrlApp).ToList();
 
-				return snapshotId;
-			});
-		});
+					var snapshotId = await _playlistApi.RemoveTracksFromPlaylist(playlist.Id, trackUris, ct2);
+
+					task.AddLink("playlist", $"playlist '{playlist.Name}'", playlist);
+
+					return snapshotId;
+				});
+			}
+		);
 	}
 
 	private async Task SaveRemovedTracksToDbAndStore(SpotifyPlaylist playlist, string snapshotId, IEnumerable<SpotifyTrack> tracks, BackgroundTask task)
 	{
-		await task.RunStep("Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
-		{
-			task.BeginAutoSegments(2);
-
-			// update snapshot in db
-			await task.RunSegment("db - update playlist snapshot (playlist)", async ct =>
+		await task.RunStep
+		(
+			BackgroundTaskCategory.SaveDb,
+			async (ct, step) =>
 			{
-				await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct);
-			});
-			// TODO db tracks - save
+				//step.BeginAutoSegments(2);
 
-			// update state
-			await task.RunSegment("state - update playlist snapshot and tracks", async ct =>
-			{
-				var trackIds = tracks.Select(t => t.Id).ToList();
-				await UpdateStateAfterRemoving(playlist, snapshotId, trackIds);
-			});
-		});
+				// update snapshot in db
+				await step.RunSegment("db - update playlist snapshot (playlist)", async ct2 =>
+				{
+					await _playlistDb.UpdateSnapshot(playlist.Id, snapshotId, ct2);
+				});
+				// TODO db tracks - save
+
+				// update state
+				await step.RunSegment("state - update playlist snapshot and tracks", async ct2 =>
+				{
+					var trackIds = tracks.Select(t => t.Id).ToList();
+					await UpdateStateAfterRemoving(playlist, snapshotId, trackIds);
+				});
+			}
+		);
 	}
 
-	private async Task UpdateStateAfterAdding(SpotifyPlaylist playlist, string snapshotId, List<string> trackIds)
+	private static async Task UpdateStateAfterAdding(SpotifyPlaylist playlist, string snapshotId, List<string> trackIds)
 	{
 		// update state
 		playlist.SnapshotId = snapshotId;
@@ -267,7 +309,7 @@ internal sealed class SpotifyPlaylistService
 		}
 	}
 
-	private async Task UpdateStateAfterRemoving(SpotifyPlaylist playlist, string snapshotId, List<string> trackIds)
+	private static async Task UpdateStateAfterRemoving(SpotifyPlaylist playlist, string snapshotId, List<string> trackIds)
 	{
 		// update state
 		playlist.SnapshotId = snapshotId;

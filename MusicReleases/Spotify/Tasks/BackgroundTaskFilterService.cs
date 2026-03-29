@@ -91,14 +91,14 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		SetFilterInternal(newFilter);
 	}
 
-	public IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source)
+	public IEnumerable<BackgroundTask2> Apply(IEnumerable<BackgroundTask2> source)
 	{
 		var query = ApplyFilter(source);
 		query = ApplySearch(query);
 		return query;
 	}
 
-	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)
+	private IEnumerable<BackgroundTask2> ApplyFilter(IEnumerable<BackgroundTask2> source)
 	{
 		var query = source; //.Where(x => !x.IsWorkflow);
 
@@ -127,7 +127,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		return query;
 	}
 
-	private IEnumerable<BackgroundTask> ApplySearch(IEnumerable<BackgroundTask> source)
+	private IEnumerable<BackgroundTask2> ApplySearch(IEnumerable<BackgroundTask2> source)
 	{
 		var query = source.ApplySearch(SearchText,
 			t => t.Name,

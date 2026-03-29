@@ -9,7 +9,7 @@ internal interface ISpotifyPlaylistService
 	Task AddTracks(string playlistId, IEnumerable<SpotifyTrack> tracks, bool positionTop);
 	Task CreatePlaylist(string name);
 	Task Get(bool forceUpdate = false);
-	Task GetInTask(BackgroundTask task, BackgroundTaskSyncPlan plan, bool forceUpdate = false);
+	Task GetInTask(BackgroundTask task, bool forceUpdate = false);
 	Task RemoveTrack(string playlistId, SpotifyTrack track);
 	Task RemoveTracks(string playlistId, IEnumerable<SpotifyTrack> tracks);
 }

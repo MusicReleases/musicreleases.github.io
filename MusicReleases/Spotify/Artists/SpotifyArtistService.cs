@@ -10,9 +10,19 @@ using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Artists;
 
-internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyArtistClient artistApi, ISpotifyReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload> artistReader, ISpotifyWriteEntityService<SpotifyArtist> artistWriter, ISpotifyUserArtistDbService userArtistDb, ISpotifyUserUpdateDbService updateDb, ISpotifyArtistState artistState, IBackgroundTaskManagerService taskManager, ILoadingService loadingService)
-
-	: SpotifyBaseSyncService<SpotifyArtist, SpotifyUserArtistPayload>(userApi, artistReader, artistWriter, userArtistDb, updateDb, artistState, taskManager, loadingService), ISpotifyArtistService
+internal sealed class SpotifyArtistService
+(
+	ISpotifyUserClient userApi,
+	ISpotifyArtistClient artistApi,
+	ISpotifyReadByPayloadService<SpotifyArtist, SpotifyUserArtistPayload> artistReader,
+	ISpotifyWriteEntityService<SpotifyArtist> artistWriter,
+	ISpotifyUserArtistDbService userArtistDb,
+	ISpotifyUserUpdateDbService updateDb,
+	ISpotifyArtistState artistState,
+	IBackgroundTaskManagerService taskManager,
+	ILoadingService loadingService
+)
+: SpotifyBaseSyncService<SpotifyArtist, SpotifyUserArtistPayload>(userApi, artistReader, artistWriter, userArtistDb, updateDb, artistState, taskManager, loadingService), ISpotifyArtistService
 {
 	private readonly ISpotifyArtistClient _artistApi = artistApi;
 	private readonly ISpotifyArtistState _artistState = artistState;
@@ -29,11 +39,7 @@ internal sealed class SpotifyArtistService(ISpotifyUserClient userApi, ISpotifyA
 
 	protected override SpotifyUserArtistPayload CreatePayload(SpotifyArtist model) => model.ToPayload();
 
-	protected override async Task<IReadOnlyCollection<SpotifyArtist>> ApiLoad(CancellationToken ct) => await _artistApi.GetFollowed(ct);
-
-	protected override bool UseBatchedApi => true;
-
 	protected override IAsyncEnumerable<IReadOnlyCollection<SpotifyArtist>> ApiLoadBatches(CancellationToken ct) => _artistApi.GetFollowedBatches(25, ct);
 
-	public Task GetInTask(BackgroundTask task, BackgroundTaskSyncPlan plan, bool forceUpdate = false) => RunGetInExistingTask(default, forceUpdate, task, plan);
+	public Task GetInTask(BackgroundTask task, bool forceUpdate = false) => RunGetInExistingTask(default, forceUpdate, task, null);
 }

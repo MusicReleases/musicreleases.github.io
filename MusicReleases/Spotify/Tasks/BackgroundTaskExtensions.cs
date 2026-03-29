@@ -9,26 +9,26 @@ internal static class BackgroundTaskExtensions
 
 	// STEPS
 
-	public static async Task RunStep(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
+	public static async Task RunStep(this BackgroundTask2 task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
 	{
 		await RunStepInternal(task, name, category, work, task.Ct);
 	}
-	public static async Task RunStep(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
+	public static async Task RunStep(this BackgroundTask2 task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work)
 	{
 		await RunStepInternal(task, stepId, name, category, work, task.Ct);
 	}
 
-	public static Task<T> RunStep<T>(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body)
+	public static Task<T> RunStep<T>(this BackgroundTask2 task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body)
 	{
 		return RunStepInternal(task, name, category, body, task.Ct);
 	}
 
-	public static Task<T> RunStep<T>(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body)
+	public static Task<T> RunStep<T>(this BackgroundTask2 task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body)
 	{
 		return RunStepInternal(task, stepId, name, category, body, task.Ct);
 	}
 
-	private static async Task RunStepInternal(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work, CancellationToken ct)
+	private static async Task RunStepInternal(this BackgroundTask2 task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work, CancellationToken ct)
 	{
 		await using (await task.BeginStep(name, category, ct))
 		{
@@ -55,7 +55,7 @@ internal static class BackgroundTaskExtensions
 		}
 	}
 
-	private static async Task RunStepInternal(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work, CancellationToken ct)
+	private static async Task RunStepInternal(this BackgroundTask2 task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task> work, CancellationToken ct)
 	{
 		await using (await task.BeginStep(stepId, name, category, ct))
 		{
@@ -82,7 +82,7 @@ internal static class BackgroundTaskExtensions
 		}
 	}
 
-	private static async Task<T> RunStepInternal<T>(this BackgroundTask task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body, CancellationToken ct)
+	private static async Task<T> RunStepInternal<T>(this BackgroundTask2 task, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body, CancellationToken ct)
 	{
 		await using (await task.BeginStep(name, category, ct))
 		{
@@ -111,7 +111,7 @@ internal static class BackgroundTaskExtensions
 		}
 	}
 
-	private static async Task<T> RunStepInternal<T>(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body, CancellationToken ct)
+	private static async Task<T> RunStepInternal<T>(this BackgroundTask2 task, Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, Task<T>> body, CancellationToken ct)
 	{
 		await using (await task.BeginStep(stepId, name, category, ct))
 		{
@@ -140,9 +140,9 @@ internal static class BackgroundTaskExtensions
 		}
 	}
 
-	private static async ValueTask<IAsyncDisposable> BeginStep(this BackgroundTask task, string name, BackgroundTaskCategory category, CancellationToken ct)
+	private static async ValueTask<IAsyncDisposable> BeginStep(this BackgroundTask2 task, string name, BackgroundTaskCategory category, CancellationToken ct)
 	{
-		var step = new BackgroundTaskStep(name, category);
+		var step = new BackgroundTaskStep2(name, category);
 		task.AddStep(step);
 
 		CancellationTokenRegistration? ctr = null;
@@ -158,9 +158,9 @@ internal static class BackgroundTaskExtensions
 		return new BackgroundTaskStepScope(task, step, ct, ctr);
 	}
 
-	private static async ValueTask<IAsyncDisposable> BeginStep(this BackgroundTask task, Guid stepId, string name, BackgroundTaskCategory category, CancellationToken ct)
+	private static async ValueTask<IAsyncDisposable> BeginStep(this BackgroundTask2 task, Guid stepId, string name, BackgroundTaskCategory category, CancellationToken ct)
 	{
-		var step = new BackgroundTaskStep(name, category)
+		var step = new BackgroundTaskStep2(name, category)
 		{
 			StepId = stepId
 		};
@@ -180,7 +180,7 @@ internal static class BackgroundTaskExtensions
 		return new BackgroundTaskStepScope(task, step, ct, ctr);
 	}
 
-	public static async Task WaitForStep(this BackgroundTask task, BackgroundTaskStep step, Guid dependsOnStepId)
+	public static async Task WaitForStep(this BackgroundTask2 task, BackgroundTaskStep2 step, Guid dependsOnStepId)
 	{
 		step.IsWaiting = true;
 		step.WaitingForStepId = dependsOnStepId;
@@ -205,19 +205,19 @@ internal static class BackgroundTaskExtensions
 
 	// SEGMENTS
 
-	public static async Task<T> RunSegment<T>(this BackgroundTask task, string label, Func<CancellationToken, Task<T>> body)
+	public static async Task<T> RunSegment<T>(this BackgroundTask2 task, string label, Func<CancellationToken, Task<T>> body)
 	{
 		await using var seg = await task.BeginSegment(label);
 		return await body(task.Ct);
 	}
 
-	public static async Task RunSegment(this BackgroundTask task, string label, Func<CancellationToken, Task> body)
+	public static async Task RunSegment(this BackgroundTask2 task, string label, Func<CancellationToken, Task> body)
 	{
 		await using var seg = await task.BeginSegment(label);
 		await body(task.Ct);
 	}
 
-	private static ValueTask<IBackgroundTaskSubProgressScope> BeginSegment(this BackgroundTask task, string label)
+	private static ValueTask<IBackgroundTaskSubProgressScope> BeginSegment(this BackgroundTask2 task, string label)
 	{
 		var idx = task.CurrentStepIndex;
 		var step = task.Steps[idx];
@@ -236,7 +236,7 @@ internal static class BackgroundTaskExtensions
 		return task.BeginSubSegmentAsync(from, to, label);
 	}
 
-	private static async ValueTask<IBackgroundTaskSubProgressScope> BeginSubSegmentAsync(this BackgroundTask task, double from, double to, string segmentLabel, bool writeStartMeta = false)
+	private static async ValueTask<IBackgroundTaskSubProgressScope> BeginSubSegmentAsync(this BackgroundTask2 task, double from, double to, string segmentLabel, bool writeStartMeta = false)
 	{
 		// sub segment
 
@@ -267,18 +267,18 @@ internal static class BackgroundTaskExtensions
 
 		task.SetSubProgress(from, segmentLabel + ":begin");
 
-		var scope = new BackgroundTaskSubProgressScope(task, step, from, to, segmentLabel);
+		var scope = new BackgroundTaskSubProgressScope2(task, step, from, to, segmentLabel);
 		return scope;
 	}
 
-	public static void BeginAutoSegments(this BackgroundTask task, int count)
+	public static void BeginAutoSegments(this BackgroundTask2 task, int count)
 	{
 		var step = task.Steps[task.CurrentStepIndex];
 		step.Meta["seg.count"] = count.ToString();
 		step.Meta["seg.index"] = "0";
 	}
 
-	public static void SetSubProgress(this BackgroundTask task, double value, string? label = null)
+	public static void SetSubProgress(this BackgroundTask2 task, double value, string? label = null)
 	{
 		if (task.Steps.Count == 0)
 		{

@@ -28,7 +28,7 @@
         }
         else
         {
-            <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@BackgroundTask">
+            <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@BackgroundTask2">
                 <BackgroundTaskCard BackgroundTask="@task" @key="task.Id" />
             </Virtualize>
         }

@@ -1,6 +1,4 @@
-﻿using JakubKastner.MusicReleases.Enums;
-
-namespace JakubKastner.MusicReleases.Spotify.Tasks;
+﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 internal interface IBackgroundTaskFilterService
 {
@@ -11,7 +9,7 @@ internal interface IBackgroundTaskFilterService
 
 	event Action? OnFilterChanged;
 
-	IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source);
+	IEnumerable<BackgroundTask2> Apply(IEnumerable<BackgroundTask2> source);
 	void ClearFilter();
 	bool IsActive(TaskFilter filter);
 	void SetFilter(TaskFilter filter);

@@ -2,7 +2,7 @@
 
 internal static class BackgroundTaskStepExtensions
 {
-	public static void MarkFailed(this BackgroundTaskStep step, Exception ex, string? code = null)
+	public static void MarkFailed(this BackgroundTaskStep2 step, Exception ex, string? code = null)
 	{
 		if (step.Ended)
 		{
@@ -15,7 +15,7 @@ internal static class BackgroundTaskStepExtensions
 		step.ErrorCode = code ?? "ERR_STEP";
 	}
 
-	public static void MarkCanceled(this BackgroundTaskStep step)
+	public static void MarkCanceled(this BackgroundTaskStep2 step)
 	{
 		if (step.Ended)
 		{
@@ -26,7 +26,7 @@ internal static class BackgroundTaskStepExtensions
 		step.FinishedAt = DateTimeOffset.UtcNow;
 	}
 
-	public static void MarkFinished(this BackgroundTaskStep step)
+	public static void MarkFinished(this BackgroundTaskStep2 step)
 	{
 		if (step.Ended)
 		{

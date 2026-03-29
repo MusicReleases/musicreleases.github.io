@@ -1,24 +1,20 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-internal interface IBackgroundTaskManagerService : IDisposable
+internal interface IBackgroundTaskManagerService
 {
 	IReadOnlyList<BackgroundTask> AllTasks { get; }
-	ICollection<BackgroundTask> FilteredTasks { get; }
-	bool IsAnyTaskRunning { get; }
-	bool IsAnyTaskVisible { get; }
-	ICollection<BackgroundTask> RunningTasks { get; }
-	ICollection<BackgroundTask> VisibleTasks { get; }
 	bool AnyTaskFailed { get; }
+	IReadOnlyList<BackgroundTask> VisibleTasks { get; }
 
 	event Action? OnChange;
 
 	void CancelAllTasks();
+	void Dispose();
 	Task Enqueue(BackgroundTaskRequest request);
 	void HideAllEnded();
 	void HideTask(BackgroundTask task);
-	void RemoveAllFinishedTasks();
-	void RemoveTask(BackgroundTask task);
-	Task Run(BackgroundTaskType type, string name, string info, Func<BackgroundTask, Task> work);
-	Task Run(BackgroundTaskType type, string name, string info, int expectedSteps, Func<BackgroundTask, Task> work);
+	bool IsEffectivelyLoading(BackgroundTaskType type);
+	Task Run(BackgroundTaskType type, string name, string description, int expectedSteps, Func<BackgroundTask, Task> work);
+	Task Run(BackgroundTaskType type, string name, string description, Func<BackgroundTask, Task> work);
 	void StartWorkflow();
 }

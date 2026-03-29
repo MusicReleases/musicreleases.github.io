@@ -4,9 +4,9 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 internal class LoadingService : IDisposable, ILoadingService
 {
-	private readonly IBackgroundTaskManagerService _spotifyTaskManagerService;
+	private readonly IBackgroundTaskManagerService2 _spotifyTaskManagerService;
 
-	public LoadingService(IBackgroundTaskManagerService spotifyTaskManagerService)
+	public LoadingService(IBackgroundTaskManagerService2 spotifyTaskManagerService)
 	{
 		_spotifyTaskManagerService = spotifyTaskManagerService;
 		_spotifyTaskManagerService.OnChange += OnTaskManagerChanged;

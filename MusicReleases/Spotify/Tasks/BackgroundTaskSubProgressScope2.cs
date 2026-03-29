@@ -2,10 +2,10 @@
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-internal sealed class BackgroundTaskSubProgressScope(BackgroundTask task, BackgroundTaskStep step, double from, double to, string segmentLabel) : IBackgroundTaskSubProgressScope
+internal sealed class BackgroundTaskSubProgressScope2(BackgroundTask2 task, BackgroundTaskStep2 step, double from, double to, string segmentLabel) : IBackgroundTaskSubProgressScope
 {
-	private readonly BackgroundTask _task = task;
-	private readonly BackgroundTaskStep _step = step;
+	private readonly BackgroundTask2 _task = task;
+	private readonly BackgroundTaskStep2 _step = step;
 	private readonly double _from = from;
 	private readonly double _to = to;
 	private readonly string _segmentLabel = segmentLabel;

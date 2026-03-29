@@ -20,6 +20,7 @@ public enum BackgroundTaskCategory
 	GetApi,
 	SaveApi,
 	DeleteApi,
+
 	GetDb,
 	SaveDb,
 	DeleteDb,
@@ -31,4 +32,10 @@ public enum BackgroundTaskStatus
 	Canceled,
 	Failed,
 	Finished,
+}
+
+public enum BackgroundStepOutcome
+{
+	Executed,
+	Skipped
 }

@@ -3,7 +3,310 @@ using JakubKastner.SpotifyApi.Base.Objects;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-public sealed class BackgroundTask(BackgroundTaskType type, string name, string info, int expectedSteps, bool isWorkflow, IBackgroundTaskStepCompletionSink stepSink)
+
+public sealed class BackgroundTask
+{
+	public event Action? OnStateChanged;
+
+	private readonly IBackgroundTaskStepCompletionSink _sink;
+
+	private readonly List<BackgroundTaskStep> _steps = new();
+	private readonly List<BackgroundTaskLink> _links = new();
+	private readonly Stack<BackgroundTaskStep> _stack = new();
+
+	private string? _statusText;
+
+	public BackgroundTask(BackgroundTaskType type, string name, string description, int expectedSteps, bool isWorkflow, IBackgroundTaskStepCompletionSink sink)
+	{
+		Type = type;
+		Name = name;
+		Description = description;
+		ExpectedSteps = expectedSteps;
+		IsWorkflow = isWorkflow;
+		_sink = sink;
+	}
+
+	public Guid Id { get; } = Guid.NewGuid();
+
+	public BackgroundTaskType Type { get; }
+	public string Name { get; }
+	public string Description { get; }
+	public bool IsWorkflow { get; }
+	public int ExpectedSteps { get; }
+
+	public IReadOnlyList<BackgroundTaskStep> Steps => _steps;
+	public IReadOnlyList<BackgroundTaskLink> Links => _links;
+
+	public bool IsOverlayVisible { get; set; } = true;
+
+	public CancellationTokenSource Cts { get; } = new();
+	public CancellationToken Ct => Cts.Token;
+
+	public BackgroundTaskStep? CurrentStep => _stack.Count == 0 ? null : _stack.Peek();
+
+	public bool IsCancelRequested { get; private set; }
+
+	public double Progress { get; private set; }
+
+	public BackgroundTaskStatus Status
+	{
+		get
+		{
+			if (_steps.Count == 0)
+			{
+				return BackgroundTaskStatus.Finished;
+			}
+
+			if (_steps.Any(s => s.Status == BackgroundTaskStatus.Failed))
+			{
+				return BackgroundTaskStatus.Failed;
+			}
+
+			if (_steps.Any(s => s.Status == BackgroundTaskStatus.Canceled))
+			{
+				return BackgroundTaskStatus.Canceled;
+			}
+
+			if (_steps.All(s => s.Status == BackgroundTaskStatus.Finished))
+			{
+				return BackgroundTaskStatus.Finished;
+			}
+
+			return BackgroundTaskStatus.Running;
+		}
+	}
+
+	public string StatusText
+	{
+		get
+		{
+			var baseText = Status switch
+			{
+				BackgroundTaskStatus.Running => "Running",
+				BackgroundTaskStatus.Finished => "Finished",
+				BackgroundTaskStatus.Failed => "Failed",
+				BackgroundTaskStatus.Canceled => "Canceled",
+				_ => "Unknown"
+			};
+
+			return string.IsNullOrWhiteSpace(_statusText) ? baseText : $"{baseText}: {_statusText}";
+		}
+	}
+
+	public bool Ended => Status is BackgroundTaskStatus.Finished or BackgroundTaskStatus.Failed or BackgroundTaskStatus.Canceled;
+
+	public bool HasActiveWork => _steps.Any(s => s.Status == BackgroundTaskStatus.Running && !s.IsWaiting && s.Outcome == BackgroundStepOutcome.Executed);
+
+	public bool IsWaitingOnly => _steps.Any(s => s.IsWaiting) && _steps.All(s => s.IsWaiting || s.Outcome == BackgroundStepOutcome.Skipped || s.Status != BackgroundTaskStatus.Running);
+
+	public bool IsNoOp => _steps.Count > 0 && _steps.All(s => s.Outcome == BackgroundStepOutcome.Skipped);
+
+	public void NotifyChange()
+	{
+		RecalculateProgress();
+		OnStateChanged?.Invoke();
+	}
+
+	public void AddLink(string text, string title, string urlWeb, Enum icon)
+	{
+		_links.Add(new BackgroundTaskLink(text, title, null, urlWeb, icon));
+		NotifyChange();
+	}
+
+	public void AddLink(string text, string title, SpotifyIdNameUrlObject spotifyUrlObject, Enum? icon = null)
+	{
+		icon ??= SpotifyIcon.SmallGreen;
+		_links.Add(new BackgroundTaskLink(text, title, spotifyUrlObject.UrlApp, spotifyUrlObject.UrlWeb, icon));
+		NotifyChange();
+	}
+
+	public Task<bool> WaitForStep(Guid stepId) => _sink.WaitForStep(stepId, Ct);
+
+	public string? GetStepLabel(Guid stepId) => _sink.GetStepLabel(stepId);
+
+	public async Task WaitForStep(BackgroundTaskStep step, Guid dependsOnStepId)
+	{
+		step.IsWaiting = true;
+		step.WaitingForStepId = dependsOnStepId;
+		step.NotifyChange();
+
+		try
+		{
+			var ok = await WaitForStep(dependsOnStepId);
+
+			if (!ok)
+			{
+				throw new InvalidOperationException($"Dependency step {dependsOnStepId} failed or was canceled.");
+			}
+		}
+		finally
+		{
+			step.IsWaiting = false;
+			step.WaitingForStepId = null;
+			step.NotifyChange();
+		}
+	}
+
+	public void RequestCancel()
+	{
+		if (IsCancelRequested)
+		{
+			return;
+		}
+
+		IsCancelRequested = true;
+
+		try
+		{
+			Cts.Cancel();
+		}
+		catch
+		{
+			// ignore
+		}
+
+		foreach (var s in _steps.Where(s => s.Status == BackgroundTaskStatus.Running))
+		{
+			s.MarkCanceled();
+		}
+
+		NotifyChange();
+	}
+
+	private static string GetDefaultStepName(BackgroundTaskCategory category)
+	{
+		const string apiName = "Sending API reuqest";
+		const string dbGetName = "Getting from DB";
+		const string dbSaveName = "Saving to DB";
+
+		var name = category switch
+		{
+			BackgroundTaskCategory.GetApi => apiName,
+			BackgroundTaskCategory.SaveApi => apiName,
+			BackgroundTaskCategory.DeleteApi => apiName,
+			BackgroundTaskCategory.GetDb => dbGetName,
+			BackgroundTaskCategory.SaveDb => dbSaveName,
+			BackgroundTaskCategory.DeleteDb => dbSaveName,
+			_ => "Working"
+		};
+
+		return name;
+	}
+
+	public Task RunStep(BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task> work)
+	{
+		var name = GetDefaultStepName(category);
+		return RunStep(name, category, work);
+	}
+
+	public Task RunStep(Guid stepId, BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task> work)
+	{
+		var name = GetDefaultStepName(category);
+		return RunStep(stepId, name, category, work);
+	}
+
+	public Task RunStep(string name, BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task> work)
+	{
+		return RunStep(Guid.NewGuid(), name, category, work);
+	}
+
+	public Task RunStep(Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task> work)
+	{
+		return RunStepInternal(stepId, name, category, async (ct, step) =>
+		{
+			await work(ct, step);
+			return 0;
+		});
+	}
+
+	public Task<T> RunStep<T>(BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task<T>> work)
+	{
+		var name = GetDefaultStepName(category);
+		return RunStep(name, category, work);
+	}
+
+	public Task<T> RunStep<T>(Guid stepId, BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task<T>> work)
+	{
+		var name = GetDefaultStepName(category);
+		return RunStep(stepId, name, category, work);
+	}
+
+	public Task<T> RunStep<T>(string name, BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task<T>> work)
+	{
+		return RunStepInternal(Guid.NewGuid(), name, category, work);
+	}
+
+	public Task<T> RunStep<T>(Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task<T>> work)
+	{
+		return RunStepInternal(stepId, name, category, work);
+	}
+
+	private async Task<T> RunStepInternal<T>(Guid stepId, string name, BackgroundTaskCategory category, Func<CancellationToken, BackgroundTaskStep, Task<T>> work)
+	{
+		var step = new BackgroundTaskStep { StepId = stepId, Name = name, Category = category, TaskCt = Ct };
+
+		_steps.Add(step);
+		_sink.RegisterStep(step.StepId, step.Name);
+
+		step.OnStateChanged += NotifyChange;
+
+		_stack.Push(step);
+		NotifyChange();
+
+		try
+		{
+			var result = await work(Ct, step);
+
+			if (!step.Ended)
+			{
+				step.MarkFinished();
+			}
+
+			_sink.MarkStepCompleted(step.StepId, step.Status == BackgroundTaskStatus.Finished);
+			return result;
+		}
+		catch (OperationCanceledException)
+		{
+			step.MarkCanceled();
+			_sink.MarkStepCompleted(step.StepId, false);
+			throw;
+		}
+		catch (Exception ex)
+		{
+			step.MarkFailed(ex);
+			_sink.MarkStepCompleted(step.StepId, false);
+			_statusText = ex.Message;
+			throw;
+		}
+		finally
+		{
+			_stack.Pop();
+			step.OnStateChanged -= NotifyChange;
+			NotifyChange();
+		}
+	}
+
+	private void RecalculateProgress()
+	{
+		if (_steps.Count == 0)
+		{
+			Progress = 0;
+			return;
+		}
+
+		var total = ExpectedSteps > 0 ? ExpectedSteps : _steps.Count;
+		var done = 0.0;
+
+		foreach (var s in _steps)
+		{
+			done += Math.Clamp(s.SubProgress, 0, 1) / total;
+		}
+
+		Progress = Math.Clamp(done, 0, 1);
+	}
+}
+
+public sealed class BackgroundTask2(BackgroundTaskType type, string name, string info, int expectedSteps, bool isWorkflow, IBackgroundTaskStepCompletionSink2 stepSink)
 {
 	public event Action? OnStateChanged;
 
@@ -78,8 +381,8 @@ public sealed class BackgroundTask(BackgroundTaskType type, string name, string 
 	public int CurrentStepIndex { get; private set; }
 
 
-	private readonly List<BackgroundTaskStep> _steps = [];
-	public IReadOnlyList<BackgroundTaskStep> Steps => _steps;
+	private readonly List<BackgroundTaskStep2> _steps = [];
+	public IReadOnlyList<BackgroundTaskStep2> Steps => _steps;
 
 	private readonly List<BackgroundTaskLink> _links = [];
 	public IReadOnlyList<BackgroundTaskLink> Links => _links;
@@ -89,7 +392,7 @@ public sealed class BackgroundTask(BackgroundTaskType type, string name, string 
 
 	public CancellationToken Ct => Cts.Token;
 
-	public BackgroundTaskStep? CurrentStep => Steps.ElementAtOrDefault(CurrentStepIndex);
+	public BackgroundTaskStep2? CurrentStep => Steps.ElementAtOrDefault(CurrentStepIndex);
 
 	public DateTimeOffset? StartedAt => _steps.FirstOrDefault()?.StartedAt;
 
@@ -131,7 +434,7 @@ public sealed class BackgroundTask(BackgroundTaskType type, string name, string 
 
 	public bool Failed => Status == BackgroundTaskStatus.Failed;
 
-	public IBackgroundTaskStepCompletionSink StepSink { get; } = stepSink;
+	public IBackgroundTaskStepCompletionSink2 StepSink { get; } = stepSink;
 
 	public void NotifyChange()
 	{
@@ -144,7 +447,7 @@ public sealed class BackgroundTask(BackgroundTaskType type, string name, string 
 		NotifyChange();
 	}
 
-	public void AddStep(BackgroundTaskStep step)
+	public void AddStep(BackgroundTaskStep2 step)
 	{
 		if (IsEndTaskRequested)
 		{

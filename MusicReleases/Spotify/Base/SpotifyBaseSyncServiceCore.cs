@@ -8,7 +8,14 @@ namespace JakubKastner.MusicReleases.Spotify.Base;
 
 internal readonly struct NoContext { }
 
-internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUserClient userApi, ISpotifyUserUpdateDbService updateDb, IBackgroundTaskManagerService taskManager, ILoadingService loadingService) where TModel : SpotifyIdNameObject
+internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>
+(
+	ISpotifyUserClient userApi,
+	ISpotifyUserUpdateDbService updateDb,
+	IBackgroundTaskManagerService taskManager,
+	ILoadingService loadingService
+)
+where TModel : SpotifyIdNameObject
 {
 	private readonly ISpotifyUserClient _userApi = userApi;
 	protected readonly ISpotifyUserUpdateDbService _updateDb = updateDb;
@@ -30,9 +37,9 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 		return (DateTime.Now - (GetLastSync(context) ?? DateTime.MinValue)).TotalHours > 24;
 	}
 
-	protected abstract Task<bool> LoadFromDbToState(TContext context, string userId, bool forceUpdate, BackgroundTask task);
-	protected abstract Task<IReadOnlyCollection<TModel>?> LoadFromApi(TContext context, string userId, BackgroundTask task, CancellationToken ct);
-	protected abstract Task SaveToDbAndState(TContext context, IReadOnlyCollection<TModel> models, string userId, BackgroundTask task);
+	protected abstract Task<bool> LoadFromDbToState(TContext context, string userId, bool forceUpdate, BackgroundTaskStep step);
+	protected abstract Task LoadFromApi(TContext context, string userId, BackgroundTaskStep step, CancellationToken ct);
+	//protected abstract Task SaveToDbAndState(TContext context, IReadOnlyCollection<TModel> models, string userId, BackgroundTaskStep step);
 
 
 
@@ -54,6 +61,7 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 			await RunGetInTask(context, forceUpdate, task, isInState, plan);
 		});
 	}
+
 	protected async Task RunGetInExistingTask(TContext context, bool forceUpdate, BackgroundTask task, BackgroundTaskSyncPlan? plan)
 	{
 		if (_loadingService.IsLoading(TaskType))
@@ -70,24 +78,16 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 		await RunGetInTask(context, forceUpdate, task, isInState, plan);
 	}
 
-
 	private async Task RunGetInTask(TContext context, bool forceUpdate, BackgroundTask task, bool isInState, BackgroundTaskSyncPlan? plan)
 	{
 		var userId = _userApi.GetUserIdRequired();
-
 		var shouldSync = !isInState || ShouldSync(context, forceUpdate);
 
-		var dbStepId = plan?.DbStepId ?? Guid.NewGuid();
-		var apiStepId = plan?.ApiStepId ?? Guid.NewGuid();
-		var saveStepId = plan?.SaveStepId ?? Guid.NewGuid();
-
-		IReadOnlyCollection<TModel>? apiData = null;
-
-		await task.RunStep(dbStepId, "Loading from DB", BackgroundTaskCategory.GetDb, async ct =>
-		{
-			var step = task.CurrentStep;
-
-			if (step is not null)
+		await task.RunStep
+		(
+			plan?.DbStepId ?? Guid.NewGuid(),
+			BackgroundTaskCategory.GetDb,
+			async (ct, step) =>
 			{
 				if (plan?.WaitBeforeDbStepId is Guid depDb)
 				{
@@ -96,19 +96,21 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 
 				if (!shouldSync)
 				{
-					step.WasSkipped = true;
-					step.SkipReason = "Loaded from store";
+					step.MarkSkipped("Loaded from store");
 					return;
 				}
+
+				shouldSync = await LoadFromDbToState(context, userId, forceUpdate, step);
 			}
-			shouldSync = await LoadFromDbToState(context, userId, forceUpdate, task);
-		});
+		);
 
-		await task.RunStep(apiStepId, "Loading from API", BackgroundTaskCategory.GetApi, async ct =>
-		{
-			var step = task.CurrentStep;
+		//IReadOnlyCollection<TModel>? apiData = null;
 
-			if (step is not null)
+		await task.RunStep
+		(
+			plan?.ApiStepId ?? Guid.NewGuid(),
+			BackgroundTaskCategory.GetApi,
+			async (ct, step) =>
 			{
 				if (plan?.WaitBeforeApiStepId is Guid depApi)
 				{
@@ -117,31 +119,29 @@ internal abstract class SpotifyBaseSyncServiceCore<TModel, TContext>(ISpotifyUse
 
 				if (!shouldSync)
 				{
-					step.WasSkipped = true;
-					step.SkipReason = "No API sync needed";
+					step.MarkSkipped("No API sync needed");
 					return;
 				}
+
+				await LoadFromApi(context, userId, step, ct);
+				//apiData = await LoadFromApi(context, userId, step, ct);
 			}
-			apiData = await LoadFromApi(context, userId, task, ct);
-		});
+		);
 
-		await task.RunStep(saveStepId, "Saving to DB", BackgroundTaskCategory.SaveDb, async ct =>
-		{
-			var step = task.CurrentStep;
-
-			if (!shouldSync || apiData is null)
+		/*await task.RunStep
+		(
+			plan?.SaveStepId ?? Guid.NewGuid(),
+			BackgroundTaskCategory.SaveDb,
+			async (ct, step) =>
 			{
-				if (step is not null)
+				if (!shouldSync || apiData is null)
 				{
-
-					step.WasSkipped = true;
-					step.SkipReason = "Nothing to save";
+					step.MarkSkipped("Nothing to save");
+					return;
 				}
 
-				return;
+				await SaveToDbAndState(context, apiData, userId, step);
 			}
-
-			await SaveToDbAndState(context, apiData, userId, task);
-		});
+		);*/
 	}
 }

@@ -8,14 +8,14 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 public partial class BackgroundTaskRow : IDisposable
 {
 	[Inject]
-	private IBackgroundTaskManagerService SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
 
 	[Inject]
 	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter]
-	public required BackgroundTask SpotifyBackgroundTask { get; set; }
+	public required BackgroundTask2 SpotifyBackgroundTask { get; set; }
 
 	private string Class => $"task {(SpotifyBackgroundTask.Failed ? "failed" : string.Empty)} {(SpotifyBackgroundTask.Ended ? "finished" : "running")}";
 
