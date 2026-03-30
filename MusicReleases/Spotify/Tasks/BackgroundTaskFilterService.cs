@@ -10,7 +10,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	public string? SearchText { get; private set; } = null;
 
-	public TaskFilter Filter { get; private set; } = _defaultFilter;
+	public BackgroundTaskFilterType Filter { get; private set; } = _defaultFilter;
 
 
 	public bool IsFilterActive => !IsActive(_defaultFilter);
@@ -18,9 +18,9 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 	public bool IsSearching => SearchText.IsNotNullOrEmpty();
 
 
-	private const TaskFilter _defaultFilter = TaskFilter.All;
+	private const BackgroundTaskFilterType _defaultFilter = BackgroundTaskFilterType.All;
 
-	private static readonly TaskFilter[] FilterGroup = [TaskFilter.Running, TaskFilter.Canceled, TaskFilter.Failed, TaskFilter.Finished];
+	private static readonly BackgroundTaskFilterType[] FilterGroup = [BackgroundTaskFilterType.Running, BackgroundTaskFilterType.Canceled, BackgroundTaskFilterType.Failed, BackgroundTaskFilterType.Finished];
 
 	public void SetSource(IReadOnlyList<BackgroundTask> tasks)
 	{
@@ -30,7 +30,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		Apply();
 	}
 
-	private void SetFilterAndSearchInternal(TaskFilter newFilter, string? newSearchText)
+	private void SetFilterAndSearchInternal(BackgroundTaskFilterType newFilter, string? newSearchText)
 	{
 		if (newFilter == Filter && string.Equals(newSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
 		{
@@ -44,7 +44,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		OnFilterChanged?.Invoke();
 	}
 
-	private void SetFilterInternal(TaskFilter newFilter)
+	private void SetFilterInternal(BackgroundTaskFilterType newFilter)
 	{
 		if (newFilter == Filter)
 		{
@@ -68,7 +68,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		OnFilterChanged?.Invoke();
 	}
 
-	public void SetFilterAndSearch(TaskFilter filter, string? searchText)
+	public void SetFilterAndSearch(BackgroundTaskFilterType filter, string? searchText)
 	{
 		var newFilter = EnsureFilter(filter);
 		var newSearchText = searchText.EnsureText();
@@ -82,14 +82,14 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		SetSearchInternal(newSearchText);
 	}
 
-	public void ToggleFilter(TaskFilter filter)
+	public void ToggleFilter(BackgroundTaskFilterType filter)
 	{
 		var newFilter = Filter ^ filter;
 		newFilter = EnsureFilter(newFilter);
 		SetFilterInternal(newFilter);
 	}
 
-	public void SetFilter(TaskFilter filter)
+	public void SetFilter(BackgroundTaskFilterType filter)
 	{
 		var newFilter = Filter | filter;
 		newFilter = EnsureFilter(newFilter);
@@ -97,7 +97,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		SetFilterInternal(newFilter);
 	}
 
-	public void UnsetFilter(TaskFilter filter)
+	public void UnsetFilter(BackgroundTaskFilterType filter)
 	{
 		var newFilter = Filter & ~filter;
 		newFilter = EnsureFilter(newFilter);
@@ -121,10 +121,10 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 			return query;
 		}
 
-		var running = IsActive(TaskFilter.Running);
-		var canceled = IsActive(TaskFilter.Canceled);
-		var failed = IsActive(TaskFilter.Failed);
-		var finished = IsActive(TaskFilter.Finished);
+		var running = IsActive(BackgroundTaskFilterType.Running);
+		var canceled = IsActive(BackgroundTaskFilterType.Canceled);
+		var failed = IsActive(BackgroundTaskFilterType.Failed);
+		var finished = IsActive(BackgroundTaskFilterType.Finished);
 
 		var anySelected = running || canceled || failed || finished;
 		var allSelected = running && canceled && failed && finished;
@@ -156,7 +156,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		return query;
 	}
 
-	private static TaskFilter EnsureFilter(TaskFilter newFilter)
+	private static BackgroundTaskFilterType EnsureFilter(BackgroundTaskFilterType newFilter)
 	{
 		var anyGroupActive = newFilter.HasAnyFlag(FilterGroup);
 
@@ -168,7 +168,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		return newFilter;
 	}
 
-	public bool IsActive(TaskFilter filter)
+	public bool IsActive(BackgroundTaskFilterType filter)
 	{
 		return Filter.HasFlag(filter);
 	}

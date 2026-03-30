@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks.User;
 
-internal class SpotifyUserTaskFilterDbService(IDbSpotifyService dbService, ISpotifyUserClient userClient) : SpotifyUserScopedEntityService<SpotifyTaskFilter, SpotifyUserFilterTaskEntity>(userClient), ISpotifyUserTaskFilterDbService
+internal class SpotifyUserTaskFilterDbService(IDbSpotifyService dbService, ISpotifyUserClient userClient) : SpotifyUserScopedEntityService<BackgroundTaskFilter, SpotifyUserFilterTaskEntity>(userClient), ISpotifyUserTaskFilterDbService
 {
 	private readonly IDbSpotifyService _dbService = dbService;
 
@@ -16,9 +16,9 @@ internal class SpotifyUserTaskFilterDbService(IDbSpotifyService dbService, ISpot
 
 	protected override string GetEntityUserId(SpotifyUserFilterTaskEntity entity) => entity.UserId;
 
-	protected override SpotifyUserFilterTaskEntity ToEntity(SpotifyTaskFilter model, string userId) => model.ToEntity(userId);
+	protected override SpotifyUserFilterTaskEntity ToEntity(BackgroundTaskFilter model, string userId) => model.ToEntity(userId);
 
-	protected override SpotifyTaskFilter ToModel(SpotifyUserFilterTaskEntity entity) => entity.ToModel();
+	protected override BackgroundTaskFilter ToModel(SpotifyUserFilterTaskEntity entity) => entity.ToModel();
 
 	protected override async Task<Table<SpotifyUserFilterTaskEntity, string>> GetTable()
 	{

@@ -57,7 +57,7 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 
 		// save to db
 		// TODO cancel token
-		var filterModel = new SpotifyTaskFilter(filter);
+		var filterModel = new BackgroundTaskFilter(filter);
 		await _dbService.Save(filterModel, true, default);
 	}
 

@@ -17,7 +17,7 @@ internal sealed class BackgroundTaskState : IBackgroundTaskState
 		_manager.OnUiRelevantChange += OnManagerUiChanged;
 		_filter.OnFilterChanged += OnFilterChanged;
 
-		_filter.SetSource(_manager.AllTasks);
+		_filter.SetSource(_manager.NotSkippedTasks);
 	}
 
 	public void Dispose()
@@ -29,7 +29,7 @@ internal sealed class BackgroundTaskState : IBackgroundTaskState
 	private void OnManagerUiChanged()
 	{
 		Console.WriteLine("manager changed!!!!!");
-		_filter.SetSource(_manager.AllTasks);
+		_filter.SetSource(_manager.NotSkippedTasks);
 		OnChange?.Invoke();
 	}
 

@@ -8,6 +8,7 @@ internal interface IBackgroundTaskManagerService
 	bool AnyTaskVisible { get; }
 	bool AnyTaskRunning { get; }
 	IReadOnlyList<BackgroundTask> RunningTasks { get; }
+	IReadOnlyList<BackgroundTask> NotSkippedTasks { get; }
 
 	event Action? OnUiRelevantChange;
 

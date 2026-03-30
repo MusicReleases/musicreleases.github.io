@@ -5,7 +5,7 @@ using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-public interface ISpotifyReleaseFilterService
+public interface ISpotifyReleaseFilterService : IDisposable
 {
 	SpotifyReleaseFilter Filter { get; }
 	SortedSet<SpotifyArtist>? FilteredArtists { get; }

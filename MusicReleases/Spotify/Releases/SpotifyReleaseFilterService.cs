@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-internal sealed class SpotifyReleaseFilterService : IDisposable, ISpotifyReleaseFilterService
+internal sealed class SpotifyReleaseFilterService : ISpotifyReleaseFilterService
 {
 	private readonly ISpotifyReleaseState _releaseState;
 

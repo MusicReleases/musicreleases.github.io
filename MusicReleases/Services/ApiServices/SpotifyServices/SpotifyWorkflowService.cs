@@ -77,8 +77,8 @@ internal sealed class SpotifyWorkflowService
 			var releasesRequest = new BackgroundTaskRequest
 			(
 				BackgroundTaskType.ReleasesGet,
-				"Getting releases",
-				"Getting releases from followed artists",
+				$"Getting {releaseType.ToFriendlyString()}",
+				$"Getting releases ({releaseType.ToFriendlyString()}) from followed artists",
 				3,
 				task => _releaseService.GetInTask(task, releaseType, forceUpdate),
 				includeArtists

@@ -2,6 +2,6 @@
 
 internal interface IBackgroundTaskFilterUrlService
 {
-	string CreateUrlParams(TaskFilter filter, string? searchText);
-	TaskFilter ParseFilterFromUrlParams(string? filterParams);
+	string CreateUrlParams(BackgroundTaskFilterType filter, string? searchText);
+	BackgroundTaskFilterType ParseFilterFromUrlParams(string? filterParams);
 }

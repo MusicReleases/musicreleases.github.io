@@ -2,8 +2,8 @@
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-public interface ISpotifyReleaseFilterUrlService
+internal interface ISpotifyReleaseFilterUrlService
 {
 	string CreateUrl(SpotifyReleaseFilter filter);
-	SpotifyReleaseFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam);
+	SpotifyReleaseFilter ParseFilterFromUrlParams(SpotifyReleaseUrlParameters urlParameters);
 }

@@ -21,6 +21,9 @@ public partial class Releases
 	private IPopupService PopupService { get; set; } = default!;
 
 	[Inject]
+	private ISpotifyReleaseUrlState SpotifyReleaseUrlState { get; set; } = default!;
+
+	[Inject]
 	private NavigationManager NavManager { get; set; } = default!;
 
 
@@ -64,7 +67,17 @@ public partial class Releases
 			return;
 		}*/
 
-		var loadReleases = await LoadFiter();
+		var currentParams = new SpotifyReleaseUrlParameters(Type, Year, Month, ArtistId, Filter, Search);
+
+		if (SpotifyReleaseUrlState.LastParams == currentParams)
+		{
+			Console.WriteLine("release params unchanged – skip reload");
+			return;
+		}
+
+		SpotifyReleaseUrlState.LastParams = currentParams;
+
+		var loadReleases = await LoadFiter(currentParams);
 
 		if (loadReleases)
 		{
@@ -72,7 +85,7 @@ public partial class Releases
 		}
 	}
 
-	private async Task<bool> LoadFiter()
+	private async Task<bool> LoadFiter(SpotifyReleaseUrlParameters urlParameters)
 	{
 		if (Type.IsNullOrEmpty())
 		{
@@ -80,7 +93,7 @@ public partial class Releases
 			return false;
 		}
 
-		await SpotifyReleaseFilterUrlSynchronizer.SetFilterFromUrl(Type, Year, Month, ArtistId, Filter, Search);
+		await SpotifyReleaseFilterUrlSynchronizer.SetFilterFromUrl(urlParameters);
 
 		// type doesnt changed - dont update
 		var currentReleaseType = SpotifyReleaseFilterService.Filter.ReleaseGroup;
@@ -95,4 +108,5 @@ public partial class Releases
 		Console.WriteLine("loading releases");
 		await SpotifyWorkflowService.StartLoadingAll(SpotifyReleaseFilterService.Filter.ReleaseGroup, false);
 	}
+
 }

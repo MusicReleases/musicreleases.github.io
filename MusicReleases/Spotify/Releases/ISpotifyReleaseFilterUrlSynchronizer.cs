@@ -1,7 +1,7 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-public interface ISpotifyReleaseFilterUrlSynchronizer
+internal interface ISpotifyReleaseFilterUrlSynchronizer : IDisposable
 {
-	Task SetFilterFromUrl(string? releaseType, string? year, string? month, string? artist, string? advancedFilterParams, string? searchParam);
+	Task SetFilterFromUrl(SpotifyReleaseUrlParameters urlParameters);
 	Task SetInitFilter();
 }

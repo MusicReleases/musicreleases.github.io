@@ -2,13 +2,13 @@
 
 internal sealed class SpotifyTaskFilterUrlService : IBackgroundTaskFilterUrlService
 {
-	public string CreateUrlParams(TaskFilter filter, string? searchText)
+	public string CreateUrlParams(BackgroundTaskFilterType filter, string? searchText)
 	{
 		var urlParams = new List<string>();
 
-		if (filter != TaskFilter.All)
+		if (filter != BackgroundTaskFilterType.All)
 		{
-			var flags = Enum.GetValues<TaskFilter>().Where(f => f != TaskFilter.All && filter.HasFlag(f));
+			var flags = Enum.GetValues<BackgroundTaskFilterType>().Where(f => f != BackgroundTaskFilterType.All && filter.HasFlag(f));
 
 			urlParams.Add("filter=" + string.Join(",", flags));
 		}
@@ -26,21 +26,21 @@ internal sealed class SpotifyTaskFilterUrlService : IBackgroundTaskFilterUrlServ
 		return $"?{string.Join("&", urlParams)}";
 	}
 
-	public TaskFilter ParseFilterFromUrlParams(string? filterParams)
+	public BackgroundTaskFilterType ParseFilterFromUrlParams(string? filterParams)
 	{
 
 		if (filterParams.IsNullOrEmpty())
 		{
-			return TaskFilter.All;
+			return BackgroundTaskFilterType.All;
 		}
 
-		var filter = (TaskFilter)0;
+		var filter = (BackgroundTaskFilterType)0;
 
 		var parts = filterParams.Split(',', StringSplitOptions.RemoveEmptyEntries);
 
 		foreach (var p in parts)
 		{
-			if (Enum.TryParse<TaskFilter>(p, true, out var parsed))
+			if (Enum.TryParse<BackgroundTaskFilterType>(p, true, out var parsed))
 			{
 				filter |= parsed;
 			}

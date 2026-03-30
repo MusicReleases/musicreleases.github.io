@@ -8,5 +8,5 @@ namespace JakubKastner.MusicReleases.Database.Spotify.Entities;
 public partial record SpotifyUserFilterTaskEntity
 	(
 		[property: Index(IsPrimary = true)] string UserId,
-		TaskFilter Filter
+		BackgroundTaskFilterType Filter
 	) : ISpotifyDb, ISpotifyUserIdEntity;

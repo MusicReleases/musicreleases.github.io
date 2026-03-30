@@ -1,7 +1,7 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 [Flags]
-public enum TaskFilter
+public enum BackgroundTaskFilterType
 {
 	Running = 1 << 0, // 1
 	Canceled = 1 << 1, // 2

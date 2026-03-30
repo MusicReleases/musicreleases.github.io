@@ -2,6 +2,6 @@
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks.User;
 
-internal interface ISpotifyUserTaskFilterDbService : ISpotifyUserScopedEntityService<SpotifyTaskFilter>
+internal interface ISpotifyUserTaskFilterDbService : ISpotifyUserScopedEntityService<BackgroundTaskFilter>
 {
 }

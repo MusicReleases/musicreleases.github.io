@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-internal class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleaseFilterUrlSynchronizer
+internal sealed class SpotifyReleaseFilterUrlSynchronizer : ISpotifyReleaseFilterUrlSynchronizer
 {
 	private readonly ISpotifyReleaseFilterService _filterService;
 
@@ -32,11 +32,11 @@ internal class SpotifyReleaseFilterUrlSynchronizer : IDisposable, ISpotifyReleas
 
 	private const string _baseUrl = "/releases/";
 
-	public async Task SetFilterFromUrl(string? releaseType, string? year, string? month, string? artist, string? advancedFilterParams, string? searchTextParam)
+	public async Task SetFilterFromUrl(SpotifyReleaseUrlParameters urlParameters)
 	{
 		Console.WriteLine("SetFilterFromUrl - start");
 
-		var filter = _filterUrlService.ParseFilterFromUrlParams(releaseType, year, month, artist, advancedFilterParams, searchTextParam);
+		var filter = _filterUrlService.ParseFilterFromUrlParams(urlParameters);
 
 		if (filter == _filterService.Filter)
 		{

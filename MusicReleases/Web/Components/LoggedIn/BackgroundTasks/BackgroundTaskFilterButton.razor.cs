@@ -17,7 +17,7 @@ public partial class BackgroundTaskFilterButton : IDisposable
 	public required ChipFilterButtonComponent ButtonType { get; set; }
 
 	[Parameter, EditorRequired]
-	public required TaskFilter FilterType { get; set; }
+	public required BackgroundTaskFilterType FilterType { get; set; }
 
 
 	private bool IsFilterActive => SpotifyTaskFilterService.IsActive(FilterType);

@@ -50,7 +50,7 @@ public static class ServiceCollectionExtensions
 
 
 		services.AddAsSpotifyUserScopedService<ISpotifyUserSettingsDbService, SpotifySettings>();
-		services.AddAsSpotifyUserScopedService<ISpotifyUserTaskFilterDbService, SpotifyTaskFilter>();
+		services.AddAsSpotifyUserScopedService<ISpotifyUserTaskFilterDbService, BackgroundTaskFilter>();
 
 
 		services.AddScoped<ISpotifyUserDbService, SpotifyUserDbService>();
@@ -112,6 +112,8 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ISpotifyArtistService, SpotifyArtistService>();
 		services.AddScoped<ISpotifyPlaylistService, SpotifyPlaylistService>();
 		services.AddScoped<ISpotifyTrackService, SpotifyTrackService>();
+
+		services.AddScoped<ISpotifyReleaseUrlState, SpotifyReleaseUrlState>();
 
 		services.AddScoped<ISpotifyReadByPayloadService<SpotifyPlaylist, SpotifyUserPlaylistPayload>, SpotifyPlaylistDbService>();
 		services.AddScoped<ISpotifyWriteEntityService<SpotifyPlaylist>, SpotifyPlaylistDbService>();

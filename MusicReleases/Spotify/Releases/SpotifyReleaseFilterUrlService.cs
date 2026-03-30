@@ -1,10 +1,9 @@
-﻿using JakubKastner.MusicReleases.Enums;
-using JakubKastner.MusicReleases.Spotify.Releases.User;
+﻿using JakubKastner.MusicReleases.Spotify.Releases.User;
 using JakubKastner.SpotifyApi.Releases;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
-public class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterService) : ISpotifyReleaseFilterUrlService
+internal sealed class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterService) : ISpotifyReleaseFilterUrlService
 {
 	private readonly ISpotifyReleaseFilterService _filterService = filterService;
 
@@ -53,19 +52,19 @@ public class SpotifyReleaseFilterUrlService(ISpotifyReleaseFilterService filterS
 		return $"?{string.Join("&", urlParams)}";
 	}
 
-	public SpotifyReleaseFilter ParseFilterFromUrlParams(string? releaseTypeParam, string? yearParam, string? monthParam, string? artistParam, string? advancedFilterParams, string? searchTextParam)
+	public SpotifyReleaseFilter ParseFilterFromUrlParams(SpotifyReleaseUrlParameters urlParameters)
 	{
-		if (!Enum.TryParse(releaseTypeParam, true, out ReleaseGroup releaseType))
+		if (!Enum.TryParse(urlParameters.Type, true, out ReleaseGroup releaseType))
 		{
 			releaseType = ReleaseGroup.Albums;
 		}
-		int? year = int.TryParse(yearParam, out var yearParsed) ? yearParsed : null;
-		int? monthValue = int.TryParse(monthParam, out var monthParsed) ? monthParsed : null;
+		int? year = int.TryParse(urlParameters.Year, out var yearParsed) ? yearParsed : null;
+		int? monthValue = int.TryParse(urlParameters.Month, out var monthParsed) ? monthParsed : null;
 		DateTime? month = year.HasValue ? (monthValue.HasValue ? new(year.Value, monthValue.Value, 1) : null) : null;
-		var artist = artistParam == _urlNull ? null : artistParam;
-		var searchText = _filterService.EnsureSearchText(searchTextParam);
+		var artist = urlParameters.ArtistId == _urlNull ? null : urlParameters.ArtistId;
+		var searchText = _filterService.EnsureSearchText(urlParameters.Search);
 
-		var advancedFilter = ParseAdvancedFilterFromUrlParams(advancedFilterParams);
+		var advancedFilter = ParseAdvancedFilterFromUrlParams(urlParameters.Filter);
 		return new(releaseType, advancedFilter, artist, year, month, searchText);
 	}
 

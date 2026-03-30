@@ -20,15 +20,17 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 	public IReadOnlyList<BackgroundTask> AllTasks => _tasks;
 
-	public IReadOnlyList<BackgroundTask> VisibleTasks => _tasks.Where(t => t.IsOverlayVisible && t.Steps.Any(x => x.Outcome != BackgroundStepOutcome.Skipped)).ToList();
+	public IReadOnlyList<BackgroundTask> VisibleTasks => NotSkippedTasks.Where(t => t.IsOverlayVisible /* && t.Steps.Any(x => x.Outcome != BackgroundStepOutcome.Skipped)*/).ToList();
+
+	public IReadOnlyList<BackgroundTask> NotSkippedTasks => _tasks.Where(t => !t.IsNoOp).ToList();
 
 	public IReadOnlyList<BackgroundTask> RunningTasks => _tasks.Where(t => t.Status == BackgroundTaskStatus.Running).ToList();
 
 	public bool AnyTaskFailed => _tasks.Any(t => t.Status == BackgroundTaskStatus.Failed);
 
-	public bool AnyTaskRunning => _tasks.Any(t => t.Status == BackgroundTaskStatus.Running);
+	public bool AnyTaskRunning => RunningTasks.Count > 0;
 
-	public bool AnyTaskVisible => _tasks.Any(t => t.IsOverlayVisible);
+	public bool AnyTaskVisible => VisibleTasks.Count > 0;
 
 	public void Dispose()
 	{
