@@ -1,7 +1,5 @@
 ﻿@using JakubKastner.MusicReleases.Spotify.Tasks
 
-
-
 <h1 class="header">
     <MrIcon Icon="@LucideIcon.ListTodo" Title="Tasks" />
     Tasks
@@ -20,7 +18,7 @@
 </div>
 
 <div class="actions">
-    <MrSearch Class="tasks" Placeholder="Search tasks..." SearchText="@SpotifyTaskFilterService.SearchText" ValueChanged="Search" />
+    <MrSearch Class="tasks" Placeholder="Search tasks..." SearchText="@BackgroundTaskFilterService.SearchText" ValueChanged="Search" />
     <MrButton Class="popup-tasks" Text="Delete finished" Title="Delete finished tasks" OnClick="@DeleteFinished">
         <MrIcon Icon="@LucideIcon.Trash" />
     </MrButton>
@@ -34,9 +32,9 @@
     }
     else
     {
-        <Virtualize Items="@DisplayedTasks" Context="task" TItem="@BackgroundTask2">
+        <Virtualize Items="@DisplayedTasks" Context="task" TItem="@BackgroundTask">
 
-            <BackgroundTaskRow SpotifyBackgroundTask="@task" @key="task.Id" />
+            <BackgroundTaskRow BackgroundTask="@task" @key="task.Id" />
 
         </Virtualize>
     }

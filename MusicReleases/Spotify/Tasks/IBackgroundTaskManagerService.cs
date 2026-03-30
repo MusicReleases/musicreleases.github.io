@@ -5,6 +5,7 @@ internal interface IBackgroundTaskManagerService
 	IReadOnlyList<BackgroundTask> AllTasks { get; }
 	bool AnyTaskFailed { get; }
 	IReadOnlyList<BackgroundTask> VisibleTasks { get; }
+	bool AnyTaskVisible { get; }
 
 	event Action? OnChange;
 
@@ -14,6 +15,8 @@ internal interface IBackgroundTaskManagerService
 	void HideAllEnded();
 	void HideTask(BackgroundTask task);
 	bool IsEffectivelyLoading(BackgroundTaskType type);
+	void RemoveAllCompleted();
+	void RemoveCompletedTask(BackgroundTask task);
 	Task Run(BackgroundTaskType type, string name, string description, int expectedSteps, Func<BackgroundTask, Task> work);
 	Task Run(BackgroundTaskType type, string name, string description, Func<BackgroundTask, Task> work);
 	void StartWorkflow();

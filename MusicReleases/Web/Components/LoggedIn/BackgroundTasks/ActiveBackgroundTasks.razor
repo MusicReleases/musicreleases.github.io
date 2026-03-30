@@ -12,9 +12,9 @@
             <MrIcon Icon="@LucideIcon.ListCheck" />
         </MrButton>
 
-        @if (SpotifyTaskManagerService.IsAnyTaskVisible)
+        @if (BackgroundTaskManager.AnyTaskVisible)
         {
-            <MrButton Class="sidebar-header" Title="Close finished tasks" OnClick="@SpotifyTaskManagerService.HideAllEnded">
+            <MrButton Class="sidebar-header" Title="Close finished tasks" OnClick="@BackgroundTaskManager.HideAllEnded">
                 <MrIcon Icon="@LucideIcon.X" />
             </MrButton>
         }
@@ -22,13 +22,13 @@
 
     <div class="list scroll">
 
-        @if (!SpotifyTaskManagerService.IsAnyTaskVisible)
+        @if (!BackgroundTaskManager.AnyTaskVisible)
         {
             <p>No active tasks</p>
         }
         else
         {
-            <Virtualize Items="@SpotifyTaskManagerService.VisibleTasks" Context="task" TItem="@BackgroundTask2">
+            <Virtualize Items="@BackgroundTasks" Context="task" TItem="@BackgroundTask">
                 <BackgroundTaskCard BackgroundTask="@task" @key="task.Id" />
             </Virtualize>
         }

@@ -48,6 +48,23 @@ public sealed class BackgroundTask
 
 	public double Progress { get; private set; }
 
+	public DateTimeOffset? StartedAt => Steps.Count == 0 ? null : Steps[0].StartedAt;
+
+	public DateTimeOffset? FinishedAt => Steps.LastOrDefault(s => s.FinishedAt.HasValue)?.FinishedAt;
+
+	public TimeSpan? Duration
+	{
+		get
+		{
+			if (!StartedAt.HasValue || !FinishedAt.HasValue)
+			{
+				return null;
+			}
+
+			return FinishedAt.Value - StartedAt.Value;
+		}
+	}
+
 	public BackgroundTaskStatus Status
 	{
 		get
@@ -175,7 +192,7 @@ public sealed class BackgroundTask
 
 	private static string GetDefaultStepName(BackgroundTaskCategory category)
 	{
-		const string apiName = "Sending API reuqest";
+		const string apiName = "Sending API request";
 		const string dbGetName = "Getting from DB";
 		const string dbSaveName = "Saving to DB";
 

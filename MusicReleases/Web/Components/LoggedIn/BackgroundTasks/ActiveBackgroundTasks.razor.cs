@@ -8,20 +8,22 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 public partial class ActiveBackgroundTasks : IDisposable
 {
 	[Inject]
-	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService BackgroundTaskManager { get; set; } = default!;
 
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
 
+	private ICollection<BackgroundTask> BackgroundTasks => BackgroundTaskManager.VisibleTasks.ToList();
+
 
 	protected override void OnInitialized()
 	{
-		SpotifyTaskManagerService.OnChange += StateChanged;
+		BackgroundTaskManager.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyTaskManagerService.OnChange -= StateChanged;
+		BackgroundTaskManager.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 

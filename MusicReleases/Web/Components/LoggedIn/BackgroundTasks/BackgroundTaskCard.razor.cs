@@ -11,23 +11,44 @@ public partial class BackgroundTaskCard : IDisposable
 	private IPopupService PopupService { get; set; } = default!;
 
 	[Inject]
-	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService BackgroundTaskManager { get; set; } = default!;
 
 	[Parameter]
-	public required BackgroundTask2 BackgroundTask { get; set; }
+	public required BackgroundTask BackgroundTask { get; set; }
 
 
-	private string TaskClass => $"task {(BackgroundTask.Failed ? "failed" : "")} {(BackgroundTask.Ended ? "finished" : "running")}";
+	private string TaskClass
+	{
+		get
+		{
+			var classes = new List<string> { "task" };
 
+			if (BackgroundTask.Status == BackgroundTaskStatus.Failed)
+			{
+				classes.Add("failed");
+			}
+
+			if (BackgroundTask.Ended)
+			{
+				classes.Add("finished");
+			}
+			else
+			{
+				classes.Add("running");
+			}
+
+			return string.Join(" ", classes);
+		}
+	}
 
 	protected override void OnInitialized()
 	{
-		SpotifyTaskManagerService.OnChange += StateChanged;
+		BackgroundTaskManager.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyTaskManagerService.OnChange -= StateChanged;
+		BackgroundTaskManager.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -38,7 +59,7 @@ public partial class BackgroundTaskCard : IDisposable
 
 	private void HideTask()
 	{
-		SpotifyTaskManagerService.HideTask(BackgroundTask);
+		BackgroundTaskManager.HideTask(BackgroundTask);
 	}
 
 	private async Task ViewTask()

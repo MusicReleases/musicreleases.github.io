@@ -7,31 +7,33 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.Popups;
 public partial class BackgroundTaskPopup : IDisposable
 {
 	[Inject]
-	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskState BackgroundTaskState { get; set; } = default!;
 
 	[Inject]
-	private IBackgroundTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
+	private IBackgroundTaskManagerService BackgroundTaskManager { get; set; } = default!;
 
+	[Inject]
+	private IBackgroundTaskFilterService BackgroundTaskFilterService { get; set; } = default!;
 
-	private ICollection<BackgroundTask2> DisplayedTasks => SpotifyTaskManagerService.FilteredTasks;
+	private ICollection<BackgroundTask> DisplayedTasks => [.. BackgroundTaskState.Tasks];
 
-	private string ClearFilterButtonTitle => SpotifyTaskFilterService.IsFilterActive ? "Clear all task filters" : "No task filters applied";
+	private string ClearFilterButtonTitle => BackgroundTaskFilterService.IsFilterActive ? "Clear all task filters" : "No task filters applied";
 
-	private LucideIcon ClearFilterIcon => SpotifyTaskFilterService.IsFilterActive ? LucideIcon.FunnelX : LucideIcon.Funnel;
+	private LucideIcon ClearFilterIcon => BackgroundTaskFilterService.IsFilterActive ? LucideIcon.FunnelX : LucideIcon.Funnel;
 
-	private string ZeroTasksText => SpotifyTaskFilterService.IsFilterActive ? "No tasks match the current filters." : (SpotifyTaskFilterService.IsSearching ? "No tasks match the current searching." : "No tasks are in history.");
+	private string ZeroTasksText => BackgroundTaskFilterService.IsFilterActive ? "No tasks match the current filters." : (BackgroundTaskFilterService.IsSearching ? "No tasks match the current searching." : "No tasks are in history.");
 
 
 	protected override void OnInitialized()
 	{
-		SpotifyTaskManagerService.OnChange += StateChanged;
-		SpotifyTaskFilterService.OnFilterChanged += StateChanged;
+		BackgroundTaskState.OnChange += StateChanged;
+		BackgroundTaskFilterService.OnFilterChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyTaskManagerService.OnChange -= StateChanged;
-		SpotifyTaskFilterService.OnFilterChanged -= StateChanged;
+		BackgroundTaskState.OnChange -= StateChanged;
+		BackgroundTaskFilterService.OnFilterChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -42,16 +44,16 @@ public partial class BackgroundTaskPopup : IDisposable
 
 	private void ClearFilter()
 	{
-		SpotifyTaskFilterService.ClearFilter();
+		BackgroundTaskFilterService.ClearFilter();
 	}
 
 	private void Search(string searchText)
 	{
-		SpotifyTaskFilterService.SetSearch(searchText);
+		BackgroundTaskFilterService.SetSearch(searchText);
 	}
 
 	private void DeleteFinished()
 	{
-		SpotifyTaskManagerService.RemoveAllFinishedTasks();
+		BackgroundTaskManager.RemoveAllCompleted();
 	}
 }

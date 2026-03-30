@@ -96,6 +96,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IBackgroundTaskManagerService, BackgroundTaskManagerService>();
 		services.AddScoped<IBackgroundTaskManagerService2, BackgroundTaskManagerService2>();
 		services.AddScoped<IBackgroundTaskFilterService, BackgroundTaskFilterService>();
+		services.AddScoped<IBackgroundTaskState, BackgroundTaskState>();
 		services.AddScoped<IBackgroundTaskFilterUrlService, SpotifyTaskFilterUrlService>();
 		services.AddScoped<IBackgroundTaskFilterUrlSynchronizer, BackgroundTaskFilterUrlSynchronizer>();
 

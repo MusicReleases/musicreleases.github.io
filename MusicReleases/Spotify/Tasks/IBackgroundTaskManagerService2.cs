@@ -3,7 +3,7 @@
 internal interface IBackgroundTaskManagerService2 : IDisposable
 {
 	IReadOnlyList<BackgroundTask2> AllTasks { get; }
-	ICollection<BackgroundTask2> FilteredTasks { get; }
+	//ICollection<BackgroundTask2> FilteredTasks { get; }
 	bool IsAnyTaskRunning { get; }
 	bool IsAnyTaskVisible { get; }
 	ICollection<BackgroundTask2> RunningTasks { get; }

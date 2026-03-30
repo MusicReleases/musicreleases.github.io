@@ -6,15 +6,17 @@ internal interface IBackgroundTaskFilterService
 	TaskFilter Filter { get; }
 	bool IsFilterActive { get; }
 	bool IsSearching { get; }
+	IReadOnlyList<BackgroundTask> Filtered { get; }
 
 	event Action? OnFilterChanged;
 
-	IEnumerable<BackgroundTask2> Apply(IEnumerable<BackgroundTask2> source);
+	IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source);
 	void ClearFilter();
 	bool IsActive(TaskFilter filter);
 	void SetFilter(TaskFilter filter);
 	void SetFilterAndSearch(TaskFilter filter, string? searchText);
 	void SetSearch(string searchText);
+	void SetSource(IReadOnlyList<BackgroundTask> tasks);
 	void ToggleFilter(TaskFilter filter);
 	void UnsetFilter(TaskFilter filter);
 }

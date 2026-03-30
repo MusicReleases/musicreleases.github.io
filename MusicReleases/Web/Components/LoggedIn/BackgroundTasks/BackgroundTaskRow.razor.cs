@@ -8,18 +8,40 @@ namespace JakubKastner.MusicReleases.Web.Components.LoggedIn.BackgroundTasks;
 public partial class BackgroundTaskRow : IDisposable
 {
 	[Inject]
-	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService BackgroundTaskManager { get; set; } = default!;
 
 	[Inject]
 	private ISpotifySettingsService SettingsService { get; set; } = default!;
 
 
 	[Parameter]
-	public required BackgroundTask2 SpotifyBackgroundTask { get; set; }
+	public required BackgroundTask BackgroundTask { get; set; }
 
-	private string Class => $"task {(SpotifyBackgroundTask.Failed ? "failed" : string.Empty)} {(SpotifyBackgroundTask.Ended ? "finished" : "running")}";
+	private string Class
+	{
+		get
+		{
+			var classes = new List<string> { "task" };
 
-	public LucideIcon Icon => GetIcon(SpotifyBackgroundTask.Status);
+			if (BackgroundTask.Status == BackgroundTaskStatus.Failed)
+			{
+				classes.Add("failed");
+			}
+
+			if (BackgroundTask.Ended)
+			{
+				classes.Add("finished");
+			}
+			else
+			{
+				classes.Add("running");
+			}
+
+			return string.Join(" ", classes);
+		}
+	}
+
+	public LucideIcon Icon => GetIcon(BackgroundTask.Status);
 
 	private static LucideIcon GetIcon(BackgroundTaskStatus status)
 	{
@@ -38,13 +60,13 @@ public partial class BackgroundTaskRow : IDisposable
 
 	protected override void OnInitialized()
 	{
-		SpotifyTaskManagerService.OnChange += StateChanged;
+		BackgroundTaskManager.OnChange += StateChanged;
 		SettingsService.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		SpotifyTaskManagerService.OnChange -= StateChanged;
+		BackgroundTaskManager.OnChange -= StateChanged;
 		SettingsService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
@@ -54,14 +76,14 @@ public partial class BackgroundTaskRow : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-
 	private void DeleteTask()
 	{
-		SpotifyTaskManagerService.RemoveTask(SpotifyBackgroundTask);
+		BackgroundTaskManager.RemoveCompletedTask(BackgroundTask);
 	}
+
 	private void CancelTask()
 	{
-		SpotifyBackgroundTask.RequestCancel();
+		BackgroundTask.RequestCancel();
 	}
 
 	private string GetButtonUrl(BackgroundTaskLink link)

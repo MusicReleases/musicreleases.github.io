@@ -18,7 +18,7 @@
             }
             else
             {
-                <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@BackgroundTask.IsRunning" />
+                <MrIcon Icon="LucideIcon.LoaderCircle" Spin="@(BackgroundTask.Status == BackgroundTaskStatus.Running)" />
             }
         </div>
 

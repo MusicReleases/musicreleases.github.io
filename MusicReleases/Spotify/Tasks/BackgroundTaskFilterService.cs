@@ -4,6 +4,10 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 {
 	public event Action? OnFilterChanged;
 
+	private IReadOnlyList<BackgroundTask> _source = [];
+
+	public IReadOnlyList<BackgroundTask> Filtered { get; private set; } = [];
+
 	public string? SearchText { get; private set; } = null;
 
 	public TaskFilter Filter { get; private set; } = _defaultFilter;
@@ -19,6 +23,17 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	private static readonly TaskFilter[] FilterGroup = [TaskFilter.Running, TaskFilter.Canceled, TaskFilter.Failed, TaskFilter.Finished];
 
+	public void SetSource(IReadOnlyList<BackgroundTask> tasks)
+	{
+		_source = tasks;
+		Recalculate();
+	}
+
+	private void Recalculate()
+	{
+		Filtered = Apply(_source).ToList().AsReadOnly();
+		OnFilterChanged?.Invoke();
+	}
 
 	private void SetFilterAndSearchInternal(TaskFilter newFilter, string? newSearchText)
 	{
@@ -29,7 +44,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		Filter = newFilter;
 		SearchText = newSearchText;
 
-		OnFilterChanged?.Invoke();
+		Recalculate();
 	}
 
 	private void SetFilterInternal(TaskFilter newFilter)
@@ -40,7 +55,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		}
 		Filter = newFilter;
 
-		OnFilterChanged?.Invoke();
+		Recalculate();
 	}
 
 	private void SetSearchInternal(string? newSearchText)
@@ -51,7 +66,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		}
 		SearchText = newSearchText;
 
-		OnFilterChanged?.Invoke();
+		Recalculate();
 	}
 
 	public void SetFilterAndSearch(TaskFilter filter, string? searchText)
@@ -91,14 +106,14 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		SetFilterInternal(newFilter);
 	}
 
-	public IEnumerable<BackgroundTask2> Apply(IEnumerable<BackgroundTask2> source)
+	public IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source)
 	{
 		var query = ApplyFilter(source);
 		query = ApplySearch(query);
 		return query;
 	}
 
-	private IEnumerable<BackgroundTask2> ApplyFilter(IEnumerable<BackgroundTask2> source)
+	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)
 	{
 		var query = source; //.Where(x => !x.IsWorkflow);
 
@@ -127,11 +142,13 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		return query;
 	}
 
-	private IEnumerable<BackgroundTask2> ApplySearch(IEnumerable<BackgroundTask2> source)
+	private IEnumerable<BackgroundTask> ApplySearch(IEnumerable<BackgroundTask> source)
 	{
-		var query = source.ApplySearch(SearchText,
+		var query = source.ApplySearch
+		(
+			SearchText,
 			t => t.Name,
-			t => t.Info,
+			t => t.Description,
 			t => t.StatusText,
 			t => string.Join(" ", t.Steps.Select(s => s.Name)),
 			t => string.Join(" ", t.Steps.Select(s => s.Status.ToFriendlyString()))

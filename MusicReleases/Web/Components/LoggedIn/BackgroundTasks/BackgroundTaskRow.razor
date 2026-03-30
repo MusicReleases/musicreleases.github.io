@@ -2,52 +2,47 @@
 @using JakubKastner.MusicReleases.Spotify.Tasks
 
 <MrRow Class="@Class">
-    
+
     <div class="task-info">
-        
+
         <span class="title" title="Task name">
-            @SpotifyBackgroundTask.Name
+            @BackgroundTask.Name
         </span>
-        
+
         <div class="time-started" title="Task started at">
             <MrIcon Class="@_iconClass" Icon="@LucideIcon.Clock" />
             <span>
-                @SpotifyBackgroundTask.StartedAt?.ToCurrentCultureString()
+                @BackgroundTask.StartedAt?.ToCurrentCultureString()
             </span>
         </div>
 
-        <div class="info" title="Task info">
+        <div class="info" title="Task description">
             <MrIcon Class="@_iconClass" Icon="@LucideIcon.Info" />
             <span>
-                @SpotifyBackgroundTask.Info
+                @BackgroundTask.Description
             </span>
         </div>
 
         <div class="status" title="Task status">
-            <MrIcon Class="@_iconClass" Icon="@Icon" Spin="@SpotifyBackgroundTask.IsRunning" />
-            @if (SpotifyBackgroundTask.CurrentStep is not null && SpotifyBackgroundTask.CurrentStep.IsWaiting && SpotifyBackgroundTask.CurrentStep.WaitingForStepId.HasValue)
+            <MrIcon Class="@_iconClass" Icon="@Icon" Spin="@(BackgroundTask.Status == BackgroundTaskStatus.Running)" />
+
+            @if (BackgroundTask.CurrentStep is not null && BackgroundTask.CurrentStep.IsWaiting && BackgroundTask.CurrentStep.WaitingForStepId.HasValue)
             {
                 <span>
-                    Waiting for @(BackgroundTaskExtensions.GetStepLabel(SpotifyBackgroundTask.CurrentStep.WaitingForStepId.Value) ?? "dependency")
+                    Waiting for @(BackgroundTask.GetStepLabel(BackgroundTask.CurrentStep.WaitingForStepId.Value) ?? "dependency")
                 </span>
             }
             else
             {
                 <span>
-                    @SpotifyBackgroundTask.StatusText
+                    @BackgroundTask.StatusText
                 </span>
             }
-            
-            @if (@SpotifyBackgroundTask.IsRunning)
-            {
-                <span class="time-duration" title="Task progress">
-                    &nbsp;(@(SpotifyBackgroundTask.CurrentStepIndex + 1) / @SpotifyBackgroundTask.ExpectedSteps)
-                </span>
-            }
-            @if (@SpotifyBackgroundTask.Ended && SpotifyBackgroundTask.Duration.HasValue)
+
+            @if (BackgroundTask.Ended && BackgroundTask.Duration.HasValue)
             {
                 <span class="time-duration" title="Task duration">
-                    &nbsp;(@SpotifyBackgroundTask.Duration.Value.ToMinuteString())
+                    &nbsp;(@BackgroundTask.Duration.Value.ToMinuteString())
                 </span>
             }
         </div>
@@ -56,9 +51,157 @@
 
     <div class="steps">
 
-        @for (int i = 0; i < SpotifyBackgroundTask.Steps.Count; i++)
+        @for (int i = 0; i < BackgroundTask.Steps.Count; i++)
         {
-            var step = SpotifyBackgroundTask.Steps[i];
+            var step = BackgroundTask.Steps[i];
+            var stepPct = (step.SubProgress * 100).ToString("F2", CultureInfo.InvariantCulture);
+
+            <div class="step @(step.Status.ToLowerString())">
+
+                <div class="step-info">
+
+                    <span class="title" title="Step title">
+                        @(i + 1). @step.Name
+                    </span>
+
+                    <div class="time-started" title="Step started at">
+                        <MrIcon Class="@_iconClass" Icon="@LucideIcon.Clock" />
+                        <span>@step.StartedAt.ToCurrentCultureString()</span>
+                    </div>
+
+                    <div class="status" title="Step status">
+                        <MrIcon Class="@_iconClass" Icon="@GetIcon(step.Status)" Spin="@(step.Status == BackgroundTaskStatus.Running)" />
+
+                        @if (step.Outcome == BackgroundStepOutcome.Skipped)
+                        {
+                            <span>
+                                Skipped
+                                @if (step.SkipReason.IsNotNullOrEmpty())
+                                {
+                                    <text> – @step.SkipReason</text>
+                                }
+                            </span>
+                        }
+                        else if (step.IsWaiting && step.WaitingForStepId.HasValue)
+                        {
+                            <span>
+                                Waiting for @(BackgroundTask.GetStepLabel(step.WaitingForStepId.Value) ?? "dependency")
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @step.Status.ToFriendlyString(true)
+                            </span>
+                        }
+
+                        @if (step.Duration.HasValue)
+                        {
+                            <span class="time-duration" title="Step duration">
+                                &nbsp;(@step.Duration.Value.ToMinuteString())
+                            </span>
+                        }
+                    </div>
+
+                </div>
+
+                <div class="step-progress @step.Ended.ToCssClass("finished")">
+                    <div class="bar" style="width:@stepPct%"></div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+    <div class="task-buttons">
+        @foreach (var link in BackgroundTask.Links)
+        {
+            <MrButton Class="@_buttonClass" Href="@GetButtonUrl(link)" Text="@GetButtonText(link)" Title="@GetButtonTitle(link)" NewTab="@SettingsService.UserSettings.OpenLinksInNewTab">
+                <MrIcon Icon="@link.Icon" />
+            </MrButton>
+        }
+
+        @if (BackgroundTask.Status == BackgroundTaskStatus.Running)
+        {
+            <MrButton Class="@_buttonClass" OnClick="@CancelTask" Text="Cancel task">
+                <MrIcon Icon="@LucideIcon.Ban" />
+            </MrButton>
+        }
+        else
+        {
+            <MrButton Class="@_buttonClass" OnClick="@DeleteTask" Text="Delete task">
+                <MrIcon Icon="@LucideIcon.Trash" />
+            </MrButton>
+        }
+    </div>
+
+    <div class="task-progress @BackgroundTask.Ended.ToCssClass("finished")">
+        <div class="bar" style="width:@((BackgroundTask.Progress * 100).ToString("F6", CultureInfo.InvariantCulture))%"></div>
+    </div>
+
+</MrRow>
+
+
+@* 
+<MrRow Class="@Class">
+    
+    <div class="task-info">
+        
+        <span class="title" title="Task name">
+            @BackgroundTask.Name
+        </span>
+        
+        <div class="time-started" title="Task started at">
+            <MrIcon Class="@_iconClass" Icon="@LucideIcon.Clock" />
+            <span>
+                @BackgroundTask.StartedAt?.ToCurrentCultureString()
+            </span>
+        </div>
+
+        <div class="info" title="Task info">
+            <MrIcon Class="@_iconClass" Icon="@LucideIcon.Info" />
+            <span>
+                @BackgroundTask.Info
+            </span>
+        </div>
+
+        <div class="status" title="Task status">
+            <MrIcon Class="@_iconClass" Icon="@Icon" Spin="@BackgroundTask.IsRunning" />
+            @if (BackgroundTask.CurrentStep is not null && BackgroundTask.CurrentStep.IsWaiting && BackgroundTask.CurrentStep.WaitingForStepId.HasValue)
+            {
+                <span>
+                    Waiting for @(BackgroundTaskExtensions.GetStepLabel(BackgroundTask.CurrentStep.WaitingForStepId.Value) ?? "dependency")
+                </span>
+            }
+            else
+            {
+                <span>
+                    @BackgroundTask.StatusText
+                </span>
+            }
+            
+            @if (BackgroundTask.IsRunning)
+            {
+                <span class="time-duration" title="Task progress">
+                    &nbsp;(@(BackgroundTask.CurrentStepIndex + 1) / @BackgroundTask.ExpectedSteps)
+                </span>
+            }
+            @if (BackgroundTask.Ended && BackgroundTask.Duration.HasValue)
+            {
+                <span class="time-duration" title="Task duration">
+                    &nbsp;(@BackgroundTask.Duration.Value.ToMinuteString())
+                </span>
+            }
+        </div>
+
+    </div>
+
+    <div class="steps">
+
+        @for (int i = 0; i < BackgroundTask.Steps.Count; i++)
+        {
+            var step = BackgroundTask.Steps[i];
             var stepPct = (step.SubProgress * 100).ToString("F6", CultureInfo.InvariantCulture);
 
             <div class="step @(step.Status.ToLowerString())">
@@ -125,16 +268,16 @@
 
 
     <div class="task-buttons">
-        @if (SpotifyBackgroundTask.Links.Any())
+        @if (BackgroundTask.Links.Any())
         {
-            @foreach (var link in SpotifyBackgroundTask.Links)
+            @foreach (var link in BackgroundTask.Links)
             {
                 <MrButton Class="@_buttonClass" Href="@GetButtonUrl(link)" Text="@GetButtonText(link)" Title="@GetButtonTitle(link)" NewTab="@SettingsService.UserSettings.OpenLinksInNewTab">
                     <MrIcon Icon="@link.Icon" />
                 </MrButton>
             }
         }
-        @if (SpotifyBackgroundTask.IsRunning)
+        @if (BackgroundTask.IsRunning)
         {
             <MrButton Class="@_buttonClass" OnClick="@CancelTask" Text="Cancel task">
                 <MrIcon Icon="@LucideIcon.Ban" />
@@ -149,7 +292,7 @@
     </div>
 
 
-    <div class="task-progress @SpotifyBackgroundTask.Ended.ToCssClass("finished")">
-        <div class="bar" style="width:@((SpotifyBackgroundTask.Progress * 100).ToString("F6", CultureInfo.InvariantCulture))%"></div>
+    <div class="task-progress @BackgroundTask.Ended.ToCssClass("finished")">
+        <div class="bar" style="width:@((BackgroundTask.Progress * 100).ToString("F6", CultureInfo.InvariantCulture))%"></div>
     </div>
-</MrRow>
+</MrRow> *@

@@ -63,8 +63,8 @@ internal sealed class SpotifyWorkflowService
 			var artistsRequest = new BackgroundTaskRequest
 			(
 				BackgroundTaskType.ArtistsGet,
-				"Artists",
-				"DB → API → DB",
+				"Getting artists",
+				"Getting followed artists",
 				3,
 				task => _artistService.GetInTask(task, forceUpdate),
 				null
@@ -77,8 +77,8 @@ internal sealed class SpotifyWorkflowService
 			var releasesRequest = new BackgroundTaskRequest
 			(
 				BackgroundTaskType.ReleasesGet,
-				"Releases",
-				"DB → API → DB",
+				"Getting releases",
+				"Getting releases from followed artists",
 				3,
 				task => _releaseService.GetInTask(task, releaseType, forceUpdate),
 				includeArtists
@@ -94,8 +94,8 @@ internal sealed class SpotifyWorkflowService
 			var playlistsRequest = new BackgroundTaskRequest
 			(
 				BackgroundTaskType.PlaylistsGet,
-				"Playlists",
-				"DB → API → DB",
+				"Getting playlists",
+				"Getting user playlists",
 				3,
 				task => _playlistService.GetInTask(task, forceUpdate),
 				[BackgroundTaskType.ReleasesGet]

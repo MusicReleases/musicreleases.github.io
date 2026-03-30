@@ -4,13 +4,13 @@ namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
 internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerService, IBackgroundTaskStepCompletionSink, IDisposable
 {
-	private readonly List<BackgroundTask> _tasks = new();
+	private readonly List<BackgroundTask> _tasks = [];
 
-	private readonly List<BackgroundTaskRequest> _workflowQueue = new();
-	private readonly HashSet<Guid> _startedWorkflowRequests = new();
-	private readonly HashSet<BackgroundTaskType> _completedWorkflowTasks = new();
+	private readonly List<BackgroundTaskRequest> _workflowQueue = [];
+	private readonly HashSet<Guid> _startedWorkflowRequests = [];
+	private readonly HashSet<BackgroundTaskType> _completedWorkflowTasks = [];
 
-	private readonly object _workflowLock = new();
+	private readonly Lock _workflowLock = new();
 
 	private readonly ConcurrentDictionary<Guid, TaskCompletionSource<bool>> _stepCompletions = new();
 	private readonly ConcurrentDictionary<Guid, string> _stepLabels = new();
@@ -22,6 +22,8 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 	public IReadOnlyList<BackgroundTask> VisibleTasks => _tasks.Where(t => t.IsOverlayVisible).ToList();
 
 	public bool AnyTaskFailed => _tasks.Any(t => t.Status == BackgroundTaskStatus.Failed);
+
+	public bool AnyTaskVisible => _tasks.Any(t => t.IsOverlayVisible);
 
 	public void Dispose()
 	{
@@ -92,6 +94,25 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 		NotifyUI();
 	}
+
+	public void RemoveCompletedTask(BackgroundTask task)
+	{
+		if (!(task.Status is BackgroundTaskStatus.Finished or BackgroundTaskStatus.Failed or BackgroundTaskStatus.Canceled))
+		{
+			return;
+		}
+
+		_tasks.Remove(task);
+		NotifyUI();
+	}
+
+	public void RemoveAllCompleted()
+	{
+		_tasks.RemoveAll(t => t.Status is BackgroundTaskStatus.Finished or BackgroundTaskStatus.Failed or BackgroundTaskStatus.Canceled);
+
+		NotifyUI();
+	}
+
 
 	public void CancelAllTasks()
 	{
@@ -299,7 +320,7 @@ internal sealed class BackgroundTaskManagerService2 : IBackgroundTaskManagerServ
 
 	public ICollection<BackgroundTask2> VisibleTasks => [.. _tasks.Where(t => t.IsOverlayVisible /*&& !t.IsWorkflow*/)];
 
-	public ICollection<BackgroundTask2> FilteredTasks => [.. _filterService.Apply(_tasks)];
+	//public ICollection<BackgroundTask2> FilteredTasks => [.. _filterService.Apply(_tasks)];
 
 
 	private void NotifyUI()
