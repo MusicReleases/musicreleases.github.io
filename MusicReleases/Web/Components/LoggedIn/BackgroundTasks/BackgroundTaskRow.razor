@@ -54,6 +54,12 @@
         @for (int i = 0; i < BackgroundTask.Steps.Count; i++)
         {
             var step = BackgroundTask.Steps[i];
+
+            @if (step.Outcome == BackgroundStepOutcome.Skipped)
+            {
+                continue;
+            }
+
             var stepPct = (step.SubProgress * 100).ToString("F2", CultureInfo.InvariantCulture);
 
             <div class="step @(step.Status.ToLowerString())">

@@ -19,7 +19,7 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 
 	public IReadOnlyList<BackgroundTask> AllTasks => _tasks;
 
-	public IReadOnlyList<BackgroundTask> VisibleTasks => _tasks.Where(t => t.IsOverlayVisible).ToList();
+	public IReadOnlyList<BackgroundTask> VisibleTasks => _tasks.Where(t => t.IsOverlayVisible && t.Steps.Any(x => x.Outcome != BackgroundStepOutcome.Skipped)).ToList();
 
 	public bool AnyTaskFailed => _tasks.Any(t => t.Status == BackgroundTaskStatus.Failed);
 

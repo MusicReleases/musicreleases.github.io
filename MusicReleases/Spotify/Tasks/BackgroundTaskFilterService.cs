@@ -25,7 +25,7 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	public void SetSource(IReadOnlyList<BackgroundTask> tasks)
 	{
-		_source = tasks;
+		_source = tasks.Where(t => t.Steps.Any(x => x.Outcome != BackgroundStepOutcome.Skipped)).ToList();
 		Recalculate();
 	}
 
