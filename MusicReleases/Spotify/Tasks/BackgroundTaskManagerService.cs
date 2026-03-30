@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerService, IBackgroundTaskStepCompletionSink, IDisposable
+internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerService, IBackgroundTaskStepCompletionSink
 {
 	private readonly List<BackgroundTask> _tasks = [];
 
@@ -132,8 +132,6 @@ internal sealed class BackgroundTaskManagerService : IBackgroundTaskManagerServi
 		{
 			t.RequestCancel();
 		}
-
-		//NotifyUiRelevant();
 	}
 
 	void IBackgroundTaskStepCompletionSink.RegisterStep(Guid stepId, string label)

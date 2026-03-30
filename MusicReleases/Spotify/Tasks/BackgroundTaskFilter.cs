@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-public class BackgroundTaskFilter
+internal sealed class BackgroundTaskFilter
 {
 	public BackgroundTaskFilterType TaskFilter { get; set; } = BackgroundTaskFilterType.All;
 

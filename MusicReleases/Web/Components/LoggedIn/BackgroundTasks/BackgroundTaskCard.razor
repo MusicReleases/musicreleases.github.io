@@ -29,7 +29,7 @@
         @if (BackgroundTask.CurrentStep is not null && BackgroundTask.CurrentStep.IsWaiting && BackgroundTask.CurrentStep.WaitingForStepId.HasValue)
         {
             <span>
-                Waiting for @(BackgroundTaskExtensions.GetStepLabel(BackgroundTask.CurrentStep.WaitingForStepId.Value) ?? "dependency")
+                Waiting for @(BackgroundTask.GetStepLabel(BackgroundTask.CurrentStep.WaitingForStepId.Value) ?? "dependency")
             </span>
         }
         else

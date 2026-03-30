@@ -13,17 +13,3 @@ internal sealed record BackgroundTaskRequest
 {
 	public Guid RequestId { get; init; } = Guid.NewGuid();
 };
-
-internal sealed record BackgroundTaskRequest2
-(
-	BackgroundTaskType Type,
-	string Name,
-	string Info,
-	int ExpectedSteps,
-	Func<BackgroundTask2, Task> Work,
-	IReadOnlyCollection<BackgroundTaskType>? DependsOn = null,
-	bool IsImmediate = false
-)
-{
-	public Guid RequestId { get; init; } = Guid.NewGuid();
-};

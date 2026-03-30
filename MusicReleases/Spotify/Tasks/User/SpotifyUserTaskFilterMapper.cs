@@ -2,7 +2,7 @@
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks.User;
 
-public static class SpotifyUserTaskFilterMapper
+internal static class SpotifyUserTaskFilterMapper
 {
 	public static SpotifyUserFilterTaskEntity ToEntity(this BackgroundTaskFilter filter, string userId)
 	{

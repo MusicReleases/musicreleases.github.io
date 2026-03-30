@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-internal interface IBackgroundTaskManagerService
+internal interface IBackgroundTaskManagerService : IDisposable
 {
 	IReadOnlyList<BackgroundTask> AllTasks { get; }
 	bool AnyTaskFailed { get; }
@@ -13,7 +13,6 @@ internal interface IBackgroundTaskManagerService
 	event Action? OnUiRelevantChange;
 
 	void CancelAllTasks();
-	void Dispose();
 	Task Enqueue(BackgroundTaskRequest request);
 	void HideAllEnded();
 	void HideTask(BackgroundTask task);

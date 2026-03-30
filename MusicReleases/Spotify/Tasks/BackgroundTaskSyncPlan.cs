@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-public sealed record BackgroundTaskSyncPlan
+internal sealed record BackgroundTaskSyncPlan
 (
 	Guid DbStepId,
 	Guid ApiStepId,
