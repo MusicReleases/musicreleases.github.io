@@ -29,6 +29,7 @@ internal sealed class BackgroundTaskState : IDisposable, IBackgroundTaskState
 	private void OnManagerChanged()
 	{
 		_filter.SetSource(_manager.AllTasks);
+		OnChange?.Invoke();
 	}
 
 	private void OnFilterChanged()

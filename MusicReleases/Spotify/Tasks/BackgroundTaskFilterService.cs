@@ -20,27 +20,40 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	private const TaskFilter _defaultFilter = TaskFilter.All;
 
+	private TaskFilter _lastFilter = _defaultFilter;
+
+	private string? _lastSearchText;
+
 
 	private static readonly TaskFilter[] FilterGroup = [TaskFilter.Running, TaskFilter.Canceled, TaskFilter.Failed, TaskFilter.Finished];
 
 	public void SetSource(IReadOnlyList<BackgroundTask> tasks)
 	{
 		_source = tasks.Where(t => t.Steps.Any(x => x.Outcome != BackgroundStepOutcome.Skipped)).ToList();
+
+		_lastFilter = default;
+		_lastSearchText = null;
+
 		Recalculate();
 	}
 
 	private void Recalculate()
 	{
+		if (_lastFilter == Filter && string.Equals(_lastSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
+		{
+			return;
+		}
+
+		_lastFilter = Filter;
+		_lastSearchText = SearchText;
+
 		Filtered = Apply(_source).ToList().AsReadOnly();
+
 		OnFilterChanged?.Invoke();
 	}
 
 	private void SetFilterAndSearchInternal(TaskFilter newFilter, string? newSearchText)
 	{
-		if (newFilter == Filter && string.Equals(newSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
-		{
-			return;
-		}
 		Filter = newFilter;
 		SearchText = newSearchText;
 

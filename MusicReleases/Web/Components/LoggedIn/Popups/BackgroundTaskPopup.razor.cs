@@ -27,13 +27,13 @@ public partial class BackgroundTaskPopup : IDisposable
 	protected override void OnInitialized()
 	{
 		BackgroundTaskState.OnChange += StateChanged;
-		BackgroundTaskFilterService.OnFilterChanged += StateChanged;
+		//BackgroundTaskFilterService.OnFilterChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		BackgroundTaskState.OnChange -= StateChanged;
-		BackgroundTaskFilterService.OnFilterChanged -= StateChanged;
+		//BackgroundTaskFilterService.OnFilterChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -52,7 +52,7 @@ public partial class BackgroundTaskPopup : IDisposable
 		BackgroundTaskFilterService.SetSearch(searchText);
 	}
 
-	private void DeleteFinished()
+	private void DeleteAllCompleted()
 	{
 		BackgroundTaskManager.RemoveAllCompleted();
 	}
