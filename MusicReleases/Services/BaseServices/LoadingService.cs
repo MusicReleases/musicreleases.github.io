@@ -4,23 +4,23 @@ namespace JakubKastner.MusicReleases.Services.BaseServices;
 
 internal class LoadingService : IDisposable, ILoadingService
 {
-	private readonly IBackgroundTaskManagerService2 _spotifyTaskManagerService;
+	private readonly IBackgroundTaskManagerService _backgroundTaskManagerService;
 
-	public LoadingService(IBackgroundTaskManagerService2 spotifyTaskManagerService)
+	public LoadingService(IBackgroundTaskManagerService spotifyTaskManagerService)
 	{
-		_spotifyTaskManagerService = spotifyTaskManagerService;
-		_spotifyTaskManagerService.OnChange += OnTaskManagerChanged;
+		_backgroundTaskManagerService = spotifyTaskManagerService;
+		_backgroundTaskManagerService.OnUiRelevantChange += OnTaskManagerChanged;
 	}
 
 	public void Dispose()
 	{
-		_spotifyTaskManagerService.OnChange -= OnTaskManagerChanged;
+		_backgroundTaskManagerService.OnUiRelevantChange -= OnTaskManagerChanged;
 		GC.SuppressFinalize(this);
 	}
 
 	public event Action? LoadingStateChanged;
 
-	public bool Loading => _spotifyTaskManagerService.IsAnyTaskRunning;
+	public bool Loading => _backgroundTaskManagerService.AnyTaskRunning;
 
 	public string ActiveClass => Loading.ToCssClass("active");
 
@@ -32,7 +32,7 @@ internal class LoadingService : IDisposable, ILoadingService
 
 	public bool IsLoading(BackgroundTaskType type)
 	{
-		return _spotifyTaskManagerService.RunningTasks.Any(x => x.Type == type);
+		return _backgroundTaskManagerService.RunningTasks.Any(x => x.Type == type);
 	}
 
 }

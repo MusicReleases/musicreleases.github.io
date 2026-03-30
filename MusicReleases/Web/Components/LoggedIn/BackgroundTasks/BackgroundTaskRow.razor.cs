@@ -60,13 +60,13 @@ public partial class BackgroundTaskRow : IDisposable
 
 	protected override void OnInitialized()
 	{
-		BackgroundTaskManager.OnChange += StateChanged;
+		BackgroundTask.OnTaskChanged += StateChanged;
 		SettingsService.OnChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		BackgroundTaskManager.OnChange -= StateChanged;
+		BackgroundTask.OnTaskChanged -= StateChanged;
 		SettingsService.OnChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}

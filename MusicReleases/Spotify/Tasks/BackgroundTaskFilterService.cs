@@ -20,44 +20,28 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 
 	private const TaskFilter _defaultFilter = TaskFilter.All;
 
-	private TaskFilter _lastFilter = _defaultFilter;
-
-	private string? _lastSearchText;
-
-
 	private static readonly TaskFilter[] FilterGroup = [TaskFilter.Running, TaskFilter.Canceled, TaskFilter.Failed, TaskFilter.Finished];
 
 	public void SetSource(IReadOnlyList<BackgroundTask> tasks)
 	{
-		_source = tasks.Where(t => t.Steps.Any(x => x.Outcome != BackgroundStepOutcome.Skipped)).ToList();
-
-		_lastFilter = default;
-		_lastSearchText = null;
-
-		Recalculate();
-	}
-
-	private void Recalculate()
-	{
-		if (_lastFilter == Filter && string.Equals(_lastSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
-		{
-			return;
-		}
-
-		_lastFilter = Filter;
-		_lastSearchText = SearchText;
-
-		Filtered = Apply(_source).ToList().AsReadOnly();
-
-		OnFilterChanged?.Invoke();
+		//_source = tasks.Where(t => t.Steps.Any(x => x.Outcome != BackgroundStepOutcome.Skipped)).ToList();
+		_source = tasks;
+		Console.WriteLine("set source!!!");
+		Apply();
 	}
 
 	private void SetFilterAndSearchInternal(TaskFilter newFilter, string? newSearchText)
 	{
+		if (newFilter == Filter && string.Equals(newSearchText, SearchText, StringComparison.OrdinalIgnoreCase))
+		{
+			return;
+		}
+
 		Filter = newFilter;
 		SearchText = newSearchText;
 
-		Recalculate();
+		Apply();
+		OnFilterChanged?.Invoke();
 	}
 
 	private void SetFilterInternal(TaskFilter newFilter)
@@ -68,7 +52,8 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		}
 		Filter = newFilter;
 
-		Recalculate();
+		Apply();
+		OnFilterChanged?.Invoke();
 	}
 
 	private void SetSearchInternal(string? newSearchText)
@@ -79,7 +64,8 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		}
 		SearchText = newSearchText;
 
-		Recalculate();
+		Apply();
+		OnFilterChanged?.Invoke();
 	}
 
 	public void SetFilterAndSearch(TaskFilter filter, string? searchText)
@@ -119,11 +105,11 @@ internal sealed class BackgroundTaskFilterService : IBackgroundTaskFilterService
 		SetFilterInternal(newFilter);
 	}
 
-	public IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source)
+	private void Apply()
 	{
-		var query = ApplyFilter(source);
-		query = ApplySearch(query);
-		return query;
+		Console.WriteLine("Apply!!!");
+		var query = ApplyFilter(_source);
+		Filtered = ApplySearch(query).ToList().AsReadOnly();
 	}
 
 	private IEnumerable<BackgroundTask> ApplyFilter(IEnumerable<BackgroundTask> source)

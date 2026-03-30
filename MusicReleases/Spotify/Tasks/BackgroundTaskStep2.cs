@@ -43,6 +43,11 @@ public sealed class BackgroundTaskStep
 
 	public void NotifyChange()
 	{
+		if (Outcome == BackgroundStepOutcome.Skipped)
+		{
+			return;
+		}
+
 		OnStateChanged?.Invoke();
 	}
 
@@ -58,7 +63,7 @@ public sealed class BackgroundTaskStep
 		SubProgress = 1.0;
 		Status = BackgroundTaskStatus.Finished;
 		FinishedAt = DateTimeOffset.UtcNow;
-		NotifyChange();
+		//NotifyChange();
 	}
 
 	public void MarkFinished()

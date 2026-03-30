@@ -18,12 +18,12 @@ public partial class ActiveBackgroundTasks : IDisposable
 
 	protected override void OnInitialized()
 	{
-		BackgroundTaskManager.OnChange += StateChanged;
+		BackgroundTaskManager.OnUiRelevantChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		BackgroundTaskManager.OnChange -= StateChanged;
+		BackgroundTaskManager.OnUiRelevantChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -34,6 +34,7 @@ public partial class ActiveBackgroundTasks : IDisposable
 
 	private async Task ViewTasks()
 	{
+		Console.WriteLine("toggle - tasks active");
 		await PopupService.Toggle(PopupType.BackgroundTasks);
 	}
 }

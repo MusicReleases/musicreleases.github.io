@@ -1,5 +1,5 @@
-﻿using JakubKastner.MusicReleases.Spotify.Tasks.User;
-using Microsoft.AspNetCore.Components;
+﻿using JakubKastner.MusicReleases.Services.UiServices;
+using JakubKastner.MusicReleases.Spotify.Tasks.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
@@ -8,16 +8,19 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 	private readonly IBackgroundTaskFilterService _filterService;
 	private readonly IBackgroundTaskFilterUrlService _filterUrlService;
 	private readonly ISpotifyUserTaskFilterDbService _dbService;
-	private readonly NavigationManager _navManager;
+	private readonly INavigationService _navService;
 
 	private const string _baseUrl = "/tasks";
 
-	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, ISpotifyUserTaskFilterDbService dbService, NavigationManager navManager)
+	// feedback loop guard
+	private bool _suppressUrlUpdate;
+
+	public BackgroundTaskFilterUrlSynchronizer(IBackgroundTaskFilterService filterService, IBackgroundTaskFilterUrlService filterUrlService, ISpotifyUserTaskFilterDbService dbService, INavigationService navService)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;
 		_dbService = dbService;
-		_navManager = navManager;
+		_navService = navService;
 
 		_filterService.OnFilterChanged += OnFilterChanged;
 	}
@@ -30,6 +33,11 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 
 	private void OnFilterChanged()
 	{
+		if (_suppressUrlUpdate)
+		{
+			return;
+		}
+
 		ChangeFilter();
 	}
 
@@ -37,12 +45,19 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 	{
 		var filter = _filterUrlService.ParseFilterFromUrlParams(urlParams);
 
-		_filterService.SetFilterAndSearch(filter, searchParam);
+		_suppressUrlUpdate = true;
+		try
+		{
+			_filterService.SetFilterAndSearch(filter, searchParam);
+		}
+		finally
+		{
+			_suppressUrlUpdate = false;
+		}
 
 		// save to db
 		// TODO cancel token
 		var filterModel = new SpotifyTaskFilter(filter);
-
 		await _dbService.Save(filterModel, true, default);
 	}
 
@@ -50,7 +65,8 @@ internal sealed class BackgroundTaskFilterUrlSynchronizer : IBackgroundTaskFilte
 	{
 		var paramaters = _filterUrlService.CreateUrlParams(_filterService.Filter, _filterService.SearchText);
 		var url = $"{_baseUrl}{paramaters}";
-		_navManager.NavigateTo(url, false);
+
+		_navService.Navigate(url, false, true, "TaskFilterChanged");
 	}
 
 	public async Task<string> GetInitUrl()

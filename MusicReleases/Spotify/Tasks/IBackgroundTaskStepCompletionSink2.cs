@@ -2,6 +2,8 @@
 
 public interface IBackgroundTaskStepCompletionSink
 {
+	event Action? OnUiRelevantChange;
+
 	void RegisterStep(Guid stepId, string label);
 
 	void MarkStepCompleted(Guid stepId, bool success);

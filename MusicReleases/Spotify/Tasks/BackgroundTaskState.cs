@@ -1,6 +1,6 @@
 ﻿namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-internal sealed class BackgroundTaskState : IDisposable, IBackgroundTaskState
+internal sealed class BackgroundTaskState : IBackgroundTaskState
 {
 	private readonly IBackgroundTaskManagerService _manager;
 	private readonly IBackgroundTaskFilterService _filter;
@@ -14,7 +14,7 @@ internal sealed class BackgroundTaskState : IDisposable, IBackgroundTaskState
 		_manager = manager;
 		_filter = filter;
 
-		_manager.OnChange += OnManagerChanged;
+		_manager.OnUiRelevantChange += OnManagerUiChanged;
 		_filter.OnFilterChanged += OnFilterChanged;
 
 		_filter.SetSource(_manager.AllTasks);
@@ -22,19 +22,20 @@ internal sealed class BackgroundTaskState : IDisposable, IBackgroundTaskState
 
 	public void Dispose()
 	{
-		_manager.OnChange -= OnManagerChanged;
+		_manager.OnUiRelevantChange -= OnManagerUiChanged;
 		_filter.OnFilterChanged -= OnFilterChanged;
 	}
 
-	private void OnManagerChanged()
+	private void OnManagerUiChanged()
 	{
+		Console.WriteLine("manager changed!!!!!");
 		_filter.SetSource(_manager.AllTasks);
 		OnChange?.Invoke();
 	}
 
 	private void OnFilterChanged()
 	{
+		Console.WriteLine("filter changed!!!!!");
 		OnChange?.Invoke();
 	}
 }
-

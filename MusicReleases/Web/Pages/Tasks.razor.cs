@@ -25,7 +25,7 @@ public partial class Tasks
 	protected override async Task OnParametersSetAsync()
 	{
 		await LoadFilters();
-		ShowPopup();
+		//await ShowPopup();
 	}
 
 	private async Task LoadFilters()
@@ -33,8 +33,9 @@ public partial class Tasks
 		await SpotifyTaskFilterUrlSynchronizer.SetFilterFromUrl(Filter, Search);
 	}
 
-	private void ShowPopup()
+	private async Task ShowPopup()
 	{
-		PopupService.Show(PopupType.BackgroundTasks);
+		Console.WriteLine("show - tasks");
+		await PopupService.Show(PopupType.BackgroundTasks);
 	}
 }

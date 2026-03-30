@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Services.UiServices;
 
-internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, ISpotifySettingsService settingsService, NavigationManager navManager) : IPopupService
+internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilterUrlSynchronizer, ISpotifySettingsService settingsService, INavigationService navService, NavigationManager nav) : IPopupService
 {
 	private readonly IBackgroundTaskFilterUrlSynchronizer _spotifyTaskFilterUrlSynchronizer = spotifyTaskFilterUrlSynchronizer;
 
 	private readonly ISpotifySettingsService _settingsService = settingsService;
 
-	private readonly NavigationManager _navManager = navManager;
+	private readonly INavigationService _navService = navService;
+	private readonly NavigationManager _nav = nav;
 
 
 	public event Action? OnChange;
@@ -26,25 +27,18 @@ internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilt
 	private PopupType? _popupType = null;
 
 
-	public void Show(PopupType popupType)
+	public void SyncFromUrl(PopupType popupType)
 	{
+		if (IsPopupDisplayed(popupType))
+		{
+			return;
+		}
+
 		_popupType = popupType;
 		OnChange?.Invoke();
 	}
 
-	public async Task Toggle(PopupType popupType)
-	{
-		if (IsPopupDisplayed(popupType))
-		{
-			// close popup
-			await Hide();
-			return;
-		}
-
-		await ChangePopup(popupType);
-	}
-
-	public async Task Hide()
+	public void SyncClose()
 	{
 		if (!IsAnyPopupDisplayed)
 		{
@@ -52,8 +46,54 @@ internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilt
 		}
 
 		_popupType = null;
-		await ChangePopup();
 		OnChange?.Invoke();
+	}
+
+	public async Task Show(PopupType popupType)
+	{
+		if (IsPopupDisplayed(popupType))
+		{
+			return;
+		}
+
+		_popupType = popupType;
+		OnChange?.Invoke();
+
+
+		var url = popupType switch
+		{
+			PopupType.BackgroundTasks => await _spotifyTaskFilterUrlSynchronizer.GetInitUrl(),
+			PopupType.Settings => _settingsService.GetInitUrl(),
+			_ => throw new NotSupportedException()
+		};
+
+		_navService.OpenPopup(url, popupType.ToString());
+	}
+
+	public async Task Toggle(PopupType popupType)
+	{
+		if (IsPopupDisplayed(popupType))
+		{
+			// close popup
+			Hide();
+			return;
+		}
+		await Show(popupType);
+		//await ChangePopup(popupType);
+	}
+
+	public void Hide()
+	{
+		if (!IsAnyPopupDisplayed)
+		{
+			return;
+		}
+
+		_popupType = null;
+		OnChange?.Invoke();
+		//await ChangePopup();
+
+		_navService.ClosePopup();
 	}
 
 	public bool IsPopupDisplayed(PopupType popupType)
@@ -71,20 +111,20 @@ internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilt
 
 			if (lastUrl.IsNullOrEmpty())
 			{
-				_navManager.NavigateTo("/");
+				_navService.Navigate("/", false, true, "ClosePopup");
 			}
 			else
 			{
-				_navManager.NavigateTo(lastUrl, false);
+				_navService.Navigate(lastUrl, false, true, "ClosePopup");
 			}
 			return;
 		}
 
 		// show popup
-		var currentUri = new Uri(_navManager.Uri);
-		if (currentUri.AbsolutePath.StartsWith("/releases"))
+		var currentUrl = _navService.Current;
+		if (currentUrl.StartsWith("releases"))
 		{
-			_lastUrl = currentUri.PathAndQuery;
+			_lastUrl = "/" + currentUrl;
 		}
 
 		var url = popupType switch
@@ -94,18 +134,18 @@ internal class PopupService(IBackgroundTaskFilterUrlSynchronizer spotifyTaskFilt
 			_ => throw new NotSupportedException(nameof(ChangePopup)),
 		};
 
-		_navManager.NavigateTo(url, false);
+		_navService.Navigate(url, false, true, $"ShowPopup:{popupType}");
 	}
 
 	public async Task<bool> UrlChanged()
 	{
-		var currentUrl = new Uri(_navManager.Uri).PathAndQuery;
+		var currentUrl = new Uri(_nav.Uri).PathAndQuery;
 
 		var changed = _lastUrl != currentUrl;
 		if (!changed)
 		{
 			// when current url is the same when popup was displayed, then hide popup
-			await Hide();
+			Hide();
 		}
 		_lastUrl = null;
 		return changed;

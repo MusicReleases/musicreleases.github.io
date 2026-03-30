@@ -5,9 +5,9 @@ using JakubKastner.SpotifyApi.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Tracks;
 
-internal class SpotifyTrackService(IBackgroundTaskManagerService2 taskManager, ISpotifyTrackClient apiTrackClient, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
+internal class SpotifyTrackService(IBackgroundTaskManagerService taskManager, ISpotifyTrackClient apiTrackClient, ISpotifyUserClient spotifyUserClient) : ISpotifyTrackService
 {
-	private readonly IBackgroundTaskManagerService2 _taskManager = taskManager;
+	private readonly IBackgroundTaskManagerService _taskManager = taskManager;
 	private readonly ISpotifyTrackClient _apiTrackClient = apiTrackClient;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 
@@ -21,19 +21,26 @@ internal class SpotifyTrackService(IBackgroundTaskManagerService2 taskManager, I
 			return;
 		}
 
-		await _taskManager.Run(BackgroundTaskType.ReleaseTracksGet, "Getting release tracks", $"Getting tracks from {release.ReleaseType.ToFriendlyString()} '{release.Name}'", async task =>
-		{
-			await task.RunStep("Loading from API", BackgroundTaskCategory.GetApi, async ct =>
+		await _taskManager.Run
+		(
+			BackgroundTaskType.ReleaseTracksGet,
+			"Getting release tracks",
+			$"Getting tracks from {release.ReleaseType.ToFriendlyString()} '{release.Name}'",
+			1,
+			async task =>
 			{
-				// get api
-				release.Tracks = [.. await _apiTrackClient.GetReleaseTracks(release, ct)];
+				await task.RunStep(BackgroundTaskCategory.GetApi, async (ct, step) =>
+				{
+					// get api
+					release.Tracks = [.. await _apiTrackClient.GetReleaseTracks(release, ct)];
 
-				task.AddLink(release.ReleaseType.ToFriendlyString(), $"{release.ReleaseType.ToFriendlyString()} '{release.Name}'", release);
-			});
+					task.AddLink(release.ReleaseType.ToFriendlyString(), $"{release.ReleaseType.ToFriendlyString()} '{release.Name}'", release);
+				});
 
-			// save db
-			//await _dbSpotifyArtistReleaseService.Save(userId, release.Tracks);
-		});
+				// save db
+				//await _dbSpotifyArtistReleaseService.Save(userId, release.Tracks);
+			}
+		);
 
 
 

@@ -4,38 +4,22 @@ using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Pages;
 
-public partial class Settings //: IDisposable
+public partial class Settings
 {
-	/*[Inject]
-	private ISpotifyTaskFilterUrlSynchronizer SpotifyTaskFilterUrlSynchronizer { get; set; } = default!;*/
-
 	[Inject]
 	private IPopupService PopupService { get; set; } = default!;
 
-
+	// TODO section url param
 	[Parameter]
 	public string? Section { get; set; }
 
-
-
 	protected override async Task OnParametersSetAsync()
 	{
-		//await LoadFilters();
-		ShowPopup();
-	}
-	/*public void Dispose()
-	{
-		//SpotifyTaskFilterUrlSynchronizer.Dispose();
-		GC.SuppressFinalize(this);
+		await ShowPopup();
 	}
 
-	private async Task LoadFilters()
+	private async Task ShowPopup()
 	{
-		await SpotifyTaskFilterUrlSynchronizer.SetFilterFromUrl(Filter, Search);
-	}*/
-
-	private void ShowPopup()
-	{
-		PopupService.Show(PopupType.Settings);
+		await PopupService.Show(PopupType.Settings);
 	}
 }

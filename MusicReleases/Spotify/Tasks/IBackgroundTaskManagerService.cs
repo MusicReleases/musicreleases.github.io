@@ -6,8 +6,10 @@ internal interface IBackgroundTaskManagerService
 	bool AnyTaskFailed { get; }
 	IReadOnlyList<BackgroundTask> VisibleTasks { get; }
 	bool AnyTaskVisible { get; }
+	bool AnyTaskRunning { get; }
+	IReadOnlyList<BackgroundTask> RunningTasks { get; }
 
-	event Action? OnChange;
+	event Action? OnUiRelevantChange;
 
 	void CancelAllTasks();
 	void Dispose();

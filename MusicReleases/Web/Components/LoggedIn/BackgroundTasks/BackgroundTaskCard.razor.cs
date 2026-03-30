@@ -43,12 +43,12 @@ public partial class BackgroundTaskCard : IDisposable
 
 	protected override void OnInitialized()
 	{
-		BackgroundTaskManager.OnChange += StateChanged;
+		BackgroundTask.OnTaskChanged += StateChanged;
 	}
 
 	public void Dispose()
 	{
-		BackgroundTaskManager.OnChange -= StateChanged;
+		BackgroundTask.OnTaskChanged -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -64,6 +64,7 @@ public partial class BackgroundTaskCard : IDisposable
 
 	private async Task ViewTask()
 	{
+		Console.WriteLine("toggle - task card active");
 		await PopupService.Toggle(PopupType.BackgroundTasks);
 	}
 }

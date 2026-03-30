@@ -45,6 +45,7 @@ public partial class SettingsButton : IDisposable
 
 	private async Task ViewSettings()
 	{
+		Console.WriteLine("toggle - view settings");
 		OverflowMenuService.HideMenu();
 		await PopupService.Toggle(_popupType);
 	}

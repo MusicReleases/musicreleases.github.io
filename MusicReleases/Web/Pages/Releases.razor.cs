@@ -56,13 +56,13 @@ public partial class Releases
 
 	private async Task Load()
 	{
-		var urlChanged = await PopupService.UrlChanged();
+		/*var urlChanged = await PopupService.UrlChanged();
 		if (!urlChanged)
 		{
 			Console.WriteLine("url doesnt changed");
 			// when is the same url as when the popup was opened - dont update
 			return;
-		}
+		}*/
 
 		var loadReleases = await LoadFiter();
 

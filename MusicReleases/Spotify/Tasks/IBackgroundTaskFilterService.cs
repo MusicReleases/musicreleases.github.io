@@ -10,7 +10,6 @@ internal interface IBackgroundTaskFilterService
 
 	event Action? OnFilterChanged;
 
-	IEnumerable<BackgroundTask> Apply(IEnumerable<BackgroundTask> source);
 	void ClearFilter();
 	bool IsActive(TaskFilter filter);
 	void SetFilter(TaskFilter filter);

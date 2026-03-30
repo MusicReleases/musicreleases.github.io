@@ -14,7 +14,7 @@ public partial class BackgroundTaskButton : IDisposable
 	private IOverflowMenuService OverflowMenuService { get; set; } = default!;
 
 	[Inject]
-	private IBackgroundTaskManagerService2 SpotifyTaskManagerService { get; set; } = default!;
+	private IBackgroundTaskManagerService BackgroundTaskManagerService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -32,9 +32,9 @@ public partial class BackgroundTaskButton : IDisposable
 
 	private string ButtonClass => $"tasks {Class}";
 
-	private bool ButtonLoading => ButtonType == TasksButtonComponent.Mobile && SpotifyTaskManagerService.IsAnyTaskRunning;
+	private bool ButtonLoading => ButtonType == TasksButtonComponent.Mobile && BackgroundTaskManagerService.AnyTaskRunning;
 
-	private LucideIcon Icon => SpotifyTaskManagerService.AnyTaskFailed ? LucideIcon.TriangleAlert : LucideIcon.ListTodo;
+	private LucideIcon Icon => BackgroundTaskManagerService.AnyTaskFailed ? LucideIcon.TriangleAlert : LucideIcon.ListTodo;
 
 	private string? IconClass => ButtonType == TasksButtonComponent.Mobile ? "fill" : null;
 
@@ -45,13 +45,13 @@ public partial class BackgroundTaskButton : IDisposable
 	protected override void OnInitialized()
 	{
 		PopupService.OnChange += StateChanged;
-		SpotifyTaskManagerService.OnChange += StateChanged;
+		BackgroundTaskManagerService.OnUiRelevantChange += StateChanged;
 	}
 
 	public void Dispose()
 	{
 		PopupService.OnChange -= StateChanged;
-		SpotifyTaskManagerService.OnChange -= StateChanged;
+		BackgroundTaskManagerService.OnUiRelevantChange -= StateChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -62,6 +62,7 @@ public partial class BackgroundTaskButton : IDisposable
 
 	private async Task ViewTasks()
 	{
+		Console.WriteLine("toggle - task button");
 		OverflowMenuService.HideMenu();
 		await PopupService.Toggle(_popupType);
 	}

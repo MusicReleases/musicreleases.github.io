@@ -42,6 +42,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IDragDropService, DragDropService>();
 		services.AddScoped<IMobileService, MobileService>();
 		services.AddScoped<IOverflowMenuService, OverflowMenuService>();
+		services.AddScoped<INavigationService, NavigationService>();
 		services.AddScoped<IPopupService, PopupService>();
 
 		// indexed db services
@@ -94,7 +95,6 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<ILoadingService, LoadingService>();
 
 		services.AddScoped<IBackgroundTaskManagerService, BackgroundTaskManagerService>();
-		services.AddScoped<IBackgroundTaskManagerService2, BackgroundTaskManagerService2>();
 		services.AddScoped<IBackgroundTaskFilterService, BackgroundTaskFilterService>();
 		services.AddScoped<IBackgroundTaskState, BackgroundTaskState>();
 		services.AddScoped<IBackgroundTaskFilterUrlService, SpotifyTaskFilterUrlService>();

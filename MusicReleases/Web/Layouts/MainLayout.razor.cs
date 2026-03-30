@@ -1,7 +1,9 @@
+using JakubKastner.MusicReleases.Enums;
 using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.MusicReleases.Spotify.Settings;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 
 namespace JakubKastner.MusicReleases.Web.Layouts;
 
@@ -9,6 +11,9 @@ public partial class MainLayout : IDisposable
 {
 	[Inject]
 	private IMobileService MobileService { get; set; } = default!;
+
+	[Inject]
+	private IPopupService PopupService { get; set; } = default!;
 
 	[Inject]
 	private IApiLoginService ApiLoginService { get; set; } = default!;
@@ -25,17 +30,21 @@ public partial class MainLayout : IDisposable
 	{
 		MobileService.OnDisplayChanged += StateChanged;
 		SettingsService.OnChange += StateChanged;
+		NavManager.LocationChanged += OnLocationChanged;
 
 		if (!CheckLoggedInUser())
 		{
 			return;
 		}
+
+		SyncPopupWithUrl();
 	}
 
 	public void Dispose()
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
 		SettingsService.OnChange -= StateChanged;
+		NavManager.LocationChanged -= OnLocationChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -43,6 +52,31 @@ public partial class MainLayout : IDisposable
 	{
 		InvokeAsync(StateHasChanged);
 	}
+
+	private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+	{
+		SyncPopupWithUrl();
+	}
+
+
+	private void SyncPopupWithUrl()
+	{
+		var url = NavManager.ToBaseRelativePath(NavManager.Uri);
+
+		if (url.StartsWith("tasks", StringComparison.OrdinalIgnoreCase))
+		{
+			PopupService.SyncFromUrl(PopupType.BackgroundTasks);
+		}
+		else if (url.StartsWith("settings", StringComparison.OrdinalIgnoreCase))
+		{
+			PopupService.SyncFromUrl(PopupType.Settings);
+		}
+		else
+		{
+			PopupService.SyncClose();
+		}
+	}
+
 
 	private bool CheckLoggedInUser()
 	{

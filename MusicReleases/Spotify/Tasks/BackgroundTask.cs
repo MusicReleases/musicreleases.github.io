@@ -3,10 +3,10 @@ using JakubKastner.SpotifyApi.Base.Objects;
 
 namespace JakubKastner.MusicReleases.Spotify.Tasks;
 
-
 public sealed class BackgroundTask
 {
-	public event Action? OnStateChanged;
+	public event Action? OnTaskChanged;
+	public event Action? OnTaskEnded;
 
 	private readonly IBackgroundTaskStepCompletionSink _sink;
 
@@ -15,6 +15,8 @@ public sealed class BackgroundTask
 	private readonly Stack<BackgroundTaskStep> _stack = new();
 
 	private string? _statusText;
+
+	private bool _endedNotified;
 
 	public BackgroundTask(BackgroundTaskType type, string name, string description, int expectedSteps, bool isWorkflow, IBackgroundTaskStepCompletionSink sink)
 	{
@@ -120,9 +122,27 @@ public sealed class BackgroundTask
 
 	public void NotifyChange()
 	{
+		if (IsNoOp)
+		{
+			return;
+		}
+
+
 		RecalculateProgress();
-		OnStateChanged?.Invoke();
+		OnTaskChanged?.Invoke();
 	}
+
+	private void NotifyTaskEnded()
+	{
+		if (_endedNotified)
+		{
+			return;
+		}
+
+		OnTaskEnded?.Invoke();
+		_endedNotified = true;
+	}
+
 
 	public void AddLink(string text, string title, string urlWeb, Enum icon)
 	{
@@ -188,6 +208,7 @@ public sealed class BackgroundTask
 		}
 
 		NotifyChange();
+		NotifyTaskEnded();
 	}
 
 	private static string GetDefaultStepName(BackgroundTaskCategory category)
@@ -286,6 +307,7 @@ public sealed class BackgroundTask
 		{
 			step.MarkCanceled();
 			_sink.MarkStepCompleted(step.StepId, false);
+			NotifyTaskEnded();
 			throw;
 		}
 		catch (Exception ex)
@@ -293,6 +315,7 @@ public sealed class BackgroundTask
 			step.MarkFailed(ex);
 			_sink.MarkStepCompleted(step.StepId, false);
 			_statusText = ex.Message;
+			NotifyTaskEnded();
 			throw;
 		}
 		finally
@@ -300,6 +323,10 @@ public sealed class BackgroundTask
 			_stack.Pop();
 			step.OnStateChanged -= NotifyChange;
 			NotifyChange();
+			if (Ended)
+			{
+				NotifyTaskEnded();
+			}
 		}
 	}
 
