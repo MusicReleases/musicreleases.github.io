@@ -10,7 +10,10 @@ public sealed class NavigationService : INavigationService
 	// reentrancy guard
 	private int _navDepth;
 
-	public string Current => _nav.ToBaseRelativePath(_nav.Uri);
+	public string CurrentUrl => _nav.ToBaseRelativePath(_nav.Uri);
+	public string BaseUrl => _nav.BaseUri;
+	public Uri CurrentUri => new(_nav.Uri);
+
 
 	public event Action<string>? Navigated;
 
@@ -18,6 +21,8 @@ public sealed class NavigationService : INavigationService
 	{
 		_nav = nav;
 		_nav.LocationChanged += OnLocationChanged;
+
+		SyncPopupState();
 	}
 
 	public void Dispose()
@@ -27,7 +32,8 @@ public sealed class NavigationService : INavigationService
 
 	public void Navigate(string url, bool forceLoad = false, bool replace = false, string? reason = null)
 	{
-		Console.WriteLine($"[NAV] {Current} -> {url} replace={replace} forceLoad={forceLoad} reason={reason}\n{Environment.StackTrace}");
+		//Console.WriteLine($"[NAV] {Current} -> {url} replace={replace} forceLoad={forceLoad} reason={reason}\n{Environment.StackTrace}");
+		Console.WriteLine($"[NAV] {CurrentUrl} -> {url} replace={replace} forceLoad={forceLoad} reason={reason}");
 
 		// guard against infinite loops - if something goes wrong with navigation, we dont want to crash the app
 		if (_navDepth > 8)
@@ -36,7 +42,7 @@ public sealed class NavigationService : INavigationService
 			return;
 		}
 
-		var current = Current.TrimEnd('/');
+		var current = CurrentUrl.TrimEnd('/');
 		var target = url.TrimStart('/').TrimEnd('/');
 
 
@@ -60,6 +66,9 @@ public sealed class NavigationService : INavigationService
 	private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
 	{
 		Console.WriteLine($"[NAV][CHANGED] -> {_nav.ToBaseRelativePath(e.Location)} intercepted={e.IsNavigationIntercepted}");
+
+		SyncPopupState();
+
 		Navigated?.Invoke(e.Location);
 	}
 
@@ -70,18 +79,50 @@ public sealed class NavigationService : INavigationService
 	public bool IsPopupActive => _popupActive;
 	public string? PopupBackgroundUrl => _popupBackgroundUrl;
 
-	public void OpenPopup(string popupUrl, string reason)
+	private void SyncPopupState()
 	{
-		var current = "/" + Current;
+		bool isPopup = IsPopupPath();
+
+		if (!isPopup)
+		{
+			_popupActive = false;
+			_popupBackgroundUrl = null;
+			return;
+		}
 
 		if (!_popupActive)
 		{
-			_popupBackgroundUrl = current;
+			_popupActive = true;
+			_popupBackgroundUrl ??= "/releases";
+		}
+	}
+
+	private bool IsPopupPath()
+	{
+		var cleaned = CurrentUrl.TrimStart('/').ToLowerInvariant();
+		var comparisonType = StringComparison.OrdinalIgnoreCase;
+
+		return cleaned.StartsWith("tasks", comparisonType)
+			|| cleaned.StartsWith("settings", comparisonType);
+	}
+
+	public void OpenPopup(string popupUrl, string reason)
+	{
+		if (!_popupActive)
+		{
+			if (IsPopupPath())
+			{
+				_popupBackgroundUrl ??= "/releases";
+			}
+			else
+			{
+				_popupBackgroundUrl = $"/{CurrentUrl}";
+			}
 			_popupActive = true;
 		}
 
 		// popup -> popup = replace
-		Navigate(popupUrl, false, true, $"OpenPopup:{reason}");
+		Navigate(popupUrl, reason: $"OpenPopup:{reason}");
 	}
 
 	public void ClosePopup(string fallback = "/releases")
@@ -91,7 +132,7 @@ public sealed class NavigationService : INavigationService
 		_popupActive = false;
 		_popupBackgroundUrl = null;
 
-		Navigate(target, replace: true, reason: "ClosePopup");
+		Navigate(target, reason: "ClosePopup");
 	}
 
 }

@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.MusicReleases.Spotify.Releases;
 using JakubKastner.MusicReleases.Spotify.Settings;
 using JakubKastner.MusicReleases.Spotify.Tasks;
@@ -6,22 +7,33 @@ using JakubKastner.MusicReleases.Spotify.User;
 using JakubKastner.MusicReleases.Spotify.User.Update;
 using JakubKastner.SpotifyApi.Base.Objects;
 using JakubKastner.SpotifyApi.User;
-using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Primitives;
 
 namespace JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
 
-internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClient spotifyUserClient, NavigationManager navManager, ISpotifyLoginStorageService spotifyLoginStorageService, ISpotifyUserDbService databaseUserService, ISpotifyUserUpdateDbService databaseUpdateService, ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer, ISpotifySettingsService settingsService, IBackgroundTaskManagerService backgroundTaskManagerService) : ISpotifyLoginService
+internal class SpotifyLoginService
+(
+	SpotifyConfig spotifyConfig,
+	ISpotifyUserClient spotifyUserClient,
+	ISpotifyLoginStorageService spotifyLoginStorageService,
+	ISpotifyUserDbService databaseUserService,
+	ISpotifyUserUpdateDbService databaseUpdateService,
+	ISpotifyReleaseFilterUrlSynchronizer releaseFilterUrlSynchronizer,
+	ISpotifySettingsService settingsService,
+	IBackgroundTaskManagerService backgroundTaskManagerService,
+	INavigationService navService
+)
+: ISpotifyLoginService
 {
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 	private readonly ISpotifyUserClient _spotifyUserClient = spotifyUserClient;
 	private readonly ISpotifyLoginStorageService _spotifyLoginStorageService = spotifyLoginStorageService;
-	private readonly NavigationManager _navManager = navManager;
 	private readonly ISpotifyUserDbService _databaseUserService = databaseUserService;
 	private readonly ISpotifyUserUpdateDbService _databaseUpdateService = databaseUpdateService;
 	private readonly ISpotifyReleaseFilterUrlSynchronizer _releaseFilterUrlSynchronizer = releaseFilterUrlSynchronizer;
 	private readonly ISpotifySettingsService _settingsService = settingsService;
 	private readonly IBackgroundTaskManagerService _backgroundTaskManagerService = backgroundTaskManagerService;
+	private readonly INavigationService _navService = navService;
 
 	public ServiceType GetServiceType()
 	{
@@ -64,7 +76,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 				else
 				{
 					// user is not logged in (error)
-					_navManager.NavigateTo("");
+					_navService.Navigate("/", true, true, "user not logged in");
 				}
 				return;
 			}
@@ -72,13 +84,15 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 
 		// user is not saved in storage
 		// spotify login
-		var redirectUrl = _navManager.ToAbsoluteUri(_navManager.BaseUri + "login/spotify");
+
+		var redirectUrl = $"{_navService.BaseUrl}login/spotify";
 		var clientId = _spotifyConfig.ClientId;
 
 		(var loginUrl, var loginVerifier) = _spotifyUserClient.GetLoginUrl(clientId, redirectUrl);
 
 		await _spotifyLoginStorageService.SaveLoginVerifier(loginVerifier);
-		_navManager.NavigateTo(loginUrl.AbsoluteUri);
+
+		_navService.Navigate(loginUrl.AbsoluteUri, false, true, "user login (new)");
 	}
 
 	public async Task SetUser(StringValues code)
@@ -94,7 +108,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 		if (!userLogged)
 		{
 			// user is not logged in (error)
-			_navManager.NavigateTo("");
+			_navService.Navigate("/", true, true, "user is not logged in (error)");
 			return;
 		}
 
@@ -144,7 +158,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 		}
 
 		// get token from url
-		var baseUrl = _navManager.BaseUri;
+		var baseUrl = _navService.BaseUrl;
 
 		var loginVerifier = await _spotifyLoginStorageService.GetLoginVerifier();
 
@@ -152,7 +166,9 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 
 		var codeString = code.ToString();
 		var clientId = _spotifyConfig.ClientId;
-		var userLogged = await _spotifyUserClient.LoginUser(clientId, codeString, loginVerifier, baseUrl + "login/spotify");
+		var redirectUrl = $"{baseUrl}login/spotify";
+
+		var userLogged = await _spotifyUserClient.LoginUser(clientId, codeString, loginVerifier, redirectUrl);
 
 		if (userLogged)
 		{
@@ -180,7 +196,7 @@ internal class SpotifyLoginService(SpotifyConfig spotifyConfig, ISpotifyUserClie
 		await _databaseUserService.Delete(user.Info.Id);
 		await _databaseUpdateService.Delete(user.Info.Id, SpotifyDbUpdateType.User);
 
-		_navManager.NavigateTo(_navManager.BaseUri);
+		_navService.Navigate("/", true, false, "user logged out");
 	}
 
 	private async Task SaveUser()

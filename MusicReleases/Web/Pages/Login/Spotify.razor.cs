@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Services.BaseServices;
+using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
@@ -11,7 +12,7 @@ public partial class Spotify
 	private ILoginService LoginService { get; set; } = default!;
 
 	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
+	private INavigationService NavService { get; set; } = default!;
 
 
 	private bool _loading = true;
@@ -38,8 +39,7 @@ public partial class Spotify
 	{
 		// TODO global service type
 
-		var uri = new Uri(NavManager.Uri);
-		var uriQuery = uri.Query;
+		var uriQuery = NavService.CurrentUri.Query;
 
 		var queryParams = QueryHelpers.ParseQuery(uriQuery);
 		if (!queryParams.TryGetValue("code", out StringValues code))

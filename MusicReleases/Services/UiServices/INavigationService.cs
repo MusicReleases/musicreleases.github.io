@@ -2,7 +2,9 @@
 
 public interface INavigationService : IDisposable
 {
-	string Current { get; }
+	string CurrentUrl { get; }
+	string BaseUrl { get; }
+	Uri CurrentUri { get; }
 
 	event Action<string>? Navigated;
 

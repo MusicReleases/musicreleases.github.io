@@ -3,7 +3,6 @@ using JakubKastner.MusicReleases.Services.ApiServices;
 using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.MusicReleases.Spotify.Settings;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
 
 namespace JakubKastner.MusicReleases.Web.Layouts;
 
@@ -19,7 +18,7 @@ public partial class MainLayout : IDisposable
 	private IApiLoginService ApiLoginService { get; set; } = default!;
 
 	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
+	private INavigationService NavService { get; set; } = default!;
 
 	[Inject]
 	private ISpotifySettingsService SettingsService { get; set; } = default!;
@@ -30,7 +29,7 @@ public partial class MainLayout : IDisposable
 	{
 		MobileService.OnDisplayChanged += StateChanged;
 		SettingsService.OnChange += StateChanged;
-		NavManager.LocationChanged += OnLocationChanged;
+		NavService.Navigated += OnLocationChanged;
 
 		if (!CheckLoggedInUser())
 		{
@@ -44,7 +43,7 @@ public partial class MainLayout : IDisposable
 	{
 		MobileService.OnDisplayChanged -= StateChanged;
 		SettingsService.OnChange -= StateChanged;
-		NavManager.LocationChanged -= OnLocationChanged;
+		NavService.Navigated -= OnLocationChanged;
 		GC.SuppressFinalize(this);
 	}
 
@@ -53,15 +52,14 @@ public partial class MainLayout : IDisposable
 		InvokeAsync(StateHasChanged);
 	}
 
-	private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+	private void OnLocationChanged(string newUrl)
 	{
 		SyncPopupWithUrl();
 	}
 
-
 	private void SyncPopupWithUrl()
 	{
-		var url = NavManager.ToBaseRelativePath(NavManager.Uri);
+		string url = NavService.CurrentUrl;
 
 		if (url.StartsWith("tasks", StringComparison.OrdinalIgnoreCase))
 		{
@@ -77,12 +75,11 @@ public partial class MainLayout : IDisposable
 		}
 	}
 
-
 	private bool CheckLoggedInUser()
 	{
 		if (!ApiLoginService.IsUserLoggedIn())
 		{
-			NavManager.NavigateTo("");
+			NavService.Navigate("/", true, true, "user is not logged in");
 			return false;
 		}
 		return true;

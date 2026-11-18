@@ -9,9 +9,6 @@ public partial class BackgroundTaskFilterButton : IDisposable
 	[Inject]
 	private IBackgroundTaskFilterService SpotifyTaskFilterService { get; set; } = default!;
 
-	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
-
 
 	[Parameter, EditorRequired]
 	public required ChipFilterButtonComponent ButtonType { get; set; }

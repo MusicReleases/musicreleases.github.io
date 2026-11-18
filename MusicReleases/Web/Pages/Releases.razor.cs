@@ -1,5 +1,4 @@
 ﻿using JakubKastner.MusicReleases.Services.ApiServices.SpotifyServices;
-using JakubKastner.MusicReleases.Services.UiServices;
 using JakubKastner.MusicReleases.Spotify.Releases;
 using JakubKastner.SpotifyApi.Releases;
 using Microsoft.AspNetCore.Components;
@@ -18,13 +17,7 @@ public partial class Releases
 	private ISpotifyReleaseFilterUrlSynchronizer SpotifyReleaseFilterUrlSynchronizer { get; set; } = default!;
 
 	[Inject]
-	private IPopupService PopupService { get; set; } = default!;
-
-	[Inject]
 	private ISpotifyReleaseUrlState SpotifyReleaseUrlState { get; set; } = default!;
-
-	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
 
 
 	[Parameter]
@@ -53,20 +46,11 @@ public partial class Releases
 
 	protected override async Task OnParametersSetAsync()
 	{
-		Console.WriteLine(NavManager.Uri);
 		await Load();
 	}
 
 	private async Task Load()
 	{
-		/*var urlChanged = await PopupService.UrlChanged();
-		if (!urlChanged)
-		{
-			Console.WriteLine("url doesnt changed");
-			// when is the same url as when the popup was opened - dont update
-			return;
-		}*/
-
 		var currentParams = new SpotifyReleaseUrlParameters(Type, Year, Month, ArtistId, Filter, Search);
 
 		if (SpotifyReleaseUrlState.LastParams == currentParams)

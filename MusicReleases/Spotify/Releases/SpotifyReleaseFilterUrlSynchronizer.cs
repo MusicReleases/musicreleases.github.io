@@ -1,25 +1,21 @@
-﻿using JakubKastner.MusicReleases.Spotify.Releases.User;
-using Microsoft.AspNetCore.Components;
+﻿using JakubKastner.MusicReleases.Services.UiServices;
+using JakubKastner.MusicReleases.Spotify.Releases.User;
 
 namespace JakubKastner.MusicReleases.Spotify.Releases;
 
 internal sealed class SpotifyReleaseFilterUrlSynchronizer : ISpotifyReleaseFilterUrlSynchronizer
 {
 	private readonly ISpotifyReleaseFilterService _filterService;
-
 	private readonly ISpotifyReleaseFilterUrlService _filterUrlService;
-
 	private readonly ISpotifyUserReleaseFilterDbService _dbService;
+	private readonly INavigationService _navService;
 
-
-	private readonly NavigationManager _navManager;
-
-	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, ISpotifyUserReleaseFilterDbService dbService, NavigationManager navManager)
+	public SpotifyReleaseFilterUrlSynchronizer(ISpotifyReleaseFilterService filterService, ISpotifyReleaseFilterUrlService filterUrlService, ISpotifyUserReleaseFilterDbService dbService, INavigationService navService)
 	{
 		_filterService = filterService;
 		_filterUrlService = filterUrlService;
 		_dbService = dbService;
-		_navManager = navManager;
+		_navService = navService;
 
 		_filterService.NotifySynchronizer += OnFilterChanged;
 	}
@@ -62,8 +58,8 @@ internal sealed class SpotifyReleaseFilterUrlSynchronizer : ISpotifyReleaseFilte
 	{
 		var paramaters = _filterUrlService.CreateUrl(filter);
 		var url = $"{_baseUrl}{paramaters}";
-		Console.WriteLine($"Navigate to: {url}");
-		_navManager.NavigateTo(url, false);
+
+		_navService.Navigate(url, reason: "release filter changed");
 	}
 
 	public async Task SetInitFilter()

@@ -12,7 +12,7 @@ internal class SpotifyUserClient(ISpotifyClientStore client, ISpotifyUserStore u
 	private readonly IRetryHandler _retryHandler = retryHandler;
 	private readonly SpotifyConfig _spotifyConfig = spotifyConfig;
 
-	public (Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, Uri currentUrl)
+	public (Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, string redirectUrl)
 	{
 		var scope = new[]
 		{
@@ -27,7 +27,9 @@ internal class SpotifyUserClient(ISpotifyClientStore client, ISpotifyUserStore u
 
 		var (verifier, challenge) = PKCEUtil.GenerateCodes(120);
 
-		var loginRequest = new LoginRequest(currentUrl, clientId, LoginRequest.ResponseType.Code)
+		var redirectUri = new Uri(redirectUrl);
+
+		var loginRequest = new LoginRequest(redirectUri, clientId, LoginRequest.ResponseType.Code)
 		{
 			Scope = scope,
 			CodeChallengeMethod = "S256",

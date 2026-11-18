@@ -1,4 +1,5 @@
 ﻿using JakubKastner.MusicReleases.Enums;
+using JakubKastner.MusicReleases.Services.UiServices;
 using Microsoft.AspNetCore.Components;
 
 namespace JakubKastner.MusicReleases.Web.Components.Base;
@@ -6,7 +7,7 @@ namespace JakubKastner.MusicReleases.Web.Components.Base;
 public partial class Logo
 {
 	[Inject]
-	private NavigationManager NavManager { get; set; } = default!;
+	private INavigationService NavService { get; set; } = default!;
 
 
 	[Parameter, EditorRequired]
@@ -29,6 +30,6 @@ public partial class Logo
 			return;
 		}
 
-		NavManager.NavigateTo("/");
+		NavService.Navigate("/", true, false, "logo clicked");
 	}
 }

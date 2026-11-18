@@ -2,7 +2,7 @@
 
 public interface ISpotifyUserClient
 {
-	(Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, Uri currentUrl);
+	(Uri loginUrl, string loginVerifier) GetLoginUrl(string clientId, string redirectUrl);
 	SpotifyUser? GetUser();
 	string GetUserIdRequired();
 	SpotifyUser GetUserRequired();

@@ -15,5 +15,4 @@ public interface IPopupService
 	void SyncClose();
 	void SyncFromUrl(PopupType popupType);
 	Task Toggle(PopupType popupType);
-	Task<bool> UrlChanged();
 }
